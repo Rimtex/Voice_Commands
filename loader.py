@@ -80,7 +80,7 @@ random.choice(colors)\
         time.sleep(0.05)
 
 
-#  генератор стенки
+#: генератор стенки
 def waal_generator():
     from Voice_Commands import stream, rec
     build = """
