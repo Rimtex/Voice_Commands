@@ -1,4 +1,4 @@
-# преобразователь команд в понятный текст для показа!!!
+#: преобразователь команд в понятный текст для показа!!!
 import random
 import re
 from colorama import init, Fore, Style, Back
@@ -30,15 +30,15 @@ SRA = Style.RESET_ALL
 
 init()
 
-# преобразователь команд в понятный текст для показа!!!
+#: преобразователь команд в понятный текст для показа!!!
 filename = "Voice_Commands.py"  # имя файла
 start_marker = "конвертер команд старт"  # начальный маркер
 end_marker = "конвертер команд конец"  # конечный маркер
 
-# вырезаем лишние строки
+#: вырезаем лишние строки
 code_patterns = ["hhvvhhvv", "hgtfndgudjed7y564y"]
 
-# вырезаем копи пастой можно из низа пишарма или ассистента. удобненько
+#: вырезаем копи пастой можно из низа пишарма или ассистента. удобненько
 added_code_patterns = """
 speak
 Fore
@@ -65,7 +65,7 @@ with open(filename, encoding="utf-8") as f:
 # print(ctline)
 cta = ctline
 
-#  замена условий и тонкая настройка и покраски
+#:  замена условий и тонкая настройка и покраски
 ct1 = str(cta.replace(f"\n", f"\n{Style.RESET_ALL}"))
 ct2 = str(ct1.replace(f"", f""))
 ct3 = str(ct2.replace(f'', f''))
@@ -117,6 +117,7 @@ cs1 = str(cq9
           .replace("слов[1]", "второе слово")
           )
 
+#: удаление лишнего
 cs2 = str(cs1
           .replace("иначе", "")
           .replace(" если", "")
@@ -136,18 +137,18 @@ cs2 = str(cs1
           )
 
 
-def print_cq9():
-    responses = cq9  # результат
+def print_cq9():  # результат
+    responses = cq9
     return responses
 
 
-def print_cs1():
-    responses = cs1  # результат с переводом
+def print_cs1():  # результат с переводом
+    responses = cs1
     return responses
 
 
-def print_cs2():
-    responses = cs2  # результат с удалением лишнего
+def print_cs2():  # результат с удалением лишнего
+    responses = cs2
     return responses
 
 #  if re.search('[а-яА-Я]|Fore|random.choice(colors)|RED|LRE|YEL|LYE|BLU|LBL|CYA|LCY|GRE|LGR|MAG|LMA|WHI|SRA|',line):
