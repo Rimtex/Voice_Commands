@@ -1,5 +1,4 @@
 import os
-
 from Voice_Commands import stream, rec, speak, speak_tts_gpt
 try:
     from colorama import init, Fore, Style
