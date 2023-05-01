@@ -940,13 +940,13 @@ if __name__ == '__main__':
                     speak_tts(f"ладно")
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
                     print_click_coordinates(809, 329)
-                    os.startfile(f"{path_to_shortcut}поговорим")  # запускает балабола
+                    os.startfile(f"English_trans_writer.py")  # запускает нейромодель
                     loader.smile_gen_erator()
                     speak_tts("конечно. ты прав!")  # диктует вам мудрость
                     time.sleep(3.5)
-                    speak_tts(vocabulary.random_response_aphorism())  # диктует ему мудрость
+                    speak_tts(vocabulary.random_response_aphorism())  # диктует модели мудрость
                     time.sleep(.5)
-                    speak_tts("ответ")  # говорит триггер старта запроса для GPT
+                    speak_tts("ответ")  # говорит триггер для старта запроса модели
                 elif len(words) == 1 and words[0] == "ублюдок":
                     print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')
                     speak_tts(vocabulary.sp_rec_reaction_bastard())
