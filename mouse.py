@@ -9,7 +9,7 @@ colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
 init(convert=True)
 
 
-def show_mouse_scripts():  # ! это не функция это просто для копипаста скриптов
+def show_mouse_scripts():  # ! это не функция это просто для копипасты скриптов
     x = 1280  # координаты центра
     y = 720  # координаты центра
     pyautogui.moveTo(1256, 777)
