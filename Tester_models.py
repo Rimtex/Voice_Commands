@@ -1,6 +1,5 @@
 from pygpt4all.models.gpt4all import GPT4All
-from colorama import Fore, Style, init, Back
-
+from colorama import Fore, Style, init
 RED = Fore.RED
 LYE = Fore.LIGHTYELLOW_EX
 CYA = Fore.CYAN
@@ -21,9 +20,9 @@ def new_text_callback(text: str):  # (text: str)
 # n_predict - количество символов влияет на длину генерируемого текста
 # new_text_callback - функция распечатки
 # ! нужно выяснить на что влияют другие настройки
-def generate_response(user_input):
-    n_predict = len(user_input)  #: чем длиннее запрос - тем больше предикт
-    response = model.generate(user_input, n_predict=n_predict, new_text_callback=new_text_callback)
+def generate_response(userinput):
+    n_predict = len(userinput)  #: чем длиннее запрос - тем больше предикт
+    response = model.generate(userinput, n_predict=n_predict, new_text_callback=new_text_callback)
     # response = model.generate(user_input, n_predict=55, n_threads=8)
     return response
 

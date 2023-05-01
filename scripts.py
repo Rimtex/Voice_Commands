@@ -43,7 +43,6 @@ from colorama import Fore, Style, init, Back
 from googletrans import Translator
 import webbrowser
 from urllib.parse import quote  # import urllib.parse
-
 import loader
 import vocabulary
 from Voice_Commands import key_up, key_press, print_click

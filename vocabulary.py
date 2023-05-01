@@ -1,5 +1,4 @@
 import random
-
 from colorama import init, Fore, Style, Back
 
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
