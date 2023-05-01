@@ -1,8 +1,6 @@
 import random
-
 import pyautogui
 from colorama import init, Fore, Style
-
 from Voice_Commands import print_click, print_click_coordinates
 
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
@@ -11,7 +9,7 @@ colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
 init(convert=True)
 
 
-def show_mouse_scripts():
+def show_mouse_scripts():  # ! это не функция это просто для копипаста скриптов
     x = 1280  # координаты центра
     y = 720  # координаты центра
     pyautogui.moveTo(1256, 777)
