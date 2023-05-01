@@ -364,7 +364,7 @@ if __name__ == '__main__':
                             if prompt != '""':
                                 print(SRA + prompt[1:-1] + random.choice(colors), sep=' ', end=' ')
                             if prompt in ('"стенка"', '"построй стенку"', '"строй стену"', '"стройка"', '"постройка"'):
-                                loader.waal_generator()
+                                loader.waal_generator()  # !
                             if prompt in ('"разблокировать"', '"разблокировка"', '"запуск"', '"запустить"',
                                           '"запусти"', '"стартуем"', '"я сказал стартуем"', '"обычный режим"'):
                                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
@@ -787,7 +787,6 @@ if __name__ == '__main__':
                 elif len(words) == 1 and words[0] in ('расцвет', 'рассвет'):
                     ctypes.windll.user32.SendMessageW(0xFFFF, 0x112, 0xF170, -1)
                     speak_tts('!ку?-ку!')
-
                 #: перезагрузка ассистента
                 elif len(words) > 0 and words[-1] in ('тихо', 'старт'):
                     os.startfile(f"{path_to_shortcut}ассистент")
@@ -814,7 +813,6 @@ if __name__ == '__main__':
                 elif len(words) == 2 and words[1] in ('идеи', 'идея', 'идею', 'идейку', 'идей'):
                     #: озвучка идей
                     if words[0] in ('озвучь', 'зачитай', 'прочти', 'озвучить'):  # 1 озвучка идей
-
                         file = open(ideas, "r", encoding='utf-8')
                         contents = file.read()
                         speak.Rate = 2
