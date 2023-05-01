@@ -39,7 +39,7 @@ model = GPT4All('./pygpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin')
 
 def generate_response(user_input_gener):
     response_gener = model.generate(user_input_gener, n_predict=355)
-    #  response = model.generate(user_input, n_predict=55, n_threads=8)
+    #   response = model.generate(user_input, n_predict=55, n_threads=8)
     return response_gener
 
 
