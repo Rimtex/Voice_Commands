@@ -1039,7 +1039,7 @@ if __name__ == '__main__':
                             print_click()
                     except KeyError:
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
-
+                #: клик курсор
                 elif len(words) == 2 and words[0] in ('курсор', 'корсар', 'курсора', 'курсором'):
                     if words[1] in ('зажми', 'зажать', 'зажимать', 'зажал'):
                         pyautogui.mouseDown()
