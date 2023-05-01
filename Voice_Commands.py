@@ -1,6 +1,6 @@
-# авто инстайлер
+# авто инстайлер !комментарий к коммиту, описывающий внесенные изменения
+import os
 try:
-    import os
     import loader
     from loader import loader_screen_rimtex
     import traceback
@@ -30,7 +30,6 @@ try:
 except ImportError:
     print("Trying to Install required module: requests")
     os.system('pip install -r "requirements.txt"')
-    import os
     import loader
     from loader import loader_screen_rimtex
     import traceback
