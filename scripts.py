@@ -48,7 +48,7 @@ import loader
 import vocabulary
 from Voice_Commands import key_up, key_press, print_click
 from loader import smile_generator
-from vocabulary import sp_rec_suckadick
+
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
           Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX, Fore.LIGHTCYAN_EX]
