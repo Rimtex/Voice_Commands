@@ -24,9 +24,17 @@ WHI = Fore.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
 
-rec = KaldiRecognizer(Model(r"F:\Rimtex\Projects\Main\vosk-model-small-en-us-0.15"), 48000)
 
-print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+vosk_model = "vosk-model-small-en-us-0.15"  # 
+try:
+    rec = KaldiRecognizer(Model(rf"{vosk_model}"), 48000)
+except Exception as e:
+    print(f"{RED} !vosk-model! отсутствует:{SRA}\n", e)
+    print(f"{LGR} https://alphacephei.com/vosk/models{SRA}")
+    print(f"{LCY} установите модель и введите её название:{SRA}")
+    vosk_model = input(" ")
+    rec = KaldiRecognizer(Model(rf"{vosk_model}"), 48000)
+
 if __name__ == '__main__':
     while True:
         if rec.AcceptWaveform(stream.read(4000)):
@@ -34,7 +42,7 @@ if __name__ == '__main__':
                 prompt = rec.Result()
                 words = prompt[14:-3].split()
                 prompt = prompt[13:-2]
-                if prompt in ('"english"', '"english of"', '"english off"'):
+                if prompt in ('"english"', '"english of"', '"english off"', '"инглиш"'):
                     exit()
                 elif prompt != '""':
                     try:
