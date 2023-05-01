@@ -9,7 +9,6 @@ init(convert=True)
 
 #  ggml-gpt4all-j-v1.3-groovy.bin
 #  ggml-gpt4all-l13b-snoozy.bin
-
 model = GPT4All('./pygpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin')
 
 
