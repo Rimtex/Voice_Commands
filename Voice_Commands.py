@@ -692,7 +692,7 @@ if __name__ == '__main__':
                     keyboard.write(date.today().strftime("%d.%m.%Y "))
                     keyboard.write(datetime.now().strftime("%H,%M,%S")[0:5])  # убрал секунды
 
-                #: зачитка буфера
+                #: зачитка из буфера
                 elif prompt in ('"зачитай"', '"прочитай"', '"прочти"', '"прочитать"', '"говори"', '"скажи"'):
                     print(f"{LBL}♪", end='')
                     win32clipboard.OpenClipboard()
@@ -701,7 +701,7 @@ if __name__ == '__main__':
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
                     speak.Rate = 7  # для быстрой озвучки
                     speak_tts(text)
-                #: зачитка буфера другим голосом
+                #: зачитка из буфера другим голосом
                 elif prompt in ('"озвучь"', '"озвучивает"', '"озвучивать"', '"ирина"'):
                     print(f"{LGR}♫", end='')
                     win32clipboard.OpenClipboard()
