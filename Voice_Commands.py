@@ -57,7 +57,7 @@ from config import path_to_shortcut, dir_path, ideas, requirements_path
 
 translator = Translator()
 
-py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
+py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)   # переключение на английскую раскладку
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
