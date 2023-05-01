@@ -110,6 +110,8 @@ cs1 = str(cq9
           .replace("yield", "передавать")
           .replace("prompt", "(фраза)")
           .replace("len", "число")
+          .replace("any", "любое")
+          .replace("word", "слово")
           .replace("слов[-1]", "последнее слово")
           .replace("слов[0]", "первое слово")
           .replace("слов[1]", "второе слово")
