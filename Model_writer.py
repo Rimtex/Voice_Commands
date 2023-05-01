@@ -25,7 +25,7 @@ SRA = Style.RESET_ALL
 init(convert=True)
 
 
-vosk_model = "vosk-model-small-en-us-0.15"  # 
+vosk_model = "vosk-model-small-en-us-0.15"
 try:
     rec = KaldiRecognizer(Model(rf"{vosk_model}"), 48000)
 except Exception as e:
