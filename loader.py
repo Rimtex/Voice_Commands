@@ -91,7 +91,6 @@ def waal_generator():
 """
     lines = build.strip().split('\n')
     random_line = random.choice(lines)
-
     #  iterations = len(prompt[1:-1])  # 5555  # Число повторений ! !! надо сделать если больше ноля то прерываеца
     while True:
         if rec.AcceptWaveform(stream.read(4000)):
