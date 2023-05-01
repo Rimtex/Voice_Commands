@@ -693,7 +693,7 @@ if __name__ == '__main__':
                 #  для быстрого поиска команд
                 elif len(words) > 1 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
                     os.startfile(f"{path_to_shortcut}питон")
-                    keywrite = prompt[len(words[0]) + 1:-1]  # минус первое слово
+                    keywrite = "\b" + prompt[len(words[0]) + 1:-1]   # минус первое слово
                     print(f"{LGR}˃{LCY} п {LMA}? ", end='')
                     time.sleep(.1)
                     print_click()

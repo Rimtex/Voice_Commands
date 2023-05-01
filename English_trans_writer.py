@@ -80,10 +80,10 @@ if __name__ == '__main__':
                             print(LCY + " ggml-gpt4all-l13b-snoozy: \n" + LGR + responegpt)
                             speak_tts_gpt(gpt.text)
                             break
-                        if prompt in ('"заново"', '"снова"', '"сброс"'):
+                        if prompt in ('"заново"', '"снова"', '"сначала"', '"сброс"', '"сбросить"'):
                             print(f' {LRE}X{SRA}\n', end='')
                             break
 
                 except Exception as e:
                     print(full_sentence)
-                    print(f"{LRE} !1! :{SRA}", e)
+                    print(f"{LRE} переводчик :{SRA}", e)
