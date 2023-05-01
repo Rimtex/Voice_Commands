@@ -55,7 +55,7 @@ with open(filename, encoding="utf-8") as f:
             if end_marker in line:
                 break
             if print_started:
-                # заменяем строки, содержащие куски кода из заданных шаблонов, на пустые строки
+                # заменяем строки, содержащие куски кода из заданных шаблонов на пустые строки
                 skip_line = any(pattern in line for pattern in code_patterns)
                 if not skip_line:
                     ctline += line
