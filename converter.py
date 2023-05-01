@@ -25,14 +25,8 @@ BLA = Fore.BLACK
 BWH = Back.WHITE
 SRA = Style.RESET_ALL
 
-
 """   
 """
-
-
-
-
-
 
 init()
 
@@ -42,7 +36,7 @@ start_marker = "конвертер команд старт"  # начальны�
 end_marker = "конвертер команд конец"  # конечный маркер
 
 # вырезаем лишние строки
-code_patterns = ["hhvvhhvv", "ъ", "ъ", "ъ", "ъ", "ъ", "ъ", "ъ", "ъ", "ъ", "ъ", "ъ"]
+code_patterns = ["hhvvhhvv", "hgtfndgudjed7y564y"]
 
 # вырезаем копи пастой можно из низа пишарма или ассистента. удобненько
 added_code_patterns = """
@@ -77,12 +71,12 @@ ct2 = str(ct1.replace(f"", f""))
 ct3 = str(ct2.replace(f'', f''))
 ct4 = str(ct3.replace(f"", f""))
 ct5 = str(ct4.replace(f"", f""))
-ct6 = str(ct5.replace(":", ": "))
-ct7 = str(ct6.replace(f"                 ", f"                 {Fore.YELLOW}"))
+ct6 = str(ct5.replace(":", ":"))
+ct7 = str(ct6.replace(f",", f","))
 ct8 = str(ct7.replace(f"(", f"{Style.RESET_ALL}("))
 ct9 = str(ct8.replace(f"'", f"{Style.RESET_ALL}'{Fore.LIGHTGREEN_EX}"))
 cr1 = str(ct9.replace(f'"', f'{Style.RESET_ALL}"{Fore.LIGHTGREEN_EX}'))
-cr2 = str(cr1.replace(f",", f"{Fore.LIGHTRED_EX},{Style.RESET_ALL}"))
+cr2 = str(cr1.replace(f"", f""))
 cr3 = str(cr2.replace(f"", f""))
 cr4 = str(cr3.replace(f"", f""))
 cr5 = str(cr4.replace(f")", f"{Style.RESET_ALL})"))
@@ -100,27 +94,56 @@ cq6 = str(cq5.replace(f"", f""))
 cq7 = str(cq6.replace(f"", f""))
 cq8 = str(cq7.replace(f'', f''))
 cq9 = str(cq8.replace(f'', f''))
+
+#: перевод значений
+cs1 = str(cq9
+          .replace("False", "Ложь").replace("None", "Ничего").replace("True", "Истина").replace("and", "и")
+          .replace("as", "как").replace("assert", "утверждать").replace("async", "асинхронный")
+          .replace("await", "ожидать").replace("break", "прервать").replace("class", "класс").replace("words", "слов")
+          .replace("continue", "продолжить").replace("def", "определить").replace("del", "удалить")
+          .replace("elif", "иначе если").replace("else", "иначе").replace("except", "исключение")
+          .replace("finally", "в конечном итоге").replace("for", "для").replace("from", "из")
+          .replace("global", "глобальный").replace("if", "если").replace("import", "импорт")
+          .replace("in", "в").replace("is", "это").replace("lambda", "лямбда").replace("nonlocal", "нелокальный")
+          .replace("not", "не").replace("or", "или").replace("pass", "пропуск").replace("raise", "поднять")
+          .replace("return", "вернуть").replace("try", "попытаться").replace("while", "пока").replace("with", "с")
+          .replace("yield", "передавать")
+          .replace("prompt", "(фраза)")
+          .replace("len", "число")
+          .replace("слов[0]", "первое слово"))
+
+cs2 = str(cs1
+          .replace("иначе", "")
+          .replace("если", "")
+          .replace("первое слово", "")
+          .replace("число", "")
+          .replace(" в ", " ")
+          .replace("", "")
+          .replace("", "")
+          .replace("", "")
+          .replace("", "")
+          .replace("", "")
+          .replace("", "")
+          .replace("", "")
+          .replace("", "")
+          .replace("", ""))
+
+
 def print_cq9():
     responses = cq9  # результат
     return responses
 
-#: ! нормальная покраска
-cs1 = str(cq9.replace(f"", f""))
-cs2 = str(cs1.replace(f"", f""))
-cs3 = str(cs2.replace(f"", f""))
-cs4 = str(cs3.replace(f"", f""))
-cs5 = str(cs4.replace(f"", f""))
-cs6 = str(cs5.replace(f"", f""))
-cs7 = str(cs6.replace(f"", f""))
-cs8 = str(cs7.replace(f"", f""))
-cs9 = str(cs8.replace(f"", f""))
+
+def print_cs1():
+    responses = cs1  # результат с переводом
+    return responses
 
 
-
+def print_cs2():
+    responses = cs2  # результат с удалением лишнего
+    return responses
 
 #  if re.search('[а-яА-Я]|Fore|random.choice(colors)|RED|LRE|YEL|LYE|BLU|LBL|CYA|LCY|GRE|LGR|MAG|LMA|WHI|SRA|',line):
-
-
 # cq5 = str(cq4.replace("", ""))
 # cq6 = str(cq5.replace("", ""))
 # cq7 = str(cq6.replace("", ""))
