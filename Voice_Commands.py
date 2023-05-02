@@ -291,9 +291,10 @@ if __name__ == '__main__':
                 #: Запись в курсор # для быстрой записи фраз или слов: нажимаем капс лок и - диктуем
                 caps_lock_state_check = win32api.GetKeyState(0x14)  # Проверить, включена ли клавиша Caps Lock
                 if caps_lock_state_check == 1 or caps_lock_state_check == -127:  # если капс лок нажат
-                    keyboard.write(prompt[1:-1])  # пишем до конца цикла
-                    win32api.keybd_event(0x14, 0x45, 0x1, 0)  # п1 выключает Caps Lock
-                    win32api.keybd_event(0x14, 0x45, 0x3, 0)
+                    if prompt != '""':  # не выключается при тишине
+                        keyboard.write(prompt[1:-1])  # пишем до конца цикла
+                        win32api.keybd_event(0x14, 0x45, 0x1, 0)  # п1 выключает Caps Lock
+                        win32api.keybd_event(0x14, 0x45, 0x3, 0)
 
                 #: поиск
                 elif 0 < len(words) <= 10 and words[0] in ('найти', 'найди', 'окей'):
