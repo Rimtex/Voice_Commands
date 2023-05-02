@@ -1,6 +1,5 @@
 from pygpt4all.models.gpt4all import GPT4All
 from colorama import Fore, Style, init
-import logging
 
 RED = Fore.RED
 LYE = Fore.LIGHTYELLOW_EX
@@ -11,6 +10,7 @@ init(convert=True)
 
 #  ggml-gpt4all-j-v1.3-groovy.bin
 #  ggml-gpt4all-l13b-snoozy.bin
+
 # n_predict - количество символов влияет на длину генерируемого текста
 # ! нужно выяснить на что влияют другие настройки
 

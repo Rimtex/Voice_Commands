@@ -1,31 +1,19 @@
 colorama
 keyboard
 pyautogui
-openai
 pyaudio
 vosk
 requests
 quote
 googletrans
 python-dotenv
-discord
 pyttsx3
 pypiwin32
 pywin32
 py_win_keyboard_layout
 
-
-
 GPT4All
-DateTime
 pyllamacpp
-setuptools
 pygptj
-rich
-numpy
-torch
-tqdm
-sentencepiece
-streamlit
 pygpt4all
-pip install googletrans==4.0.0-rc1
+# pip install googletrans==4.0.0-rc1

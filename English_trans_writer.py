@@ -1,5 +1,6 @@
 import os
 from Voice_Commands import stream, rec, speak, speak_tts_gpt
+
 try:
     from colorama import init, Fore, Style
     from pygpt4all.models.gpt4all import GPT4All
