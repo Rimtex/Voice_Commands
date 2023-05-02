@@ -21,3 +21,5 @@
 /.idea/vcs.xml
 /.idea/Voice_Commands.iml
 /vosk-model-small-ru-0.22/graph/phones/word_boundary.int
+/gpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin
+/gpt4all/pygpt4all/models/ggml-gpt4all-j-v1.3-groovy.bin
