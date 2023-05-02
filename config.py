@@ -6,4 +6,4 @@ requirements_path = "F:\\Rimtex\\Projects\\Voice_Commands\\requirements.txt"  # 
 model1 = r"vosk-model-small-ru-0.22"
 model2 = r"vosk-model-ru-0.42"
 model3 = r"vosk-model-small-en-us-0.15"
-model4 = r"vosk-model-en-us-0.22.zip"
+model4 = r"vosk-model-en-us-0.22"
