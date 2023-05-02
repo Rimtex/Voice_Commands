@@ -660,7 +660,7 @@ if __name__ == '__main__':
                     keyboard.release('ctrl')
                     keyboard.release('alt')
                     keyboard.release('shift')
-                #: для записи чисел
+                #: для записи чисел # просто говорим числа
                 elif 7 > len(words) > 0 and all(word in words_num for word in words):
                     nums = sum(words_num[word] for word in words[0:])
                     key_write(f"{nums}")
