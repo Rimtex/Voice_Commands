@@ -1,16 +1,14 @@
 import os
-from Voice_Commands import stream, rec, speak, speak_tts_gpt
-
 try:
-    from colorama import init, Fore, Style
     from pygpt4all.models.gpt4all import GPT4All
     from googletrans import Translator
 except ImportError:
     print("Trying to Install required module: requests")
     os.system('pip install -r "requirements.txt"')
-    from colorama import init, Fore, Style
     from pygpt4all.models.gpt4all import GPT4All
     from googletrans import Translator
+from Voice_Commands import stream, rec, speak, speak_tts_gpt
+from colorama import init, Fore, Style
 
 translator = Translator()
 
