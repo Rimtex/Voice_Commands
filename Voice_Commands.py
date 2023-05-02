@@ -847,33 +847,45 @@ if __name__ == '__main__':
                                             print(f' {prompt}', end='')
 
                 #: работа с требованиями requirements.txt
-                elif len(words) == 2 and words[1] in ('требования', 'требований', 'требование'):
-                    os.startfile(f"{path_to_shortcut}консоль")
-                    time.sleep(1)
-                    if words[0] in ('установить', 'установка', 'инсталлировать', 'установи'):
+                elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
+                    if re.match(r'(установ\w{0,5}\b)', words[0]):
+                        os.startfile(f"{path_to_shortcut}консоль")
+                        time.sleep(1)
                         keyboard.write(f"pip install -r {requirements_path}")
                         key_press("enter")
-                    if words[0] in ('выбрось', 'выкинь', 'сбрось', 'помойка'):
+                    if re.match(r'(\w{0,2}брос\w?\b)|(выки\w{0,5}\b)|(помойк\w?\b)', words[0]):
+                        os.startfile(f"{path_to_shortcut}консоль")
+                        time.sleep(1)
                         keyboard.write(f"pip uninstall -r {requirements_path}")
                         key_press("enter")
                         speak_tts("если хочешь удалить всё! закрой меня! и зажми энтер в консоли!")
-                    if words[0] in ('обнови', 'обновление', 'обновить', 'обновлять', 'обновляет'):
+                    if re.match(r'(обнов\w{0,5}\b)', words[0]):
+                        os.startfile(f"{path_to_shortcut}консоль")
+                        time.sleep(1)
                         keyboard.write(f"pip install --upgrade pip")
                         key_press("enter")
 
                 #: работа с модулями из буфера
                 elif len(words) == 2 and re.match(r'(библиотек[ау]?.?)|(модул[ьи]?.?)|(пип.?)', words[1]):
-                    os.startfile(f"{path_to_shortcut}консоль")
-                    time.sleep(1)
-                    if words[0] in ('установить', 'установка', 'инсталлировать', 'установи'):
+                    if re.match(r'(установ\w{0,5}\b)', words[0]):
+                        os.startfile(f"{path_to_shortcut}консоль")
+                        time.sleep(1)
                         keyboard.write("pip install ")
                         keyhot('ctrl', 'v')
                         key_press("enter")
-                    if words[0] in ('выбрось', 'выкинь', 'сбрось', 'помойка'):
+                    if re.match(r'(\w{0,2}брос\w?\b)|(выки\w{0,5}\b)|(помойк\w?\b)', words[0]):
+                        os.startfile(f"{path_to_shortcut}консоль")
+                        time.sleep(1)
                         keyboard.write("pip uninstall ")
                         keyhot('ctrl', 'v')
                         key_press("enter")
                         time.sleep(2)
+                        key_press("enter")
+                    if re.match(r'(обнов\w{0,5}\b)', words[0]):
+                        os.startfile(f"{path_to_shortcut}консоль")
+                        time.sleep(1)
+                        keyboard.write(f"pip install --upgrade ")
+                        keyhot('ctrl', 'v')
                         key_press("enter")
 
                 #: ♪ реакции на слова или фразы
