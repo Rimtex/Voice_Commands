@@ -955,7 +955,7 @@ if __name__ == '__main__':
                     keyhot('shiftleft', 'altleft')
                     speak_tts(f"ладно")
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
-                    print_click_coordinates(809, 329)
+                    # print_click_coordinates(809, 329)
                     os.startfile(f"English_trans_writer.py")  # запускает нейромодель
                     loader.smile_gen_erator()
                     speak_tts("конечно. ты прав!")  # диктует вам мудрость
