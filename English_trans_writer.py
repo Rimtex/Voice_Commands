@@ -33,7 +33,7 @@ WHI = Fore.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
 
-model = GPT4All('./pygpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin')
+model = GPT4All('./gpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin')
 
 
 def generate_response(user_input_gener):
