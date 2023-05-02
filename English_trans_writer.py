@@ -1,16 +1,7 @@
-import os
-
-try:
-    from pygpt4all.models.gpt4all import GPT4All
-    from googletrans import Translator
-except ImportError:
-    print("Trying to Install required module: requests")
-    os.system('pip install -r "requirements.txt"')
-    from pygpt4all.models.gpt4all import GPT4All
-    from googletrans import Translator
+from googletrans import Translator
 from Voice_Commands import stream, rec, speak, speak_tts
 from colorama import init, Fore, Style
-
+from pygpt4all.models.gpt4all import GPT4All
 translator = Translator()
 
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
@@ -53,7 +44,6 @@ if __name__ == '__main__':
                     words = prompt[1:-1].split()
                     transprompt = prompt[1:-1]
                     full_sentence += transprompt + " "
-
                     # print(full_sentence)
                     if prompt in ('"поговорим"', '"переводчик"', '"закройся"', '"с свали"', '"свали"'):
                         exit()
@@ -82,7 +72,6 @@ if __name__ == '__main__':
                         if prompt in ('"заново"', '"снова"', '"сначала"', '"сброс"', '"сбросить"'):
                             print(f' {LRE}X{SRA}\n', end='')
                             break
-
                 except Exception as e:
                     print(full_sentence)
                     print(f"{LRE} переводчик :{SRA}", e)
