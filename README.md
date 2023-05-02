@@ -32,3 +32,11 @@
   * **Tester_models.py**        для теста языковых моделей 
   * **Tester.py**               для теста функций 
   * **mouse.py**                для теста мышиных функций
+<hr>
+
+#### модели распознавания голоса
+https://alphacephei.com/vosk/models
+  1. https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip" 
+  2. https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip"
+  3. https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
+  4. https://alphacephei.com/vosk/models/vosk-model-en-us-0.22-lgraph.zip"
