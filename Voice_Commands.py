@@ -288,6 +288,7 @@ if __name__ == '__main__':
                 prompt = rec.Result()[13:-2]
                 words = prompt[1:-1].split()
                 # конвертер команд старт
+
                 #: Запись в курсор # для быстрой записи фраз или слов: нажимаем капс лок и - диктуем
                 caps_lock_state_check = win32api.GetKeyState(0x14)  # Проверить, включена ли клавиша Caps Lock
                 if caps_lock_state_check == 1 or caps_lock_state_check == -127:  # если капс лок нажат
