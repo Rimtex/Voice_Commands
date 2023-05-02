@@ -21,6 +21,7 @@ from colorama import Fore, Style, init, Back
 import webbrowser
 from urllib.parse import quote  # import urllib.parse
     """
+
 from colorama import Fore, Style, init, Back
 import random
 import loader
