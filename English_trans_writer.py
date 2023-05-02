@@ -8,7 +8,7 @@ except ImportError:
     os.system('pip install -r "requirements.txt"')
     from pygpt4all.models.gpt4all import GPT4All
     from googletrans import Translator
-from Voice_Commands import stream, rec, speak, speak_tts_gpt
+from Voice_Commands import stream, rec, speak, speak_tts
 from colorama import init, Fore, Style
 
 translator = Translator()
@@ -77,7 +77,7 @@ if __name__ == '__main__':
                             #  print(f' {trans.text}{SRA}\n', end='')
                             print(responegpt)
                             print(LCY + " ggml-gpt4all-l13b-snoozy: \n" + LGR + responegpt)
-                            speak_tts_gpt(gpt.text)
+                            speak_tts(gpt.text)
                             break
                         if prompt in ('"заново"', '"снова"', '"сначала"', '"сброс"', '"сбросить"'):
                             print(f' {LRE}X{SRA}\n', end='')

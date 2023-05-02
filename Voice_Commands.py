@@ -85,12 +85,12 @@ init(convert=True)  # активация покраски
 
 
 #: курсор
-def print_click():
+def click_print():
     pyautogui.click()
     print(f'{LCY} ∆', end='')
 
 
-def print_click_coordinates(asdx, asdy, button='left'):
+def click_print_coordinates(asdx, asdy, button='left'):
     cur_x, cur_y = pyautogui.position()
     pyautogui.click(x=asdx, y=asdy, button=button)
     pyautogui.moveTo(cur_x, cur_y)
@@ -136,8 +136,7 @@ def key_press(key):
     print(Fore.LIGHTCYAN_EX + f"{key} ", end='')
 
 
-# ! нужно устранить проблему с раскладкой # ! пытаюсь сделать авто переключатель
-
+#: авто переключатель
 def keyhot(*keys):
     # Получить текущую раскладку клавиатуры
     current_layout = py_win_keyboard_layout.get_keyboard_layout_list()
@@ -157,7 +156,7 @@ def keyhot(*keys):
                 print(F"{WHI}‒{LBL}{keys[2]}{WHI}{LCY}", end='')
 
 
-# все ещё пытаюсь устранить проблемы с раскладкой
+# функция выключения Caps Lock и Num Lock
 def turn_off_locks():
     # Проверить, включена ли клавиша Caps Lock
     caps_lock_state = win32api.GetKeyState(0x14)  # 0x14 - код клавиши Caps Lock
@@ -182,15 +181,6 @@ tts = pyttsx3.init()  # без этого пока работает
 tts.runAndWait()  # инициализация распознования ! иногда наверно помогает от отключения микрофона
 
 
-def speak_tts_gpt(speak_text):  # для нейро болвана
-    for voice in voices:
-        if voice.GetAttribute("Name") == "Microsoft Pavel Mobile":
-            speak.Voice = voice
-            speak.speak(speak_text)
-            tts.runAndWait()
-            speak.Rate = 4
-
-
 def speak_tts(speak_text):  # стандартная озвучка по умолчанию
     for voice in voices:
         if voice.GetAttribute("Name") == "Microsoft Pavel Mobile":
@@ -207,6 +197,9 @@ def speak_irina_tts(speak_text):  # для озвучки ириной
             speak.speak(speak_text)
             tts.runAndWait()
             speak.Rate = 4
+
+
+random_voice = [speak_tts, speak_irina_tts]
 
 
 def play_music():  # для проигрывания рандомной музыки ! обязательно нужен полный путь !!
@@ -253,7 +246,7 @@ def change_model(new_model):
     loader.download_generator()
     current_model = Model(new_model)
     rec = KaldiRecognizer(current_model, 48000)
-    print(LCY + "\b\b\b\b\b\b\b\b\b\b\b\b Модель распознавания изменена на -" + SRA, LGR + new_model)
+    print(LCY + "\r Модель распознавания изменена на -" + SRA, LGR + new_model)
 
 
 speak.Volume = 100  # громкость
@@ -316,24 +309,25 @@ if __name__ == '__main__':
                         win32api.keybd_event(0x14, 0x45, 0x1, 0)  # п1 выключает Caps Lock
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
 
-                #: смена модели распознавания _
-                elif len(words) == 2 and words[0] in ('модель', 'model'):
-                    #  (re.match(r'(смен\w{0,3}\b)|(помен\w{0,3}\b)', words[0]) or
+                #: смена модели распознавания
+                elif len(words) == 2 and any(words in prompt[1:-1] for words in ('модель', 'model')):
                     try:
-                        if words[1] in ('один', 'one'):
+                        if any(words in prompt[1:-1] for words in ('один', 'лёгкая', 'one', 'russian')):
                             change_model(model1)
-                        if words[1] in ('два', 'two', 'to'):
+                        if any(words in prompt[1:-1] for words in ('два', 'тяжёлая', 'two', 'to')):
                             change_model(model2)
-                        if words[1] in ('три', 'three'):
+                            speak_tts("тяжёлая русская модель загружена!")
+                        if any(words in prompt[1:-1] for words in ('три', 'free', 'three', 'light')):
                             change_model(model3)
-                        if words[1] in ('четыре', 'four'):
+                        if any(words in prompt[1:-1] for words in ('четыре', 'four', 'for', 'heavy')):
                             change_model(model4)
+                            speak_irina_tts("тяжёлая английская модель загружена!")
                     except Exception as e:
                         change_model(model1)
                         print(LRE, e, LCY, f"\n 1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip"
                                            f"\n 2 https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip"
                                            f"\n 3 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
-                                           f"\n 4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22-lgraph.zip")
+                                           f"\n 4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip")
 
                 #: поиск
                 elif 0 < len(words) <= 10 and words[0] in ('найти', 'найди', 'окей'):
@@ -386,7 +380,7 @@ if __name__ == '__main__':
                     keywrite = prompt[len(words[0]) + 2:-1]  # минус первое слово
                     print(f"{LGR}˃{LCY} п {LMA}? ", end='')
                     time.sleep(.1)
-                    print_click()
+                    click_print()
                     keyhot('ctrl', 'f')
                     keyboard.write(f"{keywrite}")
                     key_press('enter')
@@ -447,7 +441,7 @@ if __name__ == '__main__':
                     time.sleep(.1)
                     os.startfile(f"{path_to_shortcut}ассистент")
                     time.sleep(1)
-                    # print_click_coordinates(762, 14)
+                    # click_print_coordinates(762, 14)
                     keyhot('winleft', 'Up')
                     exit()
 
@@ -526,6 +520,8 @@ if __name__ == '__main__':
                     keyhot('ctrlleft', 's')
                 elif prompt in ('"буфер"', '"буфера обмена"', '"список копий"', '"список копировании"'):
                     keyhot('winleft', 'v')
+                elif prompt in ('"раскладка"', '"раскладки"', '"раскладке"', '"клавиатура"'):
+                    pyautogui.hotkey('win', 'space')
 
                 #: работа с окнами ! доделать нормально на словах (плюс минус символы)
                 elif prompt in ('"новый"', '"новое"', '"новая"', '"новые"', '"окно"'):
@@ -564,7 +560,7 @@ if __name__ == '__main__':
                 elif prompt in ('"убей всех"', '"растрелли"', '"расстрел"', '"застрели"', '"расстрел окон"'
                                 , '"расстреле"', '"расстрелять"'):
                     print(f"""{LRE} ({LGR}√{LRE}¬_¬)ԅ⌐╦╦═─‒=═≡Ξ{SRA}""", end='')
-                    print_click_coordinates(411, 1439)
+                    click_print_coordinates(411, 1439)
                     os.startfile(f"{path_to_shortcut}ассистент")
                     key_down('alt')  # ! не забыть отжать альт
                     key_press('tab')
@@ -621,6 +617,8 @@ if __name__ == '__main__':
                     key_write('<')
                 elif prompt == '"печать"':
                     key_write('print(" ", end="")')
+                elif prompt in ('"говорит"', '"скажет"'):
+                    key_write('speak')
                 #: печать цветов
                 elif prompt == '"тёмно-красный"':
                     key_write('RED')
@@ -650,7 +648,7 @@ if __name__ == '__main__':
                     key_write('SRA')
                 #: печать скриптов
                 elif prompt in ('"случайным"', '"случайно"', '"любой выбор"', '"рандомно"', '"рандомный"'):
-                    key_write(f'for c in "без агрессии":{{RCC}} print(f"{{random.choice(colors)}}{{c}}", end="")')
+                    key_write(f'for c in "random.choice()":{{RCC}} print(f"{{random.choice(colors)}}{{c}}", end="")')
                 elif prompt in ('"пробуем"', '"пробуя"', '"проба"'):
                     key_write('try:')
                 elif prompt == '"если ошибка"':
@@ -718,14 +716,14 @@ if __name__ == '__main__':
                     time.sleep(0.01)
                     keyhot('winleft', 'v')
                     time.sleep(0.01)
-                    print_click_coordinates(373, 948)
+                    click_print_coordinates(373, 948)
                     time.sleep(0.01)
                     pyautogui.moveTo(375, 1064)
-                    print_click()
-                    print_click()
+                    click_print()
+                    click_print()
                     pyautogui.moveTo(429, 1195)
-                    print_click()
-                    print_click()
+                    click_print()
+                    click_print()
                     pyautogui.moveTo(awwx, awwy)
                 #: запись даты
                 elif prompt == '"дата"' or prompt == '"дату"':
@@ -798,7 +796,7 @@ if __name__ == '__main__':
                 elif prompt in ('"ассистент"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"', '"рестарт"',
                                 '"перезапустить"'):
                     awwx, awwy = pyautogui.position()
-                    print_click_coordinates(0, 9)
+                    click_print_coordinates(0, 9)
                     pyautogui.mouseDown(402, 11)
                     pyautogui.moveTo(402, 45)
                     pyautogui.mouseUp()
@@ -925,14 +923,13 @@ if __name__ == '__main__':
                         keyboard.write(f"pip install --upgrade ")
                         keyhot('ctrl', 'v')
                         key_press("enter")
-
                 #: ♪ реакции на слова или фразы
                 elif prompt == '"я робот"':
                     print(random.choice(colors) + "[-_-]", end='')
-                    speak_tts(vocabulary.random_response_robot())
+                    speak_irina_tts(vocabulary.random_response_robot())
                 elif prompt == '"не дано"':
                     print(random.choice(colors) + "♪{•ᴥ•}♫", end='')
-                    speak_tts(vocabulary.random_response_nedano())
+                    speak_irina_tts(vocabulary.random_response_nedano())
                 elif prompt in ('"слушай"', '"слышь"', '"слышь"', '"слышишь"', '"слэш"'):
                     loader.smile_gen_erator()
                     speak_tts(vocabulary.random_response())
@@ -949,7 +946,6 @@ if __name__ == '__main__':
                     keyhot('shiftleft', 'altleft')
                     speak_tts(f"ладно")
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
-                    # print_click_coordinates(809, 329)
                     os.startfile(f"English_trans_writer.py")  # запускает нейромодель
                     loader.smile_gen_erator()
                     speak_tts("конечно. ты прав!")  # диктует вам мудрость
@@ -980,6 +976,7 @@ if __name__ == '__main__':
                     speak_tts(vocabulary.random_response_Goingtotheriver())
                 elif prompt in ('"печенье лом"', '"а найди ка нам бригаду"'):
                     print(random.choice(colors) + "└(`▪´)┐", end='')
+                    speak.rate = 0
                     speak_tts(vocabulary.sp_rec_reaction_pechenielom())
                 elif prompt == '"история про говно"':
                     print(random.choice(colors) + "(○´ ― `)", end='')
@@ -989,7 +986,7 @@ if __name__ == '__main__':
                     speak_tts(vocabulary.random_response_Burlestat())
                 elif prompt == '"месть"':
                     print(random.choice(colors) + "(¬_¬`)", end='')
-                    speak_tts(vocabulary.random_response_revenge())
+                    random.choice(random_voice)(vocabulary.random_response_revenge())
                 elif prompt in ('"расскажи историю"', '"историю расскажи"'):
                     print(random.choice(colors) + "(~‾▾‾)~ ╓───╖ ┌┤", end='')
                     speak_tts(vocabulary.random_response_stories())
@@ -1079,44 +1076,35 @@ if __name__ == '__main__':
                 #: работа с мышкой
                 elif prompt == '"координаты"':
                     x, y = pyautogui.position()
-                    print(f"print_click_coordinates{LYE}({x}, {y})", end='')  # координаты курсора
-                #: клик
+                    print(f"click_print_coordinates{LYE}({x}, {y})", end='')  # координаты курсора
                 elif prompt in ('"тэк"', '"клик"', '"кликни"', '"кликай"', '"кликнуть"'):
-                    print_click()
+                    click_print()
                 #: клик плюс число
                 elif 7 > len(words) > 1 and words[0] in ('клик', 'кликни', 'кликни', 'кликай', 'кликнуть'):
                     try:
                         num = sum(words_num[word] for word in words[1:])
                         for i in range(num):  # количество нажатий курсора
-                            print_click()
+                            click_print()
                     except KeyError:
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
-                #: клик курсор
                 elif len(words) == 2 and words[0] in ('курсор', 'корсар', 'курсора', 'курсором'):
                     if words[1] in ('зажми', 'зажать', 'зажимать', 'зажал'):
                         pyautogui.mouseDown()
-
+                    if words[1] in ('отпусти', 'отпускай', 'отпустить', 'отжал'):
+                        pyautogui.mouseUp()
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
                     screen_width, screen_height = pyautogui.size()  # Получение размеров экрана
                     pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # курсор в центр экрана
-
-                elif prompt in ('"мотай вниз"', '"мотай"', '"колесо вниз"', '"колесо"'):
+                elif prompt in ('"мотай вниз"', '"колесо вниз"', '"мотай"', '"колесо"'):
                     pyautogui.scroll(-1500)
                 elif prompt in ('"мотай верх"', '"колесо верх"'):
                     pyautogui.scroll(1500)
-
-                elif prompt in ('"эй"', '"ты где"', '"покажись"', '"ты тут"', '"давай"', '"себя"', '"в себя"',
-                                '"панель"', '"панели"'):
-                    print_click_coordinates(411, 1439)  # ! координаты ассистента на панели задач
+                elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
+                    click_print_coordinates(411, 1439)
                 elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
-                    print_click_coordinates(2, 9)  # ! координаты ассистента на рабочем столе
+                    click_print_coordinates(2, 9)
 
                 #: для выебонов
-                elif prompt in ('"подтверди"', '"ты человек"'):
-                    time.sleep(0.2)
-                    pyautogui.moveTo(256, 962)
-                    time.sleep(0.2)
-                    print_click()
                 elif prompt == '"ты робот"':
                     keyhot('winleft', 'tab')
                     keyhot('winleft', 'tab')
@@ -1129,7 +1117,12 @@ if __name__ == '__main__':
                     time.sleep(0.5)
                     print(LRE + "♥", end='')
                     speak_tts('сердца')
-                    print_click()
+                    click_print()
+                elif prompt in ('"подтверди"', '"ты человек"'):
+                    time.sleep(0.2)
+                    pyautogui.moveTo(256, 962)
+                    time.sleep(0.2)
+                    click_print()
 
                 #: курсор + направление(я) + числа
                 elif 7 > len(words) > 1 and words[0] in ('курсор', 'корсар', 'курсора', 'курсором'):
@@ -1189,13 +1182,11 @@ if __name__ == '__main__':
                 elif len(words) == 1 and words[0] == 'пук':
                     print(LRE + "↔1 ", end='')
                     keyhot('alt', 'tab')
-
                 elif len(words) == 1 and words[0] == 'бах':
                     print(LRE + "↕2 ", end='')
                     keyhot('winleft', 'tab')
                     time.sleep(.5)
                     keyhot('winleft', 'tab')
-
                 elif len(words) == 1 and words[0] == 'бабах':
                     print(LRE + "↔2↕2 ", end='')
                     keyhot('alt', 'tab')
@@ -1205,19 +1196,16 @@ if __name__ == '__main__':
                     keyhot('winleft', 'tab')
                     time.sleep(.5)
                     keyhot('winleft', 'tab')
-
                 elif len(words) > 1 and words[0] == 'раз':  # альт таб равен количеству слов после 'раз'
                     print(LRE + "↔+w▸ ", end='')
                     puk_length = len(words)
                     key_down('alt')
                     for i in range(puk_length):
-                        time.sleep(.5)
+                        time.sleep(.1)
                         key_press('tab')
                     key_up('alt')
 
                 #: открываем все своё с ярлыков
-                # ! копируем файл, вставляем ярлык в папку ярлыки, называем ярлык словом
-                # ! если число слов в цикле одно - открывает ярлык с этим словом
                 elif len(words) == 1 and words[0] in prompt:
                     try:
                         os.startfile(f"{path_to_shortcut}{prompt[1:-1]}")
@@ -1229,7 +1217,7 @@ if __name__ == '__main__':
                         except FileNotFoundError:
                             print(Fore.WHITE + "_", end="")  # индикатор того что пытался открыть файл
 
-                # пишем свои слова
+                #: пишем свои голос
                 if prompt != '""':
                     print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')
 

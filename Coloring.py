@@ -275,10 +275,11 @@ for kw in kw_string.split():
         current_line = f"{kw} "
 kw_list.append(current_line.strip())
 print(Fore.CYAN + " " + "\n ".join(kw_list))
-print("")
+
+print(LGR + "\n if re.search(r'созда[а-я]{0,2}\s*команд[а-я]?', prompt):" + SRA)
 
 print(
-    f""" число длинны строки = {Fore.LIGHTCYAN_EX}{len(str('число длинны строки'))}{Fore.LIGHTRED_EX} 'Style.RESET_ALL!!!'{Fore.WHITE}""",
+    f"""\n число длинны строки = {Fore.LIGHTCYAN_EX}{len(str('число длинны строки'))}{Fore.LIGHTRED_EX} 'Style.RESET_ALL!!!'{Fore.WHITE}""",
     sep='', end='')
 
 print(f"""\
