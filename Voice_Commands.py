@@ -862,9 +862,7 @@ if __name__ == '__main__':
                         print(contents)
                     elif words[0] in ('записать', 'запиши', 'запись', 'записывай'):  #: записать идею
                         print(LMA + "\n (?o_O) " + SRA)
-                        keyhot('winleft', 'tab')
-                        keyhot('winleft', 'tab')
-                        #  time.sleep(0.5)
+                        keyhot('alt', 'tab')
                         os.startfile(ideas)
                         speak.Rate = 8
                         speak_tts("говори быстрей пока не убежала")
@@ -879,9 +877,8 @@ if __name__ == '__main__':
                 elif len(words) == 1 and words[0] in ('напомнить', 'вспомнить'):
                     print(LMA + "\n (!o_O) " + SRA)
                     keyhot('alt', 'tab')
-                    #  keyhot('winleft', 'tab')
                     os.startfile(reminder)
-                    speak_tts("говори быстрей пока не убежала")
+                    speak_tts("главное не забыть!")
                     key_press("down")
                     key_press("enter")
                     key_press("up")
@@ -893,7 +890,6 @@ if __name__ == '__main__':
                     contents = file.read()
                     print(contents)
                     speak_tts(contents)
-
 
                 #: работа с требованиями requirements.txt
                 elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
