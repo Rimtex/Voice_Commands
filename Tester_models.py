@@ -1,5 +1,7 @@
 from pygpt4all.models.gpt4all import GPT4All
 from colorama import Fore, Style, init
+import logging
+
 RED = Fore.RED
 LYE = Fore.LIGHTYELLOW_EX
 CYA = Fore.CYAN
@@ -9,16 +11,16 @@ init(convert=True)
 
 #  ggml-gpt4all-j-v1.3-groovy.bin
 #  ggml-gpt4all-l13b-snoozy.bin
+# n_predict - количество символов влияет на длину генерируемого текста
+# ! нужно выяснить на что влияют другие настройки
+
 model = GPT4All('./gpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin')
 
 
-def new_text_callback(text: str):  # (text: str)
+def new_text_callback(text: str):  # функция печати текста по символам
     print(LGR + text, end="")
 
 
-# n_predict - количество символов влияет на длину генерируемого текста
-# new_text_callback - функция распечатки
-# ! нужно выяснить на что влияют другие настройки
 def generate_response(userinput):
     n_predict = len(userinput)  #: чем длиннее запрос - тем больше предикт
     response = model.generate(userinput, n_predict=n_predict, new_text_callback=new_text_callback)
