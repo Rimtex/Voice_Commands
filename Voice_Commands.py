@@ -53,11 +53,11 @@ import loader
 from loader import loader_screen_rimtex
 import vocabulary
 from converter import print_cq9, print_cs1, print_cs2
-from config import path_to_shortcut, dir_path, ideas, requirements_path
+from config import path_to_shortcut, dir_path, ideas, requirements_path, model1, model2, model3, model4
 
 translator = Translator()
 
-py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)   # переключение на английскую раскладку
+py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -226,16 +226,33 @@ def play_music():  # для проигрывания рандомной музы
 
 vosk.SetLogLevel(-1)  # удаляем логи
 
-rec = KaldiRecognizer(Model(r"vosk-model-small-ru-0.22"), 48000)
+# Инициализация распознавателя с начальной моделью
+current_model = Model(model1)
+rec = KaldiRecognizer(current_model, 48000)
+
+# Инициализация аудиопотока
 p = pyaudio.PyAudio()
 stream = p.open(
     format=pyaudio.paInt16,
     channels=1,
-    rate=48000,  # частота дискретизации должна быть такой же, как и в системе! > ...
-    input=True,  # звуки > запись > микрофон > свойства > дополнительно > выставляем также и выше
+    rate=48000,
+    input=True,
     frames_per_buffer=4000
 )
 stream.start_stream()
+
+
+# Функция для смены модели
+def change_model(new_model):
+    global current_model, rec
+    # Закрытие текущей модели и распознавателя
+    current_model = None
+    rec = None
+    # Инициализация новой модели и распознавателя
+    current_model = Model(new_model)
+    rec = KaldiRecognizer(current_model, 48000)
+    print(LCY + "\b\b\b\b\b\b\b\b\b\b\b\b Модель распознавания изменена на -" + SRA, LGR + new_model)
+
 
 speak.Volume = 100  # громкость
 
@@ -296,6 +313,33 @@ if __name__ == '__main__':
                         keyboard.write(prompt[1:-1])  # пишем до конца цикла
                         win32api.keybd_event(0x14, 0x45, 0x1, 0)  # п1 выключает Caps Lock
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
+
+                #: смена модели распознавания
+                elif len(words) == 2 and words[0] in ('модель', 'model'):
+                    #  (re.match(r'(смен\w{0,3}\b)|(помен\w{0,3}\b)', words[0]) or
+                    try:
+                        if words[1] in ('один', 'one'):
+                            print(" ")
+                            loader.download_generator()
+                            change_model(model1)
+                        if words[1] in ('два', 'two', 'to'):
+                            print(" ")
+                            loader.download_generator()
+                            change_model(model2)
+                        if words[1] in ('три', 'three'):
+                            print(" ")
+                            loader.download_generator()
+                            change_model(model3)
+                        if words[1] in ('четыре', 'four'):
+                            print(" ")
+                            loader.download_generator()
+                            change_model(model4)
+                    except Exception as e:
+                        change_model(model1)
+                        print(LRE, e, LCY, f"\n 1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip"
+                                           f"\n 2 https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip"
+                                           f"\n 3 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
+                                           f"\n 4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22-lgraph.zip")
 
                 #: поиск
                 elif 0 < len(words) <= 10 and words[0] in ('найти', 'найди', 'окей'):
@@ -402,7 +446,7 @@ if __name__ == '__main__':
                     print(f'\n{print_cq9()}')
                 elif prompt in ('"команды русским"', '"команды перевод"', '"покажи русским"'):
                     print(f'\n{print_cs1()}')
-                elif prompt in ( '"покажи"', '"показать"'):
+                elif prompt in ('"покажи"', '"показать"'):
                     print(f'\n{print_cs2()}')
                 elif prompt in ('"проверка"', '"проверить"', '"проверяем"', '"проверь"'):
                     keyhot('alt', 'tab')
@@ -426,7 +470,7 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and words[0] in ('пробел', 'робел ', 'спэйс'):
                     kps = ['Space']
                     numbers_key()
-                elif 7 > len(words) > 0 and words[0] in ('стереть', 'стирание'):
+                elif 7 > len(words) > 0 and words[0] in ('стереть', 'стирание', 'сотри'):
                     kps = ['backspace']
                     numbers_key()
                 elif 7 > len(words) > 0 and words[0] in ('энтер', 'эндер', 'интер', 'нтр'):
