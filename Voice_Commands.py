@@ -316,7 +316,7 @@ if __name__ == '__main__':
                         win32api.keybd_event(0x14, 0x45, 0x1, 0)  # п1 выключает Caps Lock
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
 
-                #: смена модели распознавания
+                #: смена модели распознавания _
                 elif len(words) == 2 and words[0] in ('модель', 'model'):
                     #  (re.match(r'(смен\w{0,3}\b)|(помен\w{0,3}\b)', words[0]) or
                     try:
