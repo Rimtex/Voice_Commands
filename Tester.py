@@ -1,3 +1,4 @@
+"""
 import os
 import requests
 import re
@@ -17,13 +18,13 @@ import ctypes
 from vosk import Model, KaldiRecognizer
 import win32com.client as wincl
 from colorama import Fore, Style, init, Back
-from googletrans import Translator
 import webbrowser
 from urllib.parse import quote  # import urllib.parse
+    """
+from colorama import Fore, Style, init, Back
+import random
 import loader
-import vocabulary
-from Voice_Commands import key_up, key_press, rec, stream
-from loader import smile_generator
+
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -48,12 +49,29 @@ SRA = Style.RESET_ALL
 init(convert=True)
 
 
-try:
 
+import subprocess
+
+
+def translate(text):
+    cmd = ['python', r'F:/Rimtex/Projects/Voice_Commands/More-translator-GUI-master/translatorgtk.py', text]
+    result = subprocess.check_output(cmd, text=True)
+    translation = result.strip() if result else ''
+    return translation
+
+try:
+    prompt = "Привет, как дела?"
+    translation = translate(prompt)
+    print(translation)
+except Exception as e:
+    print(f"Ошибка: {e}")
+
+
+
+try:
     loader.download_generator()
     print('')
     loader.smile_gen_erator()
     loader.waal_generator()
-
 except Exception as e:
     print(f"{RED} !1! :{SRA}", e)
