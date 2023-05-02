@@ -249,6 +249,8 @@ def change_model(new_model):
     current_model = None
     rec = None
     # Инициализация новой модели и распознавателя
+    print(" ")
+    loader.download_generator()
     current_model = Model(new_model)
     rec = KaldiRecognizer(current_model, 48000)
     print(LCY + "\b\b\b\b\b\b\b\b\b\b\b\b Модель распознавания изменена на -" + SRA, LGR + new_model)
@@ -319,20 +321,12 @@ if __name__ == '__main__':
                     #  (re.match(r'(смен\w{0,3}\b)|(помен\w{0,3}\b)', words[0]) or
                     try:
                         if words[1] in ('один', 'one'):
-                            print(" ")
-                            loader.download_generator()
                             change_model(model1)
                         if words[1] in ('два', 'two', 'to'):
-                            print(" ")
-                            loader.download_generator()
                             change_model(model2)
                         if words[1] in ('три', 'three'):
-                            print(" ")
-                            loader.download_generator()
                             change_model(model3)
                         if words[1] in ('четыре', 'four'):
-                            print(" ")
-                            loader.download_generator()
                             change_model(model4)
                     except Exception as e:
                         change_model(model1)
