@@ -1,5 +1,6 @@
 path_to_shortcut = "ярлыки\\"            # стандартная папка ярлыков
-ideas = "идеи.txt"                       # путь для работы с текстовым файлом
+ideas = "ярлыки\\идеи.txt"                       # путь для работы с текстовым файлом
+reminder = "ярлыки\\напоминалка.txt"
 dir_path = r"E:\Muzic"                   # для проигрывания музыки!
 requirements_path = "F:\\Rimtex\\Projects\\Voice_Commands\\requirements.txt"  # для команд библиотек
 

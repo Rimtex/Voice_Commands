@@ -53,7 +53,7 @@ import loader
 from loader import loader_screen_rimtex
 import vocabulary
 from converter import print_cq9, print_cs1, print_cs2
-from config import path_to_shortcut, dir_path, ideas, requirements_path, model1, model2, model3, model4
+from config import path_to_shortcut, dir_path, ideas, requirements_path, model1, model2, model3, model4, reminder
 
 translator = Translator()
 
@@ -285,6 +285,49 @@ def numbers_key():
                     keyhot(*kps)
         except KeyError:
             print(f"\b{LCY} кнопка{WHI}({GRE}{words[0]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
+
+
+def write_timer_function():
+    write_timer = 3  # для изменения таймера
+    i = write_timer  # создаём счётчик количества циклов микрофона
+    while True:
+        if rec.AcceptWaveform(stream.read(4000)):
+            prompt = rec.Result()
+            prompt = prompt[14:-3]
+            if prompt == '':
+                if i == write_timer:
+                    print('  ', end='')
+                i -= 1
+                if i <= write_timer:
+                    print(f'\b\b {i}', end='')
+            if i == 0:  # если нулевой результат выходим
+                print(f'\b \n', end='')  # удаляем таймер
+                print(' (!O_o) ')
+                speak_tts("режим команд!")
+                break
+            if prompt == 'пробел':
+                key_press("Space")
+            elif prompt != '' and prompt == 'дата' or prompt == 'дату':
+                keyboard.write(date.today().strftime("%d.%m.%Y"))
+                keyboard.write(datetime.now().strftime("%H:%M:%S"))
+            elif prompt == 'решётка' or prompt == 'решётки' or prompt == 'комментарий' or \
+                    prompt == 'решёткой' or prompt == 'шарп' or prompt == 'камент':
+                key_write('#')
+            elif prompt in ('конец записи', 'обычный режим', 'хватит', 'конец', 'стоп',
+                            'команды', 'коня запиши', 'стопе', 'все'):
+                print(f'\b \n', end='')
+                print(' (!O_o) ')
+                speak_tts("запись отключена! ")
+                break
+            else:
+                if prompt != '':
+                    if i < write_timer:
+                        keyboard.write(f'{prompt} ')
+                        print(f'\b\b {prompt} ', end='')  # если есть таймер удаляем его
+                        i = write_timer
+                    else:
+                        keyboard.write(f'{prompt} ')  # запись prompt с микрофона в курсор
+                        print(f' {prompt}', end='')
 
 
 if __name__ == '__main__':
@@ -840,47 +883,27 @@ if __name__ == '__main__':
                         key_press("up")
                         keyboard.write("! - ")
                         time.sleep(0.5)
-                        write_timer = 3  # для изменения таймера
-                        i = write_timer  # создаём счётчик количества циклов микрофона
-                        while True:
-                            data = stream.read(4000)
-                            if rec.AcceptWaveform(data):
-                                prompt = rec.Result()
-                                prompt = prompt[14:-3]
-                                if prompt == '':
-                                    if i == write_timer:
-                                        print('  ', end='')
-                                    i -= 1
-                                    if i <= write_timer:
-                                        print(f'\b\b {i}', end='')
-                                if i == 0:  # если нулевой результат выходим
-                                    print(f'\b \n', end='')  # удаляем таймер
-                                    print(' (!O_o) ')
-                                    speak_tts("режим команд!")
-                                    break
-                                if prompt == 'пробел':
-                                    key_press("Space")
-                                elif prompt != '' and prompt == 'дата' or prompt == 'дату':
-                                    keyboard.write(date.today().strftime("%d.%m.%Y"))
-                                    keyboard.write(datetime.now().strftime("%H:%M:%S"))
-                                elif prompt == 'решётка' or prompt == 'решётки' or prompt == 'комментарий' or \
-                                        prompt == 'решёткой' or prompt == 'шарп' or prompt == 'камент':
-                                    key_write('#')
-                                elif prompt in ('конец записи', 'обычный режим', 'хватит', 'конец', 'стоп',
-                                                'команды', 'коня запиши', 'стопе', 'все'):
-                                    print(f'\b \n', end='')
-                                    print(' (!O_o) ')
-                                    speak_tts("запись отключена! ")
-                                    break
-                                else:
-                                    if prompt != '':
-                                        if i < write_timer:
-                                            keyboard.write(f'{prompt} ')
-                                            print(f'\b\b {prompt} ', end='')  # если есть таймер удаляем его
-                                            i = write_timer
-                                        else:
-                                            keyboard.write(f'{prompt} ')  # запись prompt с микрофона в курсор
-                                            print(f' {prompt}', end='')
+                        write_timer_function()
+
+                #: напоминалка
+                elif len(words) == 1 and words[0] in ('напомнить', 'вспомнить'):
+                    print(LMA + "\n (!o_O) " + SRA)
+                    keyhot('winleft', 'tab')
+                    keyhot('winleft', 'tab')
+                    os.startfile(reminder)
+                    key_press("down")
+                    key_press("enter")
+                    key_press("up")
+                    keyboard.write("! - ")
+                    time.sleep(0.5)
+                    write_timer_function()
+
+                elif prompt in ('"напомни"', '"вспомни"', '"напоминай"', '"вспоминай"'):
+                    file = open(reminder, "r", encoding='utf-8')
+                    contents = file.read()
+                    print(contents)
+                    speak_tts(contents)
+
 
                 #: работа с требованиями requirements.txt
                 elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
