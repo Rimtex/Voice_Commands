@@ -25,7 +25,6 @@ from colorama import Fore, Style, init, Back
 import random
 import loader
 
-
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
           Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX, Fore.LIGHTCYAN_EX]
@@ -48,23 +47,6 @@ BWH = Back.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
 
-
-
-import subprocess
-
-
-def translate(text):
-    cmd = ['python', r'F:/Rimtex/Projects/Voice_Commands/More-translator-GUI-master/translatorgtk.py', text]
-    result = subprocess.check_output(cmd, text=True)
-    translation = result.strip() if result else ''
-    return translation
-
-try:
-    prompt = "Привет, как дела?"
-    translation = translate(prompt)
-    print(translation)
-except Exception as e:
-    print(f"Ошибка: {e}")
 
 
 
