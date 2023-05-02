@@ -4,7 +4,7 @@ import time
 import keyboard
 from colorama import Fore, Style, init, Back
 
-colors = [Fore.RED, Fore.GREEN, Fore.YELLOW,
+colors = [Fore.GREEN, Fore.YELLOW,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX,
           Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX]
 
@@ -41,21 +41,29 @@ def loader_screen_rimtex():
 #  генератор загрузок
 def download_generator():
     load_square = (f"""
-{random.choice(colors)}
-[□□□□□□□□□□]\r
-[■□□□□□□□□□]\r
-[■■□□□□□□□□]\r
-[■■■□□□□□□□]\r
-[■■■■□□□□□□]\r
-[■■■■■□□□□□]\r
-[■■■■■■□□□□]\r
-[■■■■■■■□□□]\r
-[■■■■■■■■□□]\r
-[■■■■■■■■■□]\r
+{Fore.LIGHTCYAN_EX}
+[□□□□□□□□□□]\b\b\b\b\b\b\b\b\b\b\b\b
+[■□□□□□□□□□]\b\b\b\b\b\b\b\b\b\b\b\b
+[■■□□□□□□□□]\b\b\b\b\b\b\b\b\b\b\b\b
+[■■■□□□□□□□]\b\b\b\b\b\b\b\b\b\b\b\b
+[■■■■□□□□□□]\b\b\b\b\b\b\b\b\b\b\b\b
+[■■■■■□□□□□]\b\b\b\b\b\b\b\b\b\b\b\b
+[■■■■■■□□□□]\b\b\b\b\b\b\b\b\b\b\b\b
+[■■■■■■■□□□]\b\b\b\b\b\b\b\b\b\b\b\b
+[■■■■■■■■□□]\b\b\b\b\b\b\b\b\b\b\b\b
+[■■■■■■■■■□]\b\b\b\b\b\b\b\b\b\b\b\b
 [■■■■■■■■■■]
-{random.choice(colors)}
 """)
-    word = (f"""
+    losq = load_square.strip().split('\n')
+    for char in losq:
+        print(char, end='', flush=True)
+        time.sleep(.05)
+
+
+
+
+def down_generator():
+    word = (f"""\
 (¯`·.¸¸.·´¯`·.¸¸.->\
 ¸.·´¯¯`·.¸\
 ..••°°°°••..\
@@ -67,19 +75,13 @@ random.choice(colors)\
 ¸,ø¤º°`°º¤ø,¸\
 <-.¸¸.·´¯`·.¸¸.·´¯)
 """)
-    losq = load_square.strip().split('\n')
     lines = word.strip().split('\n')
-    for char in losq:
-        print(char, end='', flush=True)
-        time.sleep(.05)
     for char in word:
         print(char, end='', flush=True)
         time.sleep(0.05)
     for char in random.choice(lines):
         print(random.choice(colors) + char, end='', flush=True)
         time.sleep(0.05)
-
-
 #: генератор стенки
 def waal_generator():
     from Voice_Commands import stream, rec

@@ -51,8 +51,10 @@ init(convert=True)
 
 
 
+
 try:
     loader.download_generator()
+    loader.down_generator()
     print('')
     loader.smile_gen_erator()
     loader.waal_generator()
