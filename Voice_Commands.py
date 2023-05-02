@@ -54,7 +54,7 @@ from loader import loader_screen_rimtex
 import vocabulary
 from converter import print_cq9, print_cs1, print_cs2
 from config import path_to_shortcut, dir_path, ideas, requirements_path
-
+imp
 translator = Translator()
 
 py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)   # переключение на английскую раскладку
@@ -869,7 +869,7 @@ if __name__ == '__main__':
                         keyboard.write("pip install ")
                         keyhot('ctrl', 'v')
                         key_press("enter")
-                    if words[0] in ('удалить', 'удаления', 'удали', 'удаление'):  # Обновить библиотеки:
+                    if words[0] in ('выбрось', 'выкинь', 'сбрось', 'помойка'):
                         keyboard.write("pip uninstall ")
                         keyhot('ctrl', 'v')
                         key_press("enter")
