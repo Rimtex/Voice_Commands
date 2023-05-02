@@ -289,45 +289,35 @@ def numbers_key():
 
 def write_timer_function():
     write_timer = 3  # для изменения таймера
-    i = write_timer  # создаём счётчик количества циклов микрофона
+    io = write_timer  # создаём счётчик количества циклов микрофона
     while True:
         if rec.AcceptWaveform(stream.read(4000)):
-            prompt = rec.Result()
-            prompt = prompt[14:-3]
-            if prompt == '':
-                if i == write_timer:
+            write = rec.Result()[14:-3]
+            if write == '':
+                if io == write_timer:
                     print('  ', end='')
-                i -= 1
-                if i <= write_timer:
-                    print(f'\b\b {i}', end='')
-            if i == 0:  # если нулевой результат выходим
+                io -= 1
+                if io <= write_timer:
+                    print(f'\b\b{YEL} {io}', end='')
+            if io == 0 or write in ('конец записи', 'обычный режим', 'хватит', 'конец', 'стоп',
+                                    'команды', 'коня запиши', 'стопе', 'все'):
                 print(f'\b \n', end='')  # удаляем таймер
                 print(' (!O_o) ')
+                keyhot('ctrl', 's')
                 speak_tts("режим команд!")
                 break
-            if prompt == 'пробел':
-                key_press("Space")
-            elif prompt != '' and prompt == 'дата' or prompt == 'дату':
+            elif write == 'дата' or write == 'дату':
                 keyboard.write(date.today().strftime("%d.%m.%Y"))
-                keyboard.write(datetime.now().strftime("%H:%M:%S"))
-            elif prompt == 'решётка' or prompt == 'решётки' or prompt == 'комментарий' or \
-                    prompt == 'решёткой' or prompt == 'шарп' or prompt == 'камент':
-                key_write('#')
-            elif prompt in ('конец записи', 'обычный режим', 'хватит', 'конец', 'стоп',
-                            'команды', 'коня запиши', 'стопе', 'все'):
-                print(f'\b \n', end='')
-                print(' (!O_o) ')
-                speak_tts("запись отключена! ")
-                break
+                keyboard.write(datetime.now().strftime("%H:%M:%S")[0:5])
             else:
-                if prompt != '':
-                    if i < write_timer:
-                        keyboard.write(f'{prompt} ')
-                        print(f'\b\b {prompt} ', end='')  # если есть таймер удаляем его
-                        i = write_timer
+                if write != '':
+                    if io < write_timer:
+                        keyboard.write(f'{write} ')
+                        print(f'\b\b {write} ', end='')  # если есть таймер удаляем его
+                        io = write_timer
                     else:
-                        keyboard.write(f'{prompt} ')  # запись prompt с микрофона в курсор
-                        print(f' {prompt}', end='')
+                        keyboard.write(f'{write} ')  # запись write с микрофона в курсор
+                        print(f' {write}', end='')
 
 
 if __name__ == '__main__':
@@ -888,16 +878,16 @@ if __name__ == '__main__':
                 #: напоминалка
                 elif len(words) == 1 and words[0] in ('напомнить', 'вспомнить'):
                     print(LMA + "\n (!o_O) " + SRA)
-                    keyhot('winleft', 'tab')
-                    keyhot('winleft', 'tab')
+                    keyhot('alt', 'tab')
+                    #  keyhot('winleft', 'tab')
                     os.startfile(reminder)
+                    speak_tts("говори быстрей пока не убежала")
                     key_press("down")
                     key_press("enter")
                     key_press("up")
                     keyboard.write("! - ")
                     time.sleep(0.5)
                     write_timer_function()
-
                 elif prompt in ('"напомни"', '"вспомни"', '"напоминай"', '"вспоминай"'):
                     file = open(reminder, "r", encoding='utf-8')
                     contents = file.read()
