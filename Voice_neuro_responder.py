@@ -66,7 +66,6 @@ if __name__ == '__main__':
                             responegpt = gpt.text
                             #  print(full_sentence)
                             #  print(f' {trans.text}{SRA}\n', end='')
-                            print(responegpt)
                             print(LCY + " ggml-gpt4all-l13b-snoozy: \n" + LGR + responegpt)
                             speak_tts(gpt.text)
                             break
