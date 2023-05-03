@@ -25,6 +25,7 @@ from urllib.parse import quote  # import urllib.parse
 from colorama import Fore, Style, init, Back
 import random
 import loader
+from keyboard_scripts import key_press
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -49,7 +50,7 @@ SRA = Style.RESET_ALL
 init(convert=True)
 
 
-
+key_press('Caps Lock')
 
 
 try:
