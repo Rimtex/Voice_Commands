@@ -1007,7 +1007,7 @@ if __name__ == '__main__':
                 #: пишарм и гитхаб
                 elif prompt in ('"камент"', '"комент"', '"коммент"'):
                     keyhot('alt', '0')
-                elif prompt in ('"пуш"', '"закинуть"', '"закинуть"'): #: авто пуш
+                elif prompt in ('"пуш"', '"закинуть"', '"закинуть"'): #: авто пуш 1
                     keyhot('alt', '0')
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)
