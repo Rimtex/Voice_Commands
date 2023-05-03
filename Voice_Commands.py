@@ -1024,7 +1024,7 @@ if __name__ == '__main__':
                     win32clipboard.OpenClipboard()
                     Commit = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
-                    key_write(Commit)
+                    pyautogui.typewrite(Commit)
                     click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)  # кнопка Push там же
