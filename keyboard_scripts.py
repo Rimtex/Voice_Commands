@@ -46,7 +46,7 @@ def keyrus_write(string):
 
 def key_press(key):
     pyautogui.press(key)  # нажатие на клавишу
-    print(Fore.LIGHTCYAN_EX + f"{key} ", end='')
+    print(Fore.LIGHTCYAN_EX + f" {key}", end='')
 
 
 #: авто переключатель

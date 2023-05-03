@@ -291,16 +291,16 @@ if __name__ == '__main__':
                     if len(words) == 1:
                         keyhot("ctrl", "f")
                     if len(words) > 1 and words[0] == 'найти':  # поиск в пуске
-                        keyprompt = prompt[6:-1]  # убираем первое слово и кавычки из принта
+                        writeprompt = prompt[6:-1]  # убираем первое слово и кавычки из принта
                         keyhot("winleft", "й")  # Открываем окно поиска в пуске
                         time.sleep(0.2)  # Ждем, пока окно поиска загрузится
-                        keyboard.write(keyprompt)  # Вводим слова
+                        keyboard.write(writeprompt)  # Вводим слова
                         time.sleep(0.2)  # Ждем на всякий случай
                         key_press("enter")  # Нажимаем Enter
                     if words[0] == 'найди':  #: поиск в пуске с переводом на английский
-                        keyprompt = prompt[6:-1]
+                        transprompt = prompt[6:-1]
                         try:
-                            trans = translator.translate(keyprompt, dest="en")
+                            trans = translator.translate(transprompt, dest="en")
                             keyhot("winleft", "й")
                             time.sleep(0.2)
                             keyboard.write(trans.text)
@@ -309,7 +309,7 @@ if __name__ == '__main__':
                             key_press("enter")
                         except Exception as e:
                             print(traceback.format_exc())
-                            print(f"(!o_O): {LRE} переводчик:", e)
+                            print(f" (!o_O): {LRE}переводчик:", e)
                     elif words[0] == 'окей' and words[1] == 'гугл':  #: поиска в гугле
                         if prompt == '"окей гугл"':
                             speak_tts("что вам найти?")
