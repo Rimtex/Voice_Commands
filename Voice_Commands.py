@@ -455,6 +455,9 @@ if __name__ == '__main__':
                 elif 6 > len(words) > 0 and words[0] in ('верни', 'вернул', 'вернуть', 'вернуть'):
                     kps = ['shift', 'ctrl', 'z']
                     numbers_key()
+                elif 6 > len(words) > 0 and words[0] in ('вставь', 'ставка', 'вставка', 'вставить', 'ставь'):
+                    kps = ['ctrlleft', 'v']
+                    numbers_key()
 
                 #: одноразовое нажатие
                 elif 4 > len(words) > 0 and words[0] in ('фиксация', 'цифры', 'цифра', 'циферки'):
@@ -463,8 +466,6 @@ if __name__ == '__main__':
                     key_press('CapsLock')  # п1
                 elif prompt in ('"копировать"', '"скопируй"', '"копирование"', '"альт це"', '"копия"', '"копи"'):
                     keyhot('ctrlleft', 'c')
-                elif prompt in ('"вставь"', '"ставка"', '"вставка"', '"вставить"', '"ставь"'):
-                    keyhot('ctrlleft', 'v')
                 elif prompt in ('"сохранить"', '"сохранять"', '"сохрани"', '"сохранение"', '"сохраняя"', '"сейф"',
                                 '"храни "', '"хранить "'):
                     keyhot('ctrlleft', 's')
