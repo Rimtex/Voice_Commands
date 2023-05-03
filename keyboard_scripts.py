@@ -23,6 +23,8 @@ SRA = Style.RESET_ALL
 init(convert=True)
 
 
+#  конвертер команд старт
+
 #: курсор
 def click_print():
     pyautogui.click()

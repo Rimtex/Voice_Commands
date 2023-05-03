@@ -32,11 +32,13 @@ init()
 
 #: преобразователь команд в понятный текст для показа!!!
 filename = "Voice_Commands.py"  # имя файла
+keyboard_scripts = "keyboard_scripts.py"
+
 start_marker = "конвертер команд старт"  # начальный маркер
 end_marker = "конвертер команд конец"  # конечный маркер
 
 #: вырезаем лишние строки
-code_patterns = ["hhvvhhvv", "hgtfndgudjed7y564y"]
+code_patterns = ["hhvvhhvv", "hgtfndgudjed7y564y"]  # для символов с пробелом
 
 #: вырезаем копи пастой можно из низа пишарма или ассистента. удобненько
 added_code_patterns = """

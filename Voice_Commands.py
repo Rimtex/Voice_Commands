@@ -376,7 +376,7 @@ if __name__ == '__main__':
                 elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
                     print(LCY + '♫' + SRA, end='')
                     on_num = sum(words_num[word] for word in words[1:])
-                    for i in range(50): # ! костыль
+                    for i in range(50):  # ! костыль
                         pyautogui.press('volumedown')
                     for i in range(on_num // 2):
                         pyautogui.press('volumeup')
@@ -895,9 +895,9 @@ if __name__ == '__main__':
                     except KeyError:
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
                 elif len(words) == 1 and words[0] in ('зажми', 'зажать', 'зажал', 'зажимать', 'схвати', 'схватить'):
-                        pyautogui.mouseDown()
+                    pyautogui.mouseDown()
                 elif len(words) == 1 and words[0] in ('отпусти', 'отпускай', 'отпустить', 'пусти', 'отпускай', 'отжал'):
-                        pyautogui.mouseUp()
+                    pyautogui.mouseUp()
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
                     screen_width, screen_height = pyautogui.size()  # Получение размеров экрана
                     pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # курсор в центр экрана
