@@ -341,6 +341,9 @@ if __name__ == '__main__':
                                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
                                 speak_tts("запускаю обычный режим!")
                                 break
+                            elif len(words) == 1 and words[0] == 'громкость':
+                                print(LCY + '♪' + SRA, end='')
+                                key_press('volumemute')
                             elif prompt == '"тест"':
                                 os.startfile(f"{path_to_shortcut}тест")
                             elif prompt in ('"пауза"', '"заблокировать"', '"остановка"', '"паузы"'):
@@ -371,7 +374,7 @@ if __name__ == '__main__':
                 elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
                     print(LCY + '♫' + SRA, end='')
                     one_num = sum(words_num[word] for word in words[1:])
-                    for i in range(50):  # классно я костыль придумал да
+                    for i in range(50):
                         pyautogui.press('volumedown')
                     for i in range(one_num // 2):
                         pyautogui.press('volumeup')
