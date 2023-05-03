@@ -298,9 +298,9 @@ if __name__ == '__main__':
                         time.sleep(0.2)  # Ждем на всякий случай
                         key_press("enter")  # Нажимаем Enter
                     if words[0] == 'найди':  #: поиск в пуске с переводом на английский
-                        prompt = prompt[6:-1]
+                        keyprompt = prompt[6:-1]
                         try:
-                            trans = translator.translate(prompt, dest="en")
+                            trans = translator.translate(keyprompt, dest="en")
                             keyhot("winleft", "й")
                             time.sleep(0.2)
                             keyboard.write(trans.text)
@@ -309,7 +309,7 @@ if __name__ == '__main__':
                             key_press("enter")
                         except Exception as e:
                             print(traceback.format_exc())
-                            print("(!o_O):", e)
+                            print(f"(!o_O): {LRE} переводчик:", e)
                     elif words[0] == 'окей' and words[1] == 'гугл':  #: поиска в гугле
                         if prompt == '"окей гугл"':
                             speak_tts("что вам найти?")
