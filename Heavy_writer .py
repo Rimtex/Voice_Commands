@@ -1,9 +1,10 @@
 import keyboard
-from colorama import Fore, Style, init, Back
+from colorama import Fore, init
 import pyaudio
 import win32api
 from address_config import model2
 from vosk import Model, KaldiRecognizer
+
 init(convert=True)
 
 # Инициализация распознавателя с начальной моделью
