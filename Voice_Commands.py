@@ -265,7 +265,7 @@ if __name__ == '__main__':
                                            f"\n 3 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
                                            f"\n 4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip")
 
-                #: поиск
+                #: найти найди окей
                 elif 0 < len(words) <= 10 and words[0] in ('найти', 'найди', 'окей'):
                     if len(words) == 1:
                         keyhot("ctrl", "f")
