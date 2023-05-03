@@ -49,7 +49,7 @@ except ImportError:
     import webbrowser
     from urllib.parse import quote
 
-from keyboard_scripts import script_writing_function, key_press, keyhot, key_down, key_write, key_up, keyrus_write
+from keyboard_scripts import script_writing_function, key_press, keyhot, key_down, key_write, key_up
 import loader
 from loader import loader_screen_rimtex
 import vocabulary
@@ -1037,7 +1037,6 @@ if __name__ == '__main__':
                     click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)  # кнопка Push там же
-
 
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
