@@ -312,16 +312,18 @@ if __name__ == '__main__':
                                 print(LCY + "Г" + SRA, end='')
 
                 #: для быстрого поиска
-                elif len(words) > 1 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
-                    # os.startfile(f"{path_to_shortcut}питон")
-                    keywrite = prompt[len(words[0]) + 2:-1]  # минус первое слово
-                    print(f"{LGR}˃{LCY} п {LMA}? ", end='')
-                    time.sleep(.1)
-                    click_print()
-                    keyhot('ctrl', 'f')
-                    keyboard.write(f"{keywrite}")
-                    key_press('enter')
-                    key_press('enter')
+                elif len(words) > 0 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
+                    if len(words) == 1:
+                        keyhot('ctrl', 'f')
+                    if len(words) > 1:
+                        # os.startfile(f"{path_to_shortcut}питон")
+                        keywrite = prompt[len(words[0]) + 2:-1]  # минус первое слово
+                        print(f"{LGR}˃{LCY} п {LMA}? ", end='')
+                        time.sleep(.1)
+                        click_print()
+                        keyhot('ctrl', 'f')
+                        keyboard.write(f"{keywrite}")
+                        key_press('enter')
 
                 #: режим паузы
                 elif prompt in ('"паузе"', '"пауза"', '"заблокировать"', '"блокировка"', '"остановка"',
