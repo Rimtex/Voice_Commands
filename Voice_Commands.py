@@ -53,6 +53,7 @@ from keyboard_scripts import script_writing_function, key_press, keyhot, key_dow
 import loader
 from loader import loader_screen_rimtex
 import vocabulary
+from vocabulary import words_num
 from converter import print_cq9, print_cs1, print_cs2
 
 from address_config import path_to_shortcut, ideas, reminder, requirements_path, dir_path, model1, model2, model3, \
@@ -209,17 +210,6 @@ def change_model(new_model):
 speak.Volume = 100  # громкость
 
 print(Fore.RESET, end='')
-
-#: для перевода слов в цифры
-words_num = {'ноль': 0, 'один': 1, 'два': 2, 'три': 3, 'четыре': 4, 'пять': 5, 'шесть': 6, 'семь': 7, 'восемь': 8,
-             'девять': 9, 'десять': 10, 'одиннадцать': 11, 'двенадцать': 12, 'тринадцать': 13, 'четырнадцать': 14,
-             'пятнадцать': 15, 'шестнадцать': 16, 'семнадцать': 17, 'восемнадцать': 18, 'девятнадцать': 19,
-             'двадцать': 20, 'тридцать': 30, 'сорок': 40, 'пятьдесят': 50, 'шестьдесят': 60, 'семьдесят': 70,
-             'восемьдесят': 80, 'девяносто': 90, 'сто': 100, 'двести': 200, 'триста': 300, 'четыреста': 400,
-             'пятьсот': 500, 'шестьсот': 600, 'семьсот': 700, 'восемьсот': 800, 'девятьсот': 900, 'тысяча': 1000,
-             'плюс': '+', 'минус': '-', 'разделить': '/', 'умножить': '*', 'остаток': '%', 'возведение': '**',
-             'корень': 'sqrt'}
-
 
 #: повтор нажатий - клавиша плюс цифра
 def numbers_key():
@@ -684,6 +674,9 @@ if __name__ == '__main__':
                 elif prompt in ('"напомни"', '"вспомни"', '"напоминай"', '"вспоминай"'):
                     file = open(reminder, "r", encoding='utf-8')
                     contents = file.read()
+                    print(f"\n({LGR}√{SRA}¬_¬)ԅ⌐╦╦═─" + loader.download_generator())
+                    loader.download_generator()
+                    print(f"\n")
                     print(contents)
                     speak_tts(contents)
 
