@@ -1015,7 +1015,9 @@ if __name__ == '__main__':
                     click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)
-                elif prompt in ('"пуш камент"', '"пушка мент"', '"закинь камент"', '"закинуть камент"'): # авто пуш 2
+                elif len(words) == 2 and\
+                        words[0] in ('пуш', 'закинь', 'закинуть', 'закидывая', 'закидывать') and\
+                        words[1] in ('камент', 'комент', 'коммент', 'камент'):   # авто пуш 2
                     keyhot('alt', '0')  # вызов окна комментирования
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)  # галка в Changes
