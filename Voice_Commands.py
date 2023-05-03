@@ -1004,9 +1004,10 @@ if __name__ == '__main__':
                         key_press('tab')
                     key_up('alt')
 
+                #: пишарм и гитхаб
                 elif prompt in ('"камент"', '"комент"', '"коммент"'):
                     keyhot('alt', '0')
-                elif prompt in ('"пуш"', '"закинуть"', '"закинуть"'):
+                elif prompt in ('"пуш"', '"закинуть"', '"закинуть"'): #: авто пуш
                     keyhot('alt', '0')
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)
@@ -1014,6 +1015,7 @@ if __name__ == '__main__':
                     click_print_coordinates(1478, 1325)
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)
+
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
                     try:
