@@ -664,7 +664,7 @@ if __name__ == '__main__':
                     file = open(reminder, "r", encoding='utf-8')
                     contents = file.read()
                     loader.download_generator()
-                    print(f"\n({LGR}√{SRA}¬_¬)ԅ⌐╦╦═─")
+                    print(f"\r({LGR}√{SRA}¬_¬)ԅ⌐╦╦═─")
                     print(f"\n")
                     print(contents)
                     speak_tts(contents)
