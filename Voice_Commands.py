@@ -459,7 +459,7 @@ if __name__ == '__main__':
                 elif 4 > len(words) > 0 and words[0] in ('фиксация', 'цифры', 'цифра', 'циферки'):
                     key_press('numlock')
                 elif 4 > len(words) > 0 and words[0] in ('большими', 'букве', 'буквы', 'буквами', 'пиши', 'записывай'):
-                    key_press('CapsLock')  # п1
+                    key_press('CapsLock')  # п1  1
                 elif prompt in ('"копировать"', '"скопируй"', '"копирование"', '"альт це"', '"копия"', '"копи"'):
                     keyhot('ctrlleft', 'c')
                 elif prompt in ('"вставь"', '"ставка"', '"вставка"', '"вставить"', '"ставь"'):
