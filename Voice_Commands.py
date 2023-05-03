@@ -1010,9 +1010,10 @@ if __name__ == '__main__':
                     keyhot('alt', '0')
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)
+                    time.sleep(.1)
+                    click_print_coordinates(1478, 1325)
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)
-
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
                     try:
