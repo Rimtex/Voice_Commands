@@ -1016,6 +1016,11 @@ if __name__ == '__main__':
                         except FileNotFoundError:
                             print(Fore.WHITE + "_", end="")  # индикатор попытки открытия файла
 
+                elif prompt in ('"камент"', '"комент"', '"коммент"', '"пуш"', '"закинуть"', '"закинуть"'):
+                    keyhot('alt', '0')
+                elif prompt in ('"пуш"', '"закинуть"', '"закинуть"'):
+                    keyhot('alt', '0')
+
                 if prompt != '""':
                     print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')  #: пишем свои голос
 
