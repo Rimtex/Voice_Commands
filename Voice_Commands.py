@@ -648,6 +648,8 @@ if __name__ == '__main__':
                         key_press("enter")
                         key_press("up")
                         keyboard.write("! - ")
+                        time.sleep(0.5)
+                        key_press('CapsLock')
 
                 #: напоминалка
                 elif len(words) == 1 and words[0] in ('напомнить', 'вспомнить'):
@@ -660,6 +662,7 @@ if __name__ == '__main__':
                     key_press("up")
                     keyboard.write("! - ")
                     time.sleep(0.5)
+                    key_press('CapsLock')
                 elif prompt in ('"напомни"', '"вспомни"', '"напоминай"', '"вспоминай"'):
                     file = open(reminder, "r", encoding='utf-8')
                     contents = file.read()
@@ -732,6 +735,7 @@ if __name__ == '__main__':
                     print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')
                     keyhot('shiftleft', 'altleft')
                     speak_tts(f"ладно")
+                    click_print_cor(677, 1345)  # координаты кнопки ответа чата
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
                     os.startfile(f"Voice_neuro_responder.py")  # запускает нейромодель
                     loader.smile_gen_erator()
