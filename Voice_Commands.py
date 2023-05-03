@@ -211,6 +211,7 @@ speak.Volume = 100  # громкость
 
 print(Fore.RESET, end='')
 
+
 #: повтор нажатий - клавиша плюс цифра
 def numbers_key():
     if len(words) == 1:
@@ -1016,8 +1017,11 @@ if __name__ == '__main__':
                             print(Fore.WHITE + "_", end="")  # индикатор попытки открытия файла
 
                 if prompt != '""':
-                    script_writing_function(prompt)  #:  для скриптов
                     print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')  #: пишем свои голос
+
+                if prompt != '""':
+                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # проверка на запись
+                        script_writing_function(prompt)  #:  для скриптов
 
             # конвертер команд конец
             except Exception as e:
