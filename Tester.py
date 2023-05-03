@@ -21,7 +21,9 @@ from colorama import Fore, Style, init, Back
 import webbrowser
 from urllib.parse import quote  # import urllib.parse
     """
+import time
 
+import pyautogui
 from colorama import Fore, Style, init, Back
 import random
 import loader
@@ -49,8 +51,8 @@ BWH = Back.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
 
-
-key_press('Caps Lock')
+pyautogui.keyDown('volumedown')
+time.sleep(3.5)
 
 
 try:

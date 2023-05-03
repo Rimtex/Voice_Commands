@@ -370,11 +370,10 @@ if __name__ == '__main__':
                     key_press('volumemute')
                 elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
                     print(LCY + '♫' + SRA, end='')
-                    pyautogui.keyDown('volumedown')
-                    time.sleep(3.5)
-                    pyautogui.keyUp('volumedown')
                     one_num = sum(words_num[word] for word in words[1:])
-                    for i in range(one_num / 2):  # делим на два потому что добавляет 2 за нажатие
+                    for i in range(50):  # это костыль конечно капец
+                        pyautogui.press('volumedown')
+                    for i in range(one_num // 2):
                         pyautogui.press('volumeup')
 
                 #: для команд
