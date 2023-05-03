@@ -31,7 +31,7 @@ init(convert=True)
 
 #  boot loader screen saver
 def loader_screen_rimtex():
-    message = [(CYA, " Rimtex "), (YEL, "Voice "), (GRE, "Assistant "), (WHI, "Commands")]
+    message = [(CYA, " ᴙimtex "), (YEL, "Voice "), (GRE, "Assistant "), (WHI, "Commands")]
     for color, word in message:
         for char in word:
             print(color + char, end='', flush=True)
