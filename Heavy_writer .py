@@ -35,13 +35,13 @@ while True:
         # Проверить, включена ли клавиша Num Lock
         num_lock_state_check = win32api.GetKeyState(0x90)  # 0x90 - код клавиши Num Lock
         caps_lock_state_check = win32api.GetKeyState(0x14)  # 0x14 - код клавиши Caps Lock
-        # Если клавиша включена
+        # Если клавиша Num Lock включена
         if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
                 (caps_lock_state_check != 1 and caps_lock_state_check != -127):  # и выключен Caps Lock
             if prompt != '""':  # если не тишина
                 print(Fore.LIGHTYELLOW_EX + prompt[1:-1], sep=" ", end=" ")
                 keyboard.write(prompt[1:-1])  # пишем
-            elif prompt == '""':  # если тишина
-                # Нажать клавишу Num Lock, чтобы выключить её
-                win32api.keybd_event(0x90, 0x45, 0x1, 0)
-                win32api.keybd_event(0x90, 0x45, 0x3, 0)
+            # elif prompt == '""':  # если тишина
+            #     # Нажать клавишу Num Lock, чтобы выключить её
+            #     win32api.keybd_event(0x90, 0x45, 0x1, 0)
+            #     win32api.keybd_event(0x90, 0x45, 0x3, 0)
