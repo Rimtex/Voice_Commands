@@ -20,7 +20,7 @@ stream = p.open(
     frames_per_buffer=4000
 )
 stream.start_stream()
-
+print(Fore.LIGHTGREEN_EX + model2)
 while True:
     if rec.AcceptWaveform(stream.read(4000)):
         prompt = rec.Result()[13:-2]
