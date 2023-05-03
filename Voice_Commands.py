@@ -1012,6 +1012,12 @@ if __name__ == '__main__':
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)  # галка в Changes
                     time.sleep(.1)
+                    click_print_coordinates(1478, 1286)  # клик в строку
+                    click_print_coordinates(1478, 1286)
+                    click_print_coordinates(1478, 1286)
+                    key_press("delete")
+                    time.sleep(.1)
+                    key_write('_')
                     click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)
