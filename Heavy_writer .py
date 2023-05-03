@@ -1,35 +1,9 @@
-
-import time
-
-import pyautogui
+import keyboard
 from colorama import Fore, Style, init, Back
-import random
-import loader
-
+import pyaudio
+import win32api
 from address_config import model2
 from vosk import Model, KaldiRecognizer
-from keyboard_scripts import key_press
-
-colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
-          Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
-          Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX, Fore.LIGHTCYAN_EX]
-RCC = random.choice(colors)
-RED = Fore.RED
-LRE = Fore.LIGHTRED_EX
-YEL = Fore.YELLOW
-LYE = Fore.LIGHTYELLOW_EX
-# BLU = Fore.BLUE
-LBL = Fore.LIGHTBLUE_EX
-CYA = Fore.CYAN
-LCY = Fore.LIGHTCYAN_EX
-GRE = Fore.GREEN
-LGR = Fore.LIGHTGREEN_EX
-# MAG = Fore.MAGENTA
-LMA = Fore.LIGHTMAGENTA_EX
-WHI = Fore.WHITE
-BLA = Fore.BLACK
-BWH = Back.WHITE
-SRA = Style.RESET_ALL
 init(convert=True)
 
 # Инициализация распознавателя с начальной моделью
@@ -47,12 +21,17 @@ stream = p.open(
 )
 stream.start_stream()
 
-
-try:
-    loader.download_generator()
-    loader.down_generator()
-    print('')
-    loader.smile_gen_erator()
-    loader.waal_generator()
-except Exception as e:
-    print(f"{RED} !1! :{SRA}", e)
+while True:
+    if rec.AcceptWaveform(stream.read(4000)):
+        prompt = rec.Result()[13:-2]
+        words = prompt[1:-1].split()
+        print(Fore.LIGHTYELLOW_EX + prompt[1:-1], sep=" ", end="")
+        #: Запись в курсор # для записи фраз или слов: нажимаем Num Lock и - диктуем
+        # Проверить, включена ли клавиша Num Lock
+        num_lock_state = win32api.GetKeyState(0x90)  # 0x90 - код клавиши Num Lock
+        if num_lock_state == 1 or num_lock_state == -127:  # Если клавиша включена
+            if prompt != '""':  # не выключается при тишине
+                keyboard.write(prompt[1:-1])  # пишем до конца цикла
+                # Нажать клавишу Num Lock, чтобы выключить её
+                win32api.keybd_event(0x90, 0x45, 0x1, 0)
+                win32api.keybd_event(0x90, 0x45, 0x3, 0)
