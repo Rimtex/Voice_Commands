@@ -196,3 +196,5 @@ def script_writing_function(prompt):
         keyboard.release('ctrl')
         keyboard.release('alt')
         keyboard.release('shift')
+    elif prompt in ('"камент"', '"комент"', '"коммент"', '"пуш"', '"закинуть"', '"закинуть"'):
+        keyhot('alt', '0')
