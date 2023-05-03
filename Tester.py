@@ -51,9 +51,7 @@ BWH = Back.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
 
-pyautogui.keyDown('volumedown')
-time.sleep(3.5)
-
+loader.waal_generator()
 
 try:
     loader.download_generator()

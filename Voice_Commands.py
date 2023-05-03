@@ -334,12 +334,13 @@ if __name__ == '__main__':
                         if rec.AcceptWaveform(stream.read(4000)):
                             prompt = rec.Result()
                             prompt = prompt[13:-2]
-                            if prompt != '""':
-                                print(SRA + prompt[1:-1] + random.choice(colors), sep=' ', end=' ')
-                            if prompt in ('"стенка"', '"построй стенку"', '"строй стену"', '"стройка"', '"постройка"'):
+                            if prompt in ('"стенка"', '"стену"', '"строй"', '"стройка"', '"построй"', '"постройка"'):
                                 loader.waal_generator()
-                            if prompt in ('"разблокировать"', '"разблокировка"', '"запуск"', '"запустить"',
-                                          '"запусти"', '"стартуем"', '"я сказал стартуем"', '"обычный режим"'):
+                            elif prompt in ('"бред"', '"умом"'):
+                                loader.smile_generator()
+                                loader.letters_random()
+                            elif prompt in ('"разблокировать"', '"разблокировка"', '"запуск"', '"запустить"',
+                                            '"запусти"', '"стартуем"', '"я сказал стартуем"', '"обычный режим"'):
                                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
                                 speak_tts("запускаю обычный режим!")
                                 break
@@ -361,7 +362,8 @@ if __name__ == '__main__':
                                 os.startfile(f"\\{path_to_shortcut}ассистент")
                                 time.sleep(2.1)
                                 exit()
-
+                            if prompt != '""':  # печать слов
+                                print(SRA + prompt[1:-1] + random.choice(colors), sep=' ', end=' ')
                 #: для экстренного отключения звука
                 elif any(words in prompt[1:-1] for words in
                          ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) or \
@@ -618,6 +620,7 @@ if __name__ == '__main__':
 
                 #: перезагрузка ассистента
                 elif len(words) > 0 and words[-1] in ('тихо', 'старт'):
+                    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
                     os.startfile(f"{path_to_shortcut}ассистент")
                     exit()
                 elif prompt in ('"ассистент"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"', '"рестарт"',
@@ -637,11 +640,12 @@ if __name__ == '__main__':
                 #: озвучка проблем
                 elif prompt in ('"проблемы"', '"что за проблема"', '"в чем проблема"', '"проблема"',
                                 '"да блядь че за хуйня"', '"почему не работает"'):
-                    speak_tts("1! русская раскладка! "
-                              "2! грёбаные запятые! "
-                              "3! переводчик не работает с Вэ!Пэ!эН!"
-                              "4! иногда ассистент морозица. возможно помогает tts"
-                              "5! грёбаные кавычки!")
+                    speak_tts("1 ! русская раскладка! "
+                              "2 ! грёбаные запятые! "
+                              "3 ! переводчик не работает с Вэ!Пэ!эН!"
+                              "4 ! иногда ассистент морозица. возможно помогает tts"
+                              "5 ! грёбаные кавычки!"
+                              "6 ! при старте на русской раскладке некоторые команды не работают")
 
                 #: идеи
                 elif len(words) == 2 and words[1] in ('идеи', 'идея', 'идею', 'идейку', 'идей'):
@@ -745,7 +749,6 @@ if __name__ == '__main__':
                     speak_tts(vocabulary.sp_rec_reaction_Fuck())
                 elif any(word in prompt[1:-1] for word in ('сука', 'сучара', 'охуел', 'нахуй', 'тварь')):
                     keyhot('shiftleft', 'altleft')
-                    loader.smile_gen_erator()
                     speak_tts("давай без агрессии")
                 elif any(word in prompt[1:-1] for word in ('агрессии', 'агрессия', 'ладно', 'давай')):
                     print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')

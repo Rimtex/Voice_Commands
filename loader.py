@@ -60,8 +60,6 @@ def download_generator():
         time.sleep(.05)
 
 
-
-
 def down_generator():
     word = (f"""\
 (¯`·.¸¸.·´¯`·.¸¸.->\
@@ -82,6 +80,8 @@ random.choice(colors)\
     for char in random.choice(lines):
         print(random.choice(colors) + char, end='', flush=True)
         time.sleep(0.05)
+
+
 #: генератор стенки
 def waal_generator():
     from Voice_Commands import stream, rec
@@ -90,6 +90,33 @@ def waal_generator():
 ╟╫╢╙╜╓╖╥─╨║─╟╫╢╙╜╓╖╥─╨─╟╫╢╙╜╓╖╥─╨─╟╫╢╙╜╓╖╥─╨─╙╜╓╖╙╜╓╖╙╜╓╖╙╜╓╖─
 ╞╪╡╘╛╒╕╤═╧│═╞╪╡╘╛╒╕╤═╧═╞╪╡╘╛╒╕╤═╧═╞╪╡╘╛╒╕╤═╧═╘╛╒╕╘╛╒╕╘╛╒╕╘╛╒╕═
 ├┼┤└┘┌┐┬─┴│─├┼┤└┘┌┐┬─┴─├┼┤└┘┌┐┬─┴─├┼┤└┘┌┐┬─┴─└┘┌┐└┘┌┐└┘┌┐└┘┌┐─
+"""
+    lines = build.strip().split('\n')
+    random_line = random.choice(lines)
+    #  iterations = len(prompt[1:-1])  # 5555  # Число повторений ! !! надо сделать если больше ноля то прерываеца
+    print(random.choice(colors), end="")
+    while True:
+        if rec.AcceptWaveform(stream.read(4000)):
+            prompt = rec.Result()
+            prompt = prompt[13:-2]
+            if keyboard.is_pressed('space'):
+                break
+            elif prompt != '""':
+                break
+        random_color = random.choice(colors)
+        # for _ in range(iterations):
+        random_character = random.choice(random_line)
+        colored_character = random_character
+        print(colored_character, end='', flush=True)
+        time.sleep(.05)
+
+
+#: генератор буквы
+def letters_random():
+    from Voice_Commands import stream, rec
+    build = """
+й        цукенгшщзхъфывапролджэячсмитьбюё
+q        wertyuiopasdfghjklzxcvbnm
 """
     lines = build.strip().split('\n')
     random_line = random.choice(lines)
@@ -105,7 +132,7 @@ def waal_generator():
 
         # for _ in range(iterations):
         random_color = random.choice(colors)
-        random_character = random.choice(random_line)
+        random_character = random.choice(colors) + random.choice(random_line)
         colored_character = random_character
         print(colored_character, end='')
         time.sleep(.05)
@@ -120,12 +147,12 @@ def smile_generator():
     eyes = "→←·•●◦°*○☼¤◌҉oOǒΘʘ×óòȌ→^˘▪■¬⌐-"
     centr = random.choice("ᴥᴗ_˽ꞈ.")
     print(f"""{random.choice(colors)}\
-{edgel}\
-{random.choice(edlesl)}\
-{random.choice(eyes)}\
-{centr}\
-{random.choice(eyes)}\
-{random.choice(edlesl)}\
+{edgel}{random.choice(colors)}\
+{random.choice(edlesl)}{random.choice(colors)}\
+{random.choice(eyes)}{random.choice(colors)}\
+{centr}{random.choice(colors)}\
+{random.choice(eyes)}{random.choice(colors)}\
+{random.choice(edlesl)}{random.choice(colors)}\
 {edger}""", end='')
 
 
