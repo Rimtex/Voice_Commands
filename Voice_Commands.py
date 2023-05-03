@@ -1007,7 +1007,7 @@ if __name__ == '__main__':
                 #: пишарм и гитхаб
                 elif prompt in ('"камент"', '"комент"', '"коммент"'):
                     keyhot('alt', '0')
-                elif prompt in ('"пуш"', '"закинь"', '"закинуть"'): #: авто пуш 1
+                elif prompt in ('"пуш"', '"закинь"', '"закинуть"'): #: авто пуш
                     keyhot('alt', '0')
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)
@@ -1023,7 +1023,7 @@ if __name__ == '__main__':
                     click_print_coordinates(1478, 1325)
                 elif len(words) == 2 and\
                         words[0] in ('пуш', 'закинь', 'закинуть', 'закидывая', 'закидывать') and\
-                        words[1] in ('камент', 'комент', 'коммент', 'камент'):   #: авто пуш 2
+                        words[1] in ('камент', 'комент', 'коммент', 'камент'):   #: авто пуш коммент
                     keyhot('alt', '0')  # вызов окна комментирования
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)  # галка в Changes
