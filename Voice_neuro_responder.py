@@ -57,7 +57,7 @@ if __name__ == '__main__':
                                                  'перевод', 'давай', 'вопрос', 'ладно', 'слышала', 'слышал', 'понял',
                                                  'поняла', 'дальше', 'стоп', 'запрос', 'продолжай', 'продолжи')):
                             # full_sentence = full_sentence.rsplit(words[-1], 1)[0]  # Удалите последнее слово
-                            print(f'{LGR} >>>{WHI}\n', end='')
+                            print(f'{LGR} >>>{WHI}')
                             # trans = translator.translate(vocabulary.random_response_aphorism(), dest="en")
                             trans = translator.translate(full_sentence, dest="en")
                             user_input = trans.text
@@ -65,7 +65,7 @@ if __name__ == '__main__':
                             gpt = translator.translate(response, dest="ru")
                             responegpt = gpt.text
                             #  print(full_sentence)
-                            #  print(f' {trans.text}{SRA}\n', end='')
+                            print(f'{LCY}translate: {YEL}{trans.text}{SRA}')
                             print(LCY + " ggml-gpt4all-l13b-snoozy: \n" + LGR + responegpt)
                             speak_tts(gpt.text)
                             break
