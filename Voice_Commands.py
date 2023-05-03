@@ -328,7 +328,7 @@ if __name__ == '__main__':
                 #: режим паузы
                 elif prompt in ('"паузе"', '"пауза"', '"заблокировать"', '"блокировка"', '"остановка"',
                                 '"остановись"', '"режим паузы"'):
-                    print(LCY + '\n ʕ℗•ᴥ•℗ʔ\n' + SRA, end='')
+                    print(LCY + '\n ʕ℗•ᴥ•℗ʔ' + SRA, end='')
                     speak_tts("режим паузы включён!")
                     while True:
                         if rec.AcceptWaveform(stream.read(4000)):
@@ -367,7 +367,7 @@ if __name__ == '__main__':
                          ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) or \
                         prompt[1:-1] in ('громко', 'мут'):
                     print(LCY + '♫' + SRA, end='')
-                    key_press('volumemute')  # ! сделать громкость плюс число
+                    key_press('volumemute')
 
                 #: установка громкости
                 elif len(words) == 1 and words[0] == 'громкость':
@@ -375,10 +375,10 @@ if __name__ == '__main__':
                     key_press('volumemute')
                 elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
                     print(LCY + '♫' + SRA, end='')
-                    one_num = sum(words_num[word] for word in words[1:])
-                    for i in range(50):
+                    on_num = sum(words_num[word] for word in words[1:])
+                    for i in range(50): # ! костыль
                         pyautogui.press('volumedown')
-                    for i in range(one_num // 2):
+                    for i in range(on_num // 2):
                         pyautogui.press('volumeup')
 
                 #: для команд
