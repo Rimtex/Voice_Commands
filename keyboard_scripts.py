@@ -55,7 +55,7 @@ def keyhot(*keys):
     current_layout = py_win_keyboard_layout.get_keyboard_layout_list()
     # Если текущая раскладка клавиатуры отличается от английской, то изменить ее на английскую
     if current_layout != "00000409":
-        py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
+        40
     # Нажать комбинацию клавиш
     pyautogui.hotkey(*keys)
     # Вернуть текущую раскладку клавиатуры, если она была изменена

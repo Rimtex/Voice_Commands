@@ -1016,7 +1016,6 @@ if __name__ == '__main__':
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)
                 elif prompt in ('"пуш камент"', '"пушка мент"', '"закинь камент"', '"закинуть камент"'): # авто пуш 2
-                    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04190419)
                     keyhot('alt', '0')  # вызов окна комментирования
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)  # галка в Changes
@@ -1026,7 +1025,7 @@ if __name__ == '__main__':
                     click_print_coordinates(1478, 1286)
                     key_press("delete")
                     import clipboard
-                    keyrus_write(clipboard.paste())
+                    key_write(clipboard.paste())
                     click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)  # кнопка Push там же
