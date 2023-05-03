@@ -341,8 +341,6 @@ if __name__ == '__main__':
                                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
                                 speak_tts("запускаю обычный режим!")
                                 break
-                            elif prompt == '"громкость"':
-                                key_press('volumemute')
                             elif prompt == '"тест"':
                                 os.startfile(f"{path_to_shortcut}тест")
                             elif prompt in ('"пауза"', '"заблокировать"', '"остановка"', '"паузы"'):
@@ -362,9 +360,22 @@ if __name__ == '__main__':
                 #: для экстренного отключения звука
                 elif any(words in prompt[1:-1] for words in
                          ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) or \
-                        prompt[1:-1] in ('громко', 'громкость', 'мут'):
+                        prompt[1:-1] in ('громко', 'мут'):
                     print(LCY + '♫' + SRA, end='')
-                    pyautogui.press('volumemute')  # ! сделать громкость плюс число
+                    key_press('volumemute')  # ! сделать громкость плюс число
+
+                #: установка громкости
+                elif len(words) == 1 and words[0] == 'громкость':
+                    print(LCY + '♪' + SRA, end='')
+                    key_press('volumemute')
+                elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
+                    print(LCY + '♫' + SRA, end='')
+                    pyautogui.keyDown('volumedown')
+                    time.sleep(3.5)
+                    pyautogui.keyUp('volumedown')
+                    one_num = sum(words_num[word] for word in words[1:])
+                    for i in range(one_num / 2):  # делим на два потому что добавляет 2 за нажатие
+                        pyautogui.press('volumeup')
 
                 #: для команд
                 elif prompt in ('"показать команды"', '"покажи команды"'):

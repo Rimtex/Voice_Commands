@@ -33,6 +33,48 @@ SRA = Style.RESET_ALL
 #  r = Style.RESET_ALL
 init(convert=True)
 # символы показывающиеся консоли
+
+print("")
+
+print(f"""
+ct1 = str(cta.replace(f"'", f"{Fore.LIGHTGREEN_EX}'"))
+ct2 = str(ct1.replace(f")", f"){Style.RESET_ALL}"))
+ct3 = str(ct2.replace(f"#", f"{Fore.LIGHTCYAN_EX} #"))
+ct4 = str(ct3.replace(f"!", f"{Fore.LIGHTRED_EX}!"))
+ct5 = str(ct4.replace(f"\n", f"\n{Style.RESET_ALL}"))
+ct6 = str(ct5.replace(f"   e", f"{Fore.YELLOW}   e"))
+ct7 = str(ct6.replace(f"os", f"{Fore.LIGHTMAGENTA_EX}os"))
+ct8 = str(ct7.replace(f"    i", f"{Fore.YELLOW}    i"))
+ct9 = str(ct8.replace(f"#:", f"{Fore.BLUE}#:")){Style.RESET_ALL}
+    """, sep='', end='')
+
+print(Fore.RED + ' (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ ' + Fore.LIGHTCYAN_EX + 'win-tab'
+      + random.choice(colors) + ' alt-tab ctrl-s alt-F4 ' + Style.RESET_ALL)
+print(f"""  \ (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ""", sep='', end='')
+print(f""" 
+    Fore.RED + ' (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ ' + Style.RESET_ALL
+
+    {Fore.LIGHTCYAN_EX}win-tab {Style.RESET_ALL}
+    {Fore.LIGHTCYAN_EX}► {Style.RESET_ALL}
+    {Fore.LIGHTCYAN_EX}► {Style.RESET_ALL}
+    {Fore.LIGHTCYAN_EX}► {Style.RESET_ALL}
+    {Fore.LIGHTCYAN_EX}◄ {Style.RESET_ALL}
+    {Fore.RED}ᴿᴱᴾᴱᴬᵀ {Style.RESET_ALL}
+    {Fore.LIGHTGREEN_EX} + 'ᴿᴱᴾᴱᴬᵀ ' + {Style.RESET_ALL}
+    {Fore.LIGHTRED_EX}ϟ {Style.RESET_ALL}
+    {Fore.LIGHTBLUE_EX}R {Style.RESET_ALL}
+          """, sep='', end='')
+print(f"""
+                                   + random.choice(colors) + "(⌐▪˽▪)" + Style.RESET_ALL +
+{Fore.LIGHTCYAN_EX}˃˃ \                                           
+{Fore.LIGHTYELLOW_EX}♪-♫ \
+{Style.RESET_ALL}== \
+{Fore.LIGHTGREEN_EX}а-я \
+{Fore.LIGHTCYAN_EX}˃˃ \
+{Style.RESET_ALL}за
+
+""", sep='', end='')
+
 print(f"""   
 how do I remove the line break here and leave this code the same?
 {Fore.LIGHTCYAN_EX}˃˃\
@@ -106,49 +148,6 @@ for key in key_string.split():
         current_line = f"{key} "
 key_list.append(current_line.strip())
 print(LYE + "\n".join(key_list))
-print("")
-
-print(f"""
-ct1 = str(cta.replace(f"'", f"{Fore.LIGHTGREEN_EX}'"))
-ct2 = str(ct1.replace(f")", f"){Style.RESET_ALL}"))
-ct3 = str(ct2.replace(f"#", f"{Fore.LIGHTCYAN_EX} #"))
-ct4 = str(ct3.replace(f"!", f"{Fore.LIGHTRED_EX}!"))
-ct5 = str(ct4.replace(f"\n", f"\n{Style.RESET_ALL}"))
-ct6 = str(ct5.replace(f"   e", f"{Fore.YELLOW}   e"))
-ct7 = str(ct6.replace(f"os", f"{Fore.LIGHTMAGENTA_EX}os"))
-ct8 = str(ct7.replace(f"    i", f"{Fore.YELLOW}    i"))
-ct9 = str(ct8.replace(f"#:", f"{Fore.BLUE}#:")){Style.RESET_ALL}
-    """, sep='', end='')
-
-print(Fore.RED + ' (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ ' + Fore.LIGHTCYAN_EX + 'win-tab' + random.choice(
-    colors) + ' alt-tab ctrl-s alt-F4 ' + Style.RESET_ALL)
-
-print(f"""  \ (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ""", sep='', end='')
-
-print(f""" 
-    Fore.RED + ' (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ ' + Style.RESET_ALL
-    
-    {Fore.LIGHTCYAN_EX}win-tab {Style.RESET_ALL}
-    {Fore.LIGHTCYAN_EX}► {Style.RESET_ALL}
-    {Fore.LIGHTCYAN_EX}► {Style.RESET_ALL}
-    {Fore.LIGHTCYAN_EX}► {Style.RESET_ALL}
-    {Fore.LIGHTCYAN_EX}◄ {Style.RESET_ALL}
-    {Fore.RED}ᴿᴱᴾᴱᴬᵀ {Style.RESET_ALL}
-    {Fore.LIGHTGREEN_EX} + 'ᴿᴱᴾᴱᴬᵀ ' + {Style.RESET_ALL}
-    {Fore.LIGHTRED_EX}ϟ {Style.RESET_ALL}
-    {Fore.LIGHTBLUE_EX}R {Style.RESET_ALL}
-          """, sep='', end='')
-print(f"""
-                                   + random.choice(colors) + "(⌐▪˽▪)" + Style.RESET_ALL +
-{Fore.LIGHTCYAN_EX}˃˃ \                                           
-{Fore.LIGHTYELLOW_EX}♪-♫ \
-{Style.RESET_ALL}== \
-{Fore.LIGHTGREEN_EX}а-я \
-{Fore.LIGHTCYAN_EX}˃˃ \
-{Style.RESET_ALL}за
-
-""", sep='', end='')
-
 
 def print_color_text(color, text):
     colors_dict = {
@@ -275,18 +274,14 @@ for kw in kw_string.split():
         current_line = f"{kw} "
 kw_list.append(current_line.strip())
 print(Fore.CYAN + " " + "\n ".join(kw_list))
-
 print(LGR + "\n if re.search(r'созда[а-я]{0,2}\s*команд[а-я]?', prompt):" + SRA)
-
-print(
-    f"""\n число длинны строки = {Fore.LIGHTCYAN_EX}{len(str('число длинны строки'))}{Fore.LIGHTRED_EX} 'Style.RESET_ALL!!!'{Fore.WHITE}""",
-    sep='', end='')
+print(f"""\n число длинны строки = {Fore.LIGHTCYAN_EX}{len(str('число длинны строки'))}{Fore.LIGHTRED_EX} 'Style.RESET_ALL!!!'{Fore.WHITE}""", sep='', end='')
+print(f"""{Fore.WHITE} hotkey{Fore.WHITE}('{Fore.LIGHTGREEN_EX}winleft{Fore.WHITE}', '{Fore.LIGHTGREEN_EX}tab{Fore.WHITE}')""")
 
 print(f"""\
-{Fore.WHITE} hotkey{Fore.WHITE}('{Fore.LIGHTGREEN_EX}winleft{Fore.WHITE}', '{Fore.LIGHTGREEN_EX}tab{Fore.WHITE}')""")
-
-print(f"""\
-\r  ╔══════════════════════════════════════════════════════════════════════╦════════╗ 
+\r  ╓─────────────────────────────────────────────┬─────────────────────────────────╖
+\r  ║ {LGR}'слова' должны быть без '"двойных"' кавычек{SRA} │ {LRE}!!!{SRA}                             ║
+\r  ╠═════════════════════════════════════════════╧════════════════════════╦════════╣ 
 \r  ║ {CYA}"C:\\Users\\raide\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" {SRA} ║ {LBL}Питон  {SRA}║
 \r  ║ {LGR}"F:\\Program Files\\PyCharm\\bin\\pycharm64.exe"                        {SRA} ║ {GRE}Пишарм {SRA}║
 \r  ╚══════════════════════════════════════════════════════════════════════╩════════╝ 
