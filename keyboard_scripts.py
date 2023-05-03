@@ -23,6 +23,20 @@ SRA = Style.RESET_ALL
 init(convert=True)
 
 
+#: курсор
+def click_print():
+    pyautogui.click()
+    print(f'{LCY} ∆', end='')
+
+
+#: курсор в координаты
+def click_print_cor(asdx, asdy, button='left'):
+    cor_x, cor_y = pyautogui.position()
+    pyautogui.click(x=asdx, y=asdy, button=button)
+    pyautogui.moveTo(cor_x, cor_y)
+    print(f'{LGR} ¤{LCY}∆', end='')
+
+
 def key_write(string):
     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
     pyautogui.typewrite(string)  # запись в курсор

@@ -49,7 +49,8 @@ except ImportError:
     import webbrowser
     from urllib.parse import quote
 
-from keyboard_scripts import script_writing_function, key_press, keyhot, key_down, key_write, key_up
+from keyboard_scripts import script_writing_function, key_press, keyhot, key_down, key_write, key_up, \
+    click_print_cor, click_print
 import loader
 from loader import loader_screen_rimtex
 import vocabulary
@@ -88,32 +89,6 @@ SRA = Style.RESET_ALL
 init(convert=True)  # активация покраски
 
 
-#: курсор
-def click_print():
-    pyautogui.click()
-    print(f'{LCY} ∆', end='')
-
-
-def click_print_coordinates(asdx, asdy, button='left'):
-    cur_x, cur_y = pyautogui.position()
-    pyautogui.click(x=asdx, y=asdy, button=button)
-    pyautogui.moveTo(cur_x, cur_y)
-    print(f'{LGR} ¤{LCY}∆', end='')
-
-
-#: направлениe курсора
-def cursor_direction():
-    numss = sum(words_num[word] for word in words[3:])
-    if re.match(r'^.{0,3}прав.{0,3}$', words[2]):
-        pyautogui.moveRel(numss, 0)
-    if re.match(r'^.{0,3}низ.{0,3}$', words[2]):
-        pyautogui.moveRel(0, numss)
-    if re.match(r'^.{0,3}лев.{0,3}$', words[2]):
-        pyautogui.moveRel(-numss, 0)
-    if re.match(r'^.{0,3}верх.{0,3}$', words[2]):
-        pyautogui.moveRel(0, -numss)
-
-
 # функция выключения Caps Lock и Num Lock
 def turn_off_locks():
     # Проверить, включена ли клавиша Caps Lock
@@ -137,6 +112,19 @@ speak = wincl.Dispatch("SAPI.SpVoice")
 voices = speak.GetVoices()
 tts = pyttsx3.init()  # без этого пока работает
 tts.runAndWait()  # инициализация распознования ! иногда наверно помогает от отключения микрофона
+
+
+#: направлениe курсора
+def cursor_direction():
+    numss = sum(words_num[word] for word in words[3:])
+    if re.match(r'^.{0,3}прав.{0,3}$', words[2]):
+        pyautogui.moveRel(numss, 0)
+    if re.match(r'^.{0,3}низ.{0,3}$', words[2]):
+        pyautogui.moveRel(0, numss)
+    if re.match(r'^.{0,3}лев.{0,3}$', words[2]):
+        pyautogui.moveRel(-numss, 0)
+    if re.match(r'^.{0,3}верх.{0,3}$', words[2]):
+        pyautogui.moveRel(0, -numss)
 
 
 def speak_tts(speak_text):  # стандартная озвучка по умолчанию
@@ -390,7 +378,7 @@ if __name__ == '__main__':
                     time.sleep(.1)
                     os.startfile(f"{path_to_shortcut}ассистент")
                     time.sleep(1)
-                    # click_print_coordinates(762, 14)
+                    # click_print_cor(762, 14)
                     keyhot('winleft', 'Up')
                     exit()
 
@@ -509,7 +497,7 @@ if __name__ == '__main__':
                 elif prompt in ('"убей всех"', '"растрелли"', '"расстрел"', '"застрели"', '"расстрел окон"'
                                 , '"расстреле"', '"расстрелять"'):
                     print(f"""{LRE} ({LGR}√{LRE}¬_¬)ԅ⌐╦╦═─‒=═≡Ξ{SRA}""", end='')
-                    click_print_coordinates(411, 1439)
+                    click_print_cor(411, 1439)
                     os.startfile(f"{path_to_shortcut}ассистент")
                     key_down('alt')  # ! не забыть отжать альт
                     key_press('tab')
@@ -539,7 +527,7 @@ if __name__ == '__main__':
                     time.sleep(0.01)
                     keyhot('winleft', 'v')
                     time.sleep(0.01)
-                    click_print_coordinates(373, 948)
+                    click_print_cor(373, 948)
                     time.sleep(0.01)
                     pyautogui.moveTo(375, 1064)
                     click_print()
@@ -619,7 +607,7 @@ if __name__ == '__main__':
                 elif prompt in ('"ассистент"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"', '"рестарт"',
                                 '"перезапустить"'):
                     awwx, awwy = pyautogui.position()
-                    click_print_coordinates(0, 9)
+                    click_print_cor(0, 9)
                     pyautogui.mouseDown(402, 11)
                     pyautogui.moveTo(402, 45)
                     pyautogui.mouseUp()
@@ -875,7 +863,7 @@ if __name__ == '__main__':
                 #: работа с мышкой
                 elif prompt == '"координаты"':
                     x, y = pyautogui.position()
-                    print(f"click_print_coordinates{LYE}({x}, {y})", end='')  # координаты курсора
+                    print(f"click_print_cor{LYE}({x}, {y})", end='')  # координаты курсора
                 elif prompt in ('"тэк"', '"клик"', '"кликни"', '"кликай"', '"кликнуть"'):
                     click_print()
                 #: клик плюс число
@@ -899,9 +887,9 @@ if __name__ == '__main__':
                 elif prompt in ('"мотай верх"', '"колесо верх"'):
                     pyautogui.scroll(1500)
                 elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-                    click_print_coordinates(411, 1439)
+                    click_print_cor(411, 1439)
                 elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
-                    click_print_coordinates(2, 9)
+                    click_print_cor(2, 9)
 
                 #: для выебонов
                 elif prompt == '"ты робот"':
@@ -1007,36 +995,36 @@ if __name__ == '__main__':
                 #: пишарм и гитхаб
                 elif prompt in ('"камент"', '"комент"', '"коммент"'):
                     keyhot('alt', '0')
-                elif prompt in ('"пуш"', '"закинь"', '"закинуть"'): #: авто пуш
+                elif prompt in ('"пуш"', '"закинь"', '"закинуть"'):  #: авто пуш
                     keyhot('alt', '0')
                     time.sleep(.1)
-                    click_print_coordinates(1282, 1084)
+                    click_print_cor(1282, 1084)
                     time.sleep(.1)
-                    click_print_coordinates(1478, 1286)
-                    click_print_coordinates(1478, 1286)
-                    click_print_coordinates(1478, 1286)
+                    click_print_cor(1478, 1286)
+                    click_print_cor(1478, 1286)
+                    click_print_cor(1478, 1286)
                     key_press("delete")
                     time.sleep(.1)
                     key_write('_')
-                    click_print_coordinates(1478, 1325)
+                    click_print_cor(1478, 1325)
                     time.sleep(2)
-                    click_print_coordinates(1478, 1325)
-                elif len(words) == 2 and\
-                        words[0] in ('пуш', 'закинь', 'закинуть', 'закидывая', 'закидывать') and\
-                        words[1] in ('камент', 'комент', 'коммент', 'камент'):   #: авто пуш коммент
+                    click_print_cor(1478, 1325)
+                elif len(words) == 2 and \
+                        words[0] in ('пуш', 'закинь', 'закинуть', 'закидывая', 'закидывать') and \
+                        words[1] in ('камент', 'комент', 'коммент', 'камент'):  #: авто пуш коммент
                     keyhot('alt', '0')  # вызов окна комментирования
                     time.sleep(.1)
-                    click_print_coordinates(1282, 1084)  # галка в Changes
+                    click_print_cor(1282, 1084)  # галка в Changes
                     time.sleep(.1)
-                    click_print_coordinates(1478, 1286)  # клик в строку
-                    click_print_coordinates(1478, 1286)
-                    click_print_coordinates(1478, 1286)  # три раза чтобы выделить весь текст
+                    click_print_cor(1478, 1286)  # клик в строку
+                    click_print_cor(1478, 1286)
+                    click_print_cor(1478, 1286)  # три раза чтобы выделить весь текст
                     key_press("delete")
                     time.sleep(.1)
                     keyhot('ctrl', 'v')
-                    click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
+                    click_print_cor(1478, 1325)  # кнопка Commit and Push...
                     time.sleep(2)
-                    click_print_coordinates(1478, 1325)  # кнопка Push там же
+                    click_print_cor(1478, 1325)  # кнопка Push там же
 
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
