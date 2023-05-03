@@ -1004,6 +1004,15 @@ if __name__ == '__main__':
                         key_press('tab')
                     key_up('alt')
 
+                elif prompt in ('"камент"', '"комент"', '"коммент"'):
+                    keyhot('alt', '0')
+                elif prompt in ('"пуш"', '"закинуть"', '"закинуть"'):
+                    keyhot('alt', '0')
+                    time.sleep(.1)
+                    click_print_coordinates(1282, 1084)
+                    time.sleep(2)
+                    click_print_coordinates(1478, 1325)
+
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
                     try:
@@ -1015,11 +1024,6 @@ if __name__ == '__main__':
                             print(LCY + "e√", end='')
                         except FileNotFoundError:
                             print(Fore.WHITE + "_", end="")  # индикатор попытки открытия файла
-
-                elif prompt in ('"камент"', '"комент"', '"коммент"', '"пуш"', '"закинуть"', '"закинуть"'):
-                    keyhot('alt', '0')
-                elif prompt in ('"пуш"', '"закинуть"', '"закинуть"'):
-                    keyhot('alt', '0')
 
                 if prompt != '""':
                     print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')  #: пишем свои голос
