@@ -54,7 +54,9 @@ import loader
 from loader import loader_screen_rimtex
 import vocabulary
 from converter import print_cq9, print_cs1, print_cs2
-from config import path_to_shortcut, dir_path, ideas, requirements_path, model1, model2, model3, model4, reminder
+
+from address_config import path_to_shortcut, ideas, reminder, requirements_path, dir_path, model1, model2, model3, \
+    model4
 
 translator = Translator()
 
@@ -748,7 +750,7 @@ if __name__ == '__main__':
                     keyhot('shiftleft', 'altleft')
                     speak_tts(f"ладно")
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
-                    os.startfile(f"English_trans_writer.py")  # запускает нейромодель
+                    os.startfile(f"Voice_neuro_responder.py")  # запускает нейромодель
                     loader.smile_gen_erator()
                     speak_tts("конечно. ты прав!")  # диктует вам мудрость
                     time.sleep(3.5)

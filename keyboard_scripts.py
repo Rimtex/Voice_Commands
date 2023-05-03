@@ -1,5 +1,6 @@
 import keyboard
-
+import pyautogui
+import py_win_keyboard_layout
 from colorama import init, Fore, Style
 
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
@@ -20,9 +21,6 @@ LMA = Fore.LIGHTMAGENTA_EX
 WHI = Fore.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
-
-import pyautogui
-import py_win_keyboard_layout
 
 
 def key_write(string):

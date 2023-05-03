@@ -2,6 +2,7 @@ from googletrans import Translator
 from Voice_Commands import stream, rec, speak, speak_tts
 from colorama import init, Fore, Style
 from pygpt4all.models.gpt4all import GPT4All
+
 translator = Translator()
 
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
