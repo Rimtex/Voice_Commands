@@ -1008,11 +1008,11 @@ if __name__ == '__main__':
                 elif prompt in ('"камент"', '"комент"', '"коммент"'):
                     keyhot('alt', '0')
                 elif prompt in ('"пуш"', '"закинуть"', '"закинуть"'): #: авто пуш 1
-                    keyhot('alt', '0')
+                    keyhot('alt', '0')  # вызов окна комментирования
                     time.sleep(.1)
-                    click_print_coordinates(1282, 1084)
+                    click_print_coordinates(1282, 1084)  # галка в Changes
                     time.sleep(.1)
-                    click_print_coordinates(1478, 1325)
+                    click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)
 
