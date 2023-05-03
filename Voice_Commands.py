@@ -1007,7 +1007,7 @@ if __name__ == '__main__':
                 #: пишарм и гитхаб
                 elif prompt in ('"камент"', '"комент"', '"коммент"'):
                     keyhot('alt', '0')
-                elif prompt in ('"пуш"', '"закинуть"', '"закинуть"'): #: авто пуш 1
+                elif prompt in ('"пуш"', '"закинь"', '"закинуть"'): # авто пуш 1
                     keyhot('alt', '0')  # вызов окна комментирования
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)  # галка в Changes
@@ -1015,6 +1015,20 @@ if __name__ == '__main__':
                     click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)
+                elif prompt in ('"пуш камент"', '"пушка мент"', '"закинь камент"', '"закинуть камент"'): # авто пуш 2
+                    keyhot('alt', '0')  # вызов окна комментирования
+                    time.sleep(.1)
+                    click_print_coordinates(1282, 1084)  # галка в Changes
+                    time.sleep(.1)
+                    click_print_coordinates(1478, 1286)  # клик в строку
+                    win32clipboard.OpenClipboard()
+                    Commit = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
+                    win32clipboard.CloseClipboard()
+                    key_write(Commit)
+                    click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
+                    time.sleep(2)
+                    click_print_coordinates(1478, 1325)
+
 
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
