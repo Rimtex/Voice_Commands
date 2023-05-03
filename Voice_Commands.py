@@ -306,6 +306,7 @@ if __name__ == '__main__':
                             keyboard.write(trans.text)
                             print(f"{LYE} {trans.text}", end=' ')
                             time.sleep(0.2)
+                            key_press("enter")
                         except Exception as e:
                             print(traceback.format_exc())
                             print("(!o_O):", e)
