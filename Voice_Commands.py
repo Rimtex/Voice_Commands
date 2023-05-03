@@ -1,4 +1,3 @@
-# авто инстайлер
 import os
 
 try:
@@ -111,10 +110,10 @@ turn_off_locks()
 speak = wincl.Dispatch("SAPI.SpVoice")
 voices = speak.GetVoices()
 tts = pyttsx3.init()  # без этого пока работает
-tts.runAndWait()  # инициализация распознования ! иногда наверно помогает от отключения микрофона
+tts.runAndWait()  # инициализация распознавания ! иногда наверно помогает от отключения микрофона
 
 
-#: направлениe курсора
+#: направление курсора
 def cursor_direction():
     numss = sum(words_num[word] for word in words[3:])
     if re.match(r'^.{0,3}прав.{0,3}$', words[2]):
@@ -148,7 +147,7 @@ def speak_irina_tts(speak_text):  # для озвучки ириной
 random_voice = [speak_tts, speak_irina_tts]
 
 
-def play_music():  # для проигрывания рандомной музыки ! обязательно нужен полный путь !!
+def play_music():  # для проигрывания случайной музыки ! обязательно нужен полный путь !!
     music_files = []
     for root, dirs, files_op in os.walk(dir_path):
         for file_op in files_op:
@@ -169,7 +168,7 @@ vosk.SetLogLevel(-1)  # удаляем логи
 current_model = Model(model1)
 rec = KaldiRecognizer(current_model, 48000)
 
-# Инициализация аудиопотока
+# Инициализация аудио потока
 p = pyaudio.PyAudio()
 stream = p.open(
     format=pyaudio.paInt16,
@@ -226,11 +225,10 @@ def numbers_key():
 if __name__ == '__main__':
     tts = pyttsx3.init()
     tts.runAndWait()
-    turn_off_locks()
     loader_screen_rimtex()
     print(LGR + "\n ʕ/•ᴥ•ʔ/ Hi! " + SRA)
     while True:
-        if rec.AcceptWaveform(stream.read(4000)):  # {   "text" : "слова" }
+        if rec.AcceptWaveform(stream.read(4000)):  # {   "text" : "слова" } бну так пишешьпишетка вот така
             try:
                 speak.Rate = 4
                 prompt = rec.Result()[13:-2]
@@ -239,7 +237,9 @@ if __name__ == '__main__':
 
                 #: Запись в курсор # для быстрой записи фраз или слов: нажимаем капс лок и - диктуем
                 caps_lock_state_check = win32api.GetKeyState(0x14)  # Проверить, включена ли клавиша Caps Lock
-                if caps_lock_state_check == 1 or caps_lock_state_check == -127:  # если капс лок нажат
+                num_lock_state_check = win32api.GetKeyState(0x90)  # 0x90 - код клавиши Num Lock
+                if (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
+                        (num_lock_state_check != 1 and num_lock_state_check != -127):  # если капс лок нажат
                     if prompt != '""':  # не выключается при тишине
                         keyboard.write(prompt[1:-1])  # пишем до конца цикла
                         win32api.keybd_event(0x14, 0x45, 0x1, 0)  # п1 выключает Caps Lock
@@ -265,21 +265,21 @@ if __name__ == '__main__':
                                            f"\n 3 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
                                            f"\n 4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip")
 
-                #: найти найди окейгугл
+                #: найти найди окей-гугл
                 elif 0 < len(words) <= 10 and words[0] in ('найти', 'найди', 'окей'):
                     if len(words) == 1:
                         keyhot("ctrl", "f")
-                    if len(words) > 1 and words[0] == 'найти':  # поиск в пуске
-                        writeprompt = prompt[6:-1]  # убираем первое слово и кавычки из принта
-                        keyhot("winleft", "й")  # Открываем окно поиска в пуске
-                        time.sleep(0.2)  # Ждем, пока окно поиска загрузится
-                        keyboard.write(writeprompt)  # Вводим слова
+                    if len(words) > 1 and words[0] == 'найти':
+                        write_prompt = prompt[6:-1]  # убираем первое слово и кавычки из фразы
+                        keyhot("winleft", "й")  # Открываем окно найти в пуске
+                        time.sleep(0.2)  # Ждем, пока окно загрузится
+                        keyboard.write(write_prompt)  # Вводим слова
                         time.sleep(0.2)  # Ждем на всякий случай
                         key_press("enter")  # Нажимаем Enter
-                    if words[0] == 'найди':  #: поиск в пуске с переводом на английский
-                        transprompt = prompt[6:-1]
+                    if words[0] == 'найди':  #: найти в пуске с переводом на английский
+                        trans_prompt = prompt[6:-1]
                         try:
-                            trans = translator.translate(transprompt, dest="en")
+                            trans = translator.translate(trans_prompt, dest="en")
                             keyhot("winleft", "й")
                             time.sleep(0.2)
                             keyboard.write(trans.text)
@@ -289,7 +289,8 @@ if __name__ == '__main__':
                         except Exception as e:
                             print(traceback.format_exc())
                             print(f" (!o_O): {LRE}переводчик:", e)
-                    elif words[0] == 'окей' and words[1] == 'гугл':  #: поиска в гугле
+                    #: окей гугл
+                    elif len(words) >= 2 and (words[0] == 'окей' and words[1] == 'гугл'):
                         if prompt == '"окей гугл"':
                             speak_tts("что вам найти?")
                             while True:
@@ -304,19 +305,19 @@ if __name__ == '__main__':
                                             print(LCY + "г" + SRA, end='')
                                     else:
                                         break
-                        elif prompt != '"окей гугл"':  #: быстрый поиск в гугле
+                        elif prompt != '"окей гугл"':  #: окей гугл + слова
                             try:
                                 webbrowser.open('https://www.google.com/search?q=' + prompt[11:-1])
                                 print("\nhttps://www.google.com/search?q=" + quote(prompt[11:-1]))
                             except OSError:
                                 print(LCY + "Г" + SRA, end='')
 
-                #: для быстрого поиска
+                #: для быстрого поиска из буфера
                 elif len(words) > 0 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
                     if len(words) == 1:
                         keyhot('ctrl', 'f')
                     if len(words) > 1:
-                        # os.startfile(f"{path_to_shortcut}питон")
+                        # os.startfile(f"{path_to_shortcut}питон")  # стартуем нужную прогу
                         keywrite = prompt[len(words[0]) + 2:-1]  # минус первое слово
                         print(f"{LGR}˃{LCY} п {LMA}? ", end='')
                         time.sleep(.1)
@@ -743,6 +744,7 @@ if __name__ == '__main__':
                 elif prompt in ('"слушай"', '"слышь"', '"слышь"', '"слышишь"', '"слэш"'):
                     loader.smile_gen_erator()
                     speak_tts(vocabulary.random_response())
+                    click_print_cor(677, 1345)  # координаты кнопки ответа https://chat.openai.com/
                 elif any(word in prompt[1:-1] for word in ('блядь', 'нихуя', 'бля', 'ахуеть', 'бляха', 'ебать')):
                     keyhot('shiftleft', 'altleft')
                     loader.smile_generator()
@@ -754,7 +756,6 @@ if __name__ == '__main__':
                     print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')
                     keyhot('shiftleft', 'altleft')
                     speak_tts(f"ладно")
-                    click_print_cor(677, 1345)  # координаты кнопки ответа чата
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
                     os.startfile(f"Voice_neuro_responder.py")  # запускает нейромодель
                     loader.smile_gen_erator()
