@@ -1008,29 +1008,29 @@ if __name__ == '__main__':
                 elif prompt in ('"камент"', '"комент"', '"коммент"'):
                     keyhot('alt', '0')
                 elif prompt in ('"пуш"', '"закинь"', '"закинуть"'): # авто пуш 1
-                    keyhot('alt', '0')  # вызов окна комментирования
+                    keyhot('alt', '0')
                     time.sleep(.1)
-                    click_print_coordinates(1282, 1084)  # галка в Changes
+                    click_print_coordinates(1282, 1084)
                     time.sleep(.1)
-                    click_print_coordinates(1478, 1286)  # клик в строку
+                    click_print_coordinates(1478, 1286)
                     click_print_coordinates(1478, 1286)
                     click_print_coordinates(1478, 1286)
                     key_press("delete")
                     time.sleep(.1)
                     key_write('_')
-                    click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
+                    click_print_coordinates(1478, 1325)
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)
                 elif len(words) == 2 and\
                         words[0] in ('пуш', 'закинь', 'закинуть', 'закидывая', 'закидывать') and\
-                        words[1] in ('камент', 'комент', 'коммент', 'камент'):   # авто пуш 2
+                        words[1] in ('камент', 'комент', 'коммент', 'камент'):   #: авто пуш 2
                     keyhot('alt', '0')  # вызов окна комментирования
                     time.sleep(.1)
                     click_print_coordinates(1282, 1084)  # галка в Changes
                     time.sleep(.1)
                     click_print_coordinates(1478, 1286)  # клик в строку
                     click_print_coordinates(1478, 1286)
-                    click_print_coordinates(1478, 1286)
+                    click_print_coordinates(1478, 1286)  # три раза чтобы выделить весь текст
                     key_press("delete")
                     time.sleep(.1)
                     keyhot('ctrl', 'v')
