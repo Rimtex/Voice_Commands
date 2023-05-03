@@ -2,13 +2,13 @@ import keyboard
 from colorama import Fore, init
 import pyaudio
 import win32api
-from address_config import model3
+from address_config import model2
 from vosk import Model, KaldiRecognizer
 
 init(convert=True)
 
 # Инициализация распознавателя с начальной моделью
-current_model = Model(model3)
+current_model = Model(model2)
 rec = KaldiRecognizer(current_model, 48000)
 
 # Инициализация аудио потока
@@ -22,7 +22,7 @@ stream = p.open(
 )
 stream.start_stream()
 
-print(Fore.LIGHTGREEN_EX + model3 + Fore.LIGHTCYAN_EX + " загружена!")
+print(Fore.LIGHTGREEN_EX + model2 + Fore.LIGHTCYAN_EX + " загружена!")
 
 while True:
     #  if keyboard.is_pressed('CapsLock'):  # Проверка нажатия клавиши
