@@ -371,7 +371,7 @@ if __name__ == '__main__':
                 elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
                     print(LCY + '♫' + SRA, end='')
                     one_num = sum(words_num[word] for word in words[1:])
-                    for i in range(50):  # это костыль конечно капец
+                    for i in range(50):  # классно я костыль придумал да
                         pyautogui.press('volumedown')
                     for i in range(one_num // 2):
                         pyautogui.press('volumeup')
