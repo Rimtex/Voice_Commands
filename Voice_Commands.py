@@ -287,39 +287,6 @@ def numbers_key():
             print(f"\b{LCY} кнопка{WHI}({GRE}{words[0]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
 
 
-def write_timer_function():
-    write_timer = 3  # для изменения таймера
-    io = write_timer  # создаём счётчик количества циклов микрофона
-    while True:
-        if rec.AcceptWaveform(stream.read(4000)):
-            write = rec.Result()[14:-3]
-            if write == '':
-                if io == write_timer:
-                    print('  ', end='')
-                io -= 1
-                if io <= write_timer:
-                    print(f'\b\b{YEL} {io}', end='')
-            if io == 0 or write in ('конец записи', 'обычный режим', 'хватит', 'конец', 'стоп',
-                                    'команды', 'коня запиши', 'стопе', 'все'):
-                print(f'\b \n', end='')  # удаляем таймер
-                print(' (!O_o) ')
-                keyhot('ctrl', 's')
-                speak_tts("режим команд!")
-                break
-            elif write == 'дата' or write == 'дату':
-                keyboard.write(date.today().strftime("%d.%m.%Y"))
-                keyboard.write(datetime.now().strftime("%H:%M:%S")[0:5])
-            else:
-                if write != '':
-                    if io < write_timer:
-                        keyboard.write(f'{write} ')
-                        print(f'\b\b {write} ', end='')  # если есть таймер удаляем его
-                        io = write_timer
-                    else:
-                        keyboard.write(f'{write} ')  # запись write с микрофона в курсор
-                        print(f' {write}', end='')
-
-
 if __name__ == '__main__':
     tts = pyttsx3.init()
     tts.runAndWait()
@@ -870,8 +837,6 @@ if __name__ == '__main__':
                         key_press("enter")
                         key_press("up")
                         keyboard.write("! - ")
-                        time.sleep(0.5)
-                        write_timer_function()
 
                 #: напоминалка
                 elif len(words) == 1 and words[0] in ('напомнить', 'вспомнить'):
@@ -884,7 +849,6 @@ if __name__ == '__main__':
                     key_press("up")
                     keyboard.write("! - ")
                     time.sleep(0.5)
-                    write_timer_function()
                 elif prompt in ('"напомни"', '"вспомни"', '"напоминай"', '"вспоминай"'):
                     file = open(reminder, "r", encoding='utf-8')
                     contents = file.read()
