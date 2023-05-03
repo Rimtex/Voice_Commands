@@ -49,7 +49,7 @@ except ImportError:
     import webbrowser
     from urllib.parse import quote
 
-from keyboard_scripts import script_writing_function, key_press, keyhot, key_down, key_write, key_up
+from keyboard_scripts import script_writing_function, key_press, keyhot, key_down, key_write, key_up, keyrus_write
 import loader
 from loader import loader_screen_rimtex
 import vocabulary
@@ -1021,10 +1021,12 @@ if __name__ == '__main__':
                     click_print_coordinates(1282, 1084)  # галка в Changes
                     time.sleep(.1)
                     click_print_coordinates(1478, 1286)  # клик в строку
+                    click_print_coordinates(1478, 1286)
+                    key_press("delete")
                     win32clipboard.OpenClipboard()
                     Commit = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
-                    pyautogui.typewrite(Commit)
+                    keyrus_write(Commit)
                     click_print_coordinates(1478, 1325)  # кнопка Commit and Push...
                     time.sleep(2)
                     click_print_coordinates(1478, 1325)  # кнопка Push там же
