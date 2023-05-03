@@ -874,10 +874,9 @@ if __name__ == '__main__':
                             click_print()
                     except KeyError:
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
-                elif len(words) == 2 and words[0] in ('курсор', 'корсар', 'курсора', 'курсором'):
-                    if words[1] in ('зажми', 'зажать', 'зажимать', 'зажал'):
+                elif len(words) == 1 and words[0] in ('зажми', 'зажать', 'зажал', 'зажимать', 'схвати', 'схватить'):
                         pyautogui.mouseDown()
-                    if words[1] in ('отпусти', 'отпускай', 'отпустить', 'отжал'):
+                elif len(words) == 1 and words[0] in ('отпусти', 'отпускай', 'отпустить', 'пусти', 'отпускай', 'отжал'):
                         pyautogui.mouseUp()
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
                     screen_width, screen_height = pyautogui.size()  # Получение размеров экрана
