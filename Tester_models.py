@@ -22,7 +22,7 @@ def new_text_callback(text: str):  # функция печати текста п
 
 
 def generate_response(userinput):
-    n_predict = len(userinput)  #: чем длиннее запрос - тем больше предикт
+    n_predict = len(userinput)  #: предикт можно добавлять пробелами
     response = model.generate(userinput, n_predict=n_predict, new_text_callback=new_text_callback)
     # response = model.generate(user_input, n_predict=55, n_threads=8)
     return response
