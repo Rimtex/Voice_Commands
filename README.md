@@ -28,7 +28,7 @@ http://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin            - в папку
 
 <hr>
 
-#### по-умолчанию нажатый Caps Lock записывает `голос` в курсор и выключает Caps Lock
+#### по-умолчанию нажатый Caps Lock или `голос` записывает голос в курсор и выключает Caps Lock
 
 <hr>
 
