@@ -28,10 +28,20 @@ def generate_response(userinput):
     return response
 
 
-while True:
-    user_input = input(LYE + "\nyou: " + SRA)
-    generate_response(user_input)
+for token in model.generate("Tell me a joke ?\n"):
+    print(token, end='', flush=True)
 
+while True:
+    try:
+        prompt = input("You: ", flush=True)
+        if prompt == '':
+            continue
+        print(f"AI:", end='')
+        for token in model.generate(prompt):
+            print(f"{token}", end='', flush=True)
+        print()
+    except KeyboardInterrupt:
+        break
     """
 a script for a cartoon                    сценарий для мультфильма  
 Rick and Morty :                          Рик и Морти 
