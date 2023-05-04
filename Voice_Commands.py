@@ -202,6 +202,7 @@ def numbers_key():
 
 
 speakrate_set = 4
+current_voice = "Microsoft Pavel Mobile"
 
 
 def speak_irina_tts(speak_text):  # для озвучки ириной
@@ -213,7 +214,7 @@ def speak_irina_tts(speak_text):  # для озвучки ириной
             tts.runAndWait()
 
 
-def speak_tts(speak_text):  # стандартная озвучка по умолчанию
+def speak_pavel_tts(speak_text):  # для озвучки Павлом
     for voice in voices:
         if voice.GetAttribute("Name") == "Microsoft Pavel Mobile":
             speak.Rate = speakrate_set
@@ -222,7 +223,39 @@ def speak_tts(speak_text):  # стандартная озвучка по умо�
             tts.runAndWait()
 
 
-random_voice = [speak_tts, speak_irina_tts]
+def switch_voice(voice_name):  # переключение голоса
+    global current_voice
+    current_voice = voice_name
+
+
+def speak_tts(speak_text):  # стандартная озвучка с текущим голосом
+    for voice in voices:
+        if voice.GetAttribute("Name") == current_voice:
+            speak.Rate = speakrate_set
+            speak.Voice = voice
+            speak.speak(speak_text)
+            tts.runAndWait()
+
+
+def set_speak_rate(speak_rate):  # установка скорости озвучивания
+    global speakrate_set
+    speakrate_set = speak_rate
+
+    """
+# Пример использования:
+switch_voice("Microsoft Irina Desktop")  # Переключение на голос Ирины
+speak_irina_tts("Привет, я Ирина!")  # Озвучивание текста голосом Ирины
+
+set_speak_rate(3)  # Установка скорости озвучивания на 3
+
+switch_voice("Microsoft Pavel Mobile")  # Переключение на голос Павла
+speak_pavel_tts("Привет, я Павел!")  # Озвучивание текста голосом Павла
+
+speak_tts("Привет, я текущий голос!")  # Озвучивание текста текущим голосом
+    """
+
+
+random_voice = [speak_pavel_tts, speak_irina_tts]
 
 if __name__ == '__main__':
     tts = pyttsx3.init()
@@ -399,6 +432,15 @@ if __name__ == '__main__':
                         time.sleep(0.03)
                     print(LCY + f' {GRE}{speak_num}{LCY}', end='')
                     speak_tts(f'скорость озвучки {speak_num}')
+                #: переключение голоса
+                elif prompt == '"павел"':
+                    switch_voice("Microsoft Pavel Mobile")  # Переключение на голос Павла
+                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Pavel ' + LGR, end='')
+                    speak_pavel_tts("Microsoft Pavel Mobile")  # Озвучивание текста голосом Павла
+                elif prompt == '"ирина"':
+                    switch_voice("Microsoft Irina Desktop")  # Переключение на голос Ирины
+                    speak_irina_tts("Microsoft Irina Desktop")  # Озвучивание текста голосом Ирины
+                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Irina ' + LGR, end='')
 
                 #: для команд
                 elif prompt in ('"показать команды"', '"покажи команды"'):
@@ -586,7 +628,7 @@ if __name__ == '__main__':
                     speak.Rate = 7  # для быстрой озвучки
                     speak_tts(text)
                 #: зачитка из буфера другим голосом
-                elif prompt in ('"озвучь"', '"озвучивает"', '"озвучивать"', '"ирина"'):
+                elif prompt in ('"озвучь"', '"озвучивает"', '"озвучивать"'):
                     print(f"{LGR}♫", end='')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
