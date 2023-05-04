@@ -297,7 +297,7 @@ if __name__ == '__main__':
                         keyboard.write(write_prompt)  # Вводим слова
                         time.sleep(0.2)  # Ждем на всякий случай
                         key_press("enter")  # Нажимаем Enter
-                    if words[0] == 'найди':  #: найти в пуске с переводом на английский
+                    if len(words) > 1 and words[0] == 'найди':  #: найти в пуске с переводом на английский
                         trans_prompt = prompt[6:-1]
                         try:
                             trans = translator.translate(trans_prompt, dest="en")
