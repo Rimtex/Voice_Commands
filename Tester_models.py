@@ -1,13 +1,3 @@
-
-from colorama import Fore, Style, init
-
-RED = Fore.RED
-LYE = Fore.LIGHTYELLOW_EX
-CYA = Fore.CYAN
-LGR = Fore.LIGHTGREEN_EX
-SRA = Style.RESET_ALL
-init(convert=True)
-
 #  ggml-gpt4all-j-v1.3-groovy.bin
 #  ggml-gpt4all-l13b-snoozy.bin
 
@@ -16,8 +6,8 @@ init(convert=True)
 
 
 from pygpt4all.models.gpt4all import GPT4All
-model = GPT4All('./gpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin')
 
+model = GPT4All('./gpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin')
 
 # def new_text_callback(text: str):  # функция печати текста по символам
 #     print(LGR + text, end="")
@@ -27,7 +17,7 @@ model = GPT4All('./gpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin')
 #      n_predict = len(userinput)  #: предикт можно добавлять пробелами
 #      response = model.generate(userinput, n_predict=n_predict, new_text_callback=new_text_callback)
 #      # response = model.generate(user_input, n_predict=55, n_threads=8)
-#      return response
+#      return response.
 
 
 #  Интерактивный диалог

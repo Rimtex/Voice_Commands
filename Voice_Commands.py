@@ -141,7 +141,35 @@ def play_music():  # для проигрывания случайной музы
         print(f" {LGR}Playing: {WHI}{random_file_op}{LGR}", end='')
 
 
+#: повтор нажатий - клавиша плюс цифра
+def numbers_key():
+    if len(words) == 1:
+        if len(kps) == 1:
+            key_press(*kps)  # ! назначаем kps клавишу в скрипте например kps = 'right'  kps = 'down'
+        elif len(kps) > 1:
+            keyhot(*kps)
+    elif len(words) > 1:
+        try:
+            if len(kps) == 1:
+                one_num = sum(words_num[word] for word in words[1:])
+                print(f"{YEL}*{LYE}{one_num}{LCY}", end="")
+                for ione in range(one_num):
+                    key_press(*kps)
+            elif len(kps) > 1:
+                one_num = sum(words_num[word] for word in words[1:])
+                print(f"{YEL}*{LYE}{one_num}{LCY}", end="")
+                for ione in range(one_num):
+                    keyhot(*kps)
+        except KeyError:
+            print(f"\b{LCY} кнопка{WHI}({GRE}{words[0]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
+
+
+print(Fore.RESET, end='')
+
 vosk.SetLogLevel(-1)  # удаляем логи
+
+speakrate_set = 4
+current_voice = "Microsoft Pavel Mobile"
 
 # Инициализация распознавателя с начальной моделью
 current_model = Model(model1)
@@ -174,35 +202,6 @@ def change_model(new_model):
 
 
 speak.Volume = 100  # громкость
-
-print(Fore.RESET, end='')
-
-
-#: повтор нажатий - клавиша плюс цифра
-def numbers_key():
-    if len(words) == 1:
-        if len(kps) == 1:
-            key_press(*kps)  # ! назначаем kps клавишу в скрипте например kps = 'right'  kps = 'down'
-        elif len(kps) > 1:
-            keyhot(*kps)
-    elif len(words) > 1:
-        try:
-            if len(kps) == 1:
-                one_num = sum(words_num[word] for word in words[1:])
-                print(f"{YEL}*{LYE}{one_num}{LCY}", end="")
-                for ione in range(one_num):
-                    key_press(*kps)
-            elif len(kps) > 1:
-                one_num = sum(words_num[word] for word in words[1:])
-                print(f"{YEL}*{LYE}{one_num}{LCY}", end="")
-                for ione in range(one_num):
-                    keyhot(*kps)
-        except KeyError:
-            print(f"\b{LCY} кнопка{WHI}({GRE}{words[0]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
-
-
-speakrate_set = 4
-current_voice = "Microsoft Pavel Mobile"
 
 
 def speak_irina_tts(speak_text):  # для озвучки ириной
@@ -1076,22 +1075,25 @@ if __name__ == '__main__':
                     click_print_cor(1478, 1325)
                     time.sleep(2)
                     click_print_cor(1478, 1325)
-                elif len(words) == 2 and \
-                        words[0] in ('пуш', 'закинь', 'закинуть', 'закидывая', 'закидывать') and \
-                        words[1] in ('камент', 'комент', 'коммент', 'камент'):  #: авто пуш коммент
+                # ?
+                elif re.search('закинь\sкамент''заракинь\sкамрент', prompt):
+
+                #  elif len(words) == 2 and \
+                #          words[0] in ('пуш', 'закинь', 'закинуть', 'закидывая', 'закидывать') and \
+                #          words[1] in ('камент', 'комент', 'коммент', 'камент'):  #: авто пуш коммент
                     keyhot('alt', '0')  # вызов окна комментирования
-                    time.sleep(.1)
-                    click_print_cor(1282, 1084)  # галка в Changes
-                    time.sleep(.1)
-                    click_print_cor(1478, 1286)  # клик в строку
-                    click_print_cor(1478, 1286)
-                    click_print_cor(1478, 1286)  # три раза чтобы выделить весь текст
-                    key_press("delete")
-                    time.sleep(.1)
-                    keyhot('ctrl', 'v')
-                    click_print_cor(1478, 1325)  # кнопка Commit and Push...
-                    time.sleep(2)
-                    click_print_cor(1478, 1325)  # кнопка Push там же
+                    #  time.sleep(.1)
+                    #  click_print_cor(1282, 1084)  # галка в Changes
+                    #  time.sleep(.1)
+                    #  click_print_cor(1478, 1286)  # клик в строку
+                    #  click_print_cor(1478, 1286)
+                    #  click_print_cor(1478, 1286)  # три раза чтобы выделить весь текст
+                    #  key_press("delete")
+                    #  time.sleep(.1)
+                    #  keyhot('ctrl', 'v')
+                    #  click_print_cor(1478, 1325)  # кнопка Commit and Push...
+                    #  time.sleep(2)
+                    #  click_print_cor(1478, 1325)  # кнопка Push там же
 
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
