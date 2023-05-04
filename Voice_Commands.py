@@ -1058,42 +1058,6 @@ if __name__ == '__main__':
                         key_press('tab')
                     key_up('alt')
 
-                #: пишарм и гитхаб
-                elif prompt in ('"камент"', '"комент"', '"коммент"'):
-                    keyhot('alt', '0')
-                elif prompt in ('"пуш"', '"закинь"', '"закинуть"'):  #: авто пуш
-                    keyhot('alt', '0')
-                    time.sleep(.1)
-                    click_print_cor(1282, 1084)
-                    time.sleep(.1)
-                    click_print_cor(1478, 1286)
-                    click_print_cor(1478, 1286)
-                    click_print_cor(1478, 1286)
-                    key_press("delete")
-                    time.sleep(.1)
-                    key_write('_')
-                    click_print_cor(1478, 1325)
-                    time.sleep(2)
-                    click_print_cor(1478, 1325)
-                # ?
-                elif re.search('закинь\sкамент''заракинь\sкамрент', prompt):
-
-                #  elif len(words) == 2 and \
-                #          words[0] in ('пуш', 'закинь', 'закинуть', 'закидывая', 'закидывать') and \
-                #          words[1] in ('камент', 'комент', 'коммент', 'камент'):  #: авто пуш коммент
-                    keyhot('alt', '0')  # вызов окна комментирования
-                    #  time.sleep(.1)
-                    #  click_print_cor(1282, 1084)  # галка в Changes
-                    #  time.sleep(.1)
-                    #  click_print_cor(1478, 1286)  # клик в строку
-                    #  click_print_cor(1478, 1286)
-                    #  click_print_cor(1478, 1286)  # три раза чтобы выделить весь текст
-                    #  key_press("delete")
-                    #  time.sleep(.1)
-                    #  keyhot('ctrl', 'v')
-                    #  click_print_cor(1478, 1325)  # кнопка Commit and Push...
-                    #  time.sleep(2)
-                    #  click_print_cor(1478, 1325)  # кнопка Push там же
 
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:

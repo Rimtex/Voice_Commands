@@ -279,7 +279,10 @@ print(f"""
  if re.match(r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)', words[0]) {SRA}
  re.search ищет совпадение с образцом в любом месте строки, в то время как 
  re.match ищет совпадение только в начале строки.
-\n число длинны строки = {Fore.LIGHTCYAN_EX}{len(str('число длинны строки'))}{Fore.LIGHTRED_EX} 'Style.RESET_ALL!!!'{Fore.WHITE}""", sep='', end='')
+ 
+     elif re.match('"закинь камент|"закинуть коммент|"закинуть камент|"закинь коммент', prompt):
+        # {LRE} ! "фраза вначале строки начинается с кавычек
+\n {LYE}число длинны строки = {Fore.LIGHTCYAN_EX}{len(str('число длинны строки'))}{Fore.WHITE}""", sep='', end='')
 print(f"""{Fore.WHITE} hotkey{Fore.WHITE}('{Fore.LIGHTGREEN_EX}winleft{Fore.WHITE}', '{Fore.LIGHTGREEN_EX}tab{Fore.WHITE}')""")
 
 print(f"""\
