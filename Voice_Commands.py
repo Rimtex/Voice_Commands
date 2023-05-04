@@ -690,7 +690,8 @@ if __name__ == '__main__':
                               "3 ! переводчик не работает с Вэ!Пэ!эН!"
                               "4 ! иногда ассистент морозица. возможно помогает tts"
                               "5 ! грёбаные кавычки!"
-                              "6 ! при старте на русской раскладке некоторые команды не работают")
+                              "6 ! при старте на русской раскладке некоторые команды не работают"
+                              "7 ! планет впн конфликтует с торрентом")
 
                 #: идеи
                 elif len(words) == 2 and words[1] in ('идеи', 'идея', 'идею', 'идейку', 'идей'):
@@ -800,12 +801,12 @@ if __name__ == '__main__':
                     keyhot('shiftleft', 'altleft')
                     speak_tts(f"ладно")
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
-                    os.startfile(f"Voice_neuro_responder.py")  # запускает нейромодель
+                    #  os.startfile(f"Voice_neuro_responder.py")  # запускает нейромодель
                     loader.smile_gen_erator()
-                    speak_tts("конечно. ты прав!")  # диктует вам мудрость
-                    time.sleep(3.5)
+                    #  speak_tts("конечно. ты прав!")  # диктует вам мудрость
+                    time.sleep(2.5)
                     speak_tts(vocabulary.random_response_aphorism())  # диктует модели мудрость
-                    time.sleep(.5)
+                    time.sleep(2.5)
                     speak_tts("ответ")  # говорит триггер для старта запроса модели
                 elif len(words) == 1 and words[0] == "ублюдок":
                     print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')

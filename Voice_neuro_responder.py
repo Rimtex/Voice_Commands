@@ -1,3 +1,5 @@
+import time
+
 from googletrans import Translator
 from Voice_Commands import stream, rec, speak, speak_tts
 from colorama import init, Fore, Style
@@ -68,6 +70,8 @@ if __name__ == '__main__':
                             print(f'{LCY}translate: {YEL}{trans.text}{SRA}')
                             print(LCY + " ggml-gpt4all-l13b-snoozy: \n" + LGR + responegpt)
                             speak_tts(gpt.text)
+                            time.sleep(2.5)
+                            speak_tts("согласен")
                             break
                         if prompt in ('"заново"', '"снова"', '"сначала"', '"сброс"', '"сбросить"'):
                             print(f' {LRE}X{SRA}\n', end='')
