@@ -309,7 +309,7 @@ if __name__ == '__main__':
                             key_press("enter")
                         except Exception as e:
                             print(traceback.format_exc())
-                            print(f" (!o_O): {LRE}переводчик:", e)
+                            print(f" (!o_O): {LRE}! переводчик не работает с Вэ!Пэ!эН! ", e)
                     #: окей гугл
                     elif len(words) >= 2 and (words[0] == 'окей' and words[1] == 'гугл'):
                         if prompt == '"окей гугл"':

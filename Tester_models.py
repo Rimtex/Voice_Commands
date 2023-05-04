@@ -1,4 +1,4 @@
-from pygpt4all.models.gpt4all import GPT4All
+
 from colorama import Fore, Style, init
 
 RED = Fore.RED
@@ -14,26 +14,27 @@ init(convert=True)
 # n_predict - количество символов влияет на длину генерируемого текста
 # ! нужно выяснить на что влияют другие настройки
 
+
+from pygpt4all.models.gpt4all import GPT4All
 model = GPT4All('./gpt4all/pygpt4all/models/ggml-gpt4all-l13b-snoozy.bin')
 
 
-def new_text_callback(text: str):  # функция печати текста по символам
-    print(LGR + text, end="")
+# def new_text_callback(text: str):  # функция печати текста по символам
+#     print(LGR + text, end="")
 
 
-def generate_response(userinput):
-    n_predict = len(userinput)  #: предикт можно добавлять пробелами
-    response = model.generate(userinput, n_predict=n_predict, new_text_callback=new_text_callback)
-    # response = model.generate(user_input, n_predict=55, n_threads=8)
-    return response
+#  def generate_response(userinput):
+#      n_predict = len(userinput)  #: предикт можно добавлять пробелами
+#      response = model.generate(userinput, n_predict=n_predict, new_text_callback=new_text_callback)
+#      # response = model.generate(user_input, n_predict=55, n_threads=8)
+#      return response
 
 
-for token in model.generate("Tell me a joke ?\n"):
-    print(token, end='', flush=True)
-
+#  Интерактивный диалог
+#  Вы можете настроить интерактивный диалог, просто оставив model переменную активной:
 while True:
     try:
-        prompt = input("You: ", flush=True)
+        prompt = input("You: ")
         if prompt == '':
             continue
         print(f"AI:", end='')
