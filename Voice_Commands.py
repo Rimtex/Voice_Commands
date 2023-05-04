@@ -126,27 +126,6 @@ def cursor_direction():
         pyautogui.moveRel(0, -numss)
 
 
-def speak_tts(speak_text):  # стандартная озвучка по умолчанию
-    for voice in voices:
-        if voice.GetAttribute("Name") == "Microsoft Pavel Mobile":
-            speak.Voice = voice
-            speak.speak(speak_text)
-            tts.runAndWait()
-            speak.Rate = 4
-
-
-def speak_irina_tts(speak_text):  # для озвучки ириной
-    for voice in voices:
-        if voice.GetAttribute("Name") == "Microsoft Irina Desktop":
-            speak.Voice = voice
-            speak.speak(speak_text)
-            tts.runAndWait()
-            speak.Rate = 4
-
-
-random_voice = [speak_tts, speak_irina_tts]
-
-
 def play_music():  # для проигрывания случайной музыки ! обязательно нужен полный путь !!
     music_files = []
     for root, dirs, files_op in os.walk(dir_path):
@@ -222,6 +201,29 @@ def numbers_key():
             print(f"\b{LCY} кнопка{WHI}({GRE}{words[0]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
 
 
+speakrate_set = 4
+
+
+def speak_irina_tts(speak_text):  # для озвучки ириной
+    for voice in voices:
+        if voice.GetAttribute("Name") == "Microsoft Irina Desktop":
+            speak.Rate = speakrate_set
+            speak.Voice = voice
+            speak.speak(speak_text)
+            tts.runAndWait()
+
+
+def speak_tts(speak_text):  # стандартная озвучка по умолчанию
+    for voice in voices:
+        if voice.GetAttribute("Name") == "Microsoft Pavel Mobile":
+            speak.Rate = speakrate_set
+            speak.Voice = voice
+            speak.speak(speak_text)
+            tts.runAndWait()
+
+
+random_voice = [speak_tts, speak_irina_tts]
+
 if __name__ == '__main__':
     tts = pyttsx3.init()
     tts.runAndWait()
@@ -230,7 +232,6 @@ if __name__ == '__main__':
     while True:
         if rec.AcceptWaveform(stream.read(4000)):  # {   "text" : "слова" } бну так пишешьпишетка вот така
             try:
-                speak.Rate = 4
                 prompt = rec.Result()[13:-2]
                 words = prompt[1:-1].split()
                 # конвертер команд старт
@@ -363,8 +364,9 @@ if __name__ == '__main__':
                                 os.startfile(f"\\{path_to_shortcut}ассистент")
                                 time.sleep(2.1)
                                 exit()
-                            if prompt != '""':  # печать слов
+                            if prompt != '""':  # печать в консоль
                                 print(SRA + prompt[1:-1] + random.choice(colors), sep=' ', end=' ')
+
                 #: для экстренного отключения звука
                 elif any(words in prompt[1:-1] for words in
                          ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) or \
@@ -372,7 +374,7 @@ if __name__ == '__main__':
                     print(LCY + '♫' + SRA, end='')
                     key_press('volumemute')
 
-                #: установка громкости
+                #: установка громкости системы
                 elif len(words) == 1 and words[0] == 'громкость':
                     print(LCY + '♪' + SRA, end='')
                     key_press('volumemute')
@@ -381,8 +383,22 @@ if __name__ == '__main__':
                     on_num = sum(words_num[word] for word in words[1:])
                     for i in range(50):  # ! костыль
                         pyautogui.press('volumedown')
-                    for i in range(on_num // 2):
+                    for i in range(on_num):  # // 2
                         pyautogui.press('volumeup')
+
+                #: установка скорости озвучивания голоса # words[0] in( 'скорость','озвучка','голосом' )
+                elif len(words) >= 2 \
+                        and re.match(r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)', words[0]) \
+                        and words[1] in words_num:
+                    speak_num = words_num[words[1]]
+                    speakrate_set = speak_num
+                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}♪ ' + LGR, end='')
+                    sk_show = '⁞'
+                    for i in range(speak_num):
+                        print(sk_show, sep='', end='', flush=True)
+                        time.sleep(0.03)
+                    print(LCY + f' {GRE}{speak_num}{LCY}', end='')
+                    speak_tts(f'скорость озвучки {speak_num}')
 
                 #: для команд
                 elif prompt in ('"показать команды"', '"покажи команды"'):
@@ -653,7 +669,6 @@ if __name__ == '__main__':
                     if words[0] in ('озвучь', 'зачитай', 'прочти', 'озвучить'):  #: озвучка идей
                         file = open(ideas, "r", encoding='utf-8')
                         contents = file.read()
-                        speak.Rate = 2
                         speak_tts(contents)
                     elif words[0] in ('какие', 'покажи', 'где', 'показывай'):  #: отображение идей
                         file = open(ideas, "r", encoding='utf-8')

@@ -107,17 +107,17 @@ cs1 = str(cq9
           .replace(" def ", " определить ").replace(" del ", " удалить ").replace(" elif ", " иначе если ")
           .replace(" else ", " иначе ").replace(" except ", " исключение ").replace(" finally ", " в конечном итоге ")
           .replace(" for ", " для ").replace(" from ", " из ").replace(" global ", " глобальный ")
-          .replace(" if ", " если ").replace(" import ", " импорт ").replace(" in ", "  в  ").replace(" is ", " это ")
+          .replace(" if ", " если ").replace(" import ", " импорт ").replace(" in ", " в ").replace(" is ", " это ")
           .replace(" lambda ", " лямбда ").replace(" nonlocal ", " нелокальный ").replace(" not ", " не ")
           .replace(" or ", " или ").replace(" pass ", " пропуск ").replace(" raise ", " поднять ")
           .replace(" return ", " вернуть ").replace(" try ", " попытаться ").replace(" while ", " пока ")
           .replace(" with ", " с ").replace(" yield ", " передавать ")
           .replace(" prompt ", " фраза ").replace(" prompt[1:-1] ", " фразe ")
           .replace("word ", "слово ").replace("words", "слов").replace("any", "любое")
-          .replace("слов[0]", "первое слово").replace("слов[1]", "второе слово").replace("слов[-1]", "последнее слово")
+          .replace("слов[0]", "первое_слово").replace("слов[1]", "второе_слово").replace("слов[-1]", "последнее_слово")
           .replace(" len", " число")
-          .replace(" any ", " любое ")
-
+          .replace(" any ", " любое ").replace("range", "любое")
+          .replace(" words_num ", " словарь_чисел ")
           )
 
 #: удаление лишнего
