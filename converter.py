@@ -68,86 +68,70 @@ with open(filename, encoding="utf-8") as f:
 # print(ctline)
 cta = ctline
 
-#:  замена условий и тонкая настройка и покраски
-ct1 = str(cta.replace(f"\n", f"\n{Style.RESET_ALL}"))
-ct2 = str(ct1.replace(f"", f""))
-ct3 = str(ct2.replace(f'', f''))
-ct4 = str(ct3.replace(f"", f""))
-ct5 = str(ct4.replace(f"", f""))
-ct6 = str(ct5.replace("", ""))
-ct7 = str(ct6.replace(f",", f"{LYE},{SRA}"))
-ct8 = str(ct7.replace(f"(", f"{Style.RESET_ALL}("))
-ct9 = str(ct8.replace(f"'", f"{Style.RESET_ALL}'{Fore.LIGHTGREEN_EX}"))
-cr1 = str(ct9.replace(f'"', f'{Style.RESET_ALL}"{Fore.LIGHTGREEN_EX}'))
-cr2 = str(cr1.replace(f"", f""))
-cr3 = str(cr2.replace(f"", f""))
-cr4 = str(cr3.replace(f"", f""))
-cr5 = str(cr4.replace(f")", f"{Style.RESET_ALL})"))
-cr6 = str(cr5.replace(f"", f""))
-cr7 = str(cr6.replace(f" or ", f"{Style.RESET_ALL} or "))
-cr8 = str(cr7.replace(f" and ", f"{Style.RESET_ALL} and "))
-cr9 = str(cr8.replace(f"#: ", f"{Fore.LIGHTCYAN_EX}#: "))
-
-cq1 = str(cr9.replace(f"# ", f"{Fore.LIGHTBLUE_EX}# "))
-cq2 = str(cq1.replace(f"!", f"{Fore.LIGHTRED_EX}!"))
-cq3 = str(cq2.replace(f"", f""))
-cq4 = str(cq3.replace(f"random.choice(colors)", f"{Fore.MAGENTA}random.choice(colors)"))
-cq5 = str(cq4.replace(f"Fore", f"{Fore.LIGHTMAGENTA_EX}Fore"))
-cq6 = str(cq5.replace(f"", f""))
-cq7 = str(cq6.replace(f"", f""))
-cq8 = str(cq7.replace(f'', f''))
-cq9 = str(cq8.replace(f'', f''))
+#: замена условий
+#: покраски
+paint = str(cta
+            .replace(f"\n", f"\n{SRA}")
+            .replace(f",", f"{LYE},{SRA}")
+            .replace(f"(", f"{SRA}(")
+            .replace(f"'", f"{SRA}'{LGR}")
+            .replace(f'"', f'{SRA}"{LGR}')
+            .replace(f")", f"{SRA})")
+            .replace(f" or ", f"{SRA} or ")
+            .replace(f" and ", f"{SRA} and ")
+            .replace(f"#: ", f"{LCY}#: ")
+            .replace(f"# ", f"{CYA}# ")
+            .replace(f"!", f"{LRE}!")
+            .replace(f"random.choice(colors)", f"{MAG}random.choice(colors)")
+            .replace(f"Fore", f"{LMA}Fore")
+            )
 
 #: перевод значений
-cs1 = str(cq9
-          .replace(" False ", " ложь ").replace(" None ", " ничего ").replace(" True ", " истина ")
-          .replace(" and ", " и ").replace(" as ", " как ").replace(" assert ", " утверждать ")
-          .replace(" async ", " асинхронный ").replace(" await ", " ожидать ").replace(" break ", " прервать ")
-          .replace(" class ", " класс ").replace(" words ", " слов ").replace(" continue ", " продолжить ")
-          .replace(" def ", " определить ").replace(" del ", " удалить ").replace(" elif ", " иначе если ")
-          .replace(" else ", " иначе ").replace(" except ", " исключение ").replace(" finally ", " в конечном итоге ")
-          .replace(" for ", " для ").replace(" from ", " из ").replace(" global ", " глобальный ")
-          .replace(" if ", " если ").replace(" import ", " импорт ").replace(" in ", " в ").replace(" is ", " это ")
-          .replace(" lambda ", " лямбда ").replace(" nonlocal ", " нелокальный ").replace(" not ", " не ")
-          .replace(" or ", " или ").replace(" pass ", " пропуск ").replace(" raise ", " поднять ")
-          .replace(" return ", " вернуть ").replace(" try ", " попытаться ").replace(" while ", " пока ")
-          .replace(" with ", " с ").replace(" yield ", " передавать ")
-          .replace(" prompt ", " фраза ").replace(" prompt[1:-1] ", " фразe ")
-          .replace("word ", "слово ").replace("words", "слов").replace("any", "любое")
-          .replace("слов[0]", "первое_слово").replace("слов[1]", "второе_слово").replace("слов[-1]", "последнее_слово")
-          .replace(" len", " число")
-          .replace(" any ", " любое ").replace("range", "любое")
-          .replace(" words_num ", " словарь_чисел ")
-          )
+trans = str(paint
+            .replace(" False ", " ложь ").replace(" None ", " ничего ").replace(" True ", " истина ")
+            .replace(" and ", " и ").replace(" as ", " как ").replace(" assert ", " утверждать ")
+            .replace(" async ", " асинхронный ").replace(" await ", " ожидать ").replace(" break ", " прервать ")
+            .replace(" class ", " класс ").replace(" words ", " слов ").replace(" continue ", " продолжить ")
+            .replace(" def ", " определить ").replace(" del ", " удалить ").replace(" elif ", " иначе если ")
+            .replace(" else ", " иначе ").replace(" except ", " исключение ").replace(" finally ", " в конечном итоге ")
+            .replace(" for ", " для ").replace(" from ", " из ").replace(" global ", " глобальный ")
+            .replace(" if ", " если ").replace(" import ", " импорт ").replace(" in ", " в ").replace(" is ", " это ")
+            .replace(" lambda ", " лямбда ").replace(" nonlocal ", " нелокальный ").replace(" not ", " не ")
+            .replace(" or ", " или ").replace(" pass ", " пропуск ").replace(" raise ", " поднять ")
+            .replace(" return ", " вернуть ").replace(" try ", " попытаться ").replace(" while ", " пока ")
+            .replace(" with ", " с ").replace(" yield ", " передавать ")
+            .replace(" prompt ", " фраза ")
+            .replace(" prompt[1:-1] ", " фразe ")
+            .replace("word ", "слово ")
+            .replace("words", "слов")
+            .replace("слов[0]", "первое_слово")
+            .replace("слов[1]", "второе_слово")
+            .replace("слов[-1]", "последнее_слово")
+            .replace("any", "любое")
+            .replace(" len", " число")
+            .replace(" any ", " любое ").replace(" range", " любое")
+            .replace(" words_num ", " словарь_чисел ")
+            )
 
 #: удаление лишнего
-cs2 = str(cs1
-          .replace(" иначе ", "")
-          .replace(" если ", "")
-          .replace("", "")
-          .replace("", "")
-          .replace("", "")
-          .replace("", "")
-          .replace("", "")
-          .replace("", "")
-          .replace("", "")
-          .replace("", "")
-          .replace("", "")
-          )
+delete = str(trans
+             .replace(" иначе ", "")
+             .replace(" если ", "")
+             )
 
 
-def print_cq9():  # результат
-    responses = cq9
+def convert_paint():  # результат
+    responses = paint
     return responses
 
 
-def print_cs1():  # результат с переводом
-    responses = cs1
+def convert_trans():  # результат с переводом
+    responses = trans
     return responses
 
 
-def print_cs2():  # результат с удалением лишнего
-    responses = cs2
+def convert_delete():  # результат с удалением лишнего
+    responses = delete
     return responses
 
 #  if re.search('[а-яА-Я]|Fore|random.choice(colors)|RED|LRE|YEL|LYE|BLU|LBL|CYA|LCY|GRE|LGR|MAG|LMA|WHI|SRA|',line):

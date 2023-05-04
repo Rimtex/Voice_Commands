@@ -54,7 +54,7 @@ import loader
 from loader import loader_screen_rimtex
 import vocabulary
 from vocabulary import words_num
-from converter import print_cq9, print_cs1, print_cs2
+from converter import convert_paint, convert_trans, convert_delete
 
 from address_config import path_to_shortcut, ideas, reminder, requirements_path, dir_path, model1, model2, model3, \
     model4
@@ -430,11 +430,11 @@ if __name__ == '__main__':
 
                 #: для команд
                 elif prompt in ('"показать команды"', '"покажи команды"'):
-                    print(f'\n{print_cq9()}')
+                    print(f'\n{convert_paint()}')
                 elif prompt in ('"команды русским"', '"команды перевод"', '"покажи русским"'):
-                    print(f'\n{print_cs1()}')
+                    print(f'\n{convert_trans()}')
                 elif prompt in ('"покажи"', '"показать"'):
-                    print(f'\n{print_cs2()}')
+                    print(f'\n{convert_delete()}')
                 elif prompt in ('"проверка"', '"проверить"', '"проверяем"', '"проверь"'):
                     keyhot('alt', 'tab')
                     time.sleep(.1)
@@ -479,32 +479,32 @@ if __name__ == '__main__':
                     kps = ['browserforward']
                     numbers_key()
                 #: клавиши стрелки + число для повторений
-                elif 6 > len(words) > 0 and words[0] in ('лево', 'влево', 'лева', 'налево', 'левого'):
+                elif 7 > len(words) > 0 and words[0] in ('лево', 'влево', 'лева', 'налево', 'левого'):
                     kps = ['left']
                     numbers_key()
-                elif 6 > len(words) > 0 and words[0] in ('право', 'вправо', 'права', 'направо'):
+                elif 7 > len(words) > 0 and words[0] in ('право', 'вправо', 'права', 'направо'):
                     kps = ['right']
                     numbers_key()
-                elif 6 > len(words) > 0 and words[0] in ('верх', 'вверх', 'наверх'):
+                elif 7 > len(words) > 0 and words[0] in ('верх', 'вверх', 'наверх'):
                     kps = ['up']
                     numbers_key()
-                elif 6 > len(words) > 0 and words[0] in ('низ', 'вниз'):
+                elif 7 > len(words) > 0 and words[0] in ('низ', 'вниз'):
                     kps = ['down']
                     numbers_key()
                 #: комбинации клавиш + число для повторений
-                elif 6 > len(words) > 0 and words[0] in ('уничтожь', 'уничтожить', 'уничтожать', 'уничтожает'):
+                elif 7 > len(words) > 0 and words[0] in ('уничтожь', 'уничтожить', 'уничтожать', 'уничтожает'):
                     kps = ['hift', 'delete']
                     numbers_key()
-                elif 6 > len(words) > 0 and words[0] in ('строка', 'строчка', 'строку'):
+                elif 7 > len(words) > 0 and words[0] in ('строка', 'строчка', 'строку'):
                     kps = ['ctrl', 'enter']
                     numbers_key()
-                elif 6 > len(words) > 0 and words[0] in ('отмени', 'отмена', 'отменить', 'отменил', 'отмена'):
+                elif 7 > len(words) > 0 and words[0] in ('отмени', 'отмена', 'отменить', 'отменил', 'отмена'):
                     kps = ['ctrl', 'z']
                     numbers_key()
-                elif 6 > len(words) > 0 and words[0] in ('верни', 'вернул', 'вернуть', 'вернуть'):
+                elif 7 > len(words) > 0 and words[0] in ('верни', 'вернул', 'вернуть', 'вернуть'):
                     kps = ['shift', 'ctrl', 'z']
                     numbers_key()
-                elif 6 > len(words) > 0 and words[0] in ('вставь', 'ставка', 'вставка', 'вставить', 'ставь'):
+                elif 7 > len(words) > 0 and words[0] in ('вставь', 'ставка', 'вставка', 'вставить', 'ставь'):
                     kps = ['ctrlleft', 'v']
                     numbers_key()
 
@@ -1076,7 +1076,7 @@ if __name__ == '__main__':
 
                 if prompt != '""':
                     if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # проверка на запись
-                        script_writing_function(prompt)  #:  для скриптов
+                        script_writing_function(prompt)  #:  для скриптов и печати в keyboard_scripts.py
 
             # конвертер команд конец
             except Exception as e:
