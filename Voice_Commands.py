@@ -386,7 +386,7 @@ if __name__ == '__main__':
                     for i in range(on_num):  # // 2
                         pyautogui.press('volumeup')
 
-                #: установка скорости озвучивания голоса # words[0] in( 'скорость','озвучка','голосом' )
+                #: установка скорости озвучивания голоса  # words[0] in( 'скорость','озвучка','голосом' )
                 elif len(words) >= 2 \
                         and re.match(r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)', words[0]) \
                         and words[1] in words_num:
