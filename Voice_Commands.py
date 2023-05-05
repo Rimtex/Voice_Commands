@@ -266,6 +266,36 @@ if __name__ == '__main__':
                         win32api.keybd_event(0x14, 0x45, 0x1, 0)  # п1 выключает Caps Lock
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
 
+                #: для команд
+                elif prompt in ('"показать команды"', '"покажи команды"'):
+                    print(f'\n{convert_paint()}')
+                elif prompt in ('"команды русским"', '"команды перевод"', '"покажи русским"'):
+                    print(f'\n{convert_trans()}')
+                elif prompt in ('"покажи"', '"показать"'):
+                    print(f'\n{convert_delete()}')
+                elif prompt in ('"проверка"', '"проверить"', '"проверяем"', '"проверь"'):
+                    keyhot('alt', 'tab')
+                    time.sleep(.1)
+                    os.startfile(f"{path_to_shortcut}ассистент")
+                    time.sleep(1)
+                    # click_print_cor(762, 14)
+                    keyhot('winleft', 'Up')
+                    exit()
+
+                #: для быстрого поиска из буфера
+                elif len(words) > 0 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
+                    if len(words) == 1:
+                        keyhot('ctrl', 'f')
+                    if len(words) > 1:
+                        # os.startfile(f"{path_to_shortcut}питон")  # стартуем нужную прогу
+                        keywrite = prompt[len(words[0]) + 2:-1]  # минус первое слово
+                        print(f"{LGR}˃{LCY} п {LMA}? ", end='')
+                        time.sleep(.1)
+                        click_print()
+                        keyhot('ctrl', 'f')
+                        keyboard.write(f"{keywrite}")
+                        key_press('enter')
+
                 #: смена модели распознавания
                 elif len(words) == 2 and any(words in prompt[1:-1] for words in ('модель', 'model')):
                     try:
@@ -332,20 +362,6 @@ if __name__ == '__main__':
                                 print("\nhttps://www.google.com/search?q=" + quote(prompt[11:-1]))
                             except OSError:
                                 print(LCY + "Г" + SRA, end='')
-
-                #: для быстрого поиска из буфера
-                elif len(words) > 0 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
-                    if len(words) == 1:
-                        keyhot('ctrl', 'f')
-                    if len(words) > 1:
-                        # os.startfile(f"{path_to_shortcut}питон")  # стартуем нужную прогу
-                        keywrite = prompt[len(words[0]) + 2:-1]  # минус первое слово
-                        print(f"{LGR}˃{LCY} п {LMA}? ", end='')
-                        time.sleep(.1)
-                        click_print()
-                        keyhot('ctrl', 'f')
-                        keyboard.write(f"{keywrite}")
-                        key_press('enter')
 
                 #: режим паузы
                 elif prompt in ('"паузе"', '"пауза"', '"заблокировать"', '"блокировка"', '"остановка"',
@@ -429,22 +445,6 @@ if __name__ == '__main__':
                     switch_voice("Microsoft Irina Desktop")  # Переключение на голос Ирины
                     speak_irina_tts("Microsoft Irina Desktop")  # Озвучивание текста голосом Ирины
                     print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Irina ' + LGR, end='')
-
-                #: для команд
-                elif prompt in ('"показать команды"', '"покажи команды"'):
-                    print(f'\n{convert_paint()}')
-                elif prompt in ('"команды русским"', '"команды перевод"', '"покажи русским"'):
-                    print(f'\n{convert_trans()}')
-                elif prompt in ('"покажи"', '"показать"'):
-                    print(f'\n{convert_delete()}')
-                elif prompt in ('"проверка"', '"проверить"', '"проверяем"', '"проверь"'):
-                    keyhot('alt', 'tab')
-                    time.sleep(.1)
-                    os.startfile(f"{path_to_shortcut}ассистент")
-                    time.sleep(1)
-                    # click_print_cor(762, 14)
-                    keyhot('winleft', 'Up')
-                    exit()
 
                 #: нажатие клавиш + число для повторений
                 elif 7 > len(words) > 0 and words[0] in ('контрол', 'контур', 'контр', 'контроль'):
@@ -577,7 +577,7 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and all(word in words_num for word in words):
                     nums = sum(words_num[word] for word in words[0:])
                     key_write(f"{nums}")
-                #: подсчёт длинны строки, количества символов
+                #: подсчёт длинны строки - количества символов
                 elif prompt in ('"посчитай"', '"под считай"', '"количество"', '"количество символов"'):
                     win32clipboard.OpenClipboard()
                     lenofsymbols = len(str(win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)))
@@ -585,9 +585,9 @@ if __name__ == '__main__':
                     print(f'{YEL}{lenofsymbols}{LCY}', end='')
                     speak_tts("количество символов: " + f"{lenofsymbols}")
                 #: очистка буфера
-                elif any(word in prompt[1:-1] for word in ('очистка', 'очистить', 'чистить', 'чистка', 'почистить',
-                                                           'очистить', 'очистить')) and \
-                        any(word in prompt[1:-1] for word in ('буфер', 'буфера')):
+                elif any(word in prompt[1:-1]
+                         for word in ('очистка', 'очистить', 'чистить', 'чистка', 'почистить', 'очистить', 'очистить')) \
+                        and any(word in prompt[1:-1] for word in ('буфер', 'буфера')):
                     awwx, awwy = pyautogui.position()
                     keyhot('winleft', 'r')
                     time.sleep(0.01)
@@ -910,10 +910,15 @@ if __name__ == '__main__':
                 #: работа с мышкой
                 elif prompt == '"координаты"':
                     x, y = pyautogui.position()
-                    print(f"click_print_cor{LYE}({x}, {y})", end='')  # координаты курсора
+                    print(f"\nclick_print_cor{LYE}({x}, {y})", end='')  # - координаты курсора
                 elif prompt in ('"тэк"', '"клик"', '"кликни"', '"кликай"', '"кликнуть"'):
                     click_print()
-                #: клик плюс число
+                #: зажать - отпустить
+                elif len(words) == 1 and words[0] in ('зажми', 'зажать', 'зажал', 'зажимать', 'схвати', 'схватить'):
+                    pyautogui.mouseDown()
+                elif len(words) == 1 and words[0] in ('отпусти', 'отпускай', 'отпустить', 'пусти', 'отпускай', 'отжал'):
+                    pyautogui.mouseUp()
+                #: клик #+ число
                 elif 7 > len(words) > 1 and words[0] in ('клик', 'кликни', 'кликни', 'кликай', 'кликнуть'):
                     try:
                         num = sum(words_num[word] for word in words[1:])
@@ -921,15 +926,12 @@ if __name__ == '__main__':
                             click_print()
                     except KeyError:
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
-                elif len(words) == 1 and words[0] in ('зажми', 'зажать', 'зажал', 'зажимать', 'схвати', 'схватить'):
-                    pyautogui.mouseDown()
-                elif len(words) == 1 and words[0] in ('отпусти', 'отпускай', 'отпустить', 'пусти', 'отпускай', 'отжал'):
-                    pyautogui.mouseUp()
+                #: курсор в центр экрана
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
-                    screen_width, screen_height = pyautogui.size()  # Получение размеров экрана
-                    pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # курсор в центр экрана
+                    screen_width, screen_height = pyautogui.size()  # - Получение размеров экрана
+                    pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # - курсор в центр экрана
 
-                #: промотка колеса плюс число
+                #: промотка колеса #+ число
                 elif 5 > len(words) > 0 and words[0] in ('промотай', 'мотай'):
                     if len(words) == 1:
                         print(f"{YEL}↓{LCY}∆ ", end="")
@@ -949,7 +951,7 @@ if __name__ == '__main__':
                             pyautogui.scroll(1500)
                         print(f"{YEL}↑{GRE}{num}{LCY}∆ ", end="")
 
-                #: ctrl плюс промотка колеса плюс число
+                #: ctrl плюс промотка колеса #+ число
                 elif 5 > len(words) > 0 and words[0] in ('дальше', 'подальше'):
                     if len(words) == 1:
                         key_down('ctrl')
@@ -973,32 +975,7 @@ if __name__ == '__main__':
                             pyautogui.scroll(1500)
                         key_up('ctrl')
 
-                elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-                    click_print_cor(411, 1439)
-                elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
-                    click_print_cor(2, 9)
-
-                #: для выебонов
-                elif prompt == '"ты робот"':
-                    keyhot('winleft', 'tab')
-                    keyhot('winleft', 'tab')
-                    time.sleep(1)
-                    speak_tts('и нет у меня')
-                    pyautogui.moveRel(100, 0, duration=0.25)
-                    pyautogui.moveRel(-50, 86, duration=0.25)
-                    pyautogui.moveRel(-50, -86, duration=0.25)
-                    pyautogui.moveTo(256, 962, duration=0.25)
-                    time.sleep(0.5)
-                    print(LRE + "♥", end='')
-                    speak_tts('сердца')
-                    click_print()
-                elif prompt in ('"подтверди"', '"ты человек"'):
-                    time.sleep(0.2)
-                    pyautogui.moveTo(256, 962)
-                    time.sleep(0.2)
-                    click_print()
-
-                #: курсор + направление(я) + числа
+                #: курсор + направление(я) #+ числа
                 elif 7 > len(words) > 1 and words[0] in ('курсор', 'корсар', 'курсора', 'курсором'):
                     try:
                         if re.match(r'^.{0,3}прав.{0,3}$', words[1]):
@@ -1036,7 +1013,7 @@ if __name__ == '__main__':
                     except Exception as e:
                         print(f"{LGR} {words[0]} + направление(я) + {LCY}числа {YEL}!= {LRE}", e, end='')
 
-                #: рисование квадрата
+                #: рисование квадрата #+ числа
                 elif 7 > len(words) > 1 and words[0] in ('нарисуй', 'рисуй', 'рисунок', 'рисования', 'рисование') and \
                         words[1] == 'квадрат':
                     try:
@@ -1053,15 +1030,15 @@ if __name__ == '__main__':
                         print(f"{LRE}■ {LGR}{words[0]} + {words[1]} + {LCY}числа {YEL}!= {LRE}", e, end='')
 
                 #: для раздупления
-                elif len(words) == 1 and words[0] == 'пук':
+                elif len(words) == 1 and words[0] == 'пук':  # альт таб
                     print(LRE + "↔1 ", end='')
                     keyhot('alt', 'tab')
-                elif len(words) == 1 and words[0] == 'бах':
+                elif len(words) == 1 and words[0] == 'бах':  # вин таб х2
                     print(LRE + "↕2 ", end='')
                     keyhot('winleft', 'tab')
                     time.sleep(.5)
                     keyhot('winleft', 'tab')
-                elif len(words) == 1 and words[0] == 'бабах':
+                elif len(words) == 1 and words[0] == 'бабах':  # альт таб х2 - вин таб х2
                     print(LRE + "↔2↕2 ", end='')
                     keyhot('alt', 'tab')
                     time.sleep(.5)
@@ -1079,8 +1056,7 @@ if __name__ == '__main__':
                         key_press('tab')
                     key_up('alt')
 
-
-                #: открываем все своё с ярлыков
+                # -: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
                     try:
                         os.startfile(f"{path_to_shortcut}{prompt[1:-1]}")
@@ -1090,14 +1066,14 @@ if __name__ == '__main__':
                             os.startfile(f"{path_to_shortcut}{prompt[1:-1]}.url")
                             print(LCY + "e√", end='')
                         except FileNotFoundError:
-                            print(Fore.WHITE + "_", end="")  # индикатор попытки открытия файла
+                            print(Fore.WHITE + "_", end="")  # - индикатор попытки открытия файла
+
+                if prompt != '""':  # - пишем свои голос
+                    print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')
 
                 if prompt != '""':
-                    print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')  #: пишем свои голос
-
-                if prompt != '""':
-                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # проверка на запись
-                        script_writing_function(prompt)  #:  для скриптов и печати в keyboard_scripts.py
+                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # - проверка на запись
+                        script_writing_function(prompt)  # -  для скриптов и печати в keyboard_scripts.py
 
             # конвертер команд конец
             except Exception as e:

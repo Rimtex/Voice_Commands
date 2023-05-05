@@ -251,3 +251,60 @@ def script_writing_function(prompt):
         click_print_cor(1478, 1325)  # кнопка Commit and Push...
         time.sleep(2)
         click_print_cor(1478, 1325)  # кнопка Push там же
+        #: для выебонов
+    elif prompt == '"ты робот"':
+        keyhot('winleft', 'tab')
+        keyhot('winleft', 'tab')
+        time.sleep(1)
+        pyautogui.moveRel(100, 0, duration=0.25)
+        pyautogui.moveRel(-50, 86, duration=0.25)
+        pyautogui.moveRel(-50, -86, duration=0.25)
+        pyautogui.moveTo(256, 962, duration=0.25)
+        time.sleep(0.5)
+        print(LRE + "♥", end='')
+        click_print()
+    elif prompt in ('"подтверди"', '"ты человек"'):
+        time.sleep(0.2)
+        pyautogui.moveTo(256, 962)
+        time.sleep(0.2)
+        click_print()
+    elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
+        click_print_cor(411, 1439)
+    elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
+        click_print_cor(2, 9)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

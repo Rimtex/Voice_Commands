@@ -47,6 +47,7 @@ Fore
 if re.match
 print
 os.start
+#-
 """
 code_patterns += added_code_patterns.strip().split("\n")
 
@@ -72,6 +73,7 @@ cta = ctline
 #: покраски
 paint = str(cta
             .replace(f"\n", f"\n{SRA}")
+            .replace(f"',  ", f"', \r")
             .replace(f",", f"{LYE},{SRA}")
             .replace(f"(", f"{SRA}(")
             .replace(f"'", f"{SRA}'{LGR}")
@@ -80,7 +82,8 @@ paint = str(cta
             .replace(f" or ", f"{SRA} or ")
             .replace(f" and ", f"{SRA} and ")
             .replace(f"#: ", f"{LCY}#: ")
-            .replace(f"# ", f"{CYA}# ")
+            .replace(f"#+ ", f"{LCY}#{GRE}+ ")
+            .replace(f"# ", f"{LYE}# ")
             .replace(f"!", f"{LRE}!")
             .replace(f"random.choice(colors)", f"{MAG}random.choice(colors)")
             .replace(f"Fore", f"{LMA}Fore")
@@ -106,11 +109,11 @@ trans = str(paint
             .replace(" prompt[1:-1] ", " фразe ")
             .replace("word ", "слово ")
             .replace("words", "слов")
-            .replace("слов[0]", "первое_слово")
-            .replace("слов[1]", "второе_слово")
+            .replace("слов[0]", "перво_еслово")
+            .replace("слов[1]", "второ_еслово")
             .replace("слов[-1]", "последнее_слово")
             .replace("any", "любое")
-            .replace(" len", " число")
+            .replace(" len", " числа")
             .replace(" any ", " любое ").replace(" range", " зоне")
             .replace(" words_num ", " словарь_чисел ")
             .replace(" re.match", " в_начале_строки")
@@ -118,10 +121,35 @@ trans = str(paint
             )
 
 #: удаление лишнего
-delete = str(trans
-             .replace(" иначе ", "")
-             .replace(" если ", "")
-             )
+delete = str(paint
+            .replace(" False ", " ").replace(" None ", " ").replace(" True ", " ")
+            .replace(" and ", " ").replace(" as ", " ").replace(" assert ", " ")
+            .replace(" async ", " ").replace(" await ", " ").replace(" break ", " ")
+            .replace(" class ", " ").replace(" words ", " ").replace(" continue ", " ")
+            .replace(" def ", " ").replace(" del ", " ")
+            .replace(" else ", " ").replace(" except ", " ").replace(" finally ", " конечном итоге ")
+            .replace(" for ", " ").replace(" from ", " ").replace(" global ", " ")
+            .replace(" import ", " ").replace(" in ", " ").replace(" is ", " ")
+            .replace(" lambda ", " ").replace(" nonlocal ", " ").replace(" not ", " ")
+            .replace(" or ", " ").replace(" pass ", " ").replace(" raise ", " ")
+            .replace(" return ", " ").replace(" try ", " ").replace(" while ", " ")
+            .replace(" with ", " ").replace(" yield ", " ")
+            .replace(" elif ", " ")
+            .replace(" if ", " ")
+            .replace(" prompt ", " ")
+            .replace(" prompt[1:-1] ", " ")
+            .replace("word ", " ")
+            .replace("words", "")
+            .replace("слов[0]", "")
+            .replace("слов[1]", "")
+            .replace("слов[-1]", "")
+            .replace("any", "")
+            .replace(" len", "")
+            .replace(" any ", " ").replace(" range", "")
+            .replace(" words_num ", " ")
+            .replace(" re.match", "")
+            .replace(" re.search", "")
+            )
 
 
 def convert_paint():  # результат
