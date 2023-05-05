@@ -1,7 +1,7 @@
 import random
 import pyautogui
 from colorama import init, Fore, Style
-from Voice_Commands import print_click, print_click_coordinates
+from keyboard_scripts import click_print_cor
 
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -20,14 +20,11 @@ def show_mouse_scripts():  # ! это не функция это просто д
     screen_width, screen_height = pyautogui.size()  # получение размеров монитора
     pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # координаты центр экрана
     pyautogui.moveTo(2439, 1420, duration=0.25)  # перемещает курсор мыши в абсолютные координаты на экране
-    print_click()  # клик с печатью в консоли
     pyautogui.moveRel(2439, 1420, duration=0.25)  # двигаться относительно его текущего положения
     pyautogui.moveRel(100, 0)  # вправо сто пикселей
     pyautogui.moveRel(0, 100)  # вниз сто пикселей
     pyautogui.moveRel(-100, 0)  # влево сто пикселей
     pyautogui.moveRel(0, -100)  # вверх сто пикселей
-    print_click()
-    print_click_coordinates(681, 1344)  # кнопка чат chat.openai.com
     pyautogui.click(0, 9)  # координаты ассистента  на рабочем столе
     pyautogui.click(411, 1439)  # координаты ассистента  на панели задач
     # words_num_dict = vocabulary.numbers()  # импортируем словарь цифр
@@ -44,7 +41,7 @@ def show_mouse_scripts():  # ! это не функция это просто д
 
 
 print("(*ᴥ*)\n", end='')
-print_click_coordinates(411, 1439)
+click_print_cor(411, 1439)
 screen_width, screen_height = pyautogui.size()
 pyautogui.mouseDown(408, 11)  # (408, 11)
 pyautogui.moveTo(screen_width / 2, screen_height / 3, duration=0.25)

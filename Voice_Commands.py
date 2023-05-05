@@ -733,8 +733,7 @@ if __name__ == '__main__':
                     file = open(reminder, "r", encoding='utf-8')
                     contents = file.read()
                     loader.download_generator()
-                    print(f"\r({LGR}√{SRA}¬_¬)ԅ⌐╦╦═─")
-                    print(f"\n")
+                    print(f"{SRA}({LGR}√{SRA}¬_¬)ԅ⌐╦╦═─")
                     print(contents)
                     speak_tts(contents)
 
@@ -801,15 +800,11 @@ if __name__ == '__main__':
                 elif any(word in prompt[1:-1] for word in ('агрессии', 'агрессия', 'ладно', 'давай')):
                     print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')
                     keyhot('shiftleft', 'altleft')
-                    speak_tts(f"ладно")
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
                     #  os.startfile(f"Voice_neuro_responder.py")  # запускает Voice_neuro_responder.py
                     loader.smile_gen_erator()
-                    #  speak_tts("конечно. ты прав!")  # диктует вам мудрость
-                    time.sleep(4.5)
-                    speak.rate = 1
+                    # speak_tts("конечно. ты прав!")  # диктует вам мудрость
                     speak.speak(vocabulary.random_response_aphorism())  # диктует модели мудрость
-                    time.sleep(2.5)
                     speak_tts("запрос?")  # говорит триггер для старта запроса модели
                 elif len(words) == 1 and words[0] == "ублюдок":
                     print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')
@@ -1055,6 +1050,17 @@ if __name__ == '__main__':
                         time.sleep(.1)
                         key_press('tab')
                     key_up('alt')
+
+                #: встроенные утилиты
+                elif prompt == '"поговорим"':
+                    os.startfile(f"Voice_neuro_responder.py")  #
+                    loader.download_generator()
+                elif prompt == '"писатель"':
+                    os.startfile(f"Heavy_writer.py")  #
+                    loader.download_generator()
+                elif prompt == '"модель"':
+                    os.startfile(f"Tester_models.py")  #
+                    loader.download_generator()
 
                 # -: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
