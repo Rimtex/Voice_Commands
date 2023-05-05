@@ -117,6 +117,16 @@ def letters_random():
     build = """
 й        цукенгшщзхъфывапролджэячсмитьбюё
 q        wertyuiopasdfghjklzxcvbnm
+й        цукенгшщзхъфывапролджэячсмитьбюёq        wertyuiopasdfghjklzxcvbnm
+$        ¥£€¢±‰÷≠=*·+-/¹²³☺▪▫°♠♣♥♦↔↕≤≥♀♂‼^_
+"""
+    """
+    
+    ._. - смайл скучать
+    -_- - смайл печаль
+    ¬_¬ - смайл закрытые глаза 
+    O_O - смайл круглые глаза
+    
 """
     lines = build.strip().split('\n')
     random_line = random.choice(lines)

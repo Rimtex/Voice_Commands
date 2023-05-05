@@ -862,30 +862,6 @@ if __name__ == '__main__':
                     print(random.choice(colors) + '( •̪O )', end='')
                     speak_tts(vocabulary.random_anecdote())
 
-                #: минусовка +
-                elif len(words) == 2 \
-                        and words[0] in ('минусовка', 'минусовку') and words[1] in ('саня', 'паша', 'димас'):
-                    os.startfile(f"{dir_path}\\Неизвестен - Минусовка саня хуй соси 4 минуты (t9music.ru).mp3")
-                    print(f" startfile: Неизвестен - Минусовка саня хуй соси 4 минуты (t9music.ru).mp3")
-                    message = [words[1], " хуй ", "соси "]
-                    wor = prompt[10:-1]
-                    for i in range(82):  # ~ time.sleep(7.58) !
-                        for word in message:
-                            print(random.choice(colors) + word, end='', flush=True)
-                            time.sleep(0.03)
-                    time.sleep(0.2)
-                    for i in range(3):
-                        time.sleep(0.23)
-                        speak.Rate = 2.6
-                        print(f"\n\n                             {random.choice(colors)}{wor} хуй соси")
-                        speak_tts(f'{wor} ххууй сосии!')  # саня хуй;сосии;!'
-                    time.sleep(0.18)
-                    for i in range(1):
-                        time.sleep(0.2)
-                        speak.Rate = 1.5
-                        speak_tts(f"{wor};хуй;со;си;хуй;{wor};хуй;со;си;хуй;")
-                        time.sleep(0.1)
-
                 #: ♫ включение случайной музыки
                 elif prompt in ('"радио"', '"включи радио"'):
                     print(f"{RED}Ϟ{LMA}?{GRE}♫{CYA} ˃˃˃{GRE}", end='')

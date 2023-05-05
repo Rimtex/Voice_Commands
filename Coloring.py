@@ -276,14 +276,22 @@ for kw in kw_string.split():
         current_line = f"{kw} "
 kw_list.append(current_line.strip())
 print(Fore.CYAN + " " + "\n ".join(kw_list))
-print(f"""раскраска
-{LGR} if re.search(r'созда[а-я]{0,2}\s*команд[а-я]?', prompt):" 
-{YEL} if{WHI} re.match({BGR}{BLA}r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)'{SRA}{YEL},{SRA} words[{LCY}0{SRA}]) 
+print(SRA)
+print("""
+
+ if re.match(r'(\w{0,2}брос\w?\b)|(выки\w{0,5}\b)|(помойк\w?\b)', words[0]):
+ 
+ if re.search(r'созда[а-я]{0,2}\s*команд[а-я]?', prompt):" 
+ 
+ if{WHI} re.match(}r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)', words[0]) 
+ 
  re.search ищет совпадение с образцом в любом месте строки, в то время как 
  re.match ищет совпадение только в начале строки.
  
      elif re.match('"закинь камент|"закинуть коммент|"закинуть камент|"закинь коммент', prompt):
-        # {LRE} ! "фраза вначале строки начинается с кавычек
+     
+        # ! "фраза вначале строки начинается с кавычек
+        
 \n {LYE}число длинны строки = {Fore.LIGHTCYAN_EX}{len(str('число длинны строки'))}{Fore.WHITE}""", sep='', end='')
 print(f"""{Fore.WHITE} hotkey{Fore.WHITE}('{Fore.LIGHTGREEN_EX}winleft{Fore.WHITE}', '{Fore.LIGHTGREEN_EX}tab{Fore.WHITE}')""")
 
