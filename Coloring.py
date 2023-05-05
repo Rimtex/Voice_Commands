@@ -26,6 +26,8 @@ LMA = Fore.LIGHTMAGENTA_EX
 WHI = Fore.WHITE
 BLA = Fore.BLACK
 BWH = Back.WHITE
+BGR = Back.GREEN
+BLG = Back.LIGHTGREEN_EX
 SRA = Style.RESET_ALL
 
 # выводим символ с соответствующим цветом и фоном
@@ -274,9 +276,9 @@ for kw in kw_string.split():
         current_line = f"{kw} "
 kw_list.append(current_line.strip())
 print(Fore.CYAN + " " + "\n ".join(kw_list))
-print(f"""
+print(f"""раскраска
 {LGR} if re.search(r'созда[а-я]{0,2}\s*команд[а-я]?', prompt):" 
- if re.match(r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)', words[0]) {SRA}
+{YEL} if{WHI} re.match({BGR}{BLA}r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)'{SRA}{YEL},{SRA} words[{LCY}0{SRA}]) 
  re.search ищет совпадение с образцом в любом месте строки, в то время как 
  re.match ищет совпадение только в начале строки.
  

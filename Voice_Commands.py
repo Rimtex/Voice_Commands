@@ -308,7 +308,7 @@ if __name__ == '__main__':
                             key_press("enter")
                         except Exception as e:
                             print(traceback.format_exc())
-                            print(f" (!o_O): {LRE}! переводчик не работает с Planet VPN ", e)
+                            print(f" (!o_O): {LRE}! переводчик: ", e)
                     #: окей гугл
                     elif len(words) >= 2 and (words[0] == 'окей' and words[1] == 'гугл'):
                         if prompt == '"окей гугл"':
@@ -686,12 +686,12 @@ if __name__ == '__main__':
                 elif prompt in ('"проблемы"', '"что за проблема"', '"в чем проблема"', '"проблема"',
                                 '"да блядь че за хуйня"', '"почему не работает"'):
                     speak_tts("1 ! русская раскладка! "
-                              "2 ! грёбаные запятые! "
-                              "3 ! переводчик не работает с Вэ!Пэ!эН!"
+                              "2 ! запятые! "
+                              "3 ! переводчик иногда не работает"
                               "4 ! иногда ассистент морозица. возможно помогает tts"
-                              "5 ! грёбаные кавычки!"
+                              "5 ! кавычки!"
                               "6 ! при старте на русской раскладке некоторые команды не работают"
-                              "7 ! планет впн конфликтует с торрентом")
+                              )
 
                 #: идеи
                 elif len(words) == 2 and words[1] in ('идеи', 'идея', 'идею', 'идейку', 'идей'):
@@ -950,21 +950,51 @@ if __name__ == '__main__':
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
                     screen_width, screen_height = pyautogui.size()  # Получение размеров экрана
                     pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # курсор в центр экрана
+
                 #: промотка колеса плюс число
                 elif 5 > len(words) > 0 and words[0] in ('промотай', 'мотай'):
                     if len(words) == 1:
+                        print(f"{YEL}↓{LCY}∆ ", end="")
                         pyautogui.scroll(-1500)
                     elif len(words) > 1 and words[1] in words_num:
                         num = sum(words_num[word] for word in words[1:])
                         for i in range(num):
                             pyautogui.scroll(-1500)
-                elif 5 > len(words) > 0 and words[0] in ('колесо', 'колесом'):
+                        print(f"{YEL}↓{GRE}{num}{LCY}∆ ", end="")
+                elif 5 > len(words) > 0 and re.match(r'колес\w{0,3}\b', words[0]):
                     if len(words) == 1:
+                        print(f"{YEL}↑{LCY}∆ ", end="")
                         pyautogui.scroll(1500)
                     elif len(words) > 1 and words[1] in words_num:
                         num = sum(words_num[word] for word in words[1:])
                         for i in range(num):
                             pyautogui.scroll(1500)
+                        print(f"{YEL}↑{GRE}{num}{LCY}∆ ", end="")
+
+                #: ctrl плюс промотка колеса плюс число
+                elif 5 > len(words) > 0 and words[0] in ('дальше', 'подальше'):
+                    if len(words) == 1:
+                        key_down('ctrl')
+                        pyautogui.scroll(-1500)
+                        key_up('ctrl')
+                    elif len(words) > 1 and words[1] in words_num:
+                        num = sum(words_num[word] for word in words[1:])
+                        key_down('ctrl')
+                        for i in range(num):
+                            pyautogui.scroll(-1500)
+                        key_up('ctrl')
+                elif 5 > len(words) > 0 and words[0] in ('ближе', 'поближе'):
+                    if len(words) == 1:
+                        key_down('ctrl')
+                        pyautogui.scroll(1500)
+                        key_up('ctrl')
+                    elif len(words) > 1 and words[1] in words_num:
+                        num = sum(words_num[word] for word in words[1:])
+                        key_down('ctrl')
+                        for i in range(num):
+                            pyautogui.scroll(1500)
+                        key_up('ctrl')
+
                 elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
                     click_print_cor(411, 1439)
                 elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
@@ -1071,29 +1101,7 @@ if __name__ == '__main__':
                         key_press('tab')
                     key_up('alt')
 
-                #: ctrl плюс промотка колеса плюс число
-                elif 3 > len(words) > 0 and words[0] in ('дальше', 'подальше'):
-                    if len(words) == 1:
-                        key_down('ctrl')
-                        pyautogui.scroll(-1500)
-                        key_up('ctrl')
-                    elif len(words) > 1 and words[1] in words_num:
-                        num = sum(words_num[word] for word in words[1:])
-                        key_down('ctrl')
-                        for i in range(num):
-                            pyautogui.scroll(-1500)
-                        key_up('ctrl')
-                elif 3 > len(words) > 0 and words[0] in ('ближе', 'поближе'):
-                    if len(words) == 1:
-                        key_down('ctrl')
-                        pyautogui.scroll(1500)
-                        key_up('ctrl')
-                    elif len(words) > 1 and words[1] in words_num:
-                        num = sum(words_num[word] for word in words[1:])
-                        key_down('ctrl')
-                        for i in range(num):
-                            pyautogui.scroll(1500)
-                        key_up('ctrl')
+
 
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:

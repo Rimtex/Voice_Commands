@@ -111,8 +111,10 @@ trans = str(paint
             .replace("слов[-1]", "последнее_слово")
             .replace("any", "любое")
             .replace(" len", " число")
-            .replace(" any ", " любое ").replace(" range", " любое")
+            .replace(" any ", " любое ").replace(" range", " зоне")
             .replace(" words_num ", " словарь_чисел ")
+            .replace(" re.match", " в_начале_строки")
+            .replace(" re.search", " в_любом_месте")
             )
 
 #: удаление лишнего
