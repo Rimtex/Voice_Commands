@@ -3,7 +3,21 @@
 
 # n_predict - количество символов влияет на длину генерируемого текста
 # ! нужно выяснить на что влияют другие настройки
-
+"""
+    :param model_path: путь к модели gpt4all
+    :param prompt_context: глобальный контекст взаимодействия
+    :param prompt_prefix: префикс подсказки
+    :param prompt_suffix: суффикс подсказки
+    :param log_level: уровень логирования, по умолчанию установлен на INFO
+    :param n_ctx: LLaMA контекст
+    :param seed: случайное семя
+    :param n_parts: LLaMA n_parts
+    :param f16_kv: использовать fp16 для кэша KV
+    :param logits_all: вызов llama_eval() вычисляет все логиты, а не только последний.
+    :param vocab_only: загружать только словарь, без весов
+    :param use_mlock: заставить систему хранить модель в оперативной памяти
+    :param embedding: только режим встраивания
+    """
 
 from pygpt4all.models.gpt4all import GPT4All
 
@@ -33,6 +47,7 @@ while True:
         print()
     except KeyboardInterrupt:
         break
+
     """
 a script for a cartoon                    сценарий для мультфильма  
 Rick and Morty :                          Рик и Морти 
