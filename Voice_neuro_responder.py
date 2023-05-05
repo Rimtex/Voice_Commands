@@ -61,10 +61,10 @@ if __name__ == '__main__':
                             # trans = translator.translate(vocabulary.random_response_aphorism(), dest="en")
                             trans = translator.translate(full_sentence, dest="en")  # print(full_sentence)
                             user_input = ' ! come up with funny aphorisms ! '  # дополнительная фраза
-                            response = generate_response(trans.text)  # (trans.text + user_input)
+                            print(LCY + f" ggml-gpt4all-l13b-snoozy: \n " + YEL + trans.text + GRE + user_input + SRA)
+                            response = generate_response(trans.text)  # (trans.text + user_input)  # + доп фраза
                             gpt = translator.translate(response, dest="ru")
                             responegpt = gpt.text
-                            print(LCY + f" ggml-gpt4all-l13b-snoozy: \n " + YEL + trans.text + GRE + user_input + SRA)
                             print(LCY + " ggml-gpt4all-l13b-snoozy: \n " + LGR + responegpt)
                             speak_tts(gpt.text)
                             time.sleep(2.5)
