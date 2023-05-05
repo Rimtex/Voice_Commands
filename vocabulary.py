@@ -13,6 +13,57 @@ words_num = {'ноль': 0, 'один': 1, 'два': 2, 'три': 3, 'четыр
 """
 
 
+#  запросы для генерации интересных фактов:
+def queries_generating_facts():
+    responses = """
+"Tell me an interesting fact about space."
+"What is a surprising fact about animals?"
+"Give me a fascinating historical fact."
+"Tell me something intriguing about technology."
+"What is an unusual fact about the human body?"
+"Give me a surprising fact about the natural world."
+"Tell me a fun fact about a famous person."
+"What is an interesting fact about the brain?"
+"Give me a unique fact about art or literature."
+"Tell me something remarkable about ancient civilizations."
+"What is a little-known fact about the ocean?"
+"Give me an amazing fact about the universe."
+"Tell me an intriguing fact about the human mind."
+"What is a surprising fact about the animal kingdom?"
+"Give me an interesting fact about science or discoveries."
+"Tell me a fascinating fact about a specific country or culture."
+"What is a unique fact about the human body?"
+"Give me a little-known fact about historical figures."
+"Tell me a fun fact about inventions or innovations."
+"What is an unusual fact about the natural world?"
+"What is an interesting fact about ancient civilizations?"
+"Give me a fascinating fact about the human brain."
+"Tell me something remarkable about famous landmarks."
+"What is a unique fact about the world of music?"
+"Give me an intriguing fact about the field of medicine."
+"Tell me an unusual fact about natural disasters."
+"What is a fun fact about the world of sports?"
+"Give me an amazing fact about the development of technology."
+"Tell me a little-known fact about the human body."
+"What is an interesting fact about the history of art?"
+"Give me a surprising fact about the world of insects."
+"Tell me a fascinating fact about the universe."
+"What is a unique fact about the world of fashion?"
+"Give me an intriguing fact about historical events."
+"Tell me an unusual fact about the human senses."
+"What is a fun fact about the world of literature?"
+"Give me an amazing fact about the animal kingdom."
+"Tell me a little-known fact about scientific discoveries."
+"What is an interesting fact about cultural traditions?"
+"""
+    lines = responses.strip().split('\n')
+    return random.choice(lines)
+
+
+
+
+
+
 #  анекдоты
 def random_anecdote():
     responses = """        

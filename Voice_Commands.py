@@ -801,7 +801,7 @@ if __name__ == '__main__':
                     keyhot('shiftleft', 'altleft')
                     speak_tts(f"ладно")
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
-                    #  os.startfile(f"Voice_neuro_responder.py")  # запускает нейромодель
+                    #  os.startfile(f"Voice_neuro_responder.py")  # запускает Voice_neuro_responder.py
                     loader.smile_gen_erator()
                     #  speak_tts("конечно. ты прав!")  # диктует вам мудрость
                     time.sleep(4.5)
@@ -950,10 +950,21 @@ if __name__ == '__main__':
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
                     screen_width, screen_height = pyautogui.size()  # Получение размеров экрана
                     pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # курсор в центр экрана
-                elif prompt in ('"мотай вниз"', '"колесо вниз"', '"мотай"', '"колесо"'):
-                    pyautogui.scroll(-1500)
-                elif prompt in ('"мотай верх"', '"колесо верх"'):
-                    pyautogui.scroll(1500)
+                #: промотка колеса плюс число
+                elif 5 > len(words) > 0 and words[0] in ('промотай', 'мотай'):
+                    if len(words) == 1:
+                        pyautogui.scroll(-1500)
+                    elif len(words) > 1 and words[1] in words_num:
+                        num = sum(words_num[word] for word in words[1:])
+                        for i in range(num):
+                            pyautogui.scroll(-1500)
+                elif 5 > len(words) > 0 and words[0] in ('колесо', 'колесом'):
+                    if len(words) == 1:
+                        pyautogui.scroll(1500)
+                    elif len(words) > 1 and words[1] in words_num:
+                        num = sum(words_num[word] for word in words[1:])
+                        for i in range(num):
+                            pyautogui.scroll(1500)
                 elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
                     click_print_cor(411, 1439)
                 elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
@@ -1060,6 +1071,29 @@ if __name__ == '__main__':
                         key_press('tab')
                     key_up('alt')
 
+                #: ctrl плюс промотка колеса плюс число
+                elif 3 > len(words) > 0 and words[0] in ('дальше', 'подальше'):
+                    if len(words) == 1:
+                        key_down('ctrl')
+                        pyautogui.scroll(-1500)
+                        key_up('ctrl')
+                    elif len(words) > 1 and words[1] in words_num:
+                        num = sum(words_num[word] for word in words[1:])
+                        key_down('ctrl')
+                        for i in range(num):
+                            pyautogui.scroll(-1500)
+                        key_up('ctrl')
+                elif 3 > len(words) > 0 and words[0] in ('ближе', 'поближе'):
+                    if len(words) == 1:
+                        key_down('ctrl')
+                        pyautogui.scroll(1500)
+                        key_up('ctrl')
+                    elif len(words) > 1 and words[1] in words_num:
+                        num = sum(words_num[word] for word in words[1:])
+                        key_down('ctrl')
+                        for i in range(num):
+                            pyautogui.scroll(1500)
+                        key_up('ctrl')
 
                 #: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:

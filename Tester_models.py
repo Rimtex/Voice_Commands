@@ -49,6 +49,18 @@ while True:
         break
 
     """
+    
+    
+
+
+
+
+
+
+
+    
+    
+    
 a script for a cartoon                    сценарий для мультфильма  
 Rick and Morty :                          Рик и Морти 
 About Rick and Morty making a courgette but talking others out of it. 
