@@ -115,9 +115,9 @@ def waal_generator():
 def letters_random():
     from Voice_Commands import stream, rec
     build = """
-й        цукенгшщзхъфывапролджэячсмитьбюё
+ц        укенгшщзхфывапролджэячсмитбюё
 q        wertyuiopasdfghjklzxcvbnm
-й        цукенгшщзхъфывапролджэячсмитьбюёq        wertyuiopasdfghjklzxcvbnm
+ц        укенгшщзхфывапролджэячсмитбюёq        wertyuiopasdfghjklzxcvbnm
 $        ¥£€¢±‰÷≠=*·+-/¹²³☺▪▫°♠♣♥♦↔↕≤≥♀♂‼^_
 """
     """
