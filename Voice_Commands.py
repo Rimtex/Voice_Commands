@@ -739,19 +739,19 @@ if __name__ == '__main__':
                     speak_tts(contents)
 
                 #: работа с требованиями requirements.txt
-                elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
-                    if re.match(r'(установ\w{0,5}\b)', words[0]):
+                elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):  #: требования
+                    if re.match(r'(установ\w{0,5}\b)', words[0]):  # + установить
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
                         keyboard.write(f"pip install -r {requirements_path}")
                         key_press("enter")
-                    if re.match(r'(\w{0,2}брос\w?\b)|(выки\w{0,5}\b)|(помойк\w?\b)', words[0]):
+                    if re.match(r'(\w{0,2}брос\w?\b)|(выки\w{0,5}\b)|(помойк\w?\b)', words[0]):  # + удалить
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
                         keyboard.write(f"pip uninstall -r {requirements_path}")
                         key_press("enter")
                         speak_tts("если хочешь удалить всё! закрой меня! и зажми энтер в консоли!")
-                    if re.match(r'(обнов\w{0,5}\b)', words[0]):
+                    if re.match(r'(обнов\w{0,5}\b)', words[0]):  # + обновить
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
                         keyboard.write(f"pip install --upgrade pip")
@@ -922,7 +922,7 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 1 and words[0] in ('клик', 'кликни', 'кликни', 'кликай', 'кликнуть'):
                     try:
                         num = sum(words_num[word] for word in words[1:])
-                        for i in range(num):  # количество нажатий курсора
+                        for i in range(num):  # - количество нажатий курсора
                             click_print()
                     except KeyError:
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
@@ -932,7 +932,7 @@ if __name__ == '__main__':
                     pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # - курсор в центр экрана
 
                 #: промотка колеса #+ число
-                elif 5 > len(words) > 0 and words[0] in ('промотай', 'мотай'):
+                elif 5 > len(words) > 0 and words[0] in ('промотай', 'мотай'):  # ↓
                     if len(words) == 1:
                         print(f"{YEL}↓{LCY}∆ ", end="")
                         pyautogui.scroll(-1500)
@@ -941,7 +941,7 @@ if __name__ == '__main__':
                         for i in range(num):
                             pyautogui.scroll(-1500)
                         print(f"{YEL}↓{GRE}{num}{LCY}∆ ", end="")
-                elif 5 > len(words) > 0 and re.match(r'колес\w{0,3}\b', words[0]):
+                elif 5 > len(words) > 0 and re.match(r'колес\w{0,3}\b', words[0]):  # ↑
                     if len(words) == 1:
                         print(f"{YEL}↑{LCY}∆ ", end="")
                         pyautogui.scroll(1500)
@@ -975,7 +975,7 @@ if __name__ == '__main__':
                             pyautogui.scroll(1500)
                         key_up('ctrl')
 
-                #: курсор + направление(я) #+ числа
+                #: курсор + 1-2 направление(я) #+ числа
                 elif 7 > len(words) > 1 and words[0] in ('курсор', 'корсар', 'курсора', 'курсором'):
                     try:
                         if re.match(r'^.{0,3}прав.{0,3}$', words[1]):
