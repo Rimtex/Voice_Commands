@@ -115,7 +115,7 @@ tts.runAndWait()  # инициализация распознавания ! ин
 
 #: направление курсора
 def cursor_direction():
-    numss = sum(words_num[word] for word in words[3:])
+    numss = sum(words_num[word] for word in words[3:] * 10)
     if re.match(r'^.{0,3}прав.{0,3}$', words[2]):
         pyautogui.moveRel(numss, 0)
     if re.match(r'^.{0,3}низ.{0,3}$', words[2]):
@@ -249,7 +249,7 @@ if __name__ == '__main__':
     loader_screen_rimtex()
     print(LGR + "\n ʕ/•ᴥ•ʔ/ Hi! " + SRA)
     while True:
-        if rec.AcceptWaveform(stream.read(4000)):  # {   "text" : "слова" } бну так пишешьпишетка вот така
+        if rec.AcceptWaveform(stream.read(4000)):  # {   "text" : "слова" }
             try:
                 prompt = rec.Result()[13:-2]
                 words = prompt[1:-1].split()
@@ -261,6 +261,7 @@ if __name__ == '__main__':
                 if (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
                         (num_lock_state_check != 1 and num_lock_state_check != -127):  # если капс лок нажат
                     if prompt != '""':  # не выключается при тишине
+                        print(LYE + "≈", end="")  # покраска плюс индикатор
                         keyboard.write(prompt[1:-1])  # пишем до конца цикла
                         win32api.keybd_event(0x14, 0x45, 0x1, 0)  # п1 выключает Caps Lock
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
@@ -272,7 +273,7 @@ if __name__ == '__main__':
                             change_model(model1)
                         if any(words in prompt[1:-1] for words in ('два', 'тяжёлая', 'two', 'to')):
                             change_model(model2)
-                            speak_tts("тяжёлая русская модель загружена!")
+                            speak_pavel_tts("тяжёлая русская модель загружена!")
                         if any(words in prompt[1:-1] for words in ('три', 'free', 'three', 'light')):
                             change_model(model3)
                         if any(words in prompt[1:-1] for words in ('четыре', 'four', 'for', 'heavy')):
@@ -418,6 +419,7 @@ if __name__ == '__main__':
                         time.sleep(0.03)
                     print(LCY + f' {GRE}{speak_num}{LCY}', end='')
                     speak_tts(f'скорость озвучки {speak_num}')
+
                 #: переключение голоса
                 elif prompt == '"павел"':
                     switch_voice("Microsoft Pavel Mobile")  # Переключение на голос Павла
@@ -509,9 +511,10 @@ if __name__ == '__main__':
                     numbers_key()
 
                 #: одноразовое нажатие
-                elif 4 > len(words) > 0 and words[0] in ('фиксация', 'цифры', 'цифра', 'циферки'):
+                elif 7 > len(words) > 0 and words[-1] in ('фиксация', 'цифры', 'цифра', 'циферки'):
                     key_press('numlock')
-                elif 4 > len(words) > 0 and words[0] in ('голос', 'пиши', 'букве', 'буквы', 'буквами', 'писать'):
+                elif 7 > len(words) > 0 and words[-1] in (
+                        'голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы', 'писать'):
                     key_press('CapsLock')  # п1
                 elif prompt in ('"копировать"', '"скопируй"', '"копирование"', '"альт це"', '"копия"', '"копи"'):
                     keyhot('ctrlleft', 'c')
@@ -611,8 +614,7 @@ if __name__ == '__main__':
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
-                    speak.Rate = 7  # для быстрой озвучки
-                    speak_tts(text)
+                    speak_pavel_tts(text)
                 #: зачитка из буфера другим голосом
                 elif prompt in ('"озвучь"', '"озвучивает"', '"озвучивать"'):
                     print(f"{LGR}♫", end='')
@@ -626,12 +628,12 @@ if __name__ == '__main__':
                 elif prompt in ('"захват видео"', '"захвати видео"'):
                     keyhot('winleft', 'tab')
                     keyhot('winleft', 'tab')
-                    os.startfile(f"{path_to_shortcut}захват видео")
+                    os.startfile(f"{path_to_shortcut}захват видео")  # ярлык MSI Afterburner
                 elif prompt in ('"запись видео"', '"запиши видео"'):
                     keyhot('winleft', 'tab')
                     keyhot('winleft', 'tab')
                     speak_tts(prompt)
-                    os.startfile(f"{path_to_shortcut}видео")
+                    os.startfile(f"{path_to_shortcut}видео")  # ярлык папки
                     time.sleep(1)
                     keyboard.press('ctrl')
                     keyboard.press_and_release('-')
@@ -657,11 +659,10 @@ if __name__ == '__main__':
                     os.system('rundll32.exe powrprof.dll,SetSuspendState 0,1,0')
                 elif prompt in ('"компьютер сон"', '"компьютер спать"', '"компьютер засни"'):
                     os.system('shutdown /h')
-                elif len(words) == 1 and words[0] in ('тьма', 'вечная тьма', 'закат'):
+                elif prompt in ('"тьма"', '"закат"'):
                     ctypes.windll.user32.SendMessageW(0xFFFF, 0x112, 0xF170, 2)
-                elif len(words) == 1 and words[0] in ('расцвет', 'рассвет'):
+                elif prompt in ('"свет"', '"расцвет"', '"рассвет"'):
                     ctypes.windll.user32.SendMessageW(0xFFFF, 0x112, 0xF170, -1)
-                    speak_tts('!ку?-ку!')
 
                 #: перезагрузка ассистента
                 elif len(words) > 0 and words[-1] in ('тихо', 'старт'):
@@ -778,6 +779,7 @@ if __name__ == '__main__':
                         keyboard.write(f"pip install --upgrade ")
                         keyhot('ctrl', 'v')
                         key_press("enter")
+
                 #: ♪ реакции на слова или фразы
                 elif prompt == '"я робот"':
                     print(random.choice(colors) + "[-_-]", end='')
@@ -1001,34 +1003,34 @@ if __name__ == '__main__':
                     try:
                         if re.match(r'^.{0,3}прав.{0,3}$', words[1]):
                             if words[2] in words_num:
-                                nums = sum(words_num[word] for word in words[2:])
+                                nums = sum(words_num[word] for word in words[2:] * 10)
                                 pyautogui.moveRel(nums, 0)
                             if words[2] not in words_num:
-                                nums = sum(words_num[word] for word in words[3:])
+                                nums = sum(words_num[word] for word in words[3:] * 10)
                                 pyautogui.moveRel(nums, 0)
                                 cursor_direction()
                         if re.match(r'^.{0,3}низ.{0,3}$', words[1]):
                             if words[2] in words_num:
-                                nums = sum(words_num[word] for word in words[2:])
+                                nums = sum(words_num[word] for word in words[2:] * 10)
                                 pyautogui.moveRel(0, nums)
                             if words[2] not in words_num:
-                                nums = sum(words_num[word] for word in words[3:])
+                                nums = sum(words_num[word] for word in words[3:] * 10)
                                 pyautogui.moveRel(0, nums)
                                 cursor_direction()
                         if re.match(r'^.{0,3}лев.{0,3}$', words[1]):
                             if words[2] in words_num:
-                                nums = sum(words_num[word] for word in words[2:])
+                                nums = sum(words_num[word] for word in words[2:] * 10)
                                 pyautogui.moveRel(-nums, 0)
                             if words[2] not in words_num:
-                                nums = sum(words_num[word] for word in words[3:])
+                                nums = sum(words_num[word] for word in words[3:] * 10)
                                 pyautogui.moveRel(-nums, 0)
                                 cursor_direction()
                         if re.match(r'^.{0,3}верх.{0,3}$', words[1]):
                             if words[2] in words_num:
-                                nums = sum(words_num[word] for word in words[2:])
+                                nums = sum(words_num[word] for word in words[2:] * 10)
                                 pyautogui.moveRel(0, -nums)
                             if words[2] not in words_num:
-                                nums = sum(words_num[word] for word in words[3:])
+                                nums = sum(words_num[word] for word in words[3:] * 10)
                                 pyautogui.moveRel(0, -nums)
                                 cursor_direction()
                     except Exception as e:
@@ -1076,7 +1078,6 @@ if __name__ == '__main__':
                         time.sleep(.1)
                         key_press('tab')
                     key_up('alt')
-
 
 
                 #: открываем все своё с ярлыков
