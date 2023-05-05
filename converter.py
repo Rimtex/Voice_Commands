@@ -44,10 +44,9 @@ code_patterns = ["hhvvhhvv", "hgtfndgudjed7y564y"]  # для символов с
 added_code_patterns = """
 speak
 Fore
-if re.match
 print
 os.start
-#-
+# -
 """
 code_patterns += added_code_patterns.strip().split("\n")
 
@@ -82,7 +81,7 @@ paint = str(cta
             .replace(f" or ", f"{SRA} or ")
             .replace(f" and ", f"{SRA} and ")
             .replace(f"#: ", f"{LCY}#: ")
-            .replace(f"#+ ", f"{LCY}#{GRE}+ ")
+            .replace(f"# + ", f"{LCY}#{GRE} + ")
             .replace(f"# ", f"{LYE}# ")
             .replace(f"!", f"{LRE}!")
             .replace(f"random.choice(colors)", f"{MAG}random.choice(colors)")
