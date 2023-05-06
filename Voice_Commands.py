@@ -753,7 +753,7 @@ if __name__ == '__main__':
                     if re.match(r'(обнов\w{0,5}\b)', words[0]):  # + обновить
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
-                        keyboard.write(f"pip install --upgrade pip")
+                        keyboard.write(f"pip install --upgrade -r {requirements_path}")
                         key_press("enter")
 
                 #: работа с модулями из буфера

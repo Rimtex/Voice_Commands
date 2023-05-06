@@ -8,13 +8,9 @@ from pygpt4all.models.gpt4all import GPT4All
 model = GPT4All('./models/ggml-gpt4all-l13b-snoozy.bin')
 
 
-def new_text_callback(text: str):  # функция печати текста по символам
-    print(Fore.LIGHTGREEN_EX + text, end="")
-
-
 def generate_response(userinput):
     n_predict = len(userinput)  #: предикт можно добавлять пробелами
-    response = model.generate(userinput, n_predict=n_predict, new_text_callback=new_text_callback)
+    response = model.generate(userinput, n_predict=n_predict)
     # response = model.generate(user_input, n_predict=55, n_threads=8)
     return response
 
