@@ -16,11 +16,10 @@ words_num = {'ноль': 0, 'один': 1, 'два': 2, 'три': 3, 'четыр
 
 
 
-#  запросы для генерации интересных фактов:
+#  запрос
 def for_requests_model():
     responses = """
-
-
+make a list: of interesting and useful prompts: for the gpt language models
 """
     lines = responses.strip().split('\n')
     return random.choice(lines)

@@ -4,7 +4,7 @@ import traceback
 from Voice_Commands import stream, rec, speak, speak_tts
 from colorama import init, Fore, Style
 from loader import download_generator
-from vocabulary import queries_generating_facts
+from vocabulary import queries_generating_facts, for_requests_model
 from python_translator import Translator
 
 """
@@ -64,10 +64,11 @@ if __name__ == '__main__':
                     if prompt in ('"поговорим"', '"переводчик"', '"закройся"', '"с свали"', '"свали"'):
                         exit()
                     elif len(words) > 0 and \
-                            words[-1] in ('ответ', 'ответь', 'отвечай', 'хватит', 'переведи', 'переводи',
-                                          'перевод', 'давай', 'вопрос', 'ладно', 'слышала', 'слышал', 'понял',
-                                          'поняла', 'дальше', 'стоп', 'запрос', 'продолжай', 'продолжи',
-                                          'запрос'):
+                            words[-1] in (
+                            'ответ', 'ответь', 'отвечай', 'хватит', 'переведи', 'переводи',
+                            'перевод', 'давай', 'ладно', 'слышала', 'слышал', 'понял',
+                            'поняла', 'дальше', 'стоп', 'продолжай', 'продолжи',
+                    ):
                         full_sentence = full_sentence.rsplit(words[-1], 1)[0]  # Удалите последнее слово
                         print(f'{LGR} >>>{WHI}')
                         trans = translator.translate(full_sentence, "english", "russian")  # print(full_sentence)
@@ -80,21 +81,29 @@ if __name__ == '__main__':
                         print(LGR + f"\n {trans_fullgpt}" + GRE)
                         speak_tts(f" {trans_fullgpt}")
                         time.sleep(2.5)
-                        speak_tts("согласен!")
+                        speak_tts("согласен!")  # триггер для ассистента
                         time.sleep(.5)
                         break
                     elif prompt in ('"факты"', '"факт"'):
-                        random_fact = queries_generating_facts()
-                        print(YEL + f" > {random_fact} > " + SRA)
+                        random_request = queries_generating_facts()
+                        print(YEL + f" > {random_request} > " + SRA)
                         print(CYA + model_name + LCY)
-                        responsegpt = generate_response(random_fact)
+                        responsegpt = generate_response(random_request)
                         transgpt = translator.translate(responsegpt, "russian", "english")
                         trans_fullgpt = str(transgpt)
-                        print(LGR + f" {trans_fullgpt}")
+                        print(LGR + f"\n {trans_fullgpt}")
                         speak_tts(f" {trans_fullgpt}")
-                        time.sleep(2.5)
-                        speak_tts("согласен!")
-                        time.sleep(.5)
+                        break
+
+                    elif prompt in ('"запрос"', '"вопрос"'):
+                        random_request = for_requests_model()
+                        print(YEL + f" > {random_request} > " + SRA)
+                        print(CYA + model_name + LCY)
+                        responsegpt = generate_response(random_request)
+                        transgpt = translator.translate(responsegpt, "russian", "english")
+                        trans_fullgpt = str(transgpt)
+                        print(LGR + f"\n {trans_fullgpt}")
+                        speak_tts(f" {trans_fullgpt}")
                         break
 
                     elif prompt in ('"заново"', '"снова"', '"сначала"', '"сброс"', '"сбросить"'):
