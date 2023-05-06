@@ -15,6 +15,17 @@ words_num = {'ноль': 0, 'один': 1, 'два': 2, 'три': 3, 'четыр
 """
 
 
+
+#  запросы для генерации интересных фактов:
+def for_requests_model():
+    responses = """
+
+
+"""
+    lines = responses.strip().split('\n')
+    return random.choice(lines)
+
+
 #  запросы для генерации интересных фактов:
 def queries_generating_facts():
     responses = """

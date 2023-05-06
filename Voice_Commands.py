@@ -806,7 +806,9 @@ if __name__ == '__main__':
                     loader.smile_gen_erator()
                     # speak_tts("конечно. ты прав!")  # диктует вам мудрость
                     speakrate_set = 1
+                    time.sleep(2.5)
                     speak_tts(vocabulary.random_response_aphorism())  # диктует модели мудрость
+                    time.sleep(2.5)
                     speak_tts("запрос?")  # говорит триггер для старта запроса модели
                 elif len(words) == 1 and words[0] == "ублюдок":
                     print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')

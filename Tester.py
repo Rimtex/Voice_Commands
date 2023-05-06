@@ -24,6 +24,7 @@ from urllib.parse import quote  # import urllib.parse
 import time
 
 import pyautogui
+
 from colorama import Fore, Style, init, Back
 import random
 import loader
@@ -51,7 +52,31 @@ BWH = Back.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
 
-loader.waal_generator()
+#  from translate import Translator
+
+from python_translator import Translator
+
+translator = Translator()
+result = translator.translate("Hello world!"
+                              "Tell me an interesting fact about space."
+                              "What is a surprising fact about animals?"
+                              "Give me a fascinating historical fact."
+                              "Tell me something intriguing about technology."
+                              "What is an unusual fact about the human body?"
+                              "Give me a surprising fact about the natural world."
+                              "Tell me a fun fact about a famous person."
+                              "What is an interesting fact about the brain?"
+                              "Give me a unique fact about art or literature."
+                              "Tell me something remarkable about ancient civilizations."
+                              "What is a little-known fact about the ocean?"
+                              ""
+                              ""
+                              ""
+                              ""
+                              ""
+                              "", "russian", "english")
+
+print(result)
 
 try:
     loader.download_generator()
