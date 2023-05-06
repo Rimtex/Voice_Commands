@@ -5,7 +5,7 @@ pyaudio
 vosk
 requests
 quote
-googletrans
+googletrans==4.0.0-rc1
 python-dotenv
 pyttsx3
 pypiwin32
@@ -13,5 +13,5 @@ pywin32
 py_win_keyboard_layout
 
 pygpt4all
-# googletrans==4.0.0-rc1
+# googletrans
 # http://balabolka.site/pavel.windows10.zip

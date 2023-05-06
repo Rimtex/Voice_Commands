@@ -59,7 +59,7 @@ from converter import convert_paint, convert_trans, convert_delete
 from address_config import path_to_shortcut, ideas, reminder, requirements_path, dir_path, model1, model2, model3, \
     model4
 
-translator = Translator()
+
 
 py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
 
@@ -244,6 +244,7 @@ def set_speak_rate(speak_rate):  # установка скорости озву�
 random_voice = [speak_pavel_tts, speak_irina_tts]
 
 if __name__ == '__main__':
+    translator = Translator()
     tts = pyttsx3.init()
     tts.runAndWait()
     loader_screen_rimtex()
@@ -330,7 +331,7 @@ if __name__ == '__main__':
                     if len(words) > 1 and words[0] == 'найди':  #: найти в пуске с переводом на английский
                         trans_prompt = prompt[6:-1]
                         try:
-                            trans = translator.translate(trans_prompt, dest="en")
+                            trans = translator.translate(str(trans_prompt), dest="en")
                             keyhot("winleft", "й")
                             time.sleep(0.2)
                             keyboard.write(trans.text)
@@ -804,7 +805,8 @@ if __name__ == '__main__':
                     #  os.startfile(f"Voice_neuro_responder.py")  # запускает Voice_neuro_responder.py
                     loader.smile_gen_erator()
                     # speak_tts("конечно. ты прав!")  # диктует вам мудрость
-                    speak.speak(vocabulary.random_response_aphorism())  # диктует модели мудрость
+                    speakrate_set = 1
+                    speak_tts(vocabulary.random_response_aphorism())  # диктует модели мудрость
                     speak_tts("запрос?")  # говорит триггер для старта запроса модели
                 elif len(words) == 1 and words[0] == "ублюдок":
                     print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')
