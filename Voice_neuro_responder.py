@@ -51,7 +51,7 @@ def generate_response(user_input_gener):
             print(f"{r}", end='', flush=True)
             responses += r
         return responses
-    except KeyboardInterrupt:
+    except KeyboardInterrupt:  #
         return responses
 
 
