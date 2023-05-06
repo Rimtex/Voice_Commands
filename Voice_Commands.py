@@ -913,7 +913,7 @@ if __name__ == '__main__':
                     pyautogui.mouseDown()
                 elif len(words) == 1 and words[0] in ('отпусти', 'отпускай', 'отпустить', 'пусти', 'отпускай', 'отжал'):
                     pyautogui.mouseUp()
-                #: клик #+ число
+                #: клик # + число
                 elif 7 > len(words) > 1 and words[0] in ('клик', 'кликни', 'кликни', 'кликай', 'кликнуть'):
                     try:
                         num = sum(words_num[word] for word in words[1:])
@@ -926,7 +926,7 @@ if __name__ == '__main__':
                     screen_width, screen_height = pyautogui.size()  # - Получение размеров экрана
                     pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # - курсор в центр экрана
 
-                #: промотка колеса #+ число
+                #: промотка колеса # + число
                 elif 5 > len(words) > 0 and words[0] in ('промотай', 'мотай'):  # ↓
                     if len(words) == 1:
                         print(f"{YEL}↓{LCY}∆ ", end="")
@@ -946,7 +946,7 @@ if __name__ == '__main__':
                             pyautogui.scroll(1500)
                         print(f"{YEL}↑{GRE}{num}{LCY}∆ ", end="")
 
-                #: ctrl плюс промотка колеса #+ число
+                #: ctrl плюс промотка колеса # + число
                 elif 5 > len(words) > 0 and words[0] in ('дальше', 'подальше'):
                     if len(words) == 1:
                         key_down('ctrl')
@@ -970,7 +970,7 @@ if __name__ == '__main__':
                             pyautogui.scroll(1500)
                         key_up('ctrl')
 
-                #: курсор + 1-2 направление(я) #+ числа
+                #: курсор + 1-2 направление(я) # + числа
                 elif 7 > len(words) > 1 and words[0] in ('курсор', 'корсар', 'курсора', 'курсором'):
                     try:
                         if re.match(r'^.{0,3}прав.{0,3}$', words[1]):
@@ -1008,7 +1008,7 @@ if __name__ == '__main__':
                     except Exception as e:
                         print(f"{LGR} {words[0]} + направление(я) + {LCY}числа {YEL}!= {LRE}", e, end='')
 
-                #: рисование квадрата #+ числа
+                #: рисование квадрата # + числа
                 elif 7 > len(words) > 1 and words[0] in ('нарисуй', 'рисуй', 'рисунок', 'рисования', 'рисование') and \
                         words[1] == 'квадрат':
                     try:
