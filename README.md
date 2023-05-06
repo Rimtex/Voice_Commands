@@ -15,7 +15,7 @@
 4. https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip
 
 * если нужна языковая модель  
-  http://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin            - в папку - \gpt4all\pygpt4all\models
+  http://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin            - в папку - models
 
 <hr>
 

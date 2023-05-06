@@ -17,3 +17,4 @@ pyllamacpp
 pygptj
 pygpt4all
 # googletrans==4.0.0-rc1
+# http://balabolka.site/pavel.windows10.zip
