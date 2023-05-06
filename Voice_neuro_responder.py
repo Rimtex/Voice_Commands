@@ -4,7 +4,8 @@ import traceback
 from Voice_Commands import stream, rec, speak, speak_tts
 from colorama import init, Fore, Style
 from loader import download_generator
-from vocabulary import queries_generating_facts, for_requests_model
+from model_prompts import req_rand_question, req_rand_comedy, req_rand_Lyrics, req_rand_facts, req_rand_medicine, \
+    req_rand_history
 from python_translator import Translator
 
 """
@@ -37,6 +38,16 @@ def generate_response(user_input_gener):
         print(f"{r}", end='', flush=True)
         responses += r
     return responses
+
+
+def print_trans_response():
+    print(YEL + f" > {request_prompts} > " + SRA)
+    print(CYA + model_name + LCY)
+    responsegpt = generate_response(request_prompts)
+    transgpt = translator.translate(responsegpt, "russian", "english")
+    trans_fullgpt = str(transgpt)
+    print(LGR + f"\n {trans_fullgpt}")
+    speak_tts(f" {trans_fullgpt}")
 
 
 """
@@ -72,43 +83,42 @@ if __name__ == '__main__':
                         full_sentence = full_sentence.rsplit(words[-1], 1)[0]  # Удалите последнее слово
                         print(f'{LGR} >>>{WHI}')
                         trans = translator.translate(full_sentence, "english", "russian")  # print(full_sentence)
-                        trans_full = str(trans)
-                        print(YEL + f" {trans_full}" + GRE)
-                        print(CYA + model_name + LCY)
-                        responsegpt = generate_response(trans_full)
-                        transgpt = translator.translate(responsegpt, "russian", "english")
-                        trans_fullgpt = str(transgpt)
-                        print(LGR + f"\n {trans_fullgpt}" + GRE)
-                        speak_tts(f" {trans_fullgpt}")
+                        request_prompts = str(trans)
+                        print_trans_response()
                         time.sleep(2.5)
                         speak_tts("согласен!")  # триггер для ассистента
                         time.sleep(.5)
                         break
-                    elif prompt in ('"факты"', '"факт"'):
-                        random_request = queries_generating_facts()
-                        print(YEL + f" > {random_request} > " + SRA)
-                        print(CYA + model_name + LCY)
-                        responsegpt = generate_response(random_request)
-                        transgpt = translator.translate(responsegpt, "russian", "english")
-                        trans_fullgpt = str(transgpt)
-                        print(LGR + f"\n {trans_fullgpt}")
-                        speak_tts(f" {trans_fullgpt}")
-                        break
-
-                    elif prompt in ('"запрос"', '"вопрос"'):
-                        random_request = for_requests_model()
-                        print(YEL + f" > {random_request} > " + SRA)
-                        print(CYA + model_name + LCY)
-                        responsegpt = generate_response(random_request)
-                        transgpt = translator.translate(responsegpt, "russian", "english")
-                        trans_fullgpt = str(transgpt)
-                        print(LGR + f"\n {trans_fullgpt}")
-                        speak_tts(f" {trans_fullgpt}")
-                        break
-
                     elif prompt in ('"заново"', '"снова"', '"сначала"', '"сброс"', '"сбросить"'):
                         print(f' {LRE}X{SRA}\n', end='')
                         break
+
+                    elif prompt in ('"запрос"', '"вопрос"'):
+                        request_prompts = req_rand_question()
+                        print_trans_response()
+                        break
+
+                    elif prompt in ('"история"', '"истории"'):
+                        request_prompts = req_rand_history()
+                        print_trans_response()
+                        break
+                    elif prompt in ('"медицина"', '"медицины"'):
+                        request_prompts = req_rand_medicine()
+                        print_trans_response()
+                        break
+                    elif prompt in ('"комедия"', '"комедии"'):
+                        request_prompts = req_rand_comedy()
+                        print_trans_response()
+                        break
+                    elif prompt in ('"лирика"', '"лирикой"'):
+                        request_prompts = req_rand_Lyrics()
+                        print_trans_response()
+                        break
+                    elif prompt in ('"факты"', '"факт"'):
+                        request_prompts = req_rand_facts()
+                        print_trans_response()
+                        break
+
                     elif prompt != '""':  # !
                         print(f' {LYE}{part_prompt}{SRA} ', end='')
 

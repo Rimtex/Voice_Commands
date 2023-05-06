@@ -20,7 +20,7 @@ try:
     from vosk import Model, KaldiRecognizer
     import win32com.client as wincl
     from colorama import Fore, Style, init, Back
-    from googletrans import Translator
+    from python_translator import Translator
     import webbrowser
     from urllib.parse import quote
 except ImportError:
@@ -44,7 +44,7 @@ except ImportError:
     from vosk import Model, KaldiRecognizer
     import win32com.client as wincl
     from colorama import Fore, Style, init, Back
-    from googletrans import Translator
+    from python_translator import Translator
     import webbrowser
     from urllib.parse import quote
 
@@ -58,8 +58,6 @@ from converter import convert_paint, convert_trans, convert_delete
 
 from address_config import path_to_shortcut, ideas, reminder, requirements_path, dir_path, model1, model2, model3, \
     model4
-
-
 
 py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
 
@@ -331,11 +329,11 @@ if __name__ == '__main__':
                     if len(words) > 1 and words[0] == 'найди':  #: найти в пуске с переводом на английский
                         trans_prompt = prompt[6:-1]
                         try:
-                            trans = translator.translate(str(trans_prompt), dest="en")
+                            trans = translator.translate(trans_prompt, "english", "russian")
                             keyhot("winleft", "й")
                             time.sleep(0.2)
-                            keyboard.write(trans.text)
-                            print(f"{LYE} {trans.text}", end=' ')
+                            keyboard.write(f"{trans}")
+                            print(f"{LYE} {trans}", end=' ')
                             time.sleep(0.2)
                             key_press("enter")
                         except Exception as e:

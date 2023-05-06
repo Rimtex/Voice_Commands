@@ -55,7 +55,7 @@ init(convert=True)
 #  from translate import Translator
 
 from python_translator import Translator
-
+loader.download_generator()
 translator = Translator()
 result = translator.translate("Hello world!"
                               "Tell me an interesting fact about space."
