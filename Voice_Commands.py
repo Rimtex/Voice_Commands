@@ -24,8 +24,9 @@ try:
     import webbrowser
     from urllib.parse import quote
 except ImportError:
-    print("Trying to Install required module: requests")
-    os.system('pip install -r "requirements.txt"')
+    print("Trying to Install required modules: requirements.txt")
+    #  os.system('pip install -r "requirements.txt"')
+    os.system('pip install --upgrade -r "requirements.txt"')
     import traceback
     import re
     import time
