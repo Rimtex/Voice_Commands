@@ -12,9 +12,6 @@ pypiwin32
 pywin32
 py_win_keyboard_layout
 
-GPT4All
-pyllamacpp
-pygptj
 pygpt4all
 # googletrans==4.0.0-rc1
 # http://balabolka.site/pavel.windows10.zip
