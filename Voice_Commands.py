@@ -416,7 +416,7 @@ if __name__ == '__main__':
                     key_press('volumemute')
                 elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
                     print(LCY + '♫' + SRA, end='')
-                    on_num = sum(words_num[word] for word in words[1:])
+                    on_num = sum(words_num[word] for word in words[1:]) // 2
                     for i in range(50):  # ! костыль
                         pyautogui.press('volumedown')
                     for i in range(on_num):  # // 2
@@ -516,6 +516,7 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and words[-1] in (
                         'голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы', 'писать'):
                     key_press('CapsLock')  # п1
+
                 elif prompt in ('"копировать"', '"скопируй"', '"копирование"', '"альт це"', '"копия"', '"копи"'):
                     keyhot('ctrlleft', 'c')
                 elif prompt in ('"сохранить"', '"сохранять"', '"сохрани"', '"сохранение"', '"сохраняя"', '"сейф"',
@@ -1061,6 +1062,23 @@ if __name__ == '__main__':
                     os.startfile(f"Tester_models.py")  #
                     loader.download_generator()
 
+                elif 5 > len(words) > 0 and words[0] in ('монитор', 'мониторы', 'форточки'):
+                    trans = translator.translate(words[1][1:-1], "english", "russian")
+                    words_find_window = trans
+                    print(trans, end="")
+                    from apps.WindowMgr import WindowMgr
+
+                    loader.download_generator()
+                    w = WindowMgr()  # - создание обьекта класса в теле ассистента
+                    #  print(w)
+                    w.find_window_wildcard(f".*c.*")  # - скармливаем ему примерное название необходимого окна
+                    #  print(w.find_window_wildcard(".*lanet.*"))
+                    w.set_active()  # - делаем активным\разворачиваем окно
+                    print(w.set_active)
+                    # w.set_background()   # - делаем неактивным\сворачиваем окно
+                    words_find_window = 0
+                    pass
+
                 # -: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:
                     try:
@@ -1073,12 +1091,12 @@ if __name__ == '__main__':
                         except FileNotFoundError:
                             print(Fore.WHITE + "_", end="")  # - индикатор попытки открытия файла
 
-                if prompt != '""':  # - пишем свои голос
-                    print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')
-
                 if prompt != '""':
                     if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # - проверка на запись
                         script_writing_function(prompt)  # -  для скриптов и печати в keyboard_scripts.py
+
+                if prompt != '""':  # - пишем свои голос
+                    print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')
 
             # конвертер команд конец
             except Exception as e:

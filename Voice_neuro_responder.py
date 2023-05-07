@@ -24,7 +24,7 @@ LMA = Fore.LIGHTMAGENTA_EX
 WHI = Fore.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
-
+"""
 try:
     from pygpt4all import GPT4All
 except ImportError:
@@ -32,23 +32,23 @@ except ImportError:
     os.system('pip install --upgrade pygpt4all')
     from pygpt4all import GPT4All
 model = GPT4All('./models/ggml-gpt4all-l13b-snoozy.bin')
-
 """
+
 from pygpt4all import GPT4All_J
 
 model = GPT4All_J('./models/ggml-gpt4all-j-v1.3-groovy.bin')
-"""
 
-model_name = "ggml-gpt4all-l13b-snoozy.bin"
+model_name = "ggml-gpt4all-j-v1.3-groovy.bin"
 
 responses = ""
 
 
 def generate_response(user_input_gener):
     global responses
+
+    response_gener = model.generate(user_input_gener)
+    responses = ""
     try:
-        response_gener = model.generate(user_input_gener)
-        responses = ""
         for r in response_gener:
             print(f"{r}", end='', flush=True)
             responses += r
@@ -72,7 +72,7 @@ def print_trans_response():
 
 print(f"""\
 \r ╔════════════╤════════════════════════════════════════╤════════════════════════════════════╗
-\r ║ model_name │ {CYA}ggml-gpt4all-l13b-snoozy.bin {SRA}          │     {LCY}ctrl + c{SRA}   для прерывания      ║
+\r ║ model_name │ {CYA}ggml-gpt4all-j-v1.3-groovy.bin {SRA}        │     {LCY}ctrl + c{SRA}   для прерывания      ║
 \r ╠════════════╧═════════════════════╤══════════════════╧════════════════════════════════════╣ 
 \r ║ по-умолчанию > запись голоса > #:│{LYE} ответ | давай | понял | дальше {LRE}¦ стоп ¦ сброс {SRA}        ║
 \r ║ голосовые команды            > #:│{YEL} запрос | история | медицина | комедия | лирика | факт {SRA}║
@@ -112,7 +112,7 @@ if __name__ == '__main__':
                             print_trans_response()
                             # speak_tts("согласен!")  # триггер для ассистента
                             break
-                        elif prompt in ('"заново"', '"снова"', '"сначала"', '"сброс"', '"сбросить"'):
+                        elif prompt in ('"стоп"', '"сброс"', '"заново"', '"снова"', '"сначала"', '"сбросить"'):
                             print(LCY + "#: " + words[-1])
                             print(LRE + 'X')
                             break

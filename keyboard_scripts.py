@@ -6,6 +6,8 @@ import pyautogui
 import py_win_keyboard_layout
 from colorama import init, Fore, Style
 
+import loader
+
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
           Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX, Fore.LIGHTCYAN_EX]
@@ -272,39 +274,3 @@ def script_writing_function(prompt):
         click_print_cor(411, 1439)
     elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
         click_print_cor(2, 9)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
