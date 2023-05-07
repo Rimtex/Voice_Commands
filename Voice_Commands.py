@@ -242,13 +242,14 @@ def set_speak_rate(speak_rate):  # установка скорости озву�
 
 random_voice = [speak_pavel_tts, speak_irina_tts]
 
+#: состав словаря из названий ярлыков
 file_list = os.listdir(path_to_shortcut)
-lnk_files = [f for f in file_list if f.endswith(".lnk")]
+lnk_files = [f for f in file_list if f.endswith(".lnk") or f.endswith(".url")]
 
 labels = []  # словарь названий ярлыков
 for lnk_file in lnk_files:
     full_path = os.path.join(path_to_shortcut, lnk_file)
-    label = lnk_file[:-4]  # удаляем последние четыре символа (".lnk")
+    label = lnk_file[:-4]  # удаляем последние четыре символа
     labels.append(label)
 
 if __name__ == '__main__':
@@ -534,7 +535,8 @@ if __name__ == '__main__':
                     numbers_key()
 
                 #: одноразовое нажатие
-                elif 7 > len(words) > 0 and words[-1] in ('перевод','переведи', 'цифры', 'цифра', 'циферки','фиксация'):
+                elif 7 > len(words) > 0 and words[-1] in (
+                        'перевод', 'переведи', 'цифры', 'цифра', 'циферки', 'фиксация'):
                     key_press('numlock')
                 elif 7 > len(words) > 0 and words[-1] in (
                         'голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы', 'писать'):

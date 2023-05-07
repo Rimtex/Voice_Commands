@@ -1,17 +1,17 @@
-import re
 import time
 
-def printt(pt):
-    for char in pt:
+
+def printt(text):
+    for char in text:
         print(char, end='', flush=True)
         time.sleep(0.025)
+    time.sleep(1)
 
-printt("----------------начало теста----------------")
-time.sleep(1)
-printt("""
-# получаем список запущенных процессов и их названий:
-""")
-time.sleep(1)
+
+printt("----------------начало теста----------------\n")
+
+printt("\n #: получаем список запущенных процессов и их названий:\n")
+
 import psutil
 
 process_list = []
@@ -23,11 +23,9 @@ for proc in psutil.process_iter(['name']):
     except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
         pass
 print(process_list)
-time.sleep(1)
-printt("""
-# получаем названия открытых приложений:
-""")
-time.sleep(1)
+
+printt("\n # получаем названия открытых приложений:\n")
+
 import win32gui
 
 
@@ -44,37 +42,23 @@ def get_window_titles():
 
 
 print(get_window_titles())
-
-
-printt("\n# открыть приложение и сделать его активным -> import pyautogui\n")
-
-import pyautogui
-
-
-printt('\n# Получаем объект окна по его заголовку -> words = "Discord"\n')
-
+printt("\n # развернуть приложение, сделать активным, свернуть \n")
+printt('\n     # Получаем объект окна по его заголовку -> words = "Discord"\n')
 words = "Discord"
-
-printt("\n# юзаем рематч -> re.match(r'^.{0,19}.{0,19}$', words)\n")
+printt("\n     # юзаем рематч -> re.match(r'^.{0,19}.{0,19}$', words)\n")
+import re
 
 re.match(r'^.{0,20}.{0,20}$', words)
+printt("\n     # получаем значение окна -> window = pyautogui.getWindowsWithTitle(words)[0]\n")
+import pyautogui
+
 window = pyautogui.getWindowsWithTitle(words)[0]
-
-printt("\n# Разворачиваем окно -> window.restore()\n")
-time.sleep(1)
+printt("\n     # Разворачиваем окно -> window.restore()\n")
 window.restore()
-
-
-printt("\n# Делаем окно активным -> window.activate()\n")
-time.sleep(1)
+printt("\n     # Делаем окно активным -> window.activate()\n")
 window.activate()
-
-
-printt("\n# сворачиваем -> window.minimize()\n")
-time.sleep(1)
+printt("\n     # сворачиваем -> window.minimize()\n")
 window.minimize()
-
-printt("\n# ещё есть куча приколов с -> Win32Window\n")
-time.sleep(1)
+printt("\n     # ещё есть куча приколов с -> Win32Window\n")
 printt("\n----------------конец теста----------------")
 input("")
