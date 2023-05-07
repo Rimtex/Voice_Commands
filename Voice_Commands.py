@@ -270,20 +270,24 @@ if __name__ == '__main__':
                 if (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
                         (num_lock_state_check != 1 and num_lock_state_check != -127):
                     if prompt != '""':
-                        print(LYE + "≈ ", end="")
+                        print(LYE + " ≈ ", end="")
                         keyrus_write(prompt[1:-1])
+                        prompt = '""'
                         win32api.keybd_event(0x14, 0x45, 0x1, 0)  # выключение Caps Lock
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
+
                 #: Запись в курсор с переводом # запись голоса при включённом Num Lock
                 if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
                         (caps_lock_state_check != 1 and caps_lock_state_check != -127):
                     if prompt != '""':
-                        print(LGR + "≈ ", end="")
+                        print(LGR + " ≈ ", end="")
                         wordstrans = str(prompt[1:-1])
                         trans = translator.translate(wordstrans, "english", "russian")
                         keytrans_write(f"{trans}")
+                        prompt = '""'
                         win32api.keybd_event(0x90, 0x45, 0x1, 0)  # выключение Num Lock
                         win32api.keybd_event(0x90, 0x45, 0x3, 0)
+                        break
 
                 #: для команд
                 elif prompt in ('"показать команды"', '"покажи команды"'):

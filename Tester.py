@@ -21,6 +21,7 @@ from colorama import Fore, Style, init, Back
 import webbrowser
 from urllib.parse import quote  # import urllib.parse
     """
+import time
 
 from colorama import Fore, Style, init, Back
 import random
@@ -50,20 +51,55 @@ SRA = Style.RESET_ALL
 init(convert=True)
 loader.download_generator()
 
-import os
+# в операционной системе Windows на языке Python
+""" Для получения названий открытых приложений: """
+import win32gui
 
-path = "ярлыки/"
 
-file_list = os.listdir(path)
-lnk_files = [f for f in file_list if f.endswith(".lnk")]
+def get_window_titles():
+    titles = []
 
-labels = []
-for lnk_file in lnk_files:
-    full_path = os.path.join(path, lnk_file)
-    label = lnk_file[:-4]  # Remove the last 4 characters (".lnk")
-    labels.append(label)
+    def callback(hwnd, _):
+        if win32gui.IsWindowVisible(hwnd):
+            titles.append(win32gui.GetWindowText(hwnd))
+        return True
 
-print(labels)
+    win32gui.EnumWindows(callback, None)
+    return titles
+
+
+print(get_window_titles())
+
+""" получить список запущенных процессов и их названий: """
+import psutil
+
+process_list = []
+for proc in psutil.process_iter(['name']):
+    try:
+        # Получаем название процесса
+        process_name = proc.info['name']
+        process_list.append(process_name)
+    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+        pass
+
+print(process_list)
+
+"""открыть приложение и сделать его активным"""
+import pyautogui
+import subprocess
+import time
+
+# Запускаем блокнот
+subprocess.Popen('notepad.exe')
+
+# Даем приложению время для запуска
+time.sleep(1)
+
+# Получаем позицию
+window_position = pyautogui.getWindowsWithTitle('ассистент')[0].topleft
+
+# Делаем окно блокнота активным
+pyautogui.click(window_position)
 
 from python_translator import Translator
 
