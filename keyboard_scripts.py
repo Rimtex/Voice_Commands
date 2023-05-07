@@ -240,7 +240,7 @@ def script_writing_function(prompt):
         key_press("tab")
         key_press("tab")
         key_press("tab")
-        key_press("enter")
+        key_press("space")
         key_press("enter")
 
         time.sleep(.1)
