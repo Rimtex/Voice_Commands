@@ -254,17 +254,27 @@ if __name__ == '__main__':
                 prompt = rec.Result()[13:-2]
                 words = prompt[1:-1].split()
                 # конвертер команд старт
-
-                #: Запись в курсор # для быстрой записи фраз или слов: нажимаем капс лок и - диктуем
-                caps_lock_state_check = win32api.GetKeyState(0x14)  # Проверить, включена ли клавиша Caps Lock
-                num_lock_state_check = win32api.GetKeyState(0x90)  # 0x90 - код клавиши Num Lock
+#   how to write a period translation willelif
+                #: Запись в курсор # для быстрой записи фраз или слов: нажимаем Caps Lock и - диктуем
+                caps_lock_state_check = win32api.GetKeyState(0x14)
+                num_lock_state_check = win32api.GetKeyState(0x90)
                 if (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
-                        (num_lock_state_check != 1 and num_lock_state_check != -127):  # если капс лок нажат
-                    if prompt != '""':  # не выключается при тишине
-                        print(LYE + "≈", end="")  # покраска плюс индикатор
-                        keyboard.write(prompt[1:-1])  # пишем до конца цикла
-                        win32api.keybd_event(0x14, 0x45, 0x1, 0)  # п1 выключает Caps Lock
+                        (num_lock_state_check != 1 and num_lock_state_check != -127):
+                    if prompt != '""':
+                        print(LYE + "≈", end="")
+                        keyboard.write(prompt[1:-1])
+                        win32api.keybd_event(0x14, 0x45, 0x1, 0)
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
+                #: Запись в курсор с переводом # для быстрой записи фраз или слов: нажимаем Num Lock и - диктуем
+                if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
+                        (caps_lock_state_check != 1 and caps_lock_state_check != -127):
+                    if prompt != '""':
+                        print(LGR + "≈", end="")
+                        wordstrans = str(" ".join(words[1:]))
+                        trans = translator.translate(wordstrans, "english", "russian")
+                        keyboard.write(f"{trans}")
+                        win32api.keybd_event(0x90, 0x45, 0x1, 0)
+                        win32api.keybd_event(0x90, 0x45, 0x3, 0)
 
                 #: для команд
                 elif prompt in ('"показать команды"', '"покажи команды"'):
@@ -1061,23 +1071,6 @@ if __name__ == '__main__':
                 elif prompt == '"модель"':
                     os.startfile(f"Tester_models.py")  #
                     loader.download_generator()
-
-                elif 5 > len(words) > 0 and words[0] in ('монитор', 'мониторы', 'форточки'):
-                    trans = translator.translate(words[1][1:-1], "english", "russian")
-                    words_find_window = trans
-                    print(trans, end="")
-                    from apps.WindowMgr import WindowMgr
-
-                    loader.download_generator()
-                    w = WindowMgr()  # - создание обьекта класса в теле ассистента
-                    #  print(w)
-                    w.find_window_wildcard(f".*c.*")  # - скармливаем ему примерное название необходимого окна
-                    #  print(w.find_window_wildcard(".*lanet.*"))
-                    w.set_active()  # - делаем активным\разворачиваем окно
-                    print(w.set_active)
-                    # w.set_background()   # - делаем неактивным\сворачиваем окно
-                    words_find_window = 0
-                    pass
 
                 # -: открываем все своё с ярлыков
                 elif len(words) == 1 and words[0] in prompt:

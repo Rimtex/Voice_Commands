@@ -1,6 +1,5 @@
 import os
 import traceback
-
 import keyboard
 
 from Voice_Commands import stream, rec, speak, speak_tts
@@ -24,30 +23,30 @@ LMA = Fore.LIGHTMAGENTA_EX
 WHI = Fore.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
-"""
+
 try:
     from pygpt4all import GPT4All
 except ImportError:
     print("Trying to Install required modules: pygpt4all")
     os.system('pip install --upgrade pygpt4all')
     from pygpt4all import GPT4All
-model = GPT4All('./models/ggml-gpt4all-l13b-snoozy.bin')
+model_path = './models/ggml-gpt4all-l13b-snoozy.bin  '
+model = GPT4All(model_path)
 """
-
-from pygpt4all import GPT4All_J
-
-model = GPT4All_J('./models/ggml-gpt4all-j-v1.3-groovy.bin')
-
-model_name = "ggml-gpt4all-j-v1.3-groovy.bin"
-
-responses = ""
+try:
+    from pygpt4all import GPT4All_J
+except ImportError:
+    print("Trying to Install required modules: pygpt4all
+    os.system('pip install --upgrade pygpt4all')
+    from pygpt4all import GPT4All_J
+model_path = './models/ggml-gpt4all-j-v1.3-groovy.bin'
+model = GPT4All_J(model_path)
+"""
 
 
 def generate_response(user_input_gener):
-    global responses
-
-    response_gener = model.generate(user_input_gener)
     responses = ""
+    response_gener = model.generate(user_input_gener)
     try:
         for r in response_gener:
             print(f"{r}", end='', flush=True)
@@ -70,9 +69,10 @@ def print_trans_response():
         print(f"{LRE} def print_trans_response() {SRA}", t)
 
 
+model_name = os.path.basename(model_path)
 print(f"""\
 \r ╔════════════╤════════════════════════════════════════╤════════════════════════════════════╗
-\r ║ model_name │ {CYA}ggml-gpt4all-j-v1.3-groovy.bin {SRA}        │     {LCY}ctrl + c{SRA}   для прерывания      ║
+\r ║ model_name │ {CYA}{model_name} {SRA}        │     {LCY}ctrl + c{SRA}   для прерывания      ║
 \r ╠════════════╧═════════════════════╤══════════════════╧════════════════════════════════════╣ 
 \r ║ по-умолчанию > запись голоса > #:│{LYE} ответ | давай | понял | дальше {LRE}¦ стоп ¦ сброс {SRA}        ║
 \r ║ голосовые команды            > #:│{YEL} запрос | история | медицина | комедия | лирика | факт {SRA}║
@@ -106,6 +106,7 @@ if __name__ == '__main__':
                         if prompt in ('"поговорим"', '"переводчик"', '"закройся"', '"с свали"', '"свали"'):
                             exit()
                         elif len(words) > 0 and words[-1] in ('ответ', 'давай', 'понял', 'дальше'):
+                            print(LCY + "#: " + words[-1])
                             full_sentence = full_sentence.rsplit(words[-1], 1)[0]  # Удалите последнее слово
                             trans = translator.translate(full_sentence, "english", "russian")  # print(full_sentence)
                             request_prompts = str(trans)
