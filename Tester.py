@@ -72,7 +72,7 @@ import time
 
 window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft # Получаем позицию
 pyautogui.moveTo(window_position)  # Делаем окно активным
-pyautogui.moveRel(33, 92, duration=0.25)
+pyautogui.click(33, 92, duration=0.1)
 pyautogui.click()
 
 

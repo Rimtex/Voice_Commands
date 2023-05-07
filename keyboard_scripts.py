@@ -235,31 +235,22 @@ def script_writing_function(prompt):
         time.sleep(.1)
         window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # Получаем позицию
         pyautogui.moveTo(window_position)  # Делаем окно активным
-        pyautogui.moveRel(33, 92, duration=0.25)
+        pyautogui.moveRel(33, 92, duration=0.25)  # ставим галку
         pyautogui.click()
         key_press("tab")
         key_press("tab")
         key_press("tab")
         key_press("space")
-        key_press("enter")
+        time.sleep(.3)
+        keyhot('ctrl', 'enter')
 
-        time.sleep(.1)
-        click_print_cor(1478, 1286)
-        click_print_cor(1478, 1286)
-        click_print_cor(1478, 1286)
-        key_press("delete")
-        time.sleep(.1)
-        key_write('_')
-        click_print_cor(1478, 1325)
-        time.sleep(2)
-        click_print_cor(1478, 1325)
     elif re.match('"закинь камент|"закинуть коммент|"закинуть камент|"закинь коммент', prompt):
 
         keyhot('alt', '0')  # вызов окна комментирования
         time.sleep(.1)
-        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # Получаем позицию
-        pyautogui.moveTo(window_position)  # Делаем окно активным
-        pyautogui.moveRel(33, 92, duration=0.25)
+        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  #
+        pyautogui.moveTo(window_position)  #
+        pyautogui.moveRel(33, 92)
         pyautogui.click()
         key_press("tab")
         key_press("tab")

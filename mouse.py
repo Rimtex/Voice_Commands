@@ -17,6 +17,7 @@ def show_mouse_scripts():  # ! это не функция это просто д
     pyautogui.click(button='right')
     pyautogui.mouseDown()
     pyautogui.mouseUp()
+
     screen_width, screen_height = pyautogui.size()  # получение размеров монитора
     pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # координаты центр экрана
     pyautogui.moveTo(2439, 1420, duration=0.25)  # перемещает курсор мыши в абсолютные координаты на экране
