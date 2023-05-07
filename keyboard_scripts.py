@@ -228,10 +228,23 @@ def script_writing_function(prompt):
     #: пишарм и гитхаб
     elif prompt in ('"камент"', '"комент"', '"коммент"'):
         keyhot('alt', '0')
+        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft
+        pyautogui.click(window_position)
     elif prompt in ('"пуш"', '"закинь"', '"закинуть"'):  #: авто пуш
-        keyhot('alt', '0')
+        keyhot('alt', '0')  # вызов окна комментирования
         time.sleep(.1)
-        click_print_cor(1282, 1084)
+        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # Получаем позицию
+        pyautogui.moveTo(window_position)  # Делаем окно активным
+        pyautogui.moveRel(33, 92, duration=0.25)
+        pyautogui.click()
+        key_press("tab")
+        key_press("tab")
+        key_press("tab")
+        key_press("enter")
+        key_press("enter")
+
+
+
         time.sleep(.1)
         click_print_cor(1478, 1286)
         click_print_cor(1478, 1286)
@@ -243,13 +256,18 @@ def script_writing_function(prompt):
         time.sleep(2)
         click_print_cor(1478, 1325)
     elif re.match('"закинь камент|"закинуть коммент|"закинуть камент|"закинь коммент', prompt):
-        # ! "фраза вначале строки
-        #  elif len(words) == 2 and \
-        #          words[0] in ('пуш', 'закинь', 'закинуть', 'закидывая', 'закидывать') and \
-        #          words[1] in ('камент', 'комент', 'коммент', 'камент'):  #: авто пуш коммент
+
         keyhot('alt', '0')  # вызов окна комментирования
         time.sleep(.1)
-        click_print_cor(1282, 1084)  # галка в Changes
+        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # Получаем позицию
+        pyautogui.moveTo(window_position)  # Делаем окно активным
+        pyautogui.moveRel(33, 92, duration=0.25)
+        pyautogui.click()
+        key_press("tab")
+        key_press("tab")
+        key_press("tab")
+        key_press("enter")
+        key_press("enter")
         time.sleep(.1)
         click_print_cor(1478, 1286)  # клик в строку
         click_print_cor(1478, 1286)
