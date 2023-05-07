@@ -1,28 +1,3 @@
-"""
-import os
-import requests
-import re
-import time
-import random
-import keyboard
-import pyautogui
-import pyaudio
-import py_win_keyboard_layout
-from datetime import date, datetime
-import vosk
-import pyttsx3
-import win32api
-import win32clipboard
-import win32com.client
-import ctypes
-from vosk import Model, KaldiRecognizer
-import win32com.client as wincl
-from colorama import Fore, Style, init, Back
-import webbrowser
-from urllib.parse import quote  # import urllib.parse
-    """
-import time
-
 from colorama import Fore, Style, init, Back
 import random
 
@@ -31,6 +6,7 @@ import loader
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
           Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX, Fore.LIGHTCYAN_EX]
+
 RCC = random.choice(colors)
 RED = Fore.RED
 LRE = Fore.LIGHTRED_EX
@@ -49,10 +25,11 @@ BLA = Fore.BLACK
 BWH = Back.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
-loader.download_generator()
+
+"""                          начало теста                          """
 
 # в операционной системе Windows на языке Python
-""" Для получения названий открытых приложений: """
+# Для получения названий открытых приложений:
 import win32gui
 
 
@@ -70,7 +47,7 @@ def get_window_titles():
 
 print(get_window_titles())
 
-""" получить список запущенных процессов и их названий: """
+# получить список запущенных процессов и их названий:
 import psutil
 
 process_list = []
@@ -84,7 +61,7 @@ for proc in psutil.process_iter(['name']):
 
 print(process_list)
 
-"""открыть приложение и сделать его активным"""
+# открыть приложение и сделать его активным
 import pyautogui
 import subprocess
 import time
@@ -92,15 +69,14 @@ import time
 # Запускаем блокнот
 subprocess.Popen('notepad.exe')
 
-# Даем приложению время для запуска
-time.sleep(1)
-
 # Получаем позицию
 window_position = pyautogui.getWindowsWithTitle('ассистент')[0].topleft
 
-# Делаем окно блокнота активным
+# Делаем окно активным
 pyautogui.click(window_position)
 
+"""                            конец теста                            """
+input("")
 from python_translator import Translator
 
 translator = Translator()
