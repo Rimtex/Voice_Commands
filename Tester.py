@@ -1,9 +1,11 @@
 import re
 import time
-print("начало теста")
+
+
+print("----------------начало теста----------------")
 time.sleep(1)
 print("""
-# получить список запущенных процессов и их названий:
+# получаем список запущенных процессов и их названий:
 """)
 time.sleep(1)
 import psutil
@@ -19,8 +21,7 @@ for proc in psutil.process_iter(['name']):
 print(process_list)
 time.sleep(1)
 print("""
-# в операционной системе Windows на языке Python
-# Для получения названий открытых приложений:
+# получаем названия открытых приложений:
 """)
 time.sleep(1)
 import win32gui
@@ -44,23 +45,23 @@ import pyautogui
 time.sleep(1)
 print('\n# Получаем объект окна по его заголовку -> words = "ассистент"')
 time.sleep(1)
-words = "ассистент"
+words = "Discord"
 print("\n# юзаем рематч -> re.match(r'^.{0,19}.{0,19}$', words)")
 time.sleep(1)
 re.match(r'^.{0,20}.{0,20}$', words)
 window = pyautogui.getWindowsWithTitle(words)[0]
 print("\n# Разворачиваем окно -> window.restore()")
-time.sleep(1)
+time.sleep(2)
 window.restore()
 time.sleep(1)
 print("\n# Делаем окно активным -> window.activate()")
-time.sleep(1)
+time.sleep(2)
 window.activate()
 time.sleep(1)
 print("\n# сворачиваем -> window.minimize()")
-time.sleep(1)
+time.sleep(2)
 window.minimize()
 time.sleep(1)
 print("\n# ещё есть куча приколов с -> Win32Window ")
 time.sleep(1)
-input("\nконец теста")
+input("\n----------------конец теста----------------")
