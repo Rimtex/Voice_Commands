@@ -57,12 +57,13 @@ def generate_response(user_input_gener):
 
 def print_trans_response():
     try:
-        print(YEL + f" > {request_prompts} > " + SRA)
+        print(LCY + "#: " + words[-1])
+        print(GRE + " > " + YEL + f"{request_prompts}" + GRE + " > " + SRA)
         print(CYA + model_name + LCY)
         responsegpt = generate_response(request_prompts)
         transgpt = translator.translate(responsegpt, "russian", "english")
         trans_fullgpt = str(transgpt)
-        print(LGR + f"\n {trans_fullgpt}")
+        print(LGR + f"\n{trans_fullgpt}")
         speak_tts(f" {trans_fullgpt}")
     except Exception as t:
         print(traceback.format_exc())
@@ -89,9 +90,8 @@ if __name__ == '__main__':
                         elif len(words) > 0 and words[-1] in \
                                 ('ответ', 'ответь', 'отвечай', 'хватит', 'переведи', 'переводи',
                                  'перевод', 'давай', 'ладно', 'слышала', 'слышал', 'понял',
-                                 'поняла', 'дальше', 'стоп', 'продолжай', 'продолжи',):
+                                 'поняла', 'дальше', 'стоп', 'продолжай', 'продолжи'):
                             full_sentence = full_sentence.rsplit(words[-1], 1)[0]  # Удалите последнее слово
-                            print(LGR + '>>>')
                             trans = translator.translate(full_sentence, "english", "russian")  # print(full_sentence)
                             request_prompts = str(trans)
                             print_trans_response()
@@ -101,7 +101,7 @@ if __name__ == '__main__':
                             print(LRE + 'X')
                             break
 
-                        elif prompt in ('"запрос"', '"вопрос"'):
+                        elif prompt in ('"запрос"', '"запрашиваю"'):
                             request_prompts = req_rand_question()
                             print_trans_response()
                             break
@@ -130,10 +130,9 @@ if __name__ == '__main__':
                             print(f'{LYE}{part_prompt}{SRA} ', end='')
 
                     except Exception as e:
-                        print(LRE)
                         print(traceback.format_exc())
+                        print(LRE, e)
                         print(full_sentence)
-                        print(f"{LRE} переводчик :{SRA}", e)
         except Exception as e:
             print(traceback.format_exc())
             print(LRE, e)

@@ -1,7 +1,7 @@
 import random
 
 
-#  запрос вопрос
+#  запрос
 def req_rand_question():
     responses = """
 make a list: of interesting and useful Prompts: to Unleash AI's Potential
