@@ -50,7 +50,7 @@ except ImportError:
     from urllib.parse import quote
 
 from keyboard_scripts import script_writing_function, key_press, keyhot, key_down, key_write, key_up, \
-    click_print_cor, click_print
+    click_print_cor, click_print, keyrus_write, keytrans_write
 import loader
 from loader import loader_screen_rimtex
 import vocabulary
@@ -242,6 +242,15 @@ def set_speak_rate(speak_rate):  # установка скорости озву�
 
 random_voice = [speak_pavel_tts, speak_irina_tts]
 
+file_list = os.listdir(path_to_shortcut)
+lnk_files = [f for f in file_list if f.endswith(".lnk")]
+
+labels = []  # словарь названий ярлыков
+for lnk_file in lnk_files:
+    full_path = os.path.join(path_to_shortcut, lnk_file)
+    label = lnk_file[:-4]  # удаляем последние четыре символа (".lnk")
+    labels.append(label)
+
 if __name__ == '__main__':
     translator = Translator()
     tts = pyttsx3.init()
@@ -254,26 +263,26 @@ if __name__ == '__main__':
                 prompt = rec.Result()[13:-2]
                 words = prompt[1:-1].split()
                 # конвертер команд старт
-#   how to write a period translation willelif
-                #: Запись в курсор # для быстрой записи фраз или слов: нажимаем Caps Lock и - диктуем
+
+                #: Запись в курсор # запись голоса при включённом Caps Lock
                 caps_lock_state_check = win32api.GetKeyState(0x14)
                 num_lock_state_check = win32api.GetKeyState(0x90)
                 if (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
                         (num_lock_state_check != 1 and num_lock_state_check != -127):
                     if prompt != '""':
-                        print(LYE + "≈", end="")
-                        keyboard.write(prompt[1:-1])
-                        win32api.keybd_event(0x14, 0x45, 0x1, 0)
+                        print(LYE + "≈ ", end="")
+                        keyrus_write(prompt[1:-1])
+                        win32api.keybd_event(0x14, 0x45, 0x1, 0)  # выключение Caps Lock
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
-                #: Запись в курсор с переводом # для быстрой записи фраз или слов: нажимаем Num Lock и - диктуем
+                #: Запись в курсор с переводом # запись голоса при включённом Num Lock
                 if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
                         (caps_lock_state_check != 1 and caps_lock_state_check != -127):
                     if prompt != '""':
-                        print(LGR + "≈", end="")
+                        print(LGR + "≈ ", end="")
                         wordstrans = str(prompt[1:-1])
                         trans = translator.translate(wordstrans, "english", "russian")
-                        keyboard.write(f"{trans}")
-                        win32api.keybd_event(0x90, 0x45, 0x1, 0)
+                        keytrans_write(f"{trans}")
+                        win32api.keybd_event(0x90, 0x45, 0x1, 0)  # выключение Num Lock
                         win32api.keybd_event(0x90, 0x45, 0x3, 0)
 
                 #: для команд
@@ -1072,8 +1081,12 @@ if __name__ == '__main__':
                     os.startfile(f"Tester_models.py")  #
                     loader.download_generator()
 
+                elif prompt != '""':
+                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # - проверка на запись
+                        script_writing_function(prompt)  # -  для скриптов и печати в keyboard_scripts.py
+
                 # -: открываем все своё с ярлыков
-                elif len(words) == 1 and words[0] in prompt:
+                if prompt != '""' and len(words) == 1 and words[0] in labels:
                     try:
                         os.startfile(f"{path_to_shortcut}{prompt[1:-1]}")
                         print(LCY + "√", end='')
@@ -1083,10 +1096,6 @@ if __name__ == '__main__':
                             print(LCY + "e√", end='')
                         except FileNotFoundError:
                             print(Fore.WHITE + "_", end="")  # - индикатор попытки открытия файла
-
-                if prompt != '""':
-                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # - проверка на запись
-                        script_writing_function(prompt)  # -  для скриптов и печати в keyboard_scripts.py
 
                 if prompt != '""':  # - пишем свои голос
                     print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')
