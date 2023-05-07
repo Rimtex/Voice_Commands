@@ -67,13 +67,14 @@ import subprocess
 import time
 
 # Запускаем блокнот
-subprocess.Popen('notepad.exe')
+# subprocess.Popen('notepad.exe')
 
-# Получаем позицию
-window_position = pyautogui.getWindowsWithTitle('ассистент')[0].topleft
 
-# Делаем окно активным
-pyautogui.click(window_position)
+window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft # Получаем позицию
+pyautogui.moveTo(window_position)  # Делаем окно активным
+pyautogui.moveRel(33, 92, duration=0.25)
+pyautogui.click()
+
 
 """                            конец теста                            """
 input("")
