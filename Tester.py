@@ -1,10 +1,14 @@
 import re
 import time
 
+def printt(pt):
+    for char in pt:
+        print(char, end='', flush=True)
+        time.sleep(0.025)
 
-print("----------------начало теста----------------")
+printt("----------------начало теста----------------")
 time.sleep(1)
-print("""
+printt("""
 # получаем список запущенных процессов и их названий:
 """)
 time.sleep(1)
@@ -20,7 +24,7 @@ for proc in psutil.process_iter(['name']):
         pass
 print(process_list)
 time.sleep(1)
-print("""
+printt("""
 # получаем названия открытых приложений:
 """)
 time.sleep(1)
@@ -37,31 +41,40 @@ def get_window_titles():
 
     win32gui.EnumWindows(callback, None)
     return titles
+
+
 print(get_window_titles())
 
-time.sleep(1)
-print("\n# открыть приложение и сделать его активным -> import pyautogui ")
+
+printt("\n# открыть приложение и сделать его активным -> import pyautogui\n")
+
 import pyautogui
-time.sleep(1)
-print('\n# Получаем объект окна по его заголовку -> words = "Discord"')
-time.sleep(1)
+
+
+printt('\n# Получаем объект окна по его заголовку -> words = "Discord"\n')
+
 words = "Discord"
-print("\n# юзаем рематч -> re.match(r'^.{0,19}.{0,19}$', words)")
-time.sleep(1)
+
+printt("\n# юзаем рематч -> re.match(r'^.{0,19}.{0,19}$', words)\n")
+
 re.match(r'^.{0,20}.{0,20}$', words)
 window = pyautogui.getWindowsWithTitle(words)[0]
-print("\n# Разворачиваем окно -> window.restore()")
-time.sleep(2)
+
+printt("\n# Разворачиваем окно -> window.restore()\n")
+time.sleep(1)
 window.restore()
+
+
+printt("\n# Делаем окно активным -> window.activate()\n")
 time.sleep(1)
-print("\n# Делаем окно активным -> window.activate()")
-time.sleep(2)
 window.activate()
+
+
+printt("\n# сворачиваем -> window.minimize()\n")
 time.sleep(1)
-print("\n# сворачиваем -> window.minimize()")
-time.sleep(2)
 window.minimize()
+
+printt("\n# ещё есть куча приколов с -> Win32Window\n")
 time.sleep(1)
-print("\n# ещё есть куча приколов с -> Win32Window ")
-time.sleep(1)
-input("\n----------------конец теста----------------")
+printt("\n----------------конец теста----------------")
+input("")
