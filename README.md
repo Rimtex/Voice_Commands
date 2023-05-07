@@ -8,15 +8,15 @@
 
 * модель распознавании голоса
 
-1. https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip - в эту же папку
-    * если нужно переключаться
+1. https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip
+   * если нужно переключаться
 2. https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip
 3. https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
 4. https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip
 
-* если нужна языковая модель  
-  http://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin            - в папку - **models**
-
+* если нужны языковые модели  - в папку - **models**  
+  https://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin            
+  https://gpt4all.io/models/ggml-gpt4all-j-v1.3-groovy.bin
 <hr>
 
 ### для запуска файлов голосом
@@ -29,8 +29,9 @@
 
 <hr>
 
-#### по-умолчанию нажатый Caps Lock или `голос` записывает голос в курсор и выключает Caps Lock
-
+#### по-умолчанию 
+Caps Lock или `пиши` записывает голос в курсор и выключает Caps Lock  
+Num Lock или `перевод` записывает голос в курсор и выключает Num Lock
 <hr>
 
 * **Voice_Commands.py**
