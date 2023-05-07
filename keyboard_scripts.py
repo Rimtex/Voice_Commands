@@ -228,11 +228,9 @@ def script_writing_function(prompt):
     #: пишарм и гитхаб
     elif prompt in ('"камент"', '"комент"', '"коммент"'):
         keyhot('alt', '0')
-        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft
-        pyautogui.click(window_position)
     elif prompt in ('"пуш"', '"закинь"', '"закинуть"'):  #: авто пуш
         keyhot('alt', '0')  # вызов окна комментирования
-        time.sleep(.1)
+        time.sleep(.3)
         window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # Получаем позицию
         pyautogui.moveTo(window_position)  # Делаем окно активным
         pyautogui.moveRel(33, 92)  # ставим галку
@@ -243,34 +241,23 @@ def script_writing_function(prompt):
         key_press("space")
         time.sleep(1)
         keyhot('ctrl', 'enter')
-
     elif re.match('"закинь камент|"закинуть коммент|"закинуть камент|"закинь коммент', prompt):
-        keyhot('alt', '0')  # вызов окна комментирования
-        time.sleep(.1)
-        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # Получаем позицию
-        pyautogui.moveTo(window_position)  # Делаем окно активным
-        pyautogui.moveRel(33, 92)  # ставим галку
+        keyhot('alt', '0')
+        time.sleep(.3)
+        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft
+        pyautogui.moveTo(window_position)
+        pyautogui.moveRel(33, 92)
         pyautogui.click()
         key_press("tab")
+        key_press("space")
+        keyhot('ctrl', 'v')  # закидывает из буфера
         key_press("tab")
         key_press("tab")
         key_press("space")
         time.sleep(1)
         keyhot('ctrl', 'enter')
 
-
-
-        time.sleep(.1)
-        click_print_cor(1478, 1286)  # клик в строку
-        click_print_cor(1478, 1286)
-        click_print_cor(1478, 1286)  # три раза чтобы выделить весь текст
-        key_press("delete")
-        time.sleep(.1)
-        keyhot('ctrl', 'v')
-        click_print_cor(1478, 1325)  # кнопка Commit and Push...
-        time.sleep(2)
-        click_print_cor(1478, 1325)  # кнопка Push там же
-        #: для выебонов
+    #: для выебонов
     elif prompt == '"ты робот"':
         keyhot('winleft', 'tab')
         keyhot('winleft', 'tab')
