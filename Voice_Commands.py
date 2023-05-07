@@ -270,7 +270,7 @@ if __name__ == '__main__':
                         (caps_lock_state_check != 1 and caps_lock_state_check != -127):
                     if prompt != '""':
                         print(LGR + "≈", end="")
-                        wordstrans = str(" ".join(words[1:]))
+                        wordstrans = str(prompt[1:-1])
                         trans = translator.translate(wordstrans, "english", "russian")
                         keyboard.write(f"{trans}")
                         win32api.keybd_event(0x90, 0x45, 0x1, 0)
