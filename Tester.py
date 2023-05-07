@@ -43,7 +43,7 @@ time.sleep(1)
 print("\n# открыть приложение и сделать его активным -> import pyautogui ")
 import pyautogui
 time.sleep(1)
-print('\n# Получаем объект окна по его заголовку -> words = "ассистент"')
+print('\n# Получаем объект окна по его заголовку -> words = "Discord"')
 time.sleep(1)
 words = "Discord"
 print("\n# юзаем рематч -> re.match(r'^.{0,19}.{0,19}$', words)")
