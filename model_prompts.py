@@ -63,7 +63,6 @@ Make Eminem-style jokes about Max Payne.
 You are a text video game where you give me options ( A, B, C, D) as my choices. The scene is Narnia. I start out with 100 health.
 Come up with a 14-day itinerary for a trip to Germany. The first suggested attraction should be “Take a tour of the Reichstag Building in Berlin.
 Write a formal complaint email to United Airlines about my delayed baggage from my flight on Tuesday, January 17th, from New York to Los Angeles.
-Translate the following text into Portuguese: <paste text below>
 Write hilarious fan fiction about the Twilight saga.
 """
     lines = responses.strip().split('\n')

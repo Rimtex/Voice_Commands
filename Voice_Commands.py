@@ -791,17 +791,13 @@ if __name__ == '__main__':
                     speak_tts(vocabulary.random_response())
                     click_print_cor(677, 1345)  # координаты кнопки ответа https://chat.openai.com/
                 elif any(word in prompt[1:-1] for word in ('блядь', 'нихуя', 'бля', 'ахуеть', 'бляха', 'ебать')):
-                    keyhot('shiftleft', 'altleft')
                     loader.smile_generator()
                     speak_tts(vocabulary.sp_rec_reaction_Fuck())
                 elif any(word in prompt[1:-1] for word in ('сука', 'сучара', 'охуел', 'нахуй', 'тварь')):
-                    keyhot('shiftleft', 'altleft')
                     speak_tts("давай без агрессии")
-                elif any(word in prompt[1:-1] for word in ('агрессии', 'агрессия', 'ладно', 'давай')):
+                elif any(word in prompt[1:-1] for word in ('агрессии', 'агрессия', 'ладно')):
                     print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')
-                    keyhot('shiftleft', 'altleft')
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
-                    #  os.startfile(f"Voice_neuro_responder.py")  # запускает Voice_neuro_responder.py
                     loader.smile_gen_erator()
                     # speak_tts("конечно. ты прав!")  # диктует вам мудрость
                     speakrate_set = 1
