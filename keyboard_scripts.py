@@ -235,7 +235,7 @@ def script_writing_function(prompt):
         time.sleep(.1)
         window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # Получаем позицию
         pyautogui.moveTo(window_position)  # Делаем окно активным
-        pyautogui.moveRel(33, 92, duration=0.25)  # ставим галку
+        pyautogui.moveRel(33, 92)  # ставим галку
         pyautogui.click()
         key_press("tab")
         key_press("tab")
@@ -249,7 +249,7 @@ def script_writing_function(prompt):
         time.sleep(.1)
         window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # Получаем позицию
         pyautogui.moveTo(window_position)  # Делаем окно активным
-        pyautogui.moveRel(33, 92, duration=0.25)  # ставим галку
+        pyautogui.moveRel(33, 92)  # ставим галку
         pyautogui.click()
         key_press("tab")
         key_press("tab")
