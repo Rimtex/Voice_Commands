@@ -243,8 +243,6 @@ def script_writing_function(prompt):
         key_press("enter")
         key_press("enter")
 
-
-
         time.sleep(.1)
         click_print_cor(1478, 1286)
         click_print_cor(1478, 1286)
