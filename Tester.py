@@ -44,6 +44,7 @@ def get_window_titles():
 
 
 print(get_window_titles())
+printt(f"\n # число {len(get_window_titles())}\n")
 
 printt("""
  # развернуть приложение, сделать активным, свернуть 
@@ -78,7 +79,8 @@ window.minimize()  # сворачиваем
 printt("\n #: дёргаем ассистента\n")
 printt("""
 assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
-assistant.restore()  # Разворачиваем 
+assistant.minimize()  # сворачиваем
+assistant.restore()  # разворачиваем 
 assistant.activate()  # активируем
 time.sleep(1)
 assistant.moveTo(100, 100)  # двигаем ассистента
@@ -91,7 +93,8 @@ assistant.resizeTo(849, 327)  # настраиваем размер окна
 """)
 
 assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
-assistant.restore()  # Разворачиваем
+assistant.minimize()  # сворачиваем
+assistant.restore()  # разворачиваем
 assistant.activate()  # активируем
 time.sleep(1)
 assistant.moveTo(100, 100)  # двигаем ассистента
@@ -101,6 +104,23 @@ time.sleep(1)
 assistant.moveTo(-8, 0)  # двигаем ассистента в угол
 time.sleep(1)
 assistant.resizeTo(849, 327)  # настраиваем размер окна
+
+printt("\n #: разворачиваем на хрен все!\n")
+printt("""
+window_titles = get_window_titles()
+for title in sorted(window_titles):
+    window = pyautogui.getWindowsWithTitle(title)[0]
+    window.minimize()
+    window.restore()
+    time.sleep(.5)
+""")
+printt("\n #: погнали!\n")
+window_titles = get_window_titles()
+for title in sorted(window_titles):
+    window = pyautogui.getWindowsWithTitle(title)[0]
+    window.minimize()
+    window.restore()
+    time.sleep(.1)
 
 printt("\n----------------конец теста----------------")
 input("")

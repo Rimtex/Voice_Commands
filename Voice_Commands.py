@@ -273,10 +273,10 @@ if __name__ == '__main__':
                     if prompt != '""':
                         print(LYE + " ≈ ", end="")
                         keyrus_write(prompt[1:-1])
-                        prompt = '""'
+                        prompt = '""'  # стираем фразы и слова чтобы не активировались команды
+                        words = '""'
                         win32api.keybd_event(0x14, 0x45, 0x1, 0)  # выключение Caps Lock
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
-
                 #: Запись в курсор с переводом # запись голоса при включённом Num Lock
                 if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
                         (caps_lock_state_check != 1 and caps_lock_state_check != -127):
@@ -286,6 +286,7 @@ if __name__ == '__main__':
                         trans = translator.translate(wordstrans, "english", "russian")
                         keytrans_write(f"{trans}")
                         prompt = '""'
+                        words = '""'
                         win32api.keybd_event(0x90, 0x45, 0x1, 0)  # выключение Num Lock
                         win32api.keybd_event(0x90, 0x45, 0x3, 0)
 
