@@ -6,8 +6,6 @@ import pyautogui
 import py_win_keyboard_layout
 from colorama import init, Fore, Style
 
-import loader
-
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
           Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX, Fore.LIGHTCYAN_EX]
@@ -95,6 +93,10 @@ def keyhot(*keys):
             print(F"{WHI}‒{CYA}{keys[1]}{WHI}{LCY}", end='')  # пав
             if len(keys) > 2:
                 print(F"{WHI}‒{LBL}{keys[2]}{WHI}{LCY}", end='')
+
+
+# Находим окно с именем 'ассистент'
+assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
 
 
 def script_writing_function(prompt):
@@ -275,11 +277,18 @@ def script_writing_function(prompt):
         time.sleep(0.2)
         click_print()
     elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-
-        assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
-        assistant.restore()
+        import pygetwindow
+        try:
+            # Проверяем, активно ли окно 'ассистент'
+            if not assistant.isActive:
+                # Если не активно, то восстанавливаем и активируем окно
+                assistant.restore()
+                assistant.activate()
+                print(LGR + "☼", end="")
+        except pygetwindow.PyGetWindowException:
+            # Обрабатываем исключение, чтобы программа не падала, если возникнет ошибка
+            pass
+    elif prompt in ('"место"', '"на место"', '"в угол"', '"ты наказан"'):
+        assistant.moveTo(-8, 0)  # двигаем ассистента в угол
+        assistant.resizeTo(849, 327)  # настраиваем размер окна
         assistant.activate()
-        # position.activate()
-        # pyautogui.click(window_position)
-    elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
-        click_print_cor(2, 9)

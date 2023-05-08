@@ -98,7 +98,7 @@ assistant.moveTo(100, 100)  # двигаем ассистента
 time.sleep(1)
 assistant.resizeTo(1849, 227)  # настраиваем размер окна
 time.sleep(1)
-assistant.moveTo(-8, 2)  # двигаем ассистента в угол
+assistant.moveTo(-8, 0)  # двигаем ассистента в угол
 time.sleep(1)
 assistant.resizeTo(849, 327)  # настраиваем размер окна
 
