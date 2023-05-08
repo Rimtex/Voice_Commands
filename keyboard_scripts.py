@@ -277,16 +277,16 @@ def script_writing_function(prompt):
         time.sleep(0.2)
         click_print()
     elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-        try:
-            # Проверяем, активно ли окно 'ассистент'
-            if not assistant.isActive:
-                # Если не активно, то восстанавливаем и активируем окно
-                assistant.restore()
-                assistant.activate()
-                print(LGR + "☼", end="")
-        except pygetwindow.PyGetWindowException:
-            # Обрабатываем исключение, чтобы программа не ругалась, если возникнет ошибка
-            pass
+        assistant.restore()  # восстанавливаем
+        assistant.moveTo(-8, 0)  # двигаем на позицию и заодно активируем
+        print(LGR + "☼", end="")
+        """
+        try:  # Проверяем, активно ли окно 'ассистент'
+            if not assistant.isActive:  # Если не активно,
+                assistant.activate()  # то активируем окно
+        except pygetwindow.PyGetWindowException:   
+            pass  # Обрабатываем исключение, чтобы программа не ругалась, если возникнет ошибка
+            """
     elif prompt in ('"место"', '"на место"', '"в угол"', '"ты наказан"'):
         assistant.moveTo(-8, 0)  # двигаем ассистента в угол
         assistant.resizeTo(849, 327)  # настраиваем размер окна
