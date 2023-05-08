@@ -1,6 +1,6 @@
 import time
 import re
-
+import pygetwindow
 import keyboard
 import pyautogui
 import py_win_keyboard_layout
@@ -277,7 +277,6 @@ def script_writing_function(prompt):
         time.sleep(0.2)
         click_print()
     elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-        import pygetwindow
         try:
             # Проверяем, активно ли окно 'ассистент'
             if not assistant.isActive:
@@ -286,7 +285,7 @@ def script_writing_function(prompt):
                 assistant.activate()
                 print(LGR + "☼", end="")
         except pygetwindow.PyGetWindowException:
-            # Обрабатываем исключение, чтобы программа не падала, если возникнет ошибка
+            # Обрабатываем исключение, чтобы программа не ругалась, если возникнет ошибка
             pass
     elif prompt in ('"место"', '"на место"', '"в угол"', '"ты наказан"'):
         assistant.moveTo(-8, 0)  # двигаем ассистента в угол
