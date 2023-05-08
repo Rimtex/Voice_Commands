@@ -239,7 +239,7 @@ def script_writing_function(prompt):
         key_press("tab")
         key_press("tab")
         key_press("space")
-        time.sleep(1)
+        time.sleep(2)
         keyhot('ctrl', 'enter')
     elif re.match('"закинь камент|"закинуть коммент|"закинуть камент|"закинь коммент', prompt):
         keyhot('alt', '0')
@@ -254,7 +254,7 @@ def script_writing_function(prompt):
         key_press("tab")
         key_press("tab")
         key_press("space")
-        time.sleep(1)
+        time.sleep(2)
         keyhot('ctrl', 'enter')
 
     #: для выебонов
@@ -275,9 +275,10 @@ def script_writing_function(prompt):
         time.sleep(0.2)
         click_print()
     elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-        position = pyautogui.getWindowsWithTitle('ассистент')[0]
-        position.restore()
-        position.show()
+
+        assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
+        assistant.restore()
+        assistant.activate()
         # position.activate()
         # pyautogui.click(window_position)
     elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
