@@ -10,6 +10,15 @@ make a list: of interesting and useful Prompts: to Unleash AI's Potential
     return random.choice(lines)
 
 
+#  игры
+def req_rand_games():
+    responses = """
+You are a text video game where you give me options ( A, B, C, D) as my choices. The scene is Narnia. I start out with 100 health.
+"""
+    lines = responses.strip().split('\n')
+    return random.choice(lines)
+
+
 #  история
 def req_rand_history():
     responses = """
@@ -52,18 +61,12 @@ def req_rand_comedy():
     responses = """
 Tell me a joke about [topic of your choice]
 Send a pun-filled happy birthday message to my friend Alex.
-Write a sequel/prequel about the 'X' movie
-Create a new playlist of new song names from 'X'
-write a script for a movie with 'X' and 'X'
 Explain [topic of your choice] in a funny way
 Give me an example of a proposal message for a girl
 Write a short story where an Eraser is the main character.
 How much wood could a woodchuck chuck if a woodchuck could chuck wood?
 Make Eminem-style jokes about Max Payne.
-You are a text video game where you give me options ( A, B, C, D) as my choices. The scene is Narnia. I start out with 100 health.
-Come up with a 14-day itinerary for a trip to Germany. The first suggested attraction should be “Take a tour of the Reichstag Building in Berlin.
-Write a formal complaint email to United Airlines about my delayed baggage from my flight on Tuesday, January 17th, from New York to Los Angeles.
-Write hilarious fan fiction about the Twilight saga.
+Write hilarious fan fiction about the Dark Souls saga.
 """
     lines = responses.strip().split('\n')
     return random.choice(lines)
