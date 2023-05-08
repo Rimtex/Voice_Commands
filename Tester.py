@@ -47,7 +47,7 @@ print(get_window_titles())
 printt(f"\n # число {len(get_window_titles())}\n")
 
 printt("""
- # развернуть приложение, сделать активным, свернуть 
+ # Discord - развернуть приложение, сделать активным, свернуть 
  
 import re
 
@@ -112,7 +112,7 @@ for title in sorted(window_titles):
     window = pyautogui.getWindowsWithTitle(title)[0]
     window.minimize()
     window.restore()
-    time.sleep(.5)
+    time.sleep(.1)
 """)
 printt("\n #: погнали!\n")
 window_titles = get_window_titles()
