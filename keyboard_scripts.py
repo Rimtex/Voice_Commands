@@ -50,7 +50,7 @@ def keytrans_write(string):
 
 def key_write(string):
     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
-    print(LYE + f"{string}", end='')
+    print(YEL + f"{string}", end='')
     keyboard.write(string)  # запись в курсор
 
 
@@ -280,26 +280,8 @@ def script_writing_function(prompt):
         assistant.minimize()  # сворачивание
         assistant.restore()  # раздупляем восстанавливанием
         print(LGR + "ø", end="")
-        """
-        try:  # Проверяем, активно ли окно 'ассистент'
-            assistant.moveTo(2, 10)  # раздупляем двиганием
-            time.sleep(0.1)
-            assistant.moveTo(-8, 0)  # двигаем на позицию и заодно активируем
-            time.sleep(0.1)
-            if not assistant.isActive:  # Если не активно,
-                print(LCY + "+", end="")
-                assistant.activate()  # то активируем окно
-                print(YEL + "Ϟ", end="")
-        except pygetwindow.PyGetWindowException:
-            try:
-                if assistant.isActive:  # Если активно,
-                    print(LCY + "+", end="")
-                    assistant.activate()  # то активируем окно
-                    print(YEL + "Ϟ", end="")
-            except pygetwindow.PyGetWindowException:
-                pass  # Обрабатываем исключение, чтобы программа не ругалась, если возникнет ошибка
-        """
     elif prompt in ('"место"', '"на место"', '"в угол"', '"ты наказан"'):
+        print(LGR + "╔", end="")
         assistant.moveTo(-8, 0)  # двигаем ассистента в угол
         assistant.resizeTo(849, 327)  # настраиваем размер окна
         assistant.activate()

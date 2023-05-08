@@ -101,7 +101,7 @@ assistant.restore()  # разворачиваем
 assistant.activate()  # активируем
 assistant.moveTo(100, 100)  # двигаем ассистента
 assistant.resizeTo(1849, 227)  # настраиваем размер окна
-assistant.moveTo(-8, 2)  # двигаем ассистента в угол
+assistant.moveTo(-8, 0)  # двигаем ассистента в угол
 assistant.resizeTo(849, 327)  # настраиваем размер окна 
 """)
 try:
@@ -145,7 +145,7 @@ for title in sorted(window_titless):
     time.sleep(.1)
 
 printt("\n -----> хоба (ˇò_ó) \n")
-assistant = pyautogui.getWindowsWithTitle('тест')[0]
+assistant = pyautogui.getWindowsWithTitle('Python')[0]
 assistant.restore()  # разворачиваем
 
 printt("\n----------------конец теста----------------")
