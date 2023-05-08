@@ -275,6 +275,10 @@ def script_writing_function(prompt):
         time.sleep(0.2)
         click_print()
     elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-        click_print_cor(411, 1439)
+        position = pyautogui.getWindowsWithTitle('ассистент')[0]
+        position.restore()
+        position.show()
+        # position.activate()
+        # pyautogui.click(window_position)
     elif prompt in ('"на себя"', '"наведи на себя"', '"ты главный"', '"ты можешь"'):
         click_print_cor(2, 9)
