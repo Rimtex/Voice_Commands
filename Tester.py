@@ -1,7 +1,5 @@
 import time
 
-import pyautogui
-
 
 def printt(text):
     for char in text:
@@ -12,7 +10,7 @@ def printt(text):
 
 printt("----------------начало теста----------------\n")
 
-printt("\n #: получаем список запущенных процессов и их названий:\n")
+printt("\n #: получаем отсортированый список запущенных процессов и их названий: -->\n")
 
 import psutil
 
@@ -24,9 +22,12 @@ for proc in psutil.process_iter(['name']):
         process_list.append(process_name)
     except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
         pass
-print(process_list)
 
-printt("\n # получаем названия открытых приложений:\n")
+unique_process_list = sorted(set(process_list))
+
+print(unique_process_list)
+
+printt("\n # получаем названия открытых приложений: -->\n")
 
 import win32gui
 
@@ -62,7 +63,7 @@ window.activate()  # Делаем окно активным
 time.sleep(1)
 window.minimize()  # сворачиваем
 """)
-
+printt("\n ----->\n")
 import re
 
 words = "Discord"  # пишем объект окна по его заголовку
@@ -75,7 +76,6 @@ time.sleep(1)
 window.activate()  # Делаем окно активным
 time.sleep(1)
 window.minimize()  # сворачиваем
-
 printt("\n #: дёргаем ассистента\n")
 printt("""
 assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
@@ -89,9 +89,9 @@ assistant.resizeTo(1849, 227)  # настраиваем размер окна
 time.sleep(1)
 assistant.moveTo(-8, 2)  # двигаем ассистента в угол
 time.sleep(1)
-assistant.resizeTo(849, 327)  # настраиваем размер окна
+assistant.resizeTo(849, 327)  # настраиваем размер окна 
 """)
-
+printt("\n ----->\n")
 assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
 assistant.minimize()  # сворачиваем
 assistant.restore()  # разворачиваем
@@ -114,7 +114,7 @@ for title in sorted(window_titles):
     window.restore()
     time.sleep(.1)
 """)
-printt("\n #: погнали!\n")
+printt("\n погнали! ----->\n")
 window_titles = get_window_titles()
 for title in sorted(window_titles):
     window = pyautogui.getWindowsWithTitle(title)[0]
@@ -124,15 +124,3 @@ for title in sorted(window_titles):
 
 printt("\n----------------конец теста----------------")
 input("")
-
-"""
-assistant.moveTo(-8, 2)  # двигаем ассистента в угол
-assistant_bottomright = pyautogui.getWindowsWithTitle('ассистент')[0].bottomright
-#  pyautogui.click(assistant_bottomright)
-pyautogui.moveTo(assistant_bottomright)
-pyautogui.moveRel(-10, -10)
-time.sleep(2.5)
-pyautogui.mouseDown()
-pyautogui.moveTo(837, 324, duration=0.25)  # настраиваем размер окна
-pyautogui.mouseUp()
-"""
