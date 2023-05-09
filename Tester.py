@@ -37,6 +37,7 @@ for i, window in enumerate(windows):
 
 rdk = ("Right", "Up", "Left", "Down")
 random.choice(rdk)
+
 while True:
     printt("\n нажмите энтер для дискотеки\n")
     input("")

@@ -251,8 +251,10 @@ for lnk_file in lnk_files:
     full_path = os.path.join(path_to_shortcut, lnk_file)
     label = lnk_file[:-4]  # удаляем последние четыре символа
     labels.append(label)
+
 # Находим окно с именем 'ассистент'
 assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
+
 if __name__ == '__main__':
     translator = Translator()
     tts = pyttsx3.init()
