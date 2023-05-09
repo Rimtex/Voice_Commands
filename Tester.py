@@ -28,7 +28,6 @@ printt("----------------осторожно уличный дэнсер----------
 
 # Получаем список всех окон на рабочем столе
 windows = pygetwindow.getAllWindows()
-
 # Выводим список приложений с их номерами
 for i, window in enumerate(windows):
     if window.title:
