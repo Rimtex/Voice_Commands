@@ -676,7 +676,7 @@ if __name__ == '__main__':
                     os.startfile(f"{path_to_shortcut}ассистент")
                     exit()
                 elif prompt in ('"ассистент"', '"рестарт"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"'):
-                    assistant.moveTo(-8, 20)
+                    assistant.moveRel(0, 20)
                     print(LRE + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ʕ/·ᴥ·ʔ/ Bye!', end="")
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
                     os.startfile(f"{path_to_shortcut}ассистент")
@@ -1054,8 +1054,10 @@ if __name__ == '__main__':
                     assistant.minimize()  # сворачивание
                     assistant.restore()  # раздупляем восстанавливанием
                     print(LGR + "ø", end="")
-                elif prompt in ('"уйди"', '"свали"', '"место"', '"на место"', '"в угол"', '"ты наказан"'):
+                elif prompt in ('"уйди"', '"свали"', '"угол"', '"место"', '"места"', '"наказан"'):
                     print(LGR + "╔", end="")
+                    assistant.minimize()
+                    assistant.restore()
                     assistant.moveTo(-8, 0)  # двигаем ассистента в угол
                     assistant.resizeTo(849, 327)  # настраиваем размер окна
                     assistant.activate()
