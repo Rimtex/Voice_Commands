@@ -34,7 +34,7 @@ except ImportError:
     from pyllamacpp.model import Model
 
 # Код ошибки 0xc0000005 проблемы с памятью.
-
+"""
 #: состав словаря из названий моделей
 file_list = os.listdir("models\\")
 bin_files = [f for f in file_list if f.endswith(".bin")]
@@ -45,10 +45,13 @@ for bin_file in bin_files:
     labels.append(label)
 for i, label in enumerate(labels):
     print(f"{i + 1}. {label}")
-
-num = input(" введите номер модели: ")
+"""
+print("""
+1. ggml-gpt4all-j-v1.3-groovy.bin
+2. ggml-gpt4all-l13b-snoozy.bin
+""")
 model_name = None
-# num = "2"
+num = input(" введите номер модели: ")
 
 if num == '1':
     model_path = './models/ggml-gpt4all-j-v1.3-groovy.bin'
