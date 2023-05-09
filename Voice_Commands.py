@@ -140,7 +140,7 @@ def play_music():  # для проигрывания случайной музы
         print(f" {LGR}Playing: {WHI}{random_file_op}{LGR}", end='')
 
 
-#: повтор нажатий - клавиша плюс цифра
+#: повтор нажатий клавиш плюс цифры
 def numbers_key():
     if len(words) == 1:
         if len(kps) == 1:
@@ -399,7 +399,6 @@ if __name__ == '__main__':
                         if rec.AcceptWaveform(stream.read(4000)):
                             prompt = rec.Result()[13:-2]
                             if prompt in ('"стенка"', '"стену"', '"строй"', '"стройка"', '"построй"', '"постройка"'):
-                                print(random.choice(colors), end='')
                                 loader.waal_generator()
                             elif prompt in ('"бред"', '"умом"'):
                                 loader.smile_generator()

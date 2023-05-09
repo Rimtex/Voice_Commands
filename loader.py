@@ -2,36 +2,16 @@ import random
 import time
 
 import keyboard
-from colorama import Fore, Style, init, Back
+from colorama import Fore, init, Style, Back
 
-colors = [Fore.GREEN, Fore.YELLOW,
-          Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX,
-          Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX]
-
-RCC = random.choice(colors)
-RED = Fore.RED
-LRE = Fore.LIGHTRED_EX
-YEL = Fore.YELLOW
-LYE = Fore.LIGHTYELLOW_EX
-BLU = Fore.BLUE
-LBL = Fore.LIGHTBLUE_EX
-CYA = Fore.CYAN
-LCY = Fore.LIGHTCYAN_EX
-GRE = Fore.GREEN
-LGR = Fore.LIGHTGREEN_EX
-MAG = Fore.MAGENTA
-LMA = Fore.LIGHTMAGENTA_EX
-WHI = Fore.WHITE
-BLA = Fore.BLACK
-BWH = Back.WHITE
-SRA = Style.RESET_ALL
+colors = [Fore.GREEN, Fore.YELLOW, Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX]
 
 init(convert=True)
 
 
 #  boot loader screen saver
 def loader_screen_rimtex():
-    message = [(CYA, " ᴙimtex "), (YEL, "Voice "), (GRE, "Assistant "), (WHI, "Commands")]
+    message = [(Fore.CYAN, " ᴙimtex "), (Fore.YELLOW, "Voice "), (Fore.GREEN, "Assistant "), (Fore.WHITE, "Commands")]
     for color, word in message:
         for char in word:
             print(color + char, end='', flush=True)
@@ -85,7 +65,6 @@ random.choice(colors)\
 
 #: генератор стенки
 def waal_generator():
-    from Voice_Commands import stream, rec
     build = """
 ╠╬╣╚╝╔╗╦═╩║═╠╬╣╚╝╔╗╦═╩═╠╬╣╚╝╔╗╦═╩═╠╬╣╚╝╔╗╦═╩═╚╝╔╗╚╝╔╗╚╝╔╗╚╝╔╗═
 ╟╫╢╙╜╓╖╥─╨║─╟╫╢╙╜╓╖╥─╨─╟╫╢╙╜╓╖╥─╨─╟╫╢╙╜╓╖╥─╨─╙╜╓╖╙╜╓╖╙╜╓╖╙╜╓╖─
@@ -94,59 +73,38 @@ def waal_generator():
 """
     lines = build.strip().split('\n')
     random_line = random.choice(lines)
-    #  iterations = len(prompt[1:-1])  # 5555  # Число повторений ! !! надо сделать если больше ноля то прерываеца
-    print(random.choice(colors), end="")
+    print(random.choice(colors), end='')
     while True:
-        if rec.AcceptWaveform(stream.read(4000)):
-            prompt = rec.Result()
-            prompt = prompt[13:-2]
-            if keyboard.is_pressed('space'):
-                break
-            elif prompt != '""':
-                break
-        random_color = random.choice(colors)
-        # for _ in range(iterations):
-        random_character = random.choice(random_line)
-        colored_character = random_character
-        print(colored_character, end='', flush=True)
-        time.sleep(.05)
+        if keyboard.is_pressed('space'):
+            break
+        print(random.choice(random_line), end='', flush=True)
+        time.sleep(.1)
 
 
-#: генератор буквы
+#: генератор бреда
 def letters_random():
-    from Voice_Commands import stream, rec
     build = """
 ц        укенгшщзхфывапролджэячсмитбюё
 q        wertyuiopasdfghjklzxcvbnm
 ц        укенгшщзхфывапролджэячсмитбюёq        wertyuiopasdfghjklzxcvbnm
 $        ¥£€¢±‰÷≠=*·+-/¹²³☺▪▫°♠♣♥♦↔↕≤≥♀♂‼^_
 """
+
     """
-    
     ._. - смайл скучать
     -_- - смайл печаль
     ¬_¬ - смайл закрытые глаза 
     O_O - смайл круглые глаза
-    
 """
+
     lines = build.strip().split('\n')
     random_line = random.choice(lines)
-    #  iterations = len(prompt[1:-1])  # 5555  # Число повторений ! !! надо сделать если больше ноля то прерываеца
     while True:
-        if rec.AcceptWaveform(stream.read(4000)):
-            prompt = rec.Result()
-            prompt = prompt[13:-2]
-            if keyboard.is_pressed('space'):
-                break
-            elif prompt != '""':
-                break
-
-        # for _ in range(iterations):
-        random_color = random.choice(colors)
-        random_character = random.choice(colors) + random.choice(random_line)
-        colored_character = random_character
+        if keyboard.is_pressed('space'):
+            break
+        colored_character = random.choice(colors) + random.choice(random_line)
         print(colored_character, end='')
-        time.sleep(.05)
+        time.sleep(.1)
 
 
 #  генератор смайлов
@@ -167,7 +125,7 @@ def smile_generator():
 {edger}""", end='')
 
 
-#  генератор смайлов 2
+#  ген_ератор смайлов 2
 def smile_gen_erator():
     col1 = random.choice(colors)
     col2 = random.choice(colors)
