@@ -252,6 +252,9 @@ for lnk_file in lnk_files:
     label = lnk_file[:-4]  # удаляем последние четыре символа
     labels.append(label)
 
+# Находим окно с именем 'ассистент'
+assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
+
 if __name__ == '__main__':
     translator = Translator()
     tts = pyttsx3.init()
@@ -277,6 +280,7 @@ if __name__ == '__main__':
                         words = '""'
                         win32api.keybd_event(0x14, 0x45, 0x1, 0)  # выключение Caps Lock
                         win32api.keybd_event(0x14, 0x45, 0x3, 0)
+
                 #: Запись в курсор с переводом # запись голоса при включённом Num Lock
                 if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
                         (caps_lock_state_check != 1 and caps_lock_state_check != -127):
@@ -306,20 +310,6 @@ if __name__ == '__main__':
                     keyhot('winleft', 'Up')
                     exit()
 
-                #: для быстрого поиска из буфера
-                elif len(words) > 0 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
-                    if len(words) == 1:
-                        keyhot('ctrl', 'f')
-                    if len(words) > 1:
-                        # os.startfile(f"{path_to_shortcut}питон")  # стартуем нужную прогу
-                        keywrite = prompt[len(words[0]) + 2:-1]  # минус первое слово
-                        print(f"{LGR}˃{LCY} п {LMA}? ", end='')
-                        time.sleep(.1)
-                        click_print()
-                        keyhot('ctrl', 'f')
-                        keyboard.write(f"{keywrite}")
-                        key_press('enter')
-
                 #: смена модели распознавания
                 elif len(words) == 2 and any(words in prompt[1:-1] for words in ('модель', 'model')):
                     try:
@@ -339,6 +329,20 @@ if __name__ == '__main__':
                                            f"\n 2 https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip"
                                            f"\n 3 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
                                            f"\n 4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip")
+
+                #: для быстрого поиска
+                elif len(words) > 0 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
+                    if len(words) == 1:
+                        keyhot('ctrl', 'f')
+                    if len(words) > 1:  #: поиск из буфера
+                        # os.startfile(f"{path_to_shortcut}питон")  # стартуем нужную прогу
+                        keywrite = prompt[len(words[0]) + 2:-1]  # минус первое слово
+                        print(f"{LGR}˃{LCY} п {LMA}? ", end='')
+                        time.sleep(.1)
+                        click_print()
+                        keyhot('ctrl', 'f')
+                        keyboard.write(f"{keywrite}")
+                        key_press('enter')
 
                 #: найти найди окей-гугл
                 elif 0 < len(words) <= 10 and words[0] in ('найти', 'найди', 'окей'):
@@ -418,35 +422,25 @@ if __name__ == '__main__':
                             elif prompt in ('"ассистент"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"',
                                             '"рестарт"', '"перезапустить"'):
                                 print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
-                                time.sleep(0.1)
-                                keyhot('winleft', 'tab')
-                                keyhot('winleft', 'tab')
                                 os.startfile(f"\\{path_to_shortcut}ассистент")
-                                time.sleep(2.1)
                                 exit()
                             if prompt != '""':  # печать в консоль
                                 print(SRA + prompt[1:-1] + random.choice(colors), sep=' ', end=' ')
 
-                #: для экстренного отключения звука
+                #: установка громкости системы
                 elif any(words in prompt[1:-1] for words in
                          ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) or \
-                        prompt[1:-1] in ('громко', 'мут'):
-                    print(LCY + '♫' + SRA, end='')
-                    key_press('volumemute')
-
-                #: установка громкости системы
-                elif len(words) == 1 and words[0] == 'громкость':
-                    print(LCY + '♪' + SRA, end='')
+                        prompt[1:-1] in ('громко', 'громкость', 'мут'):
                     key_press('volumemute')
                 elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
-                    print(LCY + '♫' + SRA, end='')
                     on_num = sum(words_num[word] for word in words[1:]) // 2
+                    print(LCY + '♪', end='')
                     for i in range(50):  # ! костыль
                         pyautogui.press('volumedown')
-                    for i in range(on_num):  # // 2
+                    for i in range(on_num):
                         pyautogui.press('volumeup')
 
-                #: установка скорости озвучивания голоса  # words[0] in( 'скорость','озвучка','голосом' )
+                #: установка скорости озвучивания голоса
                 elif len(words) >= 2 \
                         and re.match(r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)', words[0]) \
                         and words[1] in words_num:
@@ -467,8 +461,8 @@ if __name__ == '__main__':
                     speak_pavel_tts("Microsoft Pavel Mobile")  # Озвучивание текста голосом Павла
                 elif prompt == '"ирина"':
                     switch_voice("Microsoft Irina Desktop")  # Переключение на голос Ирины
-                    speak_irina_tts("Microsoft Irina Desktop")  # Озвучивание текста голосом Ирины
                     print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Irina ' + LGR, end='')
+                    speak_irina_tts("Microsoft Irina Desktop")  # Озвучивание текста голосом Ирины
 
                 #: нажатие клавиш + число для повторений
                 elif 7 > len(words) > 0 and words[0] in ('контрол', 'контур', 'контр', 'контроль'):
@@ -505,16 +499,16 @@ if __name__ == '__main__':
                     kps = ['browserforward']
                     numbers_key()
                 #: клавиши стрелки + число для повторений
-                elif 7 > len(words) > 0 and words[0] in ('лево', 'влево', 'лева', 'налево', 'левого'):
+                elif 7 > len(words) > 0 and re.match(r'^.{0,3}лев.{0,3}$', words[0]):
                     kps = ['left']
                     numbers_key()
-                elif 7 > len(words) > 0 and words[0] in ('право', 'вправо', 'права', 'направо'):
+                elif 7 > len(words) > 0 and re.match(r'^.{0,3}прав.{0,3}$', words[0]):
                     kps = ['right']
                     numbers_key()
-                elif 7 > len(words) > 0 and words[0] in ('верх', 'вверх', 'наверх'):
+                elif 7 > len(words) > 0 and re.match(r'^.{0,3}верх.{0,3}$', words[0]):
                     kps = ['up']
                     numbers_key()
-                elif 7 > len(words) > 0 and words[0] in ('низ', 'вниз'):
+                elif 7 > len(words) > 0 and re.match(r'^.{0,3}низ.{0,3}$', words[0]):
                     kps = ['down']
                     numbers_key()
                 #: комбинации клавиш + число для повторений
@@ -535,64 +529,56 @@ if __name__ == '__main__':
                     numbers_key()
 
                 #: одноразовое нажатие
-                elif 7 > len(words) > 0 and words[-1] in (
-                        'перевод', 'переведи', 'цифры', 'цифра', 'циферки', 'фиксация'):
+                elif 7 > len(words) > 0 and words[-1] in ('перевод', 'переведи', 'цифры', 'цифра', 'циферки'):
                     key_press('numlock')
-                elif 7 > len(words) > 0 and words[-1] in (
-                        'голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы', 'писать'):
+                elif 7 > len(words) > 0 and words[-1] in ('голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы', 'капс'):
                     key_press('CapsLock')  # п1
-
-                elif prompt in ('"копировать"', '"скопируй"', '"копирование"', '"альт це"', '"копия"', '"копи"'):
+                elif prompt in ('"копировать"', '"скопируй"', '"копирование"', '"копирует"', '"копия"'):
                     keyhot('ctrlleft', 'c')
-                elif prompt in ('"сохранить"', '"сохранять"', '"сохрани"', '"сохранение"', '"сохраняя"', '"сейф"',
-                                '"храни "', '"хранить "'):
+                elif prompt in ('"сохрани"', '"сохранить"', '"сохранять"', '"сохранение"', '"сохраняя"',):
                     keyhot('ctrlleft', 's')
                 elif prompt in ('"буфер"', '"буфера обмена"', '"список копий"', '"список копировании"'):
                     keyhot('winleft', 'v')
                 elif prompt in ('"раскладка"', '"раскладки"', '"раскладке"', '"клавиатура"'):
                     pyautogui.hotkey('win', 'space')
 
-                #: работа с окнами ! доделать нормально на словах (плюс минус символы)
-                elif prompt in ('"новый"', '"новое"', '"новая"', '"новые"', '"окно"'):
-                    keyhot('shift', 'f4')
-                elif prompt in ('"окно влево"', '"окно налево"', '"окно лево"', '"окно лева"', '"разверни влево"',
-                                '"разверни лево"', '"разверни налево"', '"разверни лева"'):
-                    keyhot('winleft', 'Left')
-                elif prompt in ('"окно вправо"', '"окно направо"', '"окно право"', '"окно права"',
-                                '"разверни вправо"', '"разверни право"', '"разверни направо"', '"разверни права"'):
-                    keyhot('winleft', 'Right')
-                elif prompt in ('"развернуть"', '"развернуть окно"', '"разверни"', '"разворачивания"',
-                                '"разворот"', '"разверни окно"', '"разворот окна"', '"разворот окно"'):
-                    keyhot('winleft', 'Up')
-                elif prompt in ('"свернуть"', '"сверни"', '"свали"', '"свалить"', '"свернуть окно"',
-                                '"сворачивание"', '"уйди"'):
-                    keyhot('winleft', 'Down')
-                elif prompt in ('"альт таб"', '"аль таб"', '"альта"', '"смена окна"', '"другое окно"',
-                                '"смена окон"', '"смени окно"', '"поменяю окно"', '"поменяй окно"'):
-                    keyhot('alt', 'tab')
-                elif prompt in ('"окна"', '"вин таб"', '"показать окна"', '"режим окон"', '"окошки"'):
+                #: работа с окнами
+                elif 3 > len(words) > 0 and re.match(r'(окно)|(разв\w{0,6}\b)|(свер\w{0,4}\b)', words[0]):
+                    if len(words) == 1:
+                        if re.match(r'(разв\w{0,6}\b)', words[0]):
+                            keyhot('winleft', 'Up')
+                        if re.match(r'(свер\w{0,4}\b)', words[0]):
+                            keyhot('winleft', 'Down')
+                    if len(words) == 2 and words[0] == 'окно':
+                        if 2 >= len(words) > 1 and re.match(r'^.{0,3}прав.{0,3}$', words[1]):
+                            keyhot('winleft', 'Right')
+                        if 2 >= len(words) > 1 and re.match(r'^.{0,3}лев.{0,3}$', words[1]):
+                            keyhot('winleft', 'Left')
+                        if 2 >= len(words) > 1 and re.match(r'^.{0,3}верх.{0,3}$', words[1]):
+                            keyhot('winleft', 'Up')
+                        if 2 >= len(words) > 1 and re.match(r'^.{0,3}низ.{0,3}$', words[1]):
+                            keyhot('winleft', 'Down')
+                elif len(words) == 1 and re.match(r'(закр\w{0,4}\b)', words[0]):
+                    keyhot('altleft', 'F4')
+                elif prompt in ('"окна"', '"окошки"', '"вин таб"', '"показать окна"', '"режим окон"'):
                     keyhot('winleft', 'tab')
-                elif prompt in ('"свернуть все окна"', '"свернуть все"', '"сверни все"', '"сверни все окна"'):
+                elif prompt in ('"свернуть все"', '"сверни все"', '"чисто"'):
                     keyhot('winleft', 'd')
-                elif prompt in ('"закрыть все окна"', '"закрыть все"', '"закрой все"', '"закрой все окна"'):
+                elif prompt in ('"свернуть лишнее"', '"свернуть лишнее"', '"лишнее"'):
                     keyhot('winleft', 'Home')
-                elif prompt in ('"закрыть вкладку"', '"крестик"', '"минус вкладка"', '"закрой вкладку"'):
+                elif prompt in ('"закрыть вкладку"', '"закрой вкладку"', '"минус вкладка"', '"крестик"'):
                     keyhot('ctrlleft', 'w')
                 elif prompt in ('"обновить"', '"обнови"', '"об нова"', '"эф пять"'):
                     key_press("f5")
-                elif prompt in ('"альт четыре"', '"альт эф четыре"', '"закрыть окно"', '"закрывай окно"',
-                                '"закрой"', '"закрыть окно"', '"закрой окно"', '"закрыть"', '"закрывай"',
-                                '"закрыть"', '"аль четыре"'):
-                    keyhot('altleft', 'F4')
 
                 #: закрывание всех окон
                 elif prompt in ('"убей всех"', '"растрелли"', '"расстрел"', '"застрели"', '"расстрел окон"'
                                 , '"расстреле"', '"расстрелять"'):
                     print(f"""{LRE} ({LGR}√{LRE}¬_¬)ԅ⌐╦╦═─‒=═≡Ξ{SRA}""", end='')
-                    click_print_cor(411, 1439)
+                    assistant.minimize()
+                    assistant.restore()
                     os.startfile(f"{path_to_shortcut}ассистент")
                     key_down('alt')  # ! не забыть отжать альт
-                    key_press('tab')
                     key_press('tab')
                     for i in range(10):
                         for ici in range(100):
@@ -652,12 +638,8 @@ if __name__ == '__main__':
 
                 #: захват видео MSI Afterburner
                 elif prompt in ('"захват видео"', '"захвати видео"'):
-                    keyhot('winleft', 'tab')
-                    keyhot('winleft', 'tab')
                     os.startfile(f"{path_to_shortcut}захват видео")  # ярлык MSI Afterburner
                 elif prompt in ('"запись видео"', '"запиши видео"'):
-                    keyhot('winleft', 'tab')
-                    keyhot('winleft', 'tab')
                     speak_tts(prompt)
                     os.startfile(f"{path_to_shortcut}видео")  # ярлык папки
                     time.sleep(1)
@@ -668,18 +650,16 @@ if __name__ == '__main__':
                     keyboard.press('ctrl')
                     keyboard.press_and_release('-')
                     keyboard.release('ctrl')
-                    time.sleep(0.5)
-                    keyhot('winleft', 'tab')
-                    keyhot('winleft', 'tab')
-                    time.sleep(0.5)
+                    time.sleep(1)
                     os.startfile(f"{path_to_shortcut}видео")
                     time.sleep(1)
                     speak_tts(prompt)
 
                 #: Управление системой
-                elif prompt in ('"компьютер перезагрузить"', '"компьютер перезагрузка"'):
+
+                elif re.match(r'"компьютер перезагруз\w{0,4}\b', prompt):
                     os.system('shutdown /r /t 1')
-                elif prompt in ('"компьютер выключить"', '"компьютер выключение"'):
+                elif re.match(r'"компьютер выключ\w{0,4}\b', prompt):
                     os.system('shutdown /s /t 1')
                 elif prompt in ('"компьютер спящий режим"', '"компьютер спячка"'):
                     os.system('rundll32.exe powrprof.dll,SetSuspendState 0,1,0')
@@ -695,18 +675,12 @@ if __name__ == '__main__':
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
                     os.startfile(f"{path_to_shortcut}ассистент")
                     exit()
-                elif prompt in ('"ассистент"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"', '"рестарт"',
-                                '"перезапустить"'):
-                    awwx, awwy = pyautogui.position()
-                    click_print_cor(0, 9)
-                    pyautogui.mouseDown(402, 11)
-                    pyautogui.moveTo(402, 45)
-                    pyautogui.mouseUp()
-                    pyautogui.moveTo(awwx, awwy)
-                    print(LRE + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA, sep="")
+                elif prompt in ('"ассистент"', '"рестарт"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"'):
+                    assistant.moveTo(-8, 20)
+                    print(LRE + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ʕ/·ᴥ·ʔ/ Bye!', end="")
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
                     os.startfile(f"{path_to_shortcut}ассистент")
-                    time.sleep(5.1)
+                    time.sleep(2)
                     exit()
 
                 #: озвучка проблем
@@ -1076,6 +1050,15 @@ if __name__ == '__main__':
                         time.sleep(.1)
                         key_press('tab')
                     key_up('alt')
+                elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
+                    assistant.minimize()  # сворачивание
+                    assistant.restore()  # раздупляем восстанавливанием
+                    print(LGR + "ø", end="")
+                elif prompt in ('"уйди"', '"свали"', '"место"', '"на место"', '"в угол"', '"ты наказан"'):
+                    print(LGR + "╔", end="")
+                    assistant.moveTo(-8, 0)  # двигаем ассистента в угол
+                    assistant.resizeTo(849, 327)  # настраиваем размер окна
+                    assistant.activate()
 
                 #: встроенные утилиты
                 elif prompt == '"поговорим"':

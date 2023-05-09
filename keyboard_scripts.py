@@ -95,10 +95,6 @@ def keyhot(*keys):
                 print(F"{WHI}‒{LBL}{keys[2]}{WHI}{LCY}", end='')
 
 
-# Находим окно с именем 'ассистент'
-assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
-
-
 def script_writing_function(prompt):
     #: для пишарм
     if prompt in ('"скобки"', '"скобы"', '"скобки"', '"скобка"', '"скоб очки"'):
@@ -228,6 +224,8 @@ def script_writing_function(prompt):
         keyboard.release('shift')
 
     #: пишарм и гитхаб
+    elif prompt in ('"новый"', '"новое"', '"новая"', '"новые"'):
+        keyhot('shift', 'f4')
     elif prompt in ('"камент"', '"комент"', '"коммент"'):
         keyhot('alt', '0')
     elif prompt in ('"пуш"', '"закинь"', '"закинуть"'):  #: авто пуш
@@ -276,12 +274,3 @@ def script_writing_function(prompt):
         pyautogui.moveTo(256, 962)
         time.sleep(0.2)
         click_print()
-    elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-        assistant.minimize()  # сворачивание
-        assistant.restore()  # раздупляем восстанавливанием
-        print(LGR + "ø", end="")
-    elif prompt in ('"место"', '"на место"', '"в угол"', '"ты наказан"'):
-        print(LGR + "╔", end="")
-        assistant.moveTo(-8, 0)  # двигаем ассистента в угол
-        assistant.resizeTo(849, 327)  # настраиваем размер окна
-        assistant.activate()
