@@ -259,24 +259,6 @@ def script_writing_function(prompt, words):
         key_press("space")
         time.sleep(2)
         keyhot('ctrl', 'enter')
-
-    #: для выебонов
-    elif prompt == '"ты робот"':
-        keyhot('winleft', 'tab')
-        keyhot('winleft', 'tab')
-        time.sleep(1)
-        pyautogui.moveRel(100, 0, duration=0.25)
-        pyautogui.moveRel(-50, 86, duration=0.25)
-        pyautogui.moveRel(-50, -86, duration=0.25)
-        pyautogui.moveTo(256, 962, duration=0.25)
-        time.sleep(0.5)
-        print(LRE + "♥", end='')
-        click_print()
-    elif prompt in ('"подтверди"', '"ты человек"'):
-        time.sleep(0.2)
-        pyautogui.moveTo(256, 962)
-        time.sleep(0.2)
-        click_print()
     #: очистка буфера
     elif 3 > len(words) > 0 and (re.match(r'(\w{0,2}чист\w{0,3}\b)', words[0])) \
             and (re.match(r'(буфер\w?\b)', words[1])):
@@ -295,3 +277,20 @@ def script_writing_function(prompt, words):
         click_print()
         click_print()
         pyautogui.moveTo(awwx, awwy)
+    #: для выебонов
+    elif prompt == '"ты робот"':
+        keyhot('winleft', 'tab')
+        keyhot('winleft', 'tab')
+        time.sleep(1)
+        pyautogui.moveRel(100, 0, duration=0.25)
+        pyautogui.moveRel(-50, 86, duration=0.25)
+        pyautogui.moveRel(-50, -86, duration=0.25)
+        pyautogui.moveTo(256, 962, duration=0.25)
+        time.sleep(0.5)
+        print(LRE + "♥", end='')
+        click_print()
+    elif prompt in ('"подтверди"', '"ты человек"'):
+        time.sleep(0.2)
+        pyautogui.moveTo(256, 962)
+        time.sleep(0.2)
+        click_print()

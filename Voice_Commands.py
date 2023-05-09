@@ -253,7 +253,18 @@ for lnk_file in lnk_files:
     labels.append(label)
 
 # Находим окно с именем 'ассистент'
-assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
+try:
+    assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
+    assistant.moveTo(-8, 0)
+    assistant.resizeTo(849, 327)
+except Exception as e:
+    assistant = pyautogui.getWindowsWithTitle('python.exe')[0]
+    assistant.moveTo(-8, 0)
+    assistant.resizeTo(849, 327)
+    print(e, end="")
+    for x in str(e):
+        print(f"\b", end="")
+    print(f"\r                                  --> ассистент.lnk\r", end="")
 
 if __name__ == '__main__':
     translator = Translator()
@@ -1039,6 +1050,12 @@ if __name__ == '__main__':
                     assistant.moveTo(-8, 0)  # двигаем ассистента в угол
                     assistant.resizeTo(849, 327)  # настраиваем размер окна
                     assistant.activate()
+                    try:
+                        Pysharm = pyautogui.getWindowsWithTitle('Voice_Commands.py')[0]
+                        Pysharm.moveTo(826, 0)
+                        Pysharm.resizeTo(1450, 1408)
+                    except Exception as e:
+                        print(e, " \r                               \r", end="")
 
                 #: встроенные утилиты
                 elif prompt == '"поговорим"':
