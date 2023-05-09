@@ -305,4 +305,5 @@ def script_writing_function(prompt, words):
         time.sleep(0.2)
         click_print()
     elif prompt in ('"монитор"', '"приложение"'):
+        print(YEL + "☼")
         windows_show()
