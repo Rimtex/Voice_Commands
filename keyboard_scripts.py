@@ -1,6 +1,5 @@
 import time
 import re
-import pygetwindow
 import keyboard
 import pyautogui
 import py_win_keyboard_layout
@@ -215,6 +214,7 @@ def script_writing_function(prompt, words):
         key_write('\\r')
     elif prompt in ('" возврат на шаг"', '"возврат символа"', '"возврат буквы"'):
         key_write('\\b')
+    #: пишарм и гитхаб
     elif prompt in ('"паста"', '"пасту"', '"пасты"'):
         keyhot('ctrl', 'shift', 'v')
     elif prompt in ('"выделить"', '"выделение"', '"выделить все"', '"выдели все"', '"выделив все"'):
@@ -225,8 +225,6 @@ def script_writing_function(prompt, words):
         keyboard.release('ctrl')
         keyboard.release('alt')
         keyboard.release('shift')
-
-    #: пишарм и гитхаб
     elif prompt in ('"новый"', '"новое"', '"новая"', '"новые"'):
         keyhot('shift', 'f4')
     elif prompt in ('"камент"', '"комент"', '"коммент"'):

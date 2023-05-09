@@ -87,6 +87,12 @@ SRA = Style.RESET_ALL
 init(convert=True)  # активация покраски
 
 
+def printt(textt):
+    for char in textt:
+        print(char, end='', flush=True)
+        time.sleep(0.015)
+
+
 # функция выключения Caps Lock и Num Lock
 def turn_off_locks():
     # Проверить, включена ли клавиша Caps Lock
@@ -355,13 +361,15 @@ if __name__ == '__main__':
                         keyboard.write(f"{keywrite}")
                         key_press('enter')
 
-                #: найти найди окей-гугл
-                elif 0 < len(words) <= 10 and words[0] in ('найти', 'найди', 'окей'):
-                    if len(words) == 1:
+                #: найти найди пуск окей-гугл
+                elif 0 < len(words) <= 10 and words[0] in ('найти', 'найди', 'пуск', 'окей'):
+                    if len(words) == 1 and words[0] in ('найти', 'найди'):
                         keyhot("ctrl", "f")
+                    if len(words) == 1 and words[0] == 'пуск':
+                        key_press("winleft")
                     if len(words) > 1 and words[0] == 'найти':
                         write_prompt = prompt[6:-1]  # убираем первое слово и кавычки из фразы
-                        keyhot("winleft", "й")  # Открываем окно найти в пуске
+                        key_press("winleft")  # Открываем окно найти в пуске
                         time.sleep(0.2)  # Ждем, пока окно загрузится
                         keyboard.write(write_prompt)  # Вводим слова
                         time.sleep(0.2)  # Ждем на всякий случай
@@ -377,8 +385,8 @@ if __name__ == '__main__':
                             time.sleep(0.2)
                             key_press("enter")
                         except Exception as e:
-                            print(traceback.format_exc())
                             print(f" (!o_O): {LRE}! переводчик: ", e)
+
                     #: окей гугл
                     elif len(words) >= 2 and (words[0] == 'окей' and words[1] == 'гугл'):
                         if prompt == '"окей гугл"':
@@ -434,8 +442,8 @@ if __name__ == '__main__':
 
                 #: установка громкости системы
                 elif any(words in prompt[1:-1] for words in
-                         ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) or \
-                        prompt[1:-1] in ('громко', 'громкость', 'мут'):
+                         ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) \
+                        or prompt[1:-1] in ('громко', 'громкость', 'мут'):
                     key_press('volumemute')
                 elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
                     on_num = sum(words_num[word] for word in words[1:]) // 2
@@ -601,7 +609,7 @@ if __name__ == '__main__':
                     lenofsymbols = len(str(win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)))
                     win32clipboard.CloseClipboard()
                     print(f'{YEL}{lenofsymbols}{LCY}', end='')
-                    speak_tts("количество символов: " + f"{lenofsymbols}")
+                    speak_tts(f"{lenofsymbols}")
 
                 #: запись даты
                 elif prompt == '"дата"' or prompt == '"дату"':
@@ -645,7 +653,6 @@ if __name__ == '__main__':
                     speak_tts(prompt)
 
                 #: Управление системой
-
                 elif re.match(r'"компьютер перезагруз\w{0,4}\b', prompt):
                     os.system('shutdown /r /t 1')
                 elif re.match(r'"компьютер выключ\w{0,4}\b', prompt):
@@ -666,9 +673,13 @@ if __name__ == '__main__':
                     exit()
                 elif prompt in ('"ассистент"', '"рестарт"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"'):
                     assistant.moveRel(0, 20)
-                    print(LRE + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n ʕ/·ᴥ·ʔ/ Bye!', end="")
+                    print(LRE, end="")
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
                     os.startfile(f"{path_to_shortcut}ассистент")
+                    for i in range(15):
+                        printt('\n')
+                    printt(' ʕ/·ᴥ·ʔ/')
+                    loader.download_bye()
                     time.sleep(2)
                     exit()
 

@@ -3,6 +3,8 @@
 
 import os
 
+from address_config import path_to_shortcut
+
 try:
     import time
     import random
@@ -18,14 +20,25 @@ except ImportError:
 
 print("----------------начало теста----------------\n")
 
+
+def printt(text):
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(0.015)
+
+
+
+print("\nchar")
 import psutil
 
+processes = []
 for proc in psutil.process_iter():
     try:
-        print(proc.name())  # название процесса
+        if proc.name() not in processes:
+            processes.append(proc.name())
+            print(proc.name())
     except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
         pass
-
 
 # printt("\n----------------конец теста----------------")
 # input("")

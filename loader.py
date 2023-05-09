@@ -9,6 +9,12 @@ colors = [Fore.GREEN, Fore.YELLOW, Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LI
 init(convert=True)
 
 
+def printt(text):
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(0.015)
+
+
 #  boot loader screen saver
 def loader_screen_rimtex():
     message = [(Fore.CYAN, " ᴙimtex "), (Fore.YELLOW, "Voice "), (Fore.GREEN, "Assistant "), (Fore.WHITE, "Commands")]
@@ -16,6 +22,30 @@ def loader_screen_rimtex():
         for char in word:
             print(color + char, end='', flush=True)
             time.sleep(0.01)
+
+
+#  прощание
+def download_bye():
+    load_square = (f"""
+\b\b\b\b\b\b\bBye!
+ ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+  ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+   ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+    ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+     ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+      ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+       ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+        ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+         ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+          ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+           ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+            ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+           ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+""")
+    losq = load_square.strip().split('\n')
+    for char in losq:
+        print(char, end='', flush=True)
+        time.sleep(.02)
 
 
 #  генератор загрузок
