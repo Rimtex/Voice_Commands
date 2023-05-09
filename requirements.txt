@@ -13,7 +13,8 @@ pypiwin32
 pywin32
 py_win_keyboard_layout
 
-# pygpt4all
 psutil
 PyGetWindow
+
 pyllamacpp
+pygpt4all

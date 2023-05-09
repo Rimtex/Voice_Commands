@@ -23,18 +23,17 @@ LMA = Fore.LIGHTMAGENTA_EX
 WHI = Fore.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
-"""
+
 try:
-    from pygpt4all import GPT4All
     from pygpt4all import GPT4All_J
+    from pyllamacpp.model import Model
 except ImportError:
-    print("Trying to Install required modules: pygpt4all")
-    os.system('pip install --upgrade pygpt4all')
-    from pygpt4all import GPT4All
+    print("Trying to Install required modules: pygpt4all pyllamacpp")
+    os.system('pip install --upgrade pygpt4all pyllamacpp')
     from pygpt4all import GPT4All_J
-    """
+    from pyllamacpp.model import Model
+
 # Код ошибки 0xc0000005 проблемы с памятью.
-from pyllamacpp.model import Model
 
 #: состав словаря из названий моделей
 file_list = os.listdir("models\\")
@@ -47,28 +46,16 @@ for bin_file in bin_files:
 for i, label in enumerate(labels):
     print(f"{i + 1}. {label}")
 
-# num = input(" введите номер модели: ")
+num = input(" введите номер модели: ")
 model_name = None
-num = "2"
+# num = "2"
 
 if num == '1':
     model_path = './models/ggml-gpt4all-j-v1.3-groovy.bin'
-    model = Model(model_path)
+    model = GPT4All_J(model_path)
     model_name = os.path.basename(model_path)
 elif num == '2':
     model_path = './models/ggml-gpt4all-l13b-snoozy.bin  '
-    model = Model(model_path)
-    model_name = os.path.basename(model_path)
-elif num == '3':
-    model_path = './models/ggml-vicuna-13b-1.1-q4_2.bin  '
-    model = Model(model_path)
-    model_name = os.path.basename(model_path)
-elif num == '4':
-    model_path = './models/ggml-vicuna-7b-1.1-q4_2.bin   '
-    model = Model(model_path)
-    model_name = os.path.basename(model_path)
-elif num == '5':
-    model_path = './models/gpt4all-lora-quantized.bin    '
     model = Model(model_path)
     model_name = os.path.basename(model_path)
 
