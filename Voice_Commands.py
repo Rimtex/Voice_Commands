@@ -392,21 +392,19 @@ if __name__ == '__main__':
                                 print(LCY + "Г" + SRA, end='')
 
                 #: режим паузы
-                elif prompt in ('"паузе"', '"пауза"', '"заблокировать"', '"блокировка"', '"остановка"',
-                                '"остановись"', '"режим паузы"'):
+                elif prompt in ('"пауза"', '"блокировка"', '"остановка"', '"режим паузы"'):
                     print(LCY + '\n ʕ℗•ᴥ•℗ʔ' + SRA, end='')
                     speak_tts("режим паузы включён!")
                     while True:
                         if rec.AcceptWaveform(stream.read(4000)):
-                            prompt = rec.Result()
-                            prompt = prompt[13:-2]
+                            prompt = rec.Result()[13:-2]
                             if prompt in ('"стенка"', '"стену"', '"строй"', '"стройка"', '"построй"', '"постройка"'):
+                                print(random.choice(colors), end='')
                                 loader.waal_generator()
                             elif prompt in ('"бред"', '"умом"'):
                                 loader.smile_generator()
                                 loader.letters_random()
-                            elif prompt in ('"разблокировать"', '"разблокировка"', '"запуск"', '"запустить"',
-                                            '"запусти"', '"стартуем"', '"я сказал стартуем"', '"обычный режим"'):
+                            elif prompt in ('"запуск"', '"запустить"', '"запусти"', '"стартуем"', '"обычный режим"'):
                                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
                                 speak_tts("запускаю обычный режим!")
                                 break
@@ -419,13 +417,10 @@ if __name__ == '__main__':
                                 speak_tts("я итак на паузе!")
                             elif prompt in ('"слушай"', '"слышь"', '"слышь ты"', '"слышишь"', '"слэш"'):
                                 speak_tts("я на паузе если что!")
-                            elif prompt in ('"ассистент"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"',
-                                            '"рестарт"', '"перезапустить"'):
+                            elif prompt in ('"ассистент"', '"перезапуск"', '"рестарт"'):
                                 print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
                                 os.startfile(f"\\{path_to_shortcut}ассистент")
                                 exit()
-                            if prompt != '""':  # печать в консоль
-                                print(SRA + prompt[1:-1] + random.choice(colors), sep=' ', end=' ')
 
                 #: установка громкости системы
                 elif any(words in prompt[1:-1] for words in
@@ -527,20 +522,19 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and words[0] in ('вставь', 'ставка', 'вставка', 'вставить', 'ставь'):
                     kps = ['ctrlleft', 'v']
                     numbers_key()
-
                 #: одноразовое нажатие
                 elif 7 > len(words) > 0 and words[-1] in ('перевод', 'переведи', 'цифры', 'цифра', 'циферки'):
                     key_press('numlock')
                 elif 7 > len(words) > 0 and words[-1] in ('голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы', 'капс'):
                     key_press('CapsLock')  # п1
-                elif prompt in ('"копировать"', '"скопируй"', '"копирование"', '"копирует"', '"копия"'):
+                elif re.match(r'"(\w?копир\w{0,6}\b)"', prompt):
                     keyhot('ctrlleft', 'c')
-                elif prompt in ('"сохрани"', '"сохранить"', '"сохранять"', '"сохранение"', '"сохраняя"',):
+                elif re.match(r'"(\w{0,2}хран\w{0,5}\b)"', prompt):
                     keyhot('ctrlleft', 's')
-                elif prompt in ('"буфер"', '"буфера обмена"', '"список копий"', '"список копировании"'):
+                elif re.match(r'"(буфер\w?\b)"|"(спис\w{0,2}\b)"', prompt):
                     keyhot('winleft', 'v')
-                elif prompt in ('"раскладка"', '"раскладки"', '"раскладке"', '"клавиатура"'):
-                    pyautogui.hotkey('win', 'space')
+                elif re.match(r'"(раскладк\w?\b)"|"(клавиатур\w{0,2}\b)"', prompt):
+                    keyhot('win', 'space')
 
                 #: работа с окнами
                 elif 3 > len(words) > 0 and re.match(r'(окно)|(разв\w{0,6}\b)|(свер\w{0,4}\b)', words[0]):
@@ -580,6 +574,7 @@ if __name__ == '__main__':
                     os.startfile(f"{path_to_shortcut}ассистент")
                     key_down('alt')  # ! не забыть отжать альт
                     key_press('tab')
+                    key_press('right')
                     for i in range(10):
                         for ici in range(100):
                             key_press('delete')
@@ -589,6 +584,7 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and all(word in words_num for word in words):
                     nums = sum(words_num[word] for word in words[0:])
                     key_write(f"{nums}")
+
                 #: подсчёт длинны строки - количества символов
                 elif prompt in ('"посчитай"', '"под считай"', '"количество"', '"количество символов"'):
                     win32clipboard.OpenClipboard()
@@ -596,24 +592,7 @@ if __name__ == '__main__':
                     win32clipboard.CloseClipboard()
                     print(f'{YEL}{lenofsymbols}{LCY}', end='')
                     speak_tts("количество символов: " + f"{lenofsymbols}")
-                #: очистка буфера
-                elif any(word in prompt[1:-1]
-                         for word in ('очистка', 'очистить', 'чистить', 'чистка', 'почистить', 'очистить', 'очистить')) \
-                        and any(word in prompt[1:-1] for word in ('буфер', 'буфера')):
-                    awwx, awwy = pyautogui.position()
-                    keyhot('winleft', 'r')
-                    time.sleep(0.01)
-                    keyhot('winleft', 'v')
-                    time.sleep(0.01)
-                    click_print_cor(373, 948)
-                    time.sleep(0.01)
-                    pyautogui.moveTo(375, 1064)
-                    click_print()
-                    click_print()
-                    pyautogui.moveTo(429, 1195)
-                    click_print()
-                    click_print()
-                    pyautogui.moveTo(awwx, awwy)
+
                 #: запись даты
                 elif prompt == '"дата"' or prompt == '"дату"':
                     keyboard.write(date.today().strftime("%d.%m.%Y "))
@@ -787,7 +766,7 @@ if __name__ == '__main__':
                 elif prompt == '"не дано"':
                     print(random.choice(colors) + "♪{•ᴥ•}♫", end='')
                     speak_irina_tts(vocabulary.random_response_nedano())
-                elif prompt in ('"слушай"', '"слышь"', '"слышь"', '"слышишь"', '"слэш"'):
+                elif prompt in ('"слушай"', '"слышь"', '"слышишь"', '"слэш"', '"слышь ты"'):
                     loader.smile_gen_erator()
                     speak_tts(vocabulary.random_response())
                     click_print_cor(677, 1345)  # координаты кнопки ответа https://chat.openai.com/
@@ -914,7 +893,7 @@ if __name__ == '__main__':
                 elif len(words) == 1 and words[0] in ('отпусти', 'отпускай', 'отпустить', 'пусти', 'отпускай', 'отжал'):
                     pyautogui.mouseUp()
                 #: клик # + число
-                elif 7 > len(words) > 1 and words[0] in ('клик', 'кликни', 'кликни', 'кликай', 'кликнуть'):
+                elif 7 > len(words) > 1 and re.match(r'(клик\w{0,4}\b)', words[0]):
                     try:
                         num = sum(words_num[word] for word in words[1:])
                         for i in range(num):  # - количество нажатий курсора
@@ -1066,16 +1045,13 @@ if __name__ == '__main__':
                 elif prompt == '"поговорим"':
                     os.startfile(f"Voice_neuro_responder.py")  #
                     loader.download_generator()
-                elif prompt == '"писатель"':
-                    os.startfile(f"Heavy_writer.py")  #
-                    loader.download_generator()
                 elif prompt == '"модель"':
                     os.startfile(f"Tester_models.py")  #
                     loader.download_generator()
 
                 elif prompt != '""':
                     if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # - проверка на запись
-                        script_writing_function(prompt)  # -  для скриптов и печати в keyboard_scripts.py
+                        script_writing_function(prompt, words)  # -  для печати в keyboard_scripts.py
 
                 # -: открываем все своё с ярлыков
                 if prompt != '""' and len(words) == 1 and words[0] in labels:

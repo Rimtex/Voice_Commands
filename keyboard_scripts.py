@@ -74,28 +74,31 @@ def key_press(key):
     pyautogui.press(key)  # нажатие на клавишу
     print(Fore.LIGHTCYAN_EX + f" {key}", end='')
 
+    """
+      # Получить текущую раскладку клавиатуры
+      current_layout = py_win_keyboard_layout.get_keyboard_layout_list()
+      # Если текущая раскладка клавиатуры отличается от английской, то изменить ее на английскую
+      if current_layout != "00000409":
+          py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)    
+      # Вернуть текущую раскладку клавиатуры, если она была изменена
+      if current_layout != "00000409":
+          py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04190409)    
+    """
 
-#: авто переключатель
+
+#: клавиши с принтом
 def keyhot(*keys):
-    # Получить текущую раскладку клавиатуры
-    current_layout = py_win_keyboard_layout.get_keyboard_layout_list()
-    # Если текущая раскладка клавиатуры отличается от английской, то изменить ее на английскую
-    if current_layout != "00000409":
-        py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
     # Нажать комбинацию клавиш
     pyautogui.hotkey(*keys)
-    # Вернуть текущую раскладку клавиатуры, если она была изменена
-    if current_layout != "00000409":
-        py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04190409)
-        # Вывести информацию о нажатой комбинации клавиш
-        print(F" {WHI}{LCY}{keys[0]}{WHI}{LCY}", end='')
-        if len(keys) > 1:
-            print(F"{WHI}‒{CYA}{keys[1]}{WHI}{LCY}", end='')  # пав
-            if len(keys) > 2:
-                print(F"{WHI}‒{LBL}{keys[2]}{WHI}{LCY}", end='')
+    # Вывести информацию о нажатой комбинации клавиш
+    print(F" {WHI}{LCY}{keys[0]}{WHI}{LCY}", end='')
+    if len(keys) > 1:
+        print(F"{WHI}‒{CYA}{keys[1]}{WHI}{LCY}", end='')
+        if len(keys) > 2:
+            print(F"{WHI}‒{LBL}{keys[2]}{WHI}{LCY}", end='')
 
 
-def script_writing_function(prompt):
+def script_writing_function(prompt, words):
     #: для пишарм
     if prompt in ('"скобки"', '"скобы"', '"скобки"', '"скобка"', '"скоб очки"'):
         key_write('(')
@@ -274,3 +277,21 @@ def script_writing_function(prompt):
         pyautogui.moveTo(256, 962)
         time.sleep(0.2)
         click_print()
+    #: очистка буфера
+    elif 3 > len(words) > 0 and (re.match(r'(\w{0,2}чист\w{0,3}\b)', words[0])) \
+            and (re.match(r'(буфер\w?\b)', words[1])):
+        awwx, awwy = pyautogui.position()
+        keyhot('winleft', 'r')
+        time.sleep(0.01)
+        keyhot('winleft', 'v')
+        time.sleep(.5)
+        time.sleep(0.01)
+        click_print_cor(373, 948)
+        time.sleep(0.01)
+        pyautogui.moveTo(375, 1064)
+        click_print()
+        click_print()
+        pyautogui.moveTo(429, 1195)
+        click_print()
+        click_print()
+        pyautogui.moveTo(awwx, awwy)
