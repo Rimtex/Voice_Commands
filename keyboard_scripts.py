@@ -26,6 +26,7 @@ init(convert=True)
 
 
 #  конвертер команд старт
+
 def windows_show():
     # Получаем список всех окон на рабочем столе
     windows = pyautogui.getAllWindows()
