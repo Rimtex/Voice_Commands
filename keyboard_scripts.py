@@ -26,6 +26,17 @@ init(convert=True)
 
 
 #  конвертер команд старт
+def windows_show():
+    # Получаем список всех окон на рабочем столе
+    windows = pyautogui.getAllWindows()
+    unique_windows = []
+    # Выводим список приложений
+    for window in windows:
+        if window.title and window.title not in unique_windows:
+            unique_windows.append(window.title)
+            print(window.title)
+            time.sleep(.02)
+
 
 #: курсор
 def click_print():
@@ -43,7 +54,7 @@ def click_print_cor(asdx, asdy, button='left'):
 
 def keytrans_write(string):
     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
-    print(GRE + f"{string}" + LYE, end='')
+    print(GRE + f"{string}" + SRA, end='')
     keyboard.write(string)  # запись в курсор
 
 
@@ -55,7 +66,7 @@ def key_write(string):
 
 def keyrus_write(string):
     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04190419)  # для переключения на русскую раскладку
-    print(LYE + f"{string}", end='')
+    print(LYE + f"{string}" + SRA, end='')
     keyboard.write(string)
 
 
@@ -292,3 +303,5 @@ def script_writing_function(prompt, words):
         pyautogui.moveTo(256, 962)
         time.sleep(0.2)
         click_print()
+    elif prompt in ('"монитор"', '"приложение"'):
+        windows_show()
