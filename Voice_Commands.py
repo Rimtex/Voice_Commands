@@ -270,7 +270,7 @@ except Exception as e:
     print(e, end="")
     for x in str(e):
         print(f"\b", end="")
-    print(f"\r                                  --> ассистент.lnk\r", end="")
+    printt(f"\r                                                   (!o_O) --> ассистент.lnk\r")
 
 if __name__ == '__main__':
     translator = Translator()
@@ -1079,8 +1079,8 @@ if __name__ == '__main__':
                 elif prompt == '"поговорим"':
                     os.startfile(f"Voice_neuro_responder.py")  #
                     loader.download_generator()
-                elif prompt == '"модель"':
-                    os.startfile(f"Tester_models.py")  #
+                elif prompt == '"писатель"':
+                    os.startfile(f"Heavy_writer.py")  #
                     loader.download_generator()
 
                 elif prompt != '""':
