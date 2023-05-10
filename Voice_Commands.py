@@ -1051,11 +1051,24 @@ if __name__ == '__main__':
                     assistant.resizeTo(849, 327)  # настраиваем размер окна
                     assistant.activate()
                     try:
+                        DeepL = pyautogui.getWindowsWithTitle('DeepL')[0]
+                        DeepL.minimize()
+                        DeepL.restore()
+                        DeepL.moveTo(2048, 0)
+                        DeepL.resizeTo(2568, 1408)
                         Pysharm = pyautogui.getWindowsWithTitle('Voice_Commands.py')[0]
+                        Pysharm.minimize()
+                        Pysharm.restore()
                         Pysharm.moveTo(826, 0)
                         Pysharm.resizeTo(1450, 1408)
-                    except Exception as e:
-                        print(e, " \r                               \r", end="")
+                        Edge = pyautogui.getWindowsWithTitle('Microsoft​ Edge')[0]
+                        Edge.minimize()
+                        Edge.restore()
+                        Edge.moveTo(-8, 319)
+                        Edge.resizeTo(849, 1089)
+                        print("═", end="")
+                    except IndexError:
+                        print("ø", end="")
 
                 #: встроенные утилиты
                 elif prompt == '"поговорим"':

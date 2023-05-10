@@ -20,25 +20,11 @@ except ImportError:
 
 print("----------------начало теста----------------\n")
 
-
-def printt(text):
-    for char in text:
-        print(char, end='', flush=True)
-        time.sleep(0.015)
-
-
-
-print("\nchar")
-import psutil
-
-processes = []
-for proc in psutil.process_iter():
-    try:
-        if proc.name() not in processes:
-            processes.append(proc.name())
-            print(proc.name())
-    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-        pass
+DeepL = pyautogui.getWindowsWithTitle('DeepL')[0]
+DeepL.minimize()
+DeepL.restore()
+DeepL.moveTo(1200, 319)
+DeepL.resizeTo(849, 1089)
 
 # printt("\n----------------конец теста----------------")
 # input("")
