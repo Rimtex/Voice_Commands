@@ -155,10 +155,17 @@ def script_writing_function(prompt, words):
         key_write('>')
     elif prompt == '"меньше"':
         key_write('<')
-    elif prompt == '"печать"':
-        key_write('print(" ", end="")')
+    #: печать функций и скриптов ассистента
     elif prompt in ('"говорит"', '"скажет"'):
         key_write('speak')
+    elif prompt == '"фраза"':
+        key_write('prompt ')
+    elif prompt in ('"слово"', '"слов"', '"слова"'):
+        key_write('words')
+    elif prompt in ('"первое слово"', '"первая слова"'):
+        key_write('words[0] ')
+    elif prompt in ('"клавиша"', '"клавиши"', '"клавишам"', '"кнопка"'):
+        key_write('key')
     #: печать цветов
     elif prompt == '"тёмно-красный"':
         key_write('RED')
@@ -186,39 +193,36 @@ def script_writing_function(prompt, words):
         key_write('BWH')
     elif prompt == '"сброс цвета"':
         key_write('SRA')
-    #: печать скриптов
-    elif prompt in ('"случайным"', '"случайно"', '"любой выбор"', '"рандомно"', '"рандомный"'):
-        key_write(f'for c in "random.choice()":{{RCC}} print(f"{{random.choice(colors)}}{{c}}", end="")')
-    elif prompt in ('"пробуем"', '"пробуя"', '"проба"'):
-        key_write('try:')
-    elif prompt == '"если ошибка"':
-        key_write('except Exception as e:\n'
-                  '    print(f" ", e)')
-    elif prompt == '"фраза"':
-        key_write('prompt ')
+
+    #: печать функций и скриптов
+    elif prompt == '"печать"':
+        key_write('print(" ", end="")')
+    elif prompt in ('"случайно"', '"случайный"', '"рандомно"', '"рандомный"'):
+        key_write(f'random.choice()')
+    elif prompt in ('"проверка"', '"проверить"', '"проверим"', '"проба"', '"пробовать"', '"пробуем"'):
+        key_write('try:\n')
+        key_write('except Exception as e: print(e, f"")')
     elif prompt == '"если"':
         key_write('elif ')
-    elif prompt in ('"содержит"', '"оно содержит"'):
-        key_write('in ')
-    elif prompt == '"слово"':
-        key_write('words ')
-    elif prompt == '"число слов"':
-        key_write('len(words) ')
-    elif prompt in ('"первое слово"', '"первая слова"'):
-        key_write('words[0] ')
+    elif prompt in ('"число"', '"в число"', '"числа"'):
+        key_write('int()')
+    elif prompt in ('"длина"', '"длину"', '"длина объекта"', '"длину объекта"'):
+        key_write('len()')
+    elif prompt in ('"строку"', '"в строку"', '"строка"', '"строчка"'):
+        key_write('str()')
+    elif prompt in ('"вход"', '"вести"', '"вводить"'):
+        key_write('input()')
     elif prompt in ('"время"', '"время паузы"', '"тайм стоп"'):
         key_write('time.sleep(1.5)')
-    elif prompt in ('"клавиша"', '"клавиши"', '"клавишам"', '"кнопка"'):
-        key_write('key')
     elif prompt in ('"старт файла"', '"старт файл"'):
         key_write('os.startfile(f"")')
     elif prompt in ('"цикл"', '"скрипт цикл"', '"цикл фор"'):
         key_write('for i in range(10):')
-    elif prompt in ('"зацикливание"', '"зацикли"', '"бесконечность"', '"бесконечно"'):
+    elif prompt in ('"зацикли"', '"зацикливание"', '"бесконечно"', '"бесконечность"'):
         key_write('while True:')
     elif prompt in ('"перерыв"', '"прерывание"', '"прерывания"', '"прервать"'):
         key_write('break')
-    elif prompt in ('"функция"', '"сделать функцию"', '"дев функция"'):
+    elif prompt in ('"функция"', '"новая функция"', '"сделать функцию"', '"дев функция"'):
         key_write('def new_function():')
     elif prompt in ('"перевод строки"', '"переведи строку"', '"перенос"', '"перенос строки"'):
         key_write('\\n')

@@ -318,14 +318,6 @@ if __name__ == '__main__':
                     print(f'\n{convert_trans()}')
                 elif prompt in ('"покажи"', '"показать"'):
                     print(f'\n{convert_delete()}')
-                elif prompt in ('"проверка"', '"проверить"', '"проверяем"', '"проверь"'):
-                    keyhot('alt', 'tab')
-                    time.sleep(.1)
-                    os.startfile(f"{path_to_shortcut}ассистент")
-                    time.sleep(1)
-                    # click_print_cor(762, 14)
-                    keyhot('winleft', 'Up')
-                    exit()
 
                 #: смена модели распознавания
                 elif len(words) == 2 and any(words in prompt[1:-1] for words in ('модель', 'model')):
@@ -527,9 +519,6 @@ if __name__ == '__main__':
                 #: комбинации клавиш + число для повторений
                 elif 7 > len(words) > 0 and words[0] in ('уничтожь', 'уничтожить', 'уничтожать', 'уничтожает'):
                     kps = ['hift', 'delete']
-                    numbers_key()
-                elif 7 > len(words) > 0 and words[0] in ('строка', 'строчка', 'строку'):
-                    kps = ['ctrl', 'enter']
                     numbers_key()
                 elif 7 > len(words) > 0 and words[0] in ('отмени', 'отмена', 'отменить', 'отменил', 'отмена'):
                     kps = ['ctrl', 'z']
