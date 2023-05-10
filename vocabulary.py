@@ -634,9 +634,9 @@ def random_response_nedano():
 #  бля блядь блядство
 def sp_rec_reaction_Fuck():
     responses = """
-Нихуя*ебаная корапучело, 
+Нихуя е*баная корапучело, 
 *бать меня через колено,
-*банный н*хуй
+*банный н*хой
 """
     lines = responses.strip().split('\n')
     return random.choice(lines)
