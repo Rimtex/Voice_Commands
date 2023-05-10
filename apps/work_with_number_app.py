@@ -16,8 +16,8 @@ except ImportError:
 def printt(text):
     for char in text:
         print(char, end='', flush=True)
-        time.sleep(0.015)
-    time.sleep(1)
+        time.sleep(0.012)
+    time.sleep(0.5)
 
 
 print("---------------- приложения ----------------\n")
@@ -29,25 +29,13 @@ for i, window in enumerate(windows):
     if window.title:  # если у окна есть заголовок
         print(f"{i + 1}. {window.title}")  # выводим номер и заголовок окна
 
-print("\n #: Получаем размеры выбранного приложения")
-app_num = int(input(" Введите номер приложения: "))
-app_title = windows[app_num - 1].title
-app = pyautogui.getWindowsWithTitle(app_title)[0]
-size = app._getWindowRect()
-printt(f" Размеры приложения: {app.title}: {size}\n")
-
-printt(" введите номер для:\n")
-print("""\
---> 
-    app.minimize()
-    app.restore()
-    app.moveTo(-8, 318)
-    app.resizeTo(849, 1089)
--->\n""")
+printt("\n #: разворачиваем приложение"
+       "\n #: Получаем позицию и размеры выбранного приложения"
+       "\n #: активируем приложение"
+       "\n --> Введите номер приложения:\n")
 
 while True:
     try:
-
         app_number = int(input(""))  # задаем номер приложения
         if app_number != "":
             app_title = windows[app_number - 1].title  # получаем заголовок приложения с заданным номером
@@ -55,7 +43,8 @@ while True:
             app = pyautogui.getWindowsWithTitle(app_title)[0]  # получаем объект окна с заданным заголовком
             app.minimize()  # сворачиваем окно
             app.restore()  # разворачиваем окно
-            app.moveTo(-8, 318)
-            app.resizeTo(849, 1089)
+            size = app._getWindowRect()
+            printt(f" {app.title}: {size}\n")
+            app.activate()
     except Exception as e:
-        print(e, f"введи число!")
+        print(e)

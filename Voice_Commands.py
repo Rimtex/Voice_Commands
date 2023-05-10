@@ -1055,20 +1055,25 @@ if __name__ == '__main__':
                         DeepL.minimize()
                         DeepL.restore()
                         DeepL.moveTo(2048, 0)
-                        DeepL.resizeTo(2568, 1408)
+                        DeepL.resizeTo(500, 1408)
+                    except IndexError:
+                        print(LRE + "D" + LGR, end="")
+                    try:
                         Pysharm = pyautogui.getWindowsWithTitle('Voice_Commands.py')[0]
                         Pysharm.minimize()
                         Pysharm.restore()
                         Pysharm.moveTo(826, 0)
                         Pysharm.resizeTo(1450, 1408)
+                    except IndexError:
+                        print(LRE + "P" + LGR, end="")
+                    try:
                         Edge = pyautogui.getWindowsWithTitle('Microsoft​ Edge')[0]
                         Edge.minimize()
                         Edge.restore()
                         Edge.moveTo(-8, 319)
                         Edge.resizeTo(849, 1089)
-                        print("═", end="")
                     except IndexError:
-                        print("ø", end="")
+                        print(LRE + "E" + LGR, end="")
 
                 #: встроенные утилиты
                 elif prompt == '"поговорим"':
