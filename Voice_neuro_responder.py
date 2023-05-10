@@ -1,5 +1,4 @@
 import os
-import traceback
 import keyboard
 
 from Voice_Commands import stream, rec, speak, speak_tts
@@ -79,13 +78,15 @@ def print_trans_response():
     try:
         print(GRE + " > " + YEL + f"{request_prompts}" + GRE + " > " + LCY)
         responsegpt = generate_response(request_prompts)
-        transgpt = translator.translate(responsegpt, "russian", "english")
-        trans_fullgpt = str(transgpt)
-        print(LGR + f"\n{trans_fullgpt}")
-        speak_tts(f" {trans_fullgpt}")
-    except Exception as t:
-        print(traceback.format_exc())
-        print(f"{LRE} def print_trans_response() {SRA}", t)
+        try:
+            transgpt = translator.translate(responsegpt, "russian", "english")
+            trans_fullgpt = str(transgpt)
+            print(LGR + f"\n{trans_fullgpt}")
+            speak_tts(f" {trans_fullgpt}")
+        except Exception as e:
+            print(" ConnectionError1")
+    except Exception as e:
+        print(" ConnectionError2")
 
 
 print(f"""\
@@ -126,10 +127,13 @@ if __name__ == '__main__':
                         elif len(words) > 0 and words[-1] in ('ответ', 'давай', 'понял', 'дальше'):
                             print(LCY + "#: " + words[-1])
                             full_sentence = full_sentence.rsplit(words[-1], 1)[0]  # Удалите последнее слово
-                            trans = translator.translate(full_sentence, "english", "russian")  # print(full_sentence)
-                            request_prompts = str(trans)
-                            print_trans_response()
-                            # speak_tts("согласен!")  # триггер для ассистента
+                            try:
+                                trans = translator.translate(full_sentence, "english", "russian")
+                                request_prompts = str(trans)
+                                print_trans_response()
+                                # speak_tts("согласен!")  # триггер для ассистента
+                            except Exception as e:
+                                print(" ConnectionError3")
                             break
                         elif prompt in ('"стоп"', '"сброс"', '"заново"', '"снова"', '"сначала"', '"сбросить"'):
                             print(LCY + "#: " + words[-1])
@@ -175,9 +179,12 @@ if __name__ == '__main__':
                             print(f'{LYE}{part_prompt}{SRA} ', end='')
 
                     except Exception as e:
-                        print(traceback.format_exc())
-                        print(LRE, e)
-                        print(full_sentence)
+                        print(" ConnectionError4")
         except Exception as e:
-            print(traceback.format_exc())
-            print(LRE, e)
+            print(LRE)
+            print(" ConnectionError5")
+            break
+
+        # except Exception as e:
+        # print(traceback.format_exc())
+        # print(LRE, e)

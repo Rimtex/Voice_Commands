@@ -9,9 +9,8 @@ model = GPT4All('./models/ggml-gpt4all-l13b-snoozy.bin')
 
 
 def generate_response(userinput):
-    n_predict = len(userinput)  #: предикт можно добавлять пробелами
-    response = model.generate(userinput, n_predict=n_predict)
-    # response = model.generate(user_input, n_predict=55, n_threads=8)
+    # n_predict = len(userinput)  #: предикт можно добавлять пробелами
+    response = model.generate(userinput)  # , n_predict=n_predict
     return response
 
 

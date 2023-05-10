@@ -193,7 +193,6 @@ def script_writing_function(prompt, words):
         key_write('BWH')
     elif prompt == '"сброс цвета"':
         key_write('SRA')
-
     #: печать функций и скриптов
     elif prompt == '"печать"':
         key_write('print(" ", end="")')
