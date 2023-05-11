@@ -196,6 +196,8 @@ def script_writing_function(prompt, words):
     #: печать функций и скриптов
     elif prompt == '"печать"':
         key_write('print(" ", end="")')
+    elif prompt in ('"печатать"', '"напечатать"'):
+        key_write('print("" " """)')
     elif prompt in ('"случайно"', '"случайный"', '"рандомно"', '"рандомный"'):
         key_write(f'random.choice()')
     elif prompt in ('"проверка"', '"проверить"', '"проверим"', '"проба"', '"пробовать"', '"пробуем"'):
@@ -204,13 +206,13 @@ def script_writing_function(prompt, words):
     elif prompt == '"если"':
         key_write('elif ')
     elif prompt in ('"число"', '"в число"', '"числа"'):
-        key_write('int()')
+        key_write('int("")')
     elif prompt in ('"длина"', '"длину"', '"длина объекта"', '"длину объекта"'):
-        key_write('len()')
+        key_write('len("")')
     elif prompt in ('"строку"', '"в строку"', '"строка"', '"строчка"'):
-        key_write('str()')
-    elif prompt in ('"вход"', '"вести"', '"вводить"'):
-        key_write('input()')
+        key_write('str("")')
+    elif prompt in ('"вход"', '"вести"', '"ввести"', '"водить"', '"вводить"'):
+        key_write('input("")')
     elif prompt in ('"время"', '"время паузы"', '"тайм стоп"'):
         key_write('time.sleep(1.5)')
     elif prompt in ('"старт файла"', '"старт файл"'):
