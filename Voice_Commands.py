@@ -182,6 +182,7 @@ rec = KaldiRecognizer(current_model, 48000)
 
 # Инициализация аудио потока
 p = pyaudio.PyAudio()
+
 stream = p.open(
     format=pyaudio.paInt16,
     channels=1,
@@ -245,34 +246,36 @@ def set_speak_rate(speak_rate):  # установка скорости озву�
     global speakrate_set
     speakrate_set = speak_rate
 
-
-random_voice = [speak_pavel_tts, speak_irina_tts]
-
-#: состав словаря из названий ярлыков
-file_list = os.listdir(path_to_shortcut)
-lnk_files = [f for f in file_list if f.endswith(".lnk") or f.endswith(".url")]
-
-labels = []  # словарь названий ярлыков
-for lnk_file in lnk_files:
-    full_path = os.path.join(path_to_shortcut, lnk_file)
-    label = lnk_file[:-4]  # удаляем последние четыре символа
-    labels.append(label)
-
-# Находим окно с именем 'ассистент'
-try:
-    assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
-    assistant.moveTo(-8, 0)
-    assistant.resizeTo(849, 327)
-except Exception as e:
-    assistant = pyautogui.getWindowsWithTitle('python.exe')[0]
-    assistant.moveTo(-8, 0)
-    assistant.resizeTo(849, 327)
-    print(e, end="")
-    for x in str(e):
-        print(f"\b", end="")
-    printt(f"\r                                                   (!o_O) --> ассистент.lnk\r")
-
 if __name__ == '__main__':
+    random_voice = [speak_pavel_tts, speak_irina_tts]
+
+    #: состав словаря из названий ярлыков
+    file_list = os.listdir(path_to_shortcut)
+    lnk_files = [f for f in file_list if f.endswith(".lnk") or f.endswith(".url")]
+
+    labels = []  # словарь названий ярлыков
+    for lnk_file in lnk_files:
+        full_path = os.path.join(path_to_shortcut, lnk_file)
+        label = lnk_file[:-4]  # удаляем последние четыре символа
+        labels.append(label)
+
+    # Находим окно с именем 'ассистент'
+    try:
+        assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
+        assistant.moveTo(-8, 0)
+        assistant.resizeTo(849, 327)
+    except Exception as e:
+        try:    
+            assistant = pyautogui.getWindowsWithTitle('python.exe')[0]
+            assistant.moveTo(-8, 0)
+            assistant.resizeTo(849, 327)
+        except Exception as e:    
+            print(e, end="")
+            for x in str(e):
+                print(f"\b", end="")
+            printt(f"\r                                                   (!o_O) --> ассистент.lnk\r")
+
+
     translator = Translator()
     tts = pyttsx3.init()
     tts.runAndWait()
