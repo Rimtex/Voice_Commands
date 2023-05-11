@@ -1065,7 +1065,7 @@ if __name__ == '__main__':
                         Pysharm = pyautogui.getWindowsWithTitle('Voice_Commands.py')[0]
                         Pysharm.minimize()
                         Pysharm.restore()
-                        Pysharm.moveTo(826, 0)
+                        Pysharm.moveTo(left=834, top=0, right=2284, bottom=1400)
                         Pysharm.resizeTo(1450, 1408)
                     except IndexError:
                         print(LRE + "P" + LGR, end="")
