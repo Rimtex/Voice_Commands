@@ -66,9 +66,9 @@ def generate_response(user_input_gener):
     response_gener = model.generate(user_input_gener)
     responses = ""
     try:
-        for res in response_gener:
-            responses += res
-            print(f"{res}", end='', flush=True)
+        for token in response_gener:
+            responses += token
+            print(f"{token}", end='', flush=True)
         return responses
     except KeyboardInterrupt:
         return responses
