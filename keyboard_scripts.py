@@ -25,13 +25,13 @@ SRA = Style.RESET_ALL
 init(convert=True)
 
 
-#: курсор
+#: курсор клик
 def click_print():
     pyautogui.click()
     print(f'{LCY} ∆', end='')
 
 
-#: курсор в координаты
+#: курсор клик в координаты и назад
 def click_print_cor(asdx, asdy, button='left'):
     cor_x, cor_y = pyautogui.position()
     pyautogui.click(x=asdx, y=asdy, button=button)

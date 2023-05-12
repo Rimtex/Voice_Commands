@@ -32,19 +32,6 @@ except ImportError:
     from pygpt4all import GPT4All_J
     from pyllamacpp.model import Model
 
-# Код ошибки 0xc0000005 проблемы с памятью.
-"""
-#: состав словаря из названий моделей
-file_list = os.listdir("models\\")
-bin_files = [f for f in file_list if f.endswith(".bin")]
-labels = []  # словарь названий ярлыков
-for bin_file in bin_files:
-    full_path = os.path.join("models\\", bin_file)
-    label = bin_file
-    labels.append(label)
-for i, label in enumerate(labels):
-    print(f"{i + 1}. {label}")
-"""
 print("""
 1. ggml-gpt4all-j-v1.3-groovy.bin
 2. ggml-gpt4all-l13b-snoozy.bin
@@ -188,7 +175,3 @@ if __name__ == '__main__':
             print(LRE)
             print(" ConnectionError5")
             break
-
-        # except Exception as e:
-        # print(traceback.format_exc())
-        # print(LRE, e)

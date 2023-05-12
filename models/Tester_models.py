@@ -3,8 +3,21 @@ from colorama import init, Fore  # , Style
 from pygpt4all.models.gpt4all import GPT4All
 
 init(convert=True)
-
 model = GPT4All('./ggml-gpt4all-l13b-snoozy.bin')
+
+# Код ошибки 0xc0000005 проблемы с памятью.
+"""
+#: состав словаря из названий моделей
+file_list = os.listdir("models\\")
+bin_files = [f for f in file_list if f.endswith(".bin")]
+labels = []  # словарь названий ярлыков
+for bin_file in bin_files:
+    full_path = os.path.join("models\\", bin_file)
+    label = bin_file
+    labels.append(label)
+for i, label in enumerate(labels):
+    print(f"{i + 1}. {label}")
+"""
 
 
 def generate_response(user_input):
