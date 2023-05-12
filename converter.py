@@ -25,9 +25,6 @@ BLA = Fore.BLACK
 BWH = Back.WHITE
 SRA = Style.RESET_ALL
 
-"""   
-"""
-
 init()
 
 #: преобразователь команд в понятный текст для показа!!!
@@ -53,7 +50,21 @@ code_patterns += added_code_patterns.strip().split("\n")
 with open(filename, encoding="utf-8") as f:
     print_started = False
     ctline = ""
-    for line in f:  # только строки содержащие русские буквы, добавлять так - [а-яА-Я]|нужные строки|еще нужные строки|
+    for line in f:
+        if re.search('[а-яА-Я]', line):  # ! если надо добавлять так - [а-яА-Я]|нужные строки|еще нужные строки|
+            if end_marker in line:
+                break
+            if print_started:
+                # заменяем строки, содержащие куски кода из заданных шаблонов на пустые строки
+                skip_line = any(pattern in line for pattern in code_patterns)
+                if not skip_line:
+                    ctline += line
+            elif start_marker in line:
+                print_started = True
+
+with open(keyboard_scripts, encoding="utf-8") as f:
+    print_started = False
+    for line in f:
         if re.search('[а-яА-Я]', line):  # ! если надо добавлять так - [а-яА-Я]|нужные строки|еще нужные строки|
             if end_marker in line:
                 break
@@ -69,7 +80,7 @@ with open(filename, encoding="utf-8") as f:
 cta = ctline
 
 #: замена условий
-#: покраски
+# покраски
 paint = str(cta
             .replace(f"\n", f"\n{SRA}")
             .replace(f"',  ", f"', \r")
@@ -88,7 +99,7 @@ paint = str(cta
             .replace(f"Fore", f"{LMA}Fore")
             )
 
-#: перевод значений
+# перевод значений
 trans = str(paint
             .replace(" False ", " ложь ").replace(" None ", " ничего ").replace(" True ", " истина ")
             .replace(" and ", " и ").replace(" as ", " как ").replace(" assert ", " утверждать ")
@@ -119,36 +130,36 @@ trans = str(paint
             .replace(" re.search", " в_любом_месте")
             )
 
-#: удаление лишнего
+# удаление лишнего
 delete = str(paint
-            .replace(" False ", " ").replace(" None ", " ").replace(" True ", " ")
-            .replace(" and ", " ").replace(" as ", " ").replace(" assert ", " ")
-            .replace(" async ", " ").replace(" await ", " ").replace(" break ", " ")
-            .replace(" class ", " ").replace(" words ", " ").replace(" continue ", " ")
-            .replace(" def ", " ").replace(" del ", " ")
-            .replace(" else ", " ").replace(" except ", " ").replace(" finally ", " конечном итоге ")
-            .replace(" for ", " ").replace(" from ", " ").replace(" global ", " ")
-            .replace(" import ", " ").replace(" in ", " ").replace(" is ", " ")
-            .replace(" lambda ", " ").replace(" nonlocal ", " ").replace(" not ", " ")
-            .replace(" or ", " ").replace(" pass ", " ").replace(" raise ", " ")
-            .replace(" return ", " ").replace(" try ", " ").replace(" while ", " ")
-            .replace(" with ", " ").replace(" yield ", " ")
-            .replace(" elif ", " ")
-            .replace(" if ", " ")
-            .replace(" prompt ", " ")
-            .replace(" prompt[1:-1] ", " ")
-            .replace("word ", " ")
-            .replace("words", "")
-            .replace("слов[0]", "")
-            .replace("слов[1]", "")
-            .replace("слов[-1]", "")
-            .replace("any", "")
-            .replace(" len", "")
-            .replace(" any ", " ").replace(" range", "")
-            .replace(" words_num ", " ")
-            .replace(" re.match", "")
-            .replace(" re.search", "")
-            )
+             .replace(" False ", " ").replace(" None ", " ").replace(" True ", " ")
+             .replace(" and ", " ").replace(" as ", " ").replace(" assert ", " ")
+             .replace(" async ", " ").replace(" await ", " ").replace(" break ", " ")
+             .replace(" class ", " ").replace(" words ", " ").replace(" continue ", " ")
+             .replace(" def ", " ").replace(" del ", " ")
+             .replace(" else ", " ").replace(" except ", " ").replace(" finally ", " конечном итоге ")
+             .replace(" for ", " ").replace(" from ", " ").replace(" global ", " ")
+             .replace(" import ", " ").replace(" in ", " ").replace(" is ", " ")
+             .replace(" lambda ", " ").replace(" nonlocal ", " ").replace(" not ", " ")
+             .replace(" or ", " ").replace(" pass ", " ").replace(" raise ", " ")
+             .replace(" return ", " ").replace(" try ", " ").replace(" while ", " ")
+             .replace(" with ", " ").replace(" yield ", " ")
+             .replace(" elif ", " ")
+             .replace(" if ", " ")
+             .replace(" prompt ", " ")
+             .replace(" prompt[1:-1] ", " ")
+             .replace("word ", " ")
+             .replace("words", "")
+             .replace("слов[0]", "")
+             .replace("слов[1]", "")
+             .replace("слов[-1]", "")
+             .replace("any", "")
+             .replace(" len", "")
+             .replace(" any ", " ").replace(" range", "")
+             .replace(" words_num ", " ")
+             .replace(" re.match", "")
+             .replace(" re.search", "")
+             )
 
 
 def convert_paint():  # результат
@@ -164,17 +175,3 @@ def convert_trans():  # результат с переводом
 def convert_delete():  # результат с удалением лишнего
     responses = delete
     return responses
-
-#  if re.search('[а-яА-Я]|Fore|random.choice(colors)|RED|LRE|YEL|LYE|BLU|LBL|CYA|LCY|GRE|LGR|MAG|LMA|WHI|SRA|',line):
-# cq5 = str(cq4.replace("", ""))
-# cq6 = str(cq5.replace("", ""))
-# cq7 = str(cq6.replace("", ""))
-
-# cq5 = str(cq4.replace("                    ", " "))  # убираем отступы иначе консоль не все будет показывать
-# cq6 = str(cq5.replace("\n\n\n", "\n\n"))  # убираем пустые строки
-# cq7 = str(cq6.replace("\n\n", "\n"))      # убираем пустые строки
-
-
-#  https://tproger.ru/translations/regular-expression-python/
-#  ct1 = re.match(r'i', ct)
-#  print(ct1.group(0))

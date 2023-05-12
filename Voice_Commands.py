@@ -84,8 +84,6 @@ SRA = Style.RESET_ALL
 
 init(convert=True)  # активация покраски
 
-py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
-
 
 def printt(textt):
     for char in textt:
@@ -110,9 +108,10 @@ def turn_off_locks():
 
 
 turn_off_locks()
+py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
 
 
-#: направление курсора
+#: направление курсора: третье слово
 def cursor_direction():
     numss = sum(words_num[word] for word in words[3:] * 10)
     if re.match(r'^.{0,3}прав.{0,3}$', words[2]):
@@ -125,7 +124,8 @@ def cursor_direction():
         pyautogui.moveRel(0, -numss)
 
 
-def play_music():  # для проигрывания случайной музыки ! обязательно нужен полный путь !!
+# для проигрывания случайной музыки
+def play_music():
     music_files = []
     for root, dirs, files_op in os.walk(dir_path):
         for file_op in files_op:
@@ -141,12 +141,12 @@ def play_music():  # для проигрывания случайной музы
 
 
 #: повтор нажатий клавиш плюс цифры
-def numbers_key():
+def numbers_key():  # назначаем kps клавишу в скрипте например:
     if len(words) == 1:
         if len(kps) == 1:
-            key_press(*kps)  # ! назначаем kps клавишу в скрипте например kps = 'right'  kps = 'down'
+            key_press(*kps)  # kps = ['shift']
         elif len(kps) > 1:
-            keyhot(*kps)
+            keyhot(*kps)  # kps = ['shift', 'ctrl', 'z']
     elif len(words) > 1:
         try:
             if len(kps) == 1:
@@ -189,8 +189,6 @@ stream.start_stream()
 # Определение функции, которая будет озвучивать текст
 speak = wincl.Dispatch("SAPI.SpVoice")
 voices = speak.GetVoices()
-tts = pyttsx3.init()  # без этого пока работает
-tts.runAndWait()  # инициализация распознавания ! иногда наверно помогает от отключения микрофона
 speak.Volume = 100  # громкость
 speakrate_set = 4  # скорость
 
@@ -253,8 +251,8 @@ def set_speak_rate(speak_rate):  # установка скорости озву�
 random_voice = [speak_pavel_tts, speak_irina_tts]
 
 if __name__ == '__main__':
-    assistant = None
     # Находим окно с именем 'ассистент'
+    assistant = None
     try:
         assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
         assistant.moveTo(-8, 0)
@@ -271,7 +269,6 @@ if __name__ == '__main__':
     #: состав словаря из названий ярлыков
     file_list = os.listdir(path_to_shortcut)
     lnk_files = [f for f in file_list if f.endswith(".lnk") or f.endswith(".url")]
-
     labels = []  # словарь названий ярлыков
     for lnk_file in lnk_files:
         full_path = os.path.join(path_to_shortcut, lnk_file)
@@ -280,7 +277,7 @@ if __name__ == '__main__':
 
     translator = Translator()
     tts = pyttsx3.init()
-    tts.runAndWait()
+    tts.runAndWait()  # ! иногда наверно помогает от отключения микрофона
     loader_screen_rimtex()
     print(LGR + "\n ʕ/•ᴥ•ʔ/ Hi! " + SRA)
     while True:
@@ -914,7 +911,7 @@ if __name__ == '__main__':
                 #: работа с мышкой
                 elif prompt == '"координаты"':
                     x, y = pyautogui.position()
-                    print(f"\nclick_print_cor{LYE}({x}, {y})", end='')  # - координаты курсора
+                    print(f"\nclick_print_cor{LYE}({x}, {y})", end='')  # координаты курсора
                 elif prompt in ('"тэк"', '"клик"', '"кликни"', '"кликай"', '"кликнуть"'):
                     click_print()
                 #: зажать - отпустить
@@ -926,14 +923,14 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 1 and re.match(r'(клик\w{0,4}\b)', words[0]):
                     try:
                         num = sum(words_num[word] for word in words[1:])
-                        for i in range(num):  # - количество нажатий курсора
+                        for i in range(num):  # количество нажатий курсора
                             click_print()
                     except KeyError:
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
                 #: курсор в центр экрана
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
-                    screen_width, screen_height = pyautogui.size()  # - Получение размеров экрана
-                    pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # - курсор в центр экрана
+                    screen_width, screen_height = pyautogui.size()  # Получение размеров экрана
+                    pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # курсор в центр экрана
 
                 #: промотка колеса # + число
                 elif 5 > len(words) > 0 and words[0] in ('промотай', 'мотай'):  # ↓
@@ -1097,15 +1094,15 @@ if __name__ == '__main__':
 
                 #: встроенные утилиты
                 elif prompt == '"поговорим"':
-                    os.startfile(f"Voice_neuro_responder.py")  #
+                    os.startfile(f"Voice_neuro_responder.py")
                     loader.download_generator()
                 elif prompt == '"писатель"':
-                    os.startfile(f"Heavy_writer.py")  #
+                    os.startfile(f"Heavy_writer.py")
                     loader.download_generator()
 
                 elif prompt != '""':
-                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # - проверка на запись
-                        script_writing_function(prompt, words)  # -  для печати в keyboard_scripts.py
+                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # проверка на запись
+                        script_writing_function(prompt, words)  # для печати в keyboard_scripts.py
 
                 # -: открываем все своё с ярлыков
                 if prompt != '""' and len(words) == 1 and words[0] in labels:
@@ -1119,9 +1116,9 @@ if __name__ == '__main__':
                             os.startfile(f"{path_to_shortcut}{prompt[1:-1]}.url")
                             print(LCY + "e√", end='')
                         except FileNotFoundError:
-                            print(Fore.WHITE + "_", end="")  # - индикатор попытки открытия файла
+                            print(Fore.WHITE + "_", end="")  # индикатор попытки открытия файла
 
-                if prompt != '""':  # - пишем свои голос
+                if prompt != '""':  # пишем свои голос
                     print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')
 
             # конвертер команд конец

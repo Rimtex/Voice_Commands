@@ -25,20 +25,6 @@ SRA = Style.RESET_ALL
 init(convert=True)
 
 
-#  конвертер команд старт
-
-def windows_show():
-    # Получаем список всех окон на рабочем столе
-    windows = pyautogui.getAllWindows()
-    unique_windows = []
-    # Выводим список приложений
-    for window in windows:
-        if window.title and window.title not in unique_windows:
-            unique_windows.append(window.title)
-            print(window.title)
-            time.sleep(.02)
-
-
 #: курсор
 def click_print():
     pyautogui.click()
@@ -110,6 +96,7 @@ def keyhot(*keys):
 
 
 def script_writing_function(prompt, words):
+    #  конвертер команд старт
     #: для пишарм
     if prompt in ('"скобки"', '"скобы"', '"скобки"', '"скобка"', '"скоб очки"'):
         key_write('(')
@@ -237,13 +224,8 @@ def script_writing_function(prompt, words):
     elif prompt in ('"паста"', '"пасту"', '"пасты"'):
         keyhot('ctrl', 'shift', 'v')
     elif prompt in ('"выделить"', '"выделение"', '"выделить все"', '"выдели все"', '"выделив все"'):
-        keyboard.press('ctrl')
-        keyboard.press('alt')
-        keyboard.press('shift')
-        key_write('j')
-        keyboard.release('ctrl')
-        keyboard.release('alt')
-        keyboard.release('shift')
+        keyhot('ctrl', 'alt', 'shift', 'j')
+        print("-j", end="")
     elif prompt in ('"новый"', '"новое"', '"новая"', '"новые"'):
         keyhot('shift', 'f4')
     elif prompt in ('"камент"', '"комент"', '"коммент"'):
@@ -309,6 +291,3 @@ def script_writing_function(prompt, words):
         pyautogui.moveTo(256, 962)
         time.sleep(0.2)
         click_print()
-    elif prompt in ('"монитор"', '"приложение"'):
-        print(YEL + "☼")
-        windows_show()
