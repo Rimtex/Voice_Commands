@@ -202,7 +202,7 @@ def script_writing_function(prompt, words):
         key_write('print("" " """)')
     elif prompt in ('"случайно"', '"случайный"', '"рандомно"', '"рандомный"'):
         key_write(f'random.choice()')
-    elif prompt in ('"проверка"', '"проверить"', '"проверим"', '"проба"', '"пробовать"', '"пробуем"'):
+    elif prompt in ('"проверка"', '"проверить"', '"проверим"', '"проба"', '"пробовать"', '"пробуем"', '"попробуем"'):
         key_write('try:\n')
         key_write('except Exception as e: print(e, f"")')
     elif prompt == '"если"':

@@ -324,8 +324,11 @@ if __name__ == '__main__':
                     if prompt != '""':
                         print(LGR + " ~ ", end="")
                         wordstrans = str(prompt[1:-1])
-                        trans = translator.translate(wordstrans, "english", "russian")
-                        keytrans_write(f"{trans}")
+                        try:
+                            trans = translator.translate(wordstrans, "english", "russian")
+                            keytrans_write(f"{trans}")
+                        except Exception as e:
+                            print(f" {LRE}! переводчик: ", e)
                         prompt = '""'
                         words = '""'
 
@@ -392,7 +395,7 @@ if __name__ == '__main__':
                             time.sleep(0.2)
                             key_press("enter")
                         except Exception as e:
-                            print(f" (!o_O): {LRE}! переводчик: ", e)
+                            print(f" {LRE}! переводчик: ", e)
 
                     #: окей гугл
                     elif len(words) >= 2 and (words[0] == 'окей' and words[1] == 'гугл'):
@@ -1108,6 +1111,8 @@ if __name__ == '__main__':
 
                 # -: открываем все своё с ярлыков
                 if prompt != '""' and len(words) == 1 and words[0] in labels:
+                    # pyautogui.hotkey("alt", "tab")
+                    # pyautogui.hotkey("alt", "tab")
                     try:
                         os.startfile(f"{path_to_shortcut}{prompt[1:-1]}")
                         print(LCY + "√", end='')
