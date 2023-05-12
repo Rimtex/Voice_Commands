@@ -147,7 +147,7 @@ def numbers_key():  # назначаем kps клавишу в скрипте н
             key_press(*kps)  # kps = ['shift']
         elif len(kps) > 1:
             keyhot(*kps)  # kps = ['shift', 'ctrl', 'z']
-    elif len(words) > 1:
+    elif len(words) > 1 and words[1] in words_num:
         try:
             if len(kps) == 1:
                 one_num = sum(words_num[word] for word in words[1:])
@@ -160,7 +160,26 @@ def numbers_key():  # назначаем kps клавишу в скрипте н
                 for ione in range(one_num):
                     keyhot(*kps)
         except KeyError:
-            print(f"\b{LCY} кнопка{WHI}({GRE}{words[0]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
+            print(f"\b {WHI}({GRE}{words[0]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
+    elif len(words) == 2 and words[1] not in words_num:
+        if len(kps) == 1:
+            key_press(*kps)
+        elif len(kps) > 1:
+            keyhot(*kps)
+    elif len(words) > 2 and words[2] in words_num:
+        try:
+            if len(kps) == 1:
+                one_num = sum(words_num[word] for word in words[2:])
+                print(f"{YEL}*{LYE}{one_num}{LCY}", end="")
+                for ione in range(one_num):
+                    key_press(*kps)
+            elif len(kps) > 1:
+                one_num = sum(words_num[word] for word in words[2:])
+                print(f"{YEL}*{LYE}{one_num}{LCY}", end="")
+                for ione in range(one_num):
+                    keyhot(*kps)
+        except KeyError:
+            print(f"\b {WHI}({GRE}{words[0]} {words[1]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
 
 
 print(Fore.RESET, end='')
@@ -286,6 +305,7 @@ if __name__ == '__main__':
                 prompt = rec.Result()[13:-2]
                 words = prompt[1:-1].split()
                 # конвертер команд старт
+                # Voice_Commands.py
 
                 #: Запись на русском # при включённом Caps Lock
                 caps_lock_state_check = win32api.GetKeyState(0x14)
@@ -295,7 +315,7 @@ if __name__ == '__main__':
                     if prompt != '""':
                         print(LYE + " ~ ", end="")
                         keyrus_write(prompt[1:-1])
-                        prompt = '""'  # стираем фразы и слова чтобы не активировались команды
+                        prompt = '""'  # - стираем фразы и слова чтобы не активировались команды
                         words = '""'
 
                 #: Запись на английском # при включённом Num Lock
@@ -332,9 +352,11 @@ if __name__ == '__main__':
                     print(f'\n{convert_paint()}')
                 elif prompt in ('"команды русским"', '"команды перевод"', '"покажи русским"'):
                     print(f'\n{convert_trans()}')
-                elif prompt in ('"покажи"', '"показать"'):
+                elif prompt in ('"покажи"', '"покажешь"'):
                     print(f'\n{convert_delete()}')
-
+                elif prompt in ('"показать"', '"показывай"'):
+                    assistant.resizeTo(1170, 1407)
+                    print(f'\n{convert_delete()}')
                 #: смена модели распознавания
                 elif len(words) == 2 and any(words in prompt[1:-1] for words in ('модель', 'model')):
                     try:
@@ -356,9 +378,9 @@ if __name__ == '__main__':
                 elif len(words) > 0 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
                     if len(words) == 1:
                         keyhot('ctrl', 'f')
-                    if len(words) > 1:  #: поиск из буфера
-                        # os.startfile(f"{path_to_shortcut}питон")  # стартуем нужную прогу
-                        keywrite = prompt[len(words[0]) + 2:-1]  # минус первое слово
+                    if len(words) > 1:  # -: поиск из буфера
+                        # os.startfile(f"{path_to_shortcut}питон")  # - стартуем нужную прогу
+                        keywrite = prompt[len(words[0]) + 2:-1]  # - минус первое слово
                         print(f"{LGR}˃{LCY} п {LMA}? ", end='')
                         time.sleep(.1)
                         click_print()
@@ -367,53 +389,52 @@ if __name__ == '__main__':
                         key_press('enter')
 
                 #: найти найди пуск окей-гугл
-                elif 0 < len(words) <= 10 and words[0] in ('найти', 'найди', 'пуск', 'окей'):
-                    if len(words) == 1 and words[0] in ('найти', 'найди'):
-                        keyhot("ctrl", "f")
-                    if len(words) == 1 and words[0] == 'пуск':
-                        key_press("winleft")
-                    if len(words) > 1 and words[0] == 'найти':
-                        write_prompt = prompt[6:-1]  # убираем первое слово и кавычки из фразы
-                        key_press("winleft")  # Открываем окно найти в пуске
-                        time.sleep(0.2)  # Ждем, пока окно загрузится
-                        keyboard.write(write_prompt)  # Вводим слова
-                        time.sleep(0.2)  # Ждем на всякий случай
-                        key_press("enter")  # Нажимаем Enter
-                    if len(words) > 1 and words[0] == 'найди':  #: найти в пуске с переводом на английский
-                        trans_prompt = prompt[6:-1]
-                        try:
-                            trans = translator.translate(trans_prompt, "english", "russian")
-                            keyhot("winleft", "й")
-                            time.sleep(0.2)
-                            keyboard.write(f"{trans}")
-                            print(f"{LYE} {trans}", end=' ')
-                            time.sleep(0.2)
-                            key_press("enter")
-                        except Exception as e:
-                            print(f" {LRE}! переводчик: ", e)
+                elif len(words) == 1 and words[0] in ('найти', 'найди'):
+                    keyhot("ctrl", "f")
+                elif len(words) == 1 and words[0] == 'пуск':
+                    key_press("winleft")
+                elif len(words) > 1 and words[0] == 'найти':
+                    write_prompt = prompt[6:-1]  # - убираем первое слово и кавычки из фразы
+                    key_press("winleft")  # - Открываем окно найти в пуске
+                    time.sleep(0.2)  # - Ждем, пока окно загрузится
+                    keyboard.write(write_prompt)  # - Вводим слова
+                    time.sleep(0.2)  # - Ждем на всякий случай
+                    key_press("enter")  # - Нажимаем Enter
+                elif len(words) > 1 and words[0] == 'найди':  # с переводом на английский
+                    trans_prompt = prompt[6:-1]
+                    try:
+                        trans = translator.translate(trans_prompt, "english", "russian")
+                        keyhot("winleft", "й")
+                        time.sleep(0.2)
+                        keyboard.write(f"{trans}")
+                        print(f"{LYE} {trans}", end=' ')
+                        time.sleep(0.2)
+                        key_press("enter")
+                    except Exception as e:
+                        print(f" {LRE}! переводчик: ", e)
 
-                    #: окей гугл
-                    elif len(words) >= 2 and (words[0] == 'окей' and words[1] == 'гугл'):
-                        if prompt == '"окей гугл"':
-                            speak_tts("что вам найти?")
-                            while True:
-                                if rec.AcceptWaveform(stream.read(4000)):
-                                    prompt = rec.Result()[14:-3]
-                                    if prompt != '':
-                                        try:
-                                            webbrowser.open('https://www.google.com/search?q=' + prompt)
-                                            print(f'\nhttps://www.google.com/search?q={quote(prompt)}')
-                                            break
-                                        except OSError:
-                                            print(LCY + "г" + SRA, end='')
-                                    else:
-                                        break
-                        elif prompt != '"окей гугл"':  #: окей гугл + слова
-                            try:
-                                webbrowser.open('https://www.google.com/search?q=' + prompt[11:-1])
-                                print("\nhttps://www.google.com/search?q=" + quote(prompt[11:-1]))
-                            except OSError:
-                                print(LCY + "Г" + SRA, end='')
+                #: окей гугл
+                elif prompt == '"окей гугл"':
+                    speak_tts("что вам найти?")
+                    while True:
+                        if rec.AcceptWaveform(stream.read(4000)):
+                            prompt = rec.Result()[14:-3]
+                            if prompt != '':
+                                try:
+                                    webbrowser.open('https://www.google.com/search?q=' + prompt)
+                                    print(f'\nhttps://www.google.com/search?q={quote(prompt)}')
+                                    break
+                                except OSError:
+                                    print(LCY + "г" + SRA, end='')
+                            else:
+                                break
+                elif re.match('"окей гугл', prompt):  # + слова
+
+                    try:
+                        webbrowser.open('https://www.google.com/search?q=' + prompt[11:-1])
+                        print("\nhttps://www.google.com/search?q=" + quote(prompt[11:-1]))
+                    except OSError:
+                        print(LCY + "Г" + SRA, end='')
 
                 #: режим паузы
                 elif prompt in ('"пауза"', '"блокировка"', '"остановка"', '"режим паузы"'):
@@ -422,12 +443,12 @@ if __name__ == '__main__':
                     while True:
                         if rec.AcceptWaveform(stream.read(4000)):
                             prompt = rec.Result()[13:-2]
-                            if prompt in ('"стенка"', '"стену"', '"строй"', '"стройка"', '"построй"', '"постройка"'):
+                            if prompt in ('"стенка"', '"стену"', '"строй"', '"стройка"', '"построй"'):
                                 loader.waal_generator()
                             elif prompt in ('"бред"', '"умом"'):
                                 loader.smile_generator()
                                 loader.letters_random()
-                            elif prompt in ('"запуск"', '"запустить"', '"запусти"', '"стартуем"', '"обычный режим"'):
+                            elif prompt in ('"запуск"', '"запустить"', '"запусти"', '"обычный режим"'):
                                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
                                 speak_tts("запускаю обычный режим!")
                                 break
@@ -453,12 +474,12 @@ if __name__ == '__main__':
                 elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
                     on_num = sum(words_num[word] for word in words[1:]) // 2
                     print(LCY + '♪', end='')
-                    for i in range(50):  # ! костыль
+                    for i in range(50):  # - ! костыль
                         pyautogui.press('volumedown')
                     for i in range(on_num):
                         pyautogui.press('volumeup')
 
-                #: установка скорости озвучивания голоса
+                #: установка скорости озвучивания голоса # + числа
                 elif len(words) >= 2 \
                         and re.match(r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)', words[0]) \
                         and words[1] in words_num:
@@ -474,15 +495,15 @@ if __name__ == '__main__':
 
                 #: переключение голоса
                 elif prompt == '"павел"':
-                    switch_voice("Microsoft Pavel Mobile")  # Переключение на голос Павла
+                    switch_voice("Microsoft Pavel Mobile")
                     print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Pavel ' + LCY, end='')
-                    speak_pavel_tts("Microsoft Pavel Mobile")  # Озвучивание текста голосом Павла
+                    speak_pavel_tts("Microsoft Pavel Mobile")
                 elif prompt == '"ирина"':
-                    switch_voice("Microsoft Irina Desktop")  # Переключение на голос Ирины
+                    switch_voice("Microsoft Irina Desktop")
                     print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Irina ' + LCY, end='')
-                    speak_irina_tts("Microsoft Irina Desktop")  # Озвучивание текста голосом Ирины
+                    speak_irina_tts("Microsoft Irina Desktop")
 
-                #: нажатие клавиш + число для повторений
+                #: нажатие клавиш # + число для повторений
                 elif 7 > len(words) > 0 and words[0] in ('контрол', 'контур', 'контр', 'контроль'):
                     kps = ['Control']
                     numbers_key()
@@ -516,7 +537,7 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and words[0] in ('вперёд', 'перед', 'наперёд'):
                     kps = ['browserforward']
                     numbers_key()
-                #: клавиши стрелки + число для повторений
+                #: клавиши стрелки # + число для повторений
                 elif 7 > len(words) > 0 and re.match(r'^.{0,3}лев.{0,3}$', words[0]):
                     kps = ['left']
                     numbers_key()
@@ -529,7 +550,7 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and re.match(r'^.{0,3}низ.{0,3}$', words[0]):
                     kps = ['down']
                     numbers_key()
-                #: комбинации клавиш + число для повторений
+                #: комбинации клавиш # + число для повторений
                 elif 7 > len(words) > 0 and words[0] in ('уничтожь', 'уничтожить', 'уничтожать', 'уничтожает'):
                     kps = ['hift', 'delete']
                     numbers_key()
@@ -542,10 +563,13 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and words[0] in ('вставь', 'ставка', 'вставка', 'вставить', 'ставь'):
                     kps = ['ctrlleft', 'v']
                     numbers_key()
+                elif re.match('"закрыть вкладку|"закрой вкладку|"минус вкладка|"минус вкладку', prompt):
+                    kps = ['ctrlleft', 'w']
+                    numbers_key()
                 #: одноразовое нажатие
-                elif 7 > len(words) > 0 and words[-1] in ('голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы', 'капс'):
+                elif 7 > len(words) > 0 and words[-1] in ('капс', 'голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы'):
                     key_press('CapsLock')
-                elif 7 > len(words) > 0 and words[-1] in ('инглиш', 'английски', 'английским', 'цифры', 'цифра'):
+                elif 7 > len(words) > 0 and words[-1] in ('цифры', 'цифра', 'инглиш', 'английски', 'английским'):
                     key_press('numlock')
                 elif 7 > len(words) > 0 and words[-1] in ('переведи', 'переводи', 'переводом'):
                     key_press('CapsLock')
@@ -584,8 +608,9 @@ if __name__ == '__main__':
                     keyhot('winleft', 'd')
                 elif prompt in ('"свернуть лишнее"', '"свернуть лишнее"', '"лишнее"'):
                     keyhot('winleft', 'Home')
-                elif prompt in ('"закрыть вкладку"', '"закрой вкладку"', '"минус вкладка"', '"крестик"'):
-                    keyhot('ctrlleft', 'w')
+                elif 7 > len(words) > 0 and words[-1] in ('переведи', 'переводи', 'переводом'):
+                    key_press('CapsLock')
+                    key_press('numlock')
                 elif prompt in ('"обновить"', '"обнови"', '"об нова"', '"эф пять"'):
                     key_press("f5")
 
@@ -620,7 +645,7 @@ if __name__ == '__main__':
                 #: запись даты
                 elif prompt == '"дата"' or prompt == '"дату"':
                     keyboard.write(date.today().strftime("%d.%m.%Y "))
-                    keyboard.write(datetime.now().strftime("%H,%M,%S")[0:5])  # убрал секунды
+                    keyboard.write(datetime.now().strftime("%H,%M,%S")[0:5])  # - убрал секунды
 
                 #: зачитка из буфера
                 elif prompt in ('"зачитай"', '"прочитай"', '"прочти"', '"прочитать"', '"говори"', '"скажи"'):
@@ -692,26 +717,22 @@ if __name__ == '__main__':
                 #: озвучка проблем
                 elif prompt in ('"проблемы"', '"что за проблема"', '"в чем проблема"', '"проблема"',
                                 '"да блядь че за хуйня"', '"почему не работает"'):
-                    speak_tts("1 ! русская раскладка! "
-                              "2 ! запятые! "
-                              "3 ! переводчик не работает с впн"
-                              "3.1 библиотеки не устанавливаются с впн"
-                              "4 ! иногда ассистент морозица. возможно помогает tts"
-                              "5 ! кавычки!"
-                              "6 ! при старте на русской раскладке некоторые команды могут не работать"
+                    speak_tts("1 ! переводчик может не работать с впн"
+                              "2 ! иногда ассистент морозица. возможно помогает tts"
+                              "3 ! при старте на русской раскладке некоторые команды могут не работать"
                               )
 
                 #: идеи
                 elif len(words) == 2 and words[1] in ('идеи', 'идея', 'идею', 'идейку', 'идей'):
-                    if words[0] in ('озвучь', 'зачитай', 'прочти', 'озвучить'):  #: озвучка идей
+                    if words[0] in ('озвучь', 'зачитай', 'прочти', 'озвучить'):  # озвучка идей
                         file = open(ideas, "r", encoding='utf-8')
                         contents = file.read()
                         speak_tts(contents)
-                    elif words[0] in ('какие', 'покажи', 'где', 'показывай'):  #: отображение идей
+                    elif words[0] in ('какие', 'покажи', 'где', 'показывай'):  # отображение идей
                         file = open(ideas, "r", encoding='utf-8')
                         contents = file.read()
                         print(contents)
-                    elif words[0] in ('записать', 'запиши', 'запись', 'записывай'):  #: записать идею
+                    elif words[0] in ('записать', 'запиши', 'запись', 'записывай'):  # записать идею
                         print(LMA + "\n (?o_O) " + SRA)
                         keyhot('alt', 'tab')
                         os.startfile(ideas)
@@ -745,7 +766,7 @@ if __name__ == '__main__':
                     speak_tts(contents)
 
                 #: работа с требованиями requirements.txt
-                elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):  #: требования
+                elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
                     if re.match(r'(установ\w{0,5}\b)', words[0]):  # + установить
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
@@ -923,14 +944,14 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 1 and re.match(r'(клик\w{0,4}\b)', words[0]):
                     try:
                         num = sum(words_num[word] for word in words[1:])
-                        for i in range(num):  # количество нажатий курсора
+                        for i in range(num):
                             click_print()
                     except KeyError:
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
                 #: курсор в центр экрана
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
-                    screen_width, screen_height = pyautogui.size()  # Получение размеров экрана
-                    pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)  # курсор в центр экрана
+                    screen_width, screen_height = pyautogui.size()
+                    pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)
 
                 #: промотка колеса # + число
                 elif 5 > len(words) > 0 and words[0] in ('промотай', 'мотай'):  # ↓
@@ -953,7 +974,7 @@ if __name__ == '__main__':
                         print(f"{YEL}↑{GRE}{num}{LCY}∆ ", end="")
 
                 #: ctrl плюс промотка колеса # + число
-                elif 5 > len(words) > 0 and words[0] in ('дальше', 'подальше'):
+                elif 5 > len(words) > 0 and words[0] in ('дальше', 'подальше', 'меньше', 'поменьше'):
                     if len(words) == 1:
                         key_down('ctrl')
                         pyautogui.scroll(-1500)
@@ -964,7 +985,7 @@ if __name__ == '__main__':
                         for i in range(num):
                             pyautogui.scroll(-1500)
                         key_up('ctrl')
-                elif 5 > len(words) > 0 and words[0] in ('ближе', 'поближе'):
+                elif 5 > len(words) > 0 and words[0] in ('ближе', 'поближе', 'больше', 'побольше'):
                     if len(words) == 1:
                         key_down('ctrl')
                         pyautogui.scroll(1500)
@@ -1057,15 +1078,15 @@ if __name__ == '__main__':
                         key_press('tab')
                     key_up('alt')
                 elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-                    assistant.minimize()  # сворачивание
-                    assistant.restore()  # раздупляем восстанавливанием
+                    assistant.minimize()  # - сворачивание
+                    assistant.restore()  # - раздупляем восстанавливанием
                     print(LGR + "ø", end="")
                 elif prompt in ('"уйди"', '"свали"', '"угол"', '"место"', '"места"', '"наказан"'):
                     print(LGR + "╔", end="")
                     assistant.minimize()
                     assistant.restore()
-                    assistant.moveTo(-8, 0)  # двигаем ассистента в угол
-                    assistant.resizeTo(849, 327)  # настраиваем размер окна
+                    assistant.moveTo(-8, 0)
+                    assistant.resizeTo(849, 327)
                     assistant.activate()
                     try:
                         DeepL = pyautogui.getWindowsWithTitle('DeepL')[0]
@@ -1101,8 +1122,8 @@ if __name__ == '__main__':
                     loader.download_generator()
 
                 elif prompt != '""':
-                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # проверка на запись
-                        script_writing_function(prompt, words)  # для печати в keyboard_scripts.py
+                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # - проверка на запись
+                        script_writing_function(prompt, words)  # - для печати в keyboard_scripts.py
 
                 # -: открываем все своё с ярлыков
                 if prompt != '""' and 9 > len(words) > 0 and prompt[1:-1] in labels:
@@ -1116,9 +1137,9 @@ if __name__ == '__main__':
                             os.startfile(f"{path_to_shortcut}{prompt[1:-1]}.url")
                             print(LCY + "e√", end='')
                         except FileNotFoundError:
-                            print(Fore.WHITE + "_", end="")  # индикатор попытки открытия файла
+                            print(Fore.WHITE + "_", end="")  # - индикатор попытки открытия файла
 
-                if prompt != '""':  # пишем свои голос
+                if prompt != '""':  # - пишем свои голос
                     print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')
 
             # конвертер команд конец

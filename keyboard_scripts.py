@@ -96,7 +96,8 @@ def keyhot(*keys):
 
 
 def script_writing_function(prompt, words):
-    #  конвертер команд старт
+    # конвертер команд старт
+    # keyboard_scripts.py
     #: для пишарм
     if prompt in ('"скобки"', '"скобы"', '"скобки"', '"скобка"', '"скоб очки"'):
         key_write('(')
@@ -138,9 +139,9 @@ def script_writing_function(prompt, words):
         key_write('!=')
     elif prompt in ('"равенства"', '"равенство"'):
         key_write('==')
-    elif prompt == '"больше"':
+    elif prompt == '"больше чем"':
         key_write('>')
-    elif prompt == '"меньше"':
+    elif prompt == '"меньше чем"':
         key_write('<')
     #: печать функций и скриптов ассистента
     elif prompt in ('"говорит"', '"скажет"'):
@@ -231,11 +232,11 @@ def script_writing_function(prompt, words):
     elif prompt in ('"камент"', '"комент"', '"коммент"'):
         keyhot('alt', '0')
     elif prompt in ('"пуш"', '"закинь"', '"закинуть"'):  #: авто пуш
-        keyhot('alt', '0')  # вызов окна комментирования
+        keyhot('alt', '0')  # - вызов окна комментирования
         time.sleep(.3)
-        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # Получаем позицию
-        pyautogui.moveTo(window_position)  # Делаем окно активным
-        pyautogui.moveRel(33, 92)  # ставим галку
+        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # - Получаем позицию
+        pyautogui.moveTo(window_position)  # - Делаем окно активным
+        pyautogui.moveRel(33, 92)  # - ставим галку
         pyautogui.click()
         key_press("tab")
         key_press("tab")
@@ -252,7 +253,7 @@ def script_writing_function(prompt, words):
         pyautogui.click()
         key_press("tab")
         key_press("space")
-        keyhot('ctrl', 'v')  # закидывает из буфера
+        keyhot('ctrl', 'v')  # - закидывает из буфера
         key_press("tab")
         key_press("tab")
         key_press("space")
