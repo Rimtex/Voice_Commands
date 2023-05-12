@@ -4,7 +4,12 @@ from colorama import Fore, init
 from vosk import Model, KaldiRecognizer
 
 init(convert=True)
-
+"""
+r"vosk-model-small-ru-0.22"
+r"vosk-model-small-en-us-0.15"
+r"vosk-model-ru-0.42"
+r"vosk-model-en-us-0.22"
+"""
 rec = KaldiRecognizer(Model(r"vosk-model-ru-0.42"), 48000)
 p = pyaudio.PyAudio()
 stream = p.open(
@@ -17,11 +22,13 @@ stream = p.open(
 stream.start_stream()
 
 print(f"""\
- {Fore.LIGHTGREEN_EX}vosk-model-ru-0.42{Fore.LIGHTCYAN_EX} загружена!{Fore.RESET}
- 
- для записи нажмите сдесь            {Fore.LIGHTCYAN_EX} Enter{Fore.RESET}
- для остановки                       {Fore.LIGHTCYAN_EX} Ctrl - Shift - alt{Fore.RESET}
- зажмите одну из клавиш для пропуска {Fore.LIGHTCYAN_EX}▾Ctrl▾ ▾Shift▾ ▾alt▾
+ ╔════════════════════╤════════════╗
+ ║ {Fore.LIGHTGREEN_EX}vosk-model-ru-0.42{Fore.RESET} │{Fore.LIGHTCYAN_EX} загружена!{Fore.RESET} ║                    
+ ╠════════════════════╧════════════╩═══╤════════════════════╗ 
+ ║ для записи нажмите здесь ввод       │{Fore.LIGHTCYAN_EX} Enter{Fore.RESET}              ║
+ ║ для остановки                       │{Fore.LIGHTCYAN_EX} Ctrl - Shift{Fore.RESET}       ║
+ ║ зажмите одну из клавиш для пропуска │{Fore.LIGHTCYAN_EX}▾Ctrl▾ ▾Shift▾ ▾alt▾{Fore.RESET}║
+ ╚═════════════════════════════════════╧════════════════════╝ 
 """)
 while True:
     input(Fore.LIGHTGREEN_EX + " нажмите Enter")
@@ -34,7 +41,6 @@ while True:
                 prompt = '""'
             if prompt != '""':
                 keyboard.write(prompt[1:-1] + " ")
-        if keyboard.is_pressed("ctrl"):
-            if keyboard.is_pressed("shift"):
-                if keyboard.is_pressed("alt"):
-                    break
+        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift"):
+            prompt = '""'
+            break

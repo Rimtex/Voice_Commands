@@ -269,6 +269,41 @@ def set_speak_rate(speak_rate):  # установка скорости озву�
 
 random_voice = [speak_pavel_tts, speak_irina_tts]
 
+
+def pause_mode():
+    print(LCY + '\n ʕ℗•ᴥ•℗ʔ' + SRA, end='')
+    speak_tts("режим паузы!")
+    while True:
+        if rec.AcceptWaveform(stream.read(4000)):
+            paumpt = rec.Result()[13:-2]
+            if paumpt in ('"стенка"', '"стену"', '"строй"', '"стройка"', '"построй"'):
+                loader.waal_generator()
+            elif paumpt in ('"бред"', '"умом"'):
+                loader.smile_generator()
+                loader.letters_random()
+            elif paumpt in ('"запуск"', '"запустить"', '"запусти"', '"обычный режим"'):
+                print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
+                speak_tts("запускаю обычный режим!")
+                break
+            elif len(words) == 1 and words[0] == 'громкость':
+                print(LCY + '♪' + SRA, end='')
+                key_press('volumemute')
+            elif paumpt == '"тест"':
+                os.startfile(f"{path_to_shortcut}тест")
+            elif paumpt in ('"пауза"', '"паузы"', '"блокировка"', '"остановка"', '"режим паузы"'):
+                speak_tts("я итак на паузе!")
+            elif paumpt in ('"слушай"', '"слышь"', '"слышь ты"', '"слышишь"', '"слэш"'):
+                speak_tts("я на паузе если что!")
+            elif paumpt in ('"ассистент"', '"перезапуск"', '"рестарт"'):
+                print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
+                os.startfile(f"\\{path_to_shortcut}ассистент")
+                exit()
+        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win") and keyboard.is_pressed("alt"):
+            print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
+            speak_tts("обычный режим!")
+            break
+
+
 if __name__ == '__main__':
     # Находим окно с именем 'ассистент'
     assistant = None
@@ -300,7 +335,9 @@ if __name__ == '__main__':
     loader_screen_rimtex()
     print(LGR + "\n ʕ/•ᴥ•ʔ/ Hi! " + SRA)
     while True:
-        if rec.AcceptWaveform(stream.read(4000)):  # {   "text" : "слова" }
+        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win") and keyboard.is_pressed("alt"):
+            pause_mode()
+        elif rec.AcceptWaveform(stream.read(4000)):  # {   "text" : "слова" }
             try:
                 prompt = rec.Result()[13:-2]
                 words = prompt[1:-1].split()
@@ -329,7 +366,7 @@ if __name__ == '__main__':
                             if prompteng != '""':
                                 print(f"{prompteng[1:-1]}", end=" ")
                                 keyboard.write(prompteng[1:-1])
-                        if keyboard.is_pressed("numlock"):
+                        if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                             print(LRE + f" ≈ " + SRA, end="")
                             break
 
@@ -357,6 +394,7 @@ if __name__ == '__main__':
                 elif prompt in ('"показать"', '"показывай"'):
                     assistant.resizeTo(1170, 1407)
                     print(f'\n{convert_delete()}')
+
                 #: смена модели распознавания
                 elif len(words) == 2 and any(words in prompt[1:-1] for words in ('модель', 'model')):
                     try:
@@ -373,6 +411,10 @@ if __name__ == '__main__':
                     except Exception as e:
                         change_model(model1)
                         print(LRE, e)
+
+                #: режим паузы
+                elif prompt in ('"пауза"', '"паузы"', '"блокировка"', '"остановка"', '"режим паузы"'):
+                    pause_mode()
 
                 #: для быстрого поиска
                 elif len(words) > 0 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
@@ -429,42 +471,11 @@ if __name__ == '__main__':
                             else:
                                 break
                 elif re.match('"окей гугл', prompt):  # + слова
-
                     try:
                         webbrowser.open('https://www.google.com/search?q=' + prompt[11:-1])
                         print("\nhttps://www.google.com/search?q=" + quote(prompt[11:-1]))
                     except OSError:
                         print(LCY + "Г" + SRA, end='')
-
-                #: режим паузы
-                elif prompt in ('"пауза"', '"блокировка"', '"остановка"', '"режим паузы"'):
-                    print(LCY + '\n ʕ℗•ᴥ•℗ʔ' + SRA, end='')
-                    speak_tts("режим паузы включён!")
-                    while True:
-                        if rec.AcceptWaveform(stream.read(4000)):
-                            prompt = rec.Result()[13:-2]
-                            if prompt in ('"стенка"', '"стену"', '"строй"', '"стройка"', '"построй"'):
-                                loader.waal_generator()
-                            elif prompt in ('"бред"', '"умом"'):
-                                loader.smile_generator()
-                                loader.letters_random()
-                            elif prompt in ('"запуск"', '"запустить"', '"запусти"', '"обычный режим"'):
-                                print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
-                                speak_tts("запускаю обычный режим!")
-                                break
-                            elif len(words) == 1 and words[0] == 'громкость':
-                                print(LCY + '♪' + SRA, end='')
-                                key_press('volumemute')
-                            elif prompt == '"тест"':
-                                os.startfile(f"{path_to_shortcut}тест")
-                            elif prompt in ('"пауза"', '"заблокировать"', '"остановка"', '"паузы"'):
-                                speak_tts("я итак на паузе!")
-                            elif prompt in ('"слушай"', '"слышь"', '"слышь ты"', '"слышишь"', '"слэш"'):
-                                speak_tts("я на паузе если что!")
-                            elif prompt in ('"ассистент"', '"перезапуск"', '"рестарт"'):
-                                print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
-                                os.startfile(f"\\{path_to_shortcut}ассистент")
-                                exit()
 
                 #: установка громкости системы
                 elif any(words in prompt[1:-1] for words in
@@ -825,14 +836,11 @@ if __name__ == '__main__':
                     speak_tts("давай без агрессии")
                 elif any(word in prompt[1:-1] for word in ('агрессии', 'агрессия', 'ладно')):
                     print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')
-                elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # для последнего слова
+                elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # - для последнего слова
                     loader.smile_gen_erator()
-                    # speak_tts("конечно. ты прав!")  # диктует вам мудрость
-                    speakrate_set = 1
-                    time.sleep(2.5)
-                    speak_tts(vocabulary.random_response_aphorism())  # диктует модели мудрость
-                    time.sleep(2.5)
-                    speak_tts("запрос?")  # говорит триггер для старта запроса модели
+                    speak_tts("конечно. ты прав!")  # - диктует вам мудрость
+                    speak_tts(vocabulary.random_response_aphorism())  # - диктует модели мудрость
+                    # speak_tts("запрос?")  # - говорит триггер для старта запроса модели
                 elif len(words) == 1 and words[0] == "ублюдок":
                     print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')
                     speak_tts(vocabulary.sp_rec_reaction_bastard())
