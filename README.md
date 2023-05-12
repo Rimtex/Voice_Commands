@@ -3,24 +3,24 @@
 простой голосовой помощник в консоли на Python для Windows.   
 управляющийся в основном `голосовыми` командами.   
 реагирует на фразы или слова, нажимает клавиши, двигает курсор, пишет голос, переводит, и прочие функции.  
-функции можно посмотреть командой `покажи`
-все работает оффлайн, кроме переводчика.
+функции можно посмотреть командой `покажи`  
+все работает оффлайн, кроме переводчика.  
 <hr>
 
 ### Основные требования
 
 * Python
-* модель распознавании голоса
+* модель распознавании голоса 
+1. https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip - в эту же папку
+<hr>
 
-1. https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip
-    * если нужно переключаться
+* если нужно переключаться  
 2. https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip
 3. https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
 4. https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip
-    * можно подключить локальную нейро модель для `голосового` общения   
-      https://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin               
-      https://gpt4all.io/models/ggml-gpt4all-j-v1.3-groovy.bin  
-      в папку - **models**
+* можно подключить локальную нейро модель для `голосового` общения - в папку **models**  
+  https://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin               
+  https://gpt4all.io/models/ggml-gpt4all-j-v1.3-groovy.bin  
 
 <hr>
 
@@ -48,4 +48,4 @@ Num Lock или `перевод` пишет переведённый голос 
     * **loader.py**                для генерации всяких вещей
     * **vocabulary.py**            словарь ассистента
     * **keyboard_scripts.py**      для скриптов клавиш
-    * **Tester.py**                для теста функций
+elif 
