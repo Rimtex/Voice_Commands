@@ -261,6 +261,7 @@ if __name__ == '__main__':
             assistant = pyautogui.getWindowsWithTitle('python.exe')[0]
             assistant.moveTo(-8, 0)
             assistant.resizeTo(849, 327)
+            printt(f"\r                                                   (!o_O) --> ассистент.lnk\r")
         except Exception as e:
             print(e, end="")
             for x in str(e):
@@ -1066,7 +1067,7 @@ if __name__ == '__main__':
                         Pysharm = pyautogui.getWindowsWithTitle('Voice_Commands.py')[0]
                         Pysharm.minimize()
                         Pysharm.restore()
-                        Pysharm.moveTo(834, 0)
+                        Pysharm.moveTo(826, 0)
                         Pysharm.resizeTo(1450, 1408)
                     except IndexError:
                         print(LRE + "P" + LGR, end="")

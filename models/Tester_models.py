@@ -1,16 +1,15 @@
 #  ggml-gpt4all-l13b-snoozy.bin
 from colorama import init, Fore  # , Style
+from pygpt4all.models.gpt4all import GPT4All
 
 init(convert=True)
 
-from pygpt4all.models.gpt4all import GPT4All
-
-model = GPT4All('./models/ggml-gpt4all-l13b-snoozy.bin')
+model = GPT4All('./ggml-gpt4all-l13b-snoozy.bin')
 
 
-def generate_response(userinput):
+def generate_response(user_input):
     # n_predict = len(userinput)  #: предикт можно добавлять пробелами
-    response = model.generate(userinput)  # , n_predict=n_predict
+    response = model.generate(user_input)  # , n_predict=n_predict
     return response
 
 
