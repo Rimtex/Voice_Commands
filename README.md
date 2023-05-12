@@ -10,13 +10,13 @@
 ### Основные требования
 
 * Python
-* модель распознавании голоса 
-1. https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip - в эту же папку
+* модели распознавании голоса - в эту же папку
+1. https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip
+2. https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
 <hr>
 
 * если нужно переключаться  
-2. https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip
-3. https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+3. https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip
 4. https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip
 * можно подключить локальную нейро модель для `голосового` общения - в папку **models**  
   https://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin               
@@ -36,8 +36,9 @@
 
 ### по-умолчанию
 
-Caps Lock или `пиши` пишет голос и выключает Caps Lock  
-Num Lock или `перевод` пишет переведённый голос и выключает Num Lock
+Caps Lock или `пиши` пишет русский голос  
+Num Lock или `инглиш` пишет английский голос  
+Caps Lock и Num Lock или `перевод` пишет переведённый голос   
 <hr>
 
 * **Voice_Commands.py**

@@ -171,14 +171,18 @@ def numbers_key():
 
 print(Fore.RESET, end='')
 
-vosk.SetLogLevel(-1)  # удаляем логи
+vosk.SetLogLevel(1)  # удаляем логи
 
 speakrate_set = 4
 current_voice = "Microsoft Pavel Mobile"
 
-# Инициализация распознавателя с начальной моделью
+# Инициализация распознавателя с основной моделью
 current_model = Model(model1)
 rec = KaldiRecognizer(current_model, 48000)
+
+# Инициализация распознавателя с английской моделью
+english_model = Model(model2)
+receng = KaldiRecognizer(english_model, 48000)
 
 # Инициализация аудио потока
 p = pyaudio.PyAudio()
@@ -249,8 +253,8 @@ def set_speak_rate(speak_rate):  # установка скорости озву�
 
 random_voice = [speak_pavel_tts, speak_irina_tts]
 
-assistant = None
 if __name__ == '__main__':
+    assistant = None
     # Находим окно с именем 'ассистент'
     try:
         assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
@@ -263,10 +267,7 @@ if __name__ == '__main__':
             assistant.resizeTo(849, 327)
             printt(f"\r                                                   (!o_O) --> ассистент.lnk\r")
         except Exception as e:
-            print(e, end="")
-            for x in str(e):
-                print(f"\b", end="")
-            printt(f"\r                                                   (!o_O) --> ассистент.lnk\r")
+            print(e)
 
     #: состав словаря из названий ярлыков
     file_list = os.listdir(path_to_shortcut)
@@ -290,31 +291,42 @@ if __name__ == '__main__':
                 words = prompt[1:-1].split()
                 # конвертер команд старт
 
-                #: Запись в курсор # запись голоса при включённом Caps Lock
+                #: Запись на русском # при включённом Caps Lock
                 caps_lock_state_check = win32api.GetKeyState(0x14)
                 num_lock_state_check = win32api.GetKeyState(0x90)
                 if (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
                         (num_lock_state_check != 1 and num_lock_state_check != -127):
                     if prompt != '""':
-                        print(LYE + " ≈ ", end="")
+                        print(LYE + " ~ ", end="")
                         keyrus_write(prompt[1:-1])
                         prompt = '""'  # стираем фразы и слова чтобы не активировались команды
                         words = '""'
-                        win32api.keybd_event(0x14, 0x45, 0x1, 0)  # выключение Caps Lock
-                        win32api.keybd_event(0x14, 0x45, 0x3, 0)
 
-                #: Запись в курсор с переводом # запись голоса при включённом Num Lock
+                #: Запись на английском # при включённом Num Lock
                 if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
                         (caps_lock_state_check != 1 and caps_lock_state_check != -127):
+                    prompt = '""'
+                    print(YEL + f" ≈ ", end="")
+                    while True:
+                        if receng.AcceptWaveform(stream.read(4000)):
+                            prompteng = receng.Result()[13:-2]
+                            if prompteng != '""':
+                                print(f"{prompteng[1:-1]}", end=" ")
+                                keyboard.write(prompteng[1:-1])
+                        if keyboard.is_pressed("numlock"):
+                            print(LRE + f" ≈ " + SRA, end="")
+                            break
+
+                #: Запись с переводом # при включённом Caps Lock и Num Lock
+                if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
+                        (caps_lock_state_check == 1 or caps_lock_state_check == -127):
                     if prompt != '""':
-                        print(LGR + " ≈ ", end="")
+                        print(LGR + " ~ ", end="")
                         wordstrans = str(prompt[1:-1])
                         trans = translator.translate(wordstrans, "english", "russian")
                         keytrans_write(f"{trans}")
                         prompt = '""'
                         words = '""'
-                        win32api.keybd_event(0x90, 0x45, 0x1, 0)  # выключение Num Lock
-                        win32api.keybd_event(0x90, 0x45, 0x3, 0)
 
                 #: для команд
                 elif prompt in ('"показать команды"', '"покажи команды"'):
@@ -327,22 +339,19 @@ if __name__ == '__main__':
                 #: смена модели распознавания
                 elif len(words) == 2 and any(words in prompt[1:-1] for words in ('модель', 'model')):
                     try:
-                        if any(words in prompt[1:-1] for words in ('один', 'лёгкая', 'one', 'russian')):
+                        if any(words in prompt[1:-1] for words in ('один', 'one')):
                             change_model(model1)
-                        if any(words in prompt[1:-1] for words in ('два', 'тяжёлая', 'two', 'to')):
+                        if any(words in prompt[1:-1] for words in ('два', 'two', 'to')):
                             change_model(model2)
-                            speak_pavel_tts("тяжёлая русская модель загружена!")
-                        if any(words in prompt[1:-1] for words in ('три', 'free', 'three', 'light')):
+                        if any(words in prompt[1:-1] for words in ('три', 'free', 'three')):
                             change_model(model3)
-                        if any(words in prompt[1:-1] for words in ('четыре', 'four', 'for', 'heavy')):
+                            speak_pavel_tts("тяжёлая русская модель загружена!")
+                        if any(words in prompt[1:-1] for words in ('четыре', 'four', 'for')):
                             change_model(model4)
                             speak_irina_tts("тяжёлая английская модель загружена!")
                     except Exception as e:
                         change_model(model1)
-                        print(LRE, e, LCY, f"\n 1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip"
-                                           f"\n 2 https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip"
-                                           f"\n 3 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
-                                           f"\n 4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip")
+                        print(LRE, e)
 
                 #: для быстрого поиска
                 elif len(words) > 0 and words[0] in ('поиск', 'команду', 'команда', 'погнали', 'поехали'):
@@ -535,10 +544,14 @@ if __name__ == '__main__':
                     kps = ['ctrlleft', 'v']
                     numbers_key()
                 #: одноразовое нажатие
-                elif 7 > len(words) > 0 and words[-1] in ('перевод', 'переведи', 'цифры', 'цифра', 'циферки'):
-                    key_press('numlock')
                 elif 7 > len(words) > 0 and words[-1] in ('голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы', 'капс'):
-                    key_press('CapsLock')  # п1
+                    key_press('CapsLock')
+                elif 7 > len(words) > 0 and words[-1] in ('инглиш', 'английски', 'английским', 'цифры', 'цифра'):
+                    key_press('numlock')
+                elif 7 > len(words) > 0 and words[-1] in ('переведи', 'переводи', 'переводом'):
+                    key_press('CapsLock')
+                    key_press('numlock')
+
                 elif re.match(r'"(\w?копир\w{0,6}\b)"', prompt):
                     keyhot('ctrlleft', 'c')
                 elif re.match(r'"(\w{0,2}хран\w{0,5}\b)"', prompt):

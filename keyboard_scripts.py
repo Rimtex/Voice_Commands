@@ -194,6 +194,8 @@ def script_writing_function(prompt, words):
     elif prompt == '"сброс цвета"':
         key_write('SRA')
     #: печать функций и скриптов
+    elif prompt in ('"комментарий"', '"комментарии"'):
+        key_write('"""')
     elif prompt == '"печать"':
         key_write('print(" ", end="")')
     elif prompt in ('"печатать"', '"напечатать"'):
@@ -282,9 +284,7 @@ def script_writing_function(prompt, words):
         time.sleep(0.01)
         keyhot('winleft', 'v')
         time.sleep(.5)
-        time.sleep(0.01)
         click_print_cor(373, 948)
-        time.sleep(0.01)
         pyautogui.moveTo(375, 1064)
         click_print()
         click_print()
