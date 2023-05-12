@@ -60,8 +60,6 @@ from converter import convert_paint, convert_trans, convert_delete
 from address_config import path_to_shortcut, ideas, reminder, requirements_path, dir_path, model1, model2, model3, \
     model4
 
-py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
-
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
           Fore.LIGHTYELLOW_EX, Fore.LIGHTMAGENTA_EX, Fore.LIGHTCYAN_EX]
@@ -85,6 +83,8 @@ BWH = Back.WHITE
 SRA = Style.RESET_ALL
 
 init(convert=True)  # активация покраски
+
+py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
 
 
 def printt(textt):
@@ -110,12 +110,6 @@ def turn_off_locks():
 
 
 turn_off_locks()
-
-# Определение функции, которая будет озвучивать текст
-speak = wincl.Dispatch("SAPI.SpVoice")
-voices = speak.GetVoices()
-tts = pyttsx3.init()  # без этого пока работает
-tts.runAndWait()  # инициализация распознавания ! иногда наверно помогает от отключения микрофона
 
 
 #: направление курсора
@@ -173,9 +167,6 @@ print(Fore.RESET, end='')
 
 vosk.SetLogLevel(-1)  # удаляем логи
 
-speakrate_set = 4
-current_voice = "Microsoft Pavel Mobile"
-
 # Инициализация распознавателя с основной моделью
 current_model = Model(model1)
 rec = KaldiRecognizer(current_model, 48000)
@@ -186,7 +177,6 @@ receng = KaldiRecognizer(english_model, 48000)
 
 # Инициализация аудио потока
 p = pyaudio.PyAudio()
-
 stream = p.open(
     format=pyaudio.paInt16,
     channels=1,
@@ -195,6 +185,14 @@ stream = p.open(
     frames_per_buffer=4000
 )
 stream.start_stream()
+
+# Определение функции, которая будет озвучивать текст
+speak = wincl.Dispatch("SAPI.SpVoice")
+voices = speak.GetVoices()
+tts = pyttsx3.init()  # без этого пока работает
+tts.runAndWait()  # инициализация распознавания ! иногда наверно помогает от отключения микрофона
+speak.Volume = 100  # громкость
+speakrate_set = 4  # скорость
 
 
 # Функция для смены модели
@@ -212,7 +210,7 @@ def change_model(new_model):
     print(LCY + "\r Модель распознавания изменена на -" + SRA, LGR + new_model)
 
 
-speak.Volume = 100  # громкость
+current_voice = "Microsoft Pavel Mobile"
 
 
 def speak_irina_tts(speak_text):  # для озвучки ириной
@@ -480,11 +478,11 @@ if __name__ == '__main__':
                 #: переключение голоса
                 elif prompt == '"павел"':
                     switch_voice("Microsoft Pavel Mobile")  # Переключение на голос Павла
-                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Pavel ' + LGR, end='')
+                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Pavel ' + LCY, end='')
                     speak_pavel_tts("Microsoft Pavel Mobile")  # Озвучивание текста голосом Павла
                 elif prompt == '"ирина"':
                     switch_voice("Microsoft Irina Desktop")  # Переключение на голос Ирины
-                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Irina ' + LGR, end='')
+                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Irina ' + LCY, end='')
                     speak_irina_tts("Microsoft Irina Desktop")  # Озвучивание текста голосом Ирины
 
                 #: нажатие клавиш + число для повторений
