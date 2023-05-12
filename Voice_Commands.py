@@ -171,7 +171,7 @@ def numbers_key():
 
 print(Fore.RESET, end='')
 
-vosk.SetLogLevel(1)  # удаляем логи
+vosk.SetLogLevel(-1)  # удаляем логи
 
 speakrate_set = 4
 current_voice = "Microsoft Pavel Mobile"
@@ -199,6 +199,7 @@ stream.start_stream()
 
 # Функция для смены модели
 def change_model(new_model):
+    vosk.SetLogLevel(1)
     global current_model, rec
     # Закрытие текущей модели и распознавателя
     current_model = None
