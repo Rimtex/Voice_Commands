@@ -246,8 +246,26 @@ def set_speak_rate(speak_rate):  # установка скорости озву�
     global speakrate_set
     speakrate_set = speak_rate
 
+
+random_voice = [speak_pavel_tts, speak_irina_tts]
+
+assistant = None
 if __name__ == '__main__':
-    random_voice = [speak_pavel_tts, speak_irina_tts]
+    # Находим окно с именем 'ассистент'
+    try:
+        assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
+        assistant.moveTo(-8, 0)
+        assistant.resizeTo(849, 327)
+    except Exception as e:
+        try:
+            assistant = pyautogui.getWindowsWithTitle('python.exe')[0]
+            assistant.moveTo(-8, 0)
+            assistant.resizeTo(849, 327)
+        except Exception as e:
+            print(e, end="")
+            for x in str(e):
+                print(f"\b", end="")
+            printt(f"\r                                                   (!o_O) --> ассистент.lnk\r")
 
     #: состав словаря из названий ярлыков
     file_list = os.listdir(path_to_shortcut)
@@ -258,23 +276,6 @@ if __name__ == '__main__':
         full_path = os.path.join(path_to_shortcut, lnk_file)
         label = lnk_file[:-4]  # удаляем последние четыре символа
         labels.append(label)
-
-    # Находим окно с именем 'ассистент'
-    try:
-        assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
-        assistant.moveTo(-8, 0)
-        assistant.resizeTo(849, 327)
-    except Exception as e:
-        try:    
-            assistant = pyautogui.getWindowsWithTitle('python.exe')[0]
-            assistant.moveTo(-8, 0)
-            assistant.resizeTo(849, 327)
-        except Exception as e:    
-            print(e, end="")
-            for x in str(e):
-                print(f"\b", end="")
-            printt(f"\r                                                   (!o_O) --> ассистент.lnk\r")
-
 
     translator = Translator()
     tts = pyttsx3.init()
