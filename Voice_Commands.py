@@ -1105,7 +1105,7 @@ if __name__ == '__main__':
                         script_writing_function(prompt, words)  # для печати в keyboard_scripts.py
 
                 # -: открываем все своё с ярлыков
-                if prompt != '""' and len(words) == 1 and words[0] in labels:
+                if prompt != '""' and 9 > len(words) > 0 and prompt[1:-1] in labels:
                     # pyautogui.hotkey("alt", "tab")
                     # pyautogui.hotkey("alt", "tab")
                     try:
