@@ -357,7 +357,7 @@ if __name__ == '__main__':
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "›" + SRA, end="")
                     break
-                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
                     print(LRE + "›" + SRA, end="")
                     break
@@ -375,7 +375,7 @@ if __name__ == '__main__':
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "›" + SRA, end="")
                     break
-                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
                     print(LRE + "›" + SRA, end="")
                     break
@@ -398,7 +398,7 @@ if __name__ == '__main__':
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "»" + SRA, end="")
                     break
-                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
                     print(LRE + "»" + SRA, end="")
                     break
@@ -602,7 +602,7 @@ if __name__ == '__main__':
                     kps = ['ctrlleft', 'w']
                     numbers_key()
                 #: одноразовое нажатие
-                elif 7 > len(words) > 0 and words[-1] in ('капс', 'голос', 'пиши', 'пишем', 'напиши', 'букве', 'буквы'):
+                elif 7 > len(words) > 0 and words[-1] in ('капс', 'пиши', 'пишем', 'напиши', 'букве', 'буквы'):
                     key_press('CapsLock')
                 elif 7 > len(words) > 0 and words[-1] in ('цифры', 'цифра', 'инглиш', 'английски', 'английским'):
                     key_press('numlock')

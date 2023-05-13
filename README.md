@@ -43,7 +43,8 @@
 
 Caps Lock или `пиши` пишет русский голос  
 Num Lock или `инглиш` пишет английский голос  
-Caps Lock и Num Lock или `переведи` пишет переведённый голос
+Caps Lock и Num Lock или `переведи` пишет переведённый голос  
+Ctrl - Alt выключает Caps Lock и Num Lock 
 <hr>
 
 * **Voice_Commands.py**
