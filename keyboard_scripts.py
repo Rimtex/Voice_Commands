@@ -28,7 +28,7 @@ init(convert=True)
 #: курсор клик
 def click_print():
     pyautogui.click()
-    print(f'{LCY} ∆', end='')
+    print(f'{LCY}∆', end='')
 
 
 #: курсор клик в координаты и назад
@@ -59,17 +59,17 @@ def keytrans_write(string):
 
 def key_down(string):
     pyautogui.keyDown(string)  # зажатие клавиши
-    print(f"{LCY}▾{LBL}{string}{LCY}▾{LBL} ", end='')
+    print(f"{LGR}▾{LBL}{string}{LGR}▾{LCY} ", end='')
 
 
 def key_up(string):
     pyautogui.keyUp(string)  # отпускание клавиши
-    print(f"{LCY}▴{LBL}{string}{LCY}▴{LBL} ", end='')
+    print(f"{LGR}▴{LBL}{string}{LGR}▴{LCY} ", end='')
 
 
 def key_press(key):
     pyautogui.press(key)  # нажатие на клавишу
-    print(Fore.LIGHTCYAN_EX + f" {key}", end='')
+    print(Fore.LIGHTCYAN_EX + f"{key} ", end='')
 
     """
       # Получить текущую раскладку клавиатуры
@@ -260,8 +260,8 @@ def script_writing_function(prompt, words):
         time.sleep(2)
         keyhot('ctrl', 'enter')
     #: очистка буфера
-    elif 3 > len(words) > 0 and (re.match(r'(\w{0,2}чист\w{0,3}\b)', words[0])) \
-            and (re.match(r'(буфер\w?\b)', words[1])):
+    elif 3 > len(words) > 0 and (re.match(r'\w{0,2}чист\w{0,3}\b', words[0])) \
+            and (re.match(r'буфер\w?\b', words[1])):
         awwx, awwy = pyautogui.position()
         keyhot('winleft', 'r')
         time.sleep(0.01)

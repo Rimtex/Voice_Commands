@@ -111,7 +111,6 @@ py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # �
 
 #: направление курсора: третье слово
 def cursor_direction():
-    numss = sum(words_num[word] for word in words[3:] * 10)
     if re.match(r'^.{0,3}прав.{0,3}$', words[2]):
         pyautogui.moveRel(numss, 0)
     if re.match(r'^.{0,3}низ.{0,3}$', words[2]):
@@ -433,7 +432,7 @@ if __name__ == '__main__':
                         keyboard.write(f"{keywrite}")
                         key_press('enter')
 
-                #: найти найди пуск окей-гугл
+                #: найти найди пуск
                 elif len(words) == 1 and words[0] in ('найти', 'найди'):
                     keyhot("ctrl", "f")
                 elif len(words) == 1 and words[0] == 'пуск':
@@ -449,70 +448,45 @@ if __name__ == '__main__':
                     trans_prompt = prompt[6:-1]
                     try:
                         trans = translator.translate(trans_prompt, "english", "russian")
-                        keyhot("winleft", "й")
+                        keyhot("winleft", "q")
                         time.sleep(0.2)
                         keyboard.write(f"{trans}")
-                        print(f"{LYE} {trans}", end=' ')
+                        print(f"{YEL} {trans}", end=' ')
                         time.sleep(0.2)
                         key_press("enter")
                     except Exception as e:
                         print(f" {LRE}! переводчик: ", e)
 
                 #: окей гугл
-                elif prompt == '"окей гугл"':
-                    speak_tts("что вам найти?")
-                    while True:
-                        if rec.AcceptWaveform(stream.read(4000)):
-                            prompt = rec.Result()[14:-3]
-                            if prompt != '':
-                                try:
-                                    webbrowser.open('https://www.google.com/search?q=' + prompt)
-                                    break
-                                except OSError:
-                                    print(LCY + "г" + SRA, end='')
-                            else:
-                                break
                 elif re.match('"окей гугл', prompt):  # + слова
                     try:
                         webbrowser.open('https://www.google.com/search?q=' + prompt[11:-1])
+                        print(LGR + "G" + LCY, end='')
                     except OSError:
-                        print(LCY + "Г" + SRA, end='')
-
-                #: установка громкости системы
-                elif any(words in prompt[1:-1] for words in
-                         ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) \
-                        or prompt[1:-1] in ('громко', 'громкость', 'мут'):
-                    key_press('volumemute')
-                elif 3 >= len(words) >= 2 and words[0] == 'громкость' and words[1] in words_num:
-                    on_num = sum(words_num[word] for word in words[1:]) // 2
-                    print(LCY + '♪', end='')
-                    for i in range(50):  # - ! костыль
-                        pyautogui.press('volumedown')
-                    for i in range(on_num):
-                        pyautogui.press('volumeup')
+                        print(LRE + "G" + SRA, end='')
 
                 #: установка скорости озвучивания голоса # + числа
                 elif len(words) >= 2 \
-                        and re.match(r'(скорост\w?\b)|(озвуч\w{0,5}\b)|(голос\w{0,3}\b)', words[0]) \
+                        and re.match(r'скорост\w?\b|озвуч\w{0,5}\b|голос\w{0,3}\b', words[0]) \
                         and words[1] in words_num:
                     speak_num = words_num[words[1]]
                     speakrate_set = speak_num
-                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}♪ ' + LGR, end='')
+                    print(f'{LRE}ϟ{LYE}♪{LGR}☼ ', end='')
                     sk_show = '⁞'
                     for i in range(speak_num):
                         print(sk_show, sep='', end='', flush=True)
                         time.sleep(0.03)
-                    print(LCY + f' {GRE}{speak_num}{LCY}', end='')
+                    print(f' {GRE}{speak_num}{LCY}', end='')
                     speak_tts(f'скорость озвучки {speak_num}')
 
                 #: переключение голоса
                 elif prompt == '"павел"':
                     switch_voice("Microsoft Pavel Mobile")
-                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Pavel ' + LCY, end='')
+                    print(f' {LRE}ϟ{LYE}♪{LGR}☼{LYE}Pavel{LCY}', end='')
                     speak_pavel_tts("Microsoft Pavel Mobile")
                 elif prompt == '"ирина"':
                     switch_voice("Microsoft Irina Desktop")
-                    print(YEL + f' {LRE}ϟ{LGR}☼{LYE}Irina ' + LCY, end='')
+                    print(f' {LRE}ϟ{LYE}♪{LGR}☼{LYE}Irina{LCY}', end='')
                     speak_irina_tts("Microsoft Irina Desktop")
 
                 #: нажатие клавиш # + число для повторений
@@ -575,7 +549,7 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and words[0] in ('вставь', 'ставка', 'вставка', 'вставить', 'ставь'):
                     kps = ['ctrlleft', 'v']
                     numbers_key()
-                elif re.match('"вкладку|"вкладка|"крестик', prompt):
+                elif re.match('"вкладку|"вкладка|"крестик', prompt):  # закрытие вкладки Chrome
                     kps = ['ctrlleft', 'w']
                     numbers_key()
                 #: одноразовое нажатие
@@ -586,33 +560,23 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and words[-1] in ('переведи', 'переводи', 'переводом'):
                     key_press('CapsLock')
                     key_press('numlock')
-
-                elif re.match(r'"(\w?копир\w{0,6}\b)"', prompt):
+                elif re.match(r'"\w?копир\w{0,6}\b"', prompt):
                     keyhot('ctrlleft', 'c')
-                elif re.match(r'"(\w{0,2}хран\w{0,5}\b)"', prompt):
+                elif re.match(r'"\w{0,2}хран\w{0,5}\b"', prompt):
                     keyhot('ctrlleft', 's')
-                elif re.match(r'"(буфер\w?\b)"|"(спис\w{0,2}\b)"', prompt):
+                elif re.match(r'"буфер\w?\b"|"спис\w{0,2}\b"', prompt):
                     keyhot('winleft', 'v')
-                elif re.match(r'"(раскладк\w?\b)"|"(клавиатур\w{0,2}\b)"', prompt):
+                elif re.match(r'"раскладк\w?\b"|"клавиатур\w{0,2}\b"', prompt):
                     keyhot('win', 'space')
+                elif prompt in ('"снимок"', '"скрин"', '"снимок экрана"'):
+                    key_press('printscreen')
 
                 #: работа с окнами
-                elif 3 > len(words) > 0 and re.match(r'(окно)|(разв\w{0,6}\b)|(свер\w{0,4}\b)', words[0]):
-                    if len(words) == 1:
-                        if re.match(r'(разв\w{0,6}\b)', words[0]):
-                            keyhot('winleft', 'Up')
-                        if re.match(r'(свер\w{0,4}\b)', words[0]):
-                            keyhot('winleft', 'Down')
-                    if len(words) == 2 and words[0] == 'окно':
-                        if 2 >= len(words) > 1 and re.match(r'^.{0,3}прав.{0,3}$', words[1]):
-                            keyhot('winleft', 'Right')
-                        if 2 >= len(words) > 1 and re.match(r'^.{0,3}лев.{0,3}$', words[1]):
-                            keyhot('winleft', 'Left')
-                        if 2 >= len(words) > 1 and re.match(r'^.{0,3}верх.{0,3}$', words[1]):
-                            keyhot('winleft', 'Up')
-                        if 2 >= len(words) > 1 and re.match(r'^.{0,3}низ.{0,3}$', words[1]):
-                            keyhot('winleft', 'Down')
-                elif len(words) == 1 and re.match(r'(закр\w{0,4}\b)', words[0]):
+                elif len(words) == 1 and re.match(r'разв\w{0,6}\b', words[0]):
+                    keyhot('winleft', 'Up')
+                elif len(words) == 1 and re.match(r'свер\w{0,4}\b', words[0]):
+                    keyhot('winleft', 'Down')
+                elif len(words) == 1 and re.match(r'закр\w{0,4}\b', words[0]):
                     keyhot('altleft', 'F4')
                 elif prompt in ('"окна"', '"окошки"', '"вин таб"', '"показать окна"', '"режим окон"'):
                     keyhot('winleft', 'tab')
@@ -620,11 +584,17 @@ if __name__ == '__main__':
                     keyhot('winleft', 'd')
                 elif prompt in ('"свернуть лишнее"', '"свернуть лишнее"', '"лишнее"'):
                     keyhot('winleft', 'Home')
-                elif 7 > len(words) > 0 and words[-1] in ('переведи', 'переводи', 'переводом'):
-                    key_press('CapsLock')
-                    key_press('numlock')
                 elif prompt in ('"обновить"', '"обнови"', '"об нова"', '"эф пять"'):
                     key_press("f5")
+                elif 3 > len(words) > 0 and words[0] == 'окно':
+                    if 2 >= len(words) > 1 and re.match(r'^.{0,3}прав.{0,3}$', words[1]):
+                        keyhot('winleft', 'Right')
+                    if 2 >= len(words) > 1 and re.match(r'^.{0,3}лев.{0,3}$', words[1]):
+                        keyhot('winleft', 'Left')
+                    if 2 >= len(words) > 1 and re.match(r'^.{0,3}верх.{0,3}$', words[1]):
+                        keyhot('winleft', 'Up')
+                    if 2 >= len(words) > 1 and re.match(r'^.{0,3}низ.{0,3}$', words[1]):
+                        keyhot('winleft', 'Down')
 
                 #: закрывание всех окон
                 elif prompt in ('"убей всех"', '"растрелли"', '"расстрел"', '"застрели"', '"расстрел окон"'
@@ -710,6 +680,19 @@ if __name__ == '__main__':
                     key_press('ctrl')
                     # - ctypes.windll.user32.SendMessageW(0xFFFF, 0x112, 0xF170, -1)
 
+                #: установка громкости системы
+                elif any(words in prompt[1:-1] for words in
+                         ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) \
+                        or prompt[1:-1] in ('громко', 'громкость', 'мут'):
+                    key_press('volumemute')
+                elif 3 >= len(words) >= 2 and words[0] == 'громкость' and words[1] in words_num:
+                    on_num = sum(words_num[word] for word in words[1:]) // 2
+                    print(LCY + '♪', end='')
+                    for i in range(50):  # - ! костыль
+                        pyautogui.press('volumedown')
+                    for i in range(on_num):
+                        pyautogui.press('volumeup')
+
                 #: перезагрузка ассистента
                 elif len(words) > 0 and words[-1] in ('тихо', 'старт'):
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
@@ -781,18 +764,18 @@ if __name__ == '__main__':
 
                 #: работа с требованиями requirements.txt
                 elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
-                    if re.match(r'(установ\w{0,5}\b)', words[0]):  # + установить
+                    if re.match(r'установ\w{0,5}\b', words[0]):  # + установить
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
                         keyboard.write(f"pip install -r {requirements_path}")
                         key_press("enter")
-                    if re.match(r'(\w{0,2}брос\w?\b)|(выки\w{0,5}\b)|(помойк\w?\b)', words[0]):  # + удалить
+                    if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):  # + удалить
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
                         keyboard.write(f"pip uninstall -r {requirements_path}")
                         key_press("enter")
                         speak_tts("если хочешь удалить всё! закрой меня! и зажми энтер в консоли!")
-                    if re.match(r'(обнов\w{0,5}\b)', words[0]):  # + обновить
+                    if re.match(r'обнов\w{0,5}\b', words[0]):  # + обновить
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
                         keyboard.write(f"pip install --upgrade -r {requirements_path}")
@@ -800,13 +783,13 @@ if __name__ == '__main__':
 
                 #: работа с модулями из буфера
                 elif len(words) == 2 and re.match(r'(библиотек[ау]?.?)|(модул[ьи]?.?)|(пип.?)', words[1]):
-                    if re.match(r'(установ\w{0,5}\b)', words[0]):
+                    if re.match(r'установ\w{0,5}\b', words[0]):
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
                         keyboard.write("pip install ")
                         keyhot('ctrl', 'v')
                         key_press("enter")
-                    if re.match(r'(\w{0,2}брос\w?\b)|(выки\w{0,5}\b)|(помойк\w?\b)', words[0]):
+                    if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
                         keyboard.write("pip uninstall ")
@@ -814,7 +797,7 @@ if __name__ == '__main__':
                         key_press("enter")
                         time.sleep(2)
                         key_press("enter")
-                    if re.match(r'(обнов\w{0,5}\b)', words[0]):
+                    if re.match(r'обнов\w{0,5}\b', words[0]):
                         os.startfile(f"{path_to_shortcut}консоль")
                         time.sleep(1)
                         keyboard.write(f"pip install --upgrade ")
@@ -840,9 +823,8 @@ if __name__ == '__main__':
                     print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # - для последнего слова
                     loader.smile_gen_erator()
-                    speak_tts("конечно. ты прав!")  # - диктует вам мудрость
+                    speak_tts("конечно. ты прав!")
                     speak_tts(vocabulary.random_response_aphorism())
-
                 elif len(words) == 1 and words[0] == "ублюдок":
                     print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')
                     speak_tts(vocabulary.sp_rec_reaction_bastard())
@@ -942,16 +924,18 @@ if __name__ == '__main__':
                 #: работа с мышкой
                 elif prompt == '"координаты"':
                     x, y = pyautogui.position()
-                    print(f"\nclick_print_cor{LYE}({x}, {y})", end='')  # координаты курсора
+                    print(f"{LYE}({x}, {y}){LCY}", end='')  # координаты курсора
                 elif prompt in ('"тэк"', '"клик"', '"кликни"', '"кликай"', '"кликнуть"'):
                     click_print()
                 #: зажать - отпустить
                 elif len(words) == 1 and words[0] in ('зажми', 'зажать', 'зажал', 'зажимать', 'схвати', 'схватить'):
+                    print(f"{LCY}∆{LGR}▼{LCY}", end='')
                     pyautogui.mouseDown()
                 elif len(words) == 1 and words[0] in ('отпусти', 'отпускай', 'отпустить', 'пусти', 'отпускай', 'отжал'):
+                    print(f"{LCY}∆{LGR}▲{LCY}", end='')
                     pyautogui.mouseUp()
                 #: клик # + число
-                elif 7 > len(words) > 1 and re.match(r'(клик\w{0,4}\b)', words[0]):
+                elif 7 > len(words) > 1 and re.match(r'клик\w{0,4}\b', words[0]):
                     try:
                         num = sum(words_num[word] for word in words[1:])
                         for i in range(num):
@@ -960,28 +944,29 @@ if __name__ == '__main__':
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
                 #: курсор в центр экрана
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
+                    print(f"{LCY}∆{LGR}○{LCY}", end='')
                     screen_width, screen_height = pyautogui.size()
                     pyautogui.moveTo(screen_width / 2, screen_height / 2, duration=0.25)
 
                 #: промотка колеса # + число
                 elif 5 > len(words) > 0 and words[0] in ('промотай', 'мотай'):  # ↓
                     if len(words) == 1:
-                        print(f"{YEL}↓{LCY}∆ ", end="")
+                        print(f"{LGR}↓{LCY}∆ ", end="")
                         pyautogui.scroll(-1500)
                     elif len(words) > 1 and words[1] in words_num:
                         num = sum(words_num[word] for word in words[1:])
                         for i in range(num):
                             pyautogui.scroll(-1500)
-                        print(f"{YEL}↓{GRE}{num}{LCY}∆ ", end="")
+                        print(f"{LGR}↓{GRE}{num}{LCY}∆ ", end="")
                 elif 5 > len(words) > 0 and re.match(r'колес\w{0,3}\b', words[0]):  # ↑
                     if len(words) == 1:
-                        print(f"{YEL}↑{LCY}∆ ", end="")
+                        print(f"{LGR}↑{LCY}∆ ", end="")
                         pyautogui.scroll(1500)
                     elif len(words) > 1 and words[1] in words_num:
                         num = sum(words_num[word] for word in words[1:])
                         for i in range(num):
                             pyautogui.scroll(1500)
-                        print(f"{YEL}↑{GRE}{num}{LCY}∆ ", end="")
+                        print(f"{LGR}↑{GRE}{num}{LCY}∆ ", end="")
 
                 #: ctrl плюс промотка колеса # + число
                 elif 5 > len(words) > 0 and words[0] in ('дальше', 'подальше', 'меньше', 'поменьше'):
@@ -1015,35 +1000,37 @@ if __name__ == '__main__':
                                 nums = sum(words_num[word] for word in words[2:] * 10)
                                 pyautogui.moveRel(nums, 0)
                             if words[2] not in words_num:
-                                nums = sum(words_num[word] for word in words[3:] * 10)
-                                pyautogui.moveRel(nums, 0)
+                                numss = sum(words_num[word] for word in words[3:] * 10)
+                                pyautogui.moveRel(numss, 0)
                                 cursor_direction()
                         if re.match(r'^.{0,3}низ.{0,3}$', words[1]):
                             if words[2] in words_num:
                                 nums = sum(words_num[word] for word in words[2:] * 10)
                                 pyautogui.moveRel(0, nums)
                             if words[2] not in words_num:
-                                nums = sum(words_num[word] for word in words[3:] * 10)
-                                pyautogui.moveRel(0, nums)
+                                numss = sum(words_num[word] for word in words[3:] * 10)
+                                pyautogui.moveRel(0, numss)
                                 cursor_direction()
                         if re.match(r'^.{0,3}лев.{0,3}$', words[1]):
                             if words[2] in words_num:
                                 nums = sum(words_num[word] for word in words[2:] * 10)
                                 pyautogui.moveRel(-nums, 0)
                             if words[2] not in words_num:
-                                nums = sum(words_num[word] for word in words[3:] * 10)
-                                pyautogui.moveRel(-nums, 0)
+                                numss = sum(words_num[word] for word in words[3:] * 10)
+                                pyautogui.moveRel(-numss, 0)
                                 cursor_direction()
                         if re.match(r'^.{0,3}верх.{0,3}$', words[1]):
                             if words[2] in words_num:
                                 nums = sum(words_num[word] for word in words[2:] * 10)
                                 pyautogui.moveRel(0, -nums)
                             if words[2] not in words_num:
-                                nums = sum(words_num[word] for word in words[3:] * 10)
-                                pyautogui.moveRel(0, -nums)
+                                numss = sum(words_num[word] for word in words[3:] * 10)
+                                pyautogui.moveRel(0, -numss)
                                 cursor_direction()
+                    except IndexError:
+                        print(f" {WHI}({LGR}{words[0]} + направление(я) + числа{WHI}) {YEL}!= {LRE}", end='')
                     except Exception as e:
-                        print(f"{LGR} {words[0]} + направление(я) + {LCY}числа {YEL}!= {LRE}", e, end='')
+                        print(f"{LRE}{e} {WHI}({LGR}{words[0]} + направление(я) + числа{WHI}) {YEL}!= {LRE}", end='')
 
                 #: рисование квадрата # + числа
                 elif 7 > len(words) > 1 and words[0] in ('нарисуй', 'рисуй', 'рисунок', 'рисования', 'рисование') and \

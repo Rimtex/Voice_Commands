@@ -85,7 +85,7 @@ paint = str(cta
             .replace(f"\n", f"\n{SRA}")
             .replace(f"',  ", f"', \r")
             .replace(f",", f"{LYE},{LGR}")
-            .replace(f"(", f"{SRA}({LGR}")
+            .replace(f"(", f"{SRA}(")
             .replace(f"'", f"{SRA}'{LGR}")
             .replace(f'"', f'{SRA}"{LGR}')
             .replace(f")", f"{SRA})")
@@ -126,8 +126,8 @@ trans = str(paint
             .replace("any", "любое")
             .replace(" len", " число")
             .replace(" any ", " любое ").replace(" range", " зоне")
-            .replace(" re.match", " в_начале_строки")
-            .replace(" re.search", " в_любом_месте")
+            .replace("re.match", "в_начале_строки")
+            .replace("re.search", " в_любом_месте")
             )
 
 # удаление лишнего
@@ -157,8 +157,8 @@ delete = str(paint
              .replace("any", "")
              .replace(" len", "")
              .replace(" any ", " ").replace(" range", "")
-             .replace(" re.match", "")
-             .replace(" re.search", "")
+             .replace("re.match", "")
+             .replace("re.search", "")
              )
 
 
