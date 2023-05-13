@@ -39,22 +39,22 @@ def click_print_cor(asdx, asdy, button='left'):
     print(f'{LGR} ¤{LCY}∆', end='')
 
 
-def keytrans_write(string):
-    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
-    print(GRE + f"{string}" + SRA, end='')
-    keyboard.write(string)  # запись в курсор
+def keyrus_write(string):
+    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04190419)  # для переключения на русскую раскладку
+    print(LYE + f"{string} " + SRA, end='')
+    keyboard.write(string)
 
 
 def key_write(string):
     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
-    print(YEL + f"{string}", end='')
+    print(YEL + f"{string} ", end='')
     keyboard.write(string)  # запись в курсор
 
 
-def keyrus_write(string):
-    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04190419)  # для переключения на русскую раскладку
-    print(LYE + f"{string}" + SRA, end='')
-    keyboard.write(string)
+def keytrans_write(string):
+    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
+    print(GRE + f"{string} " + SRA, end='')
+    keyboard.write(string)  # запись в курсор
 
 
 def key_down(string):

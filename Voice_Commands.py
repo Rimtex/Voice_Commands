@@ -334,58 +334,82 @@ if __name__ == '__main__':
     tts.runAndWait()  # ! иногда наверно помогает от отключения микрофона
     loader_screen_rimtex()
     print(LGR + "\n ʕ/•ᴥ•ʔ/ Hi! " + SRA)
+
     while True:
+        # конвертер команд старт
+        caps_lock_state_check = win32api.GetKeyState(0x14)
+        num_lock_state_check = win32api.GetKeyState(0x90)
+
+        # -: режим паузы
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win") and keyboard.is_pressed("alt"):
             pause_mode()
-        elif rec.AcceptWaveform(stream.read(4000)):  # {   "text" : "слова" }
-            try:
-                prompt = rec.Result()[13:-2]
-                words = prompt[1:-1].split()
-                # конвертер команд старт
-                # Voice_Commands.py
 
-                #: Запись на русском # при включённом Caps Lock
-                caps_lock_state_check = win32api.GetKeyState(0x14)
-                num_lock_state_check = win32api.GetKeyState(0x90)
-                if (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
-                        (num_lock_state_check != 1 and num_lock_state_check != -127):
+        #: Запись на русском # при включённом Caps Lock
+        elif (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
+                (num_lock_state_check != 1 and num_lock_state_check != -127):
+            time.sleep(.2)
+            print(LYE + "›", end="")
+            while True:
+                if rec.AcceptWaveform(stream.read(4000)):
+                    prompt = rec.Result()[13:-2]
                     if prompt != '""':
-                        print(LYE + " ~ ", end="")
                         keyrus_write(prompt[1:-1])
-                        prompt = '""'  # - стираем фразы и слова чтобы не активировались команды
-                        words = '""'
+                if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
+                    print(LRE + "›" + SRA, end="")
+                    break
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+                    turn_off_locks()
+                    print(LRE + "›" + SRA, end="")
+                    break
 
-                #: Запись на английском # при включённом Num Lock
-                if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
-                        (caps_lock_state_check != 1 and caps_lock_state_check != -127):
-                    prompt = '""'
-                    print(YEL + f" ≈ ", end="")
-                    while True:
-                        if receng.AcceptWaveform(stream.read(4000)):
-                            prompteng = receng.Result()[13:-2]
-                            if prompteng != '""':
-                                print(f"{prompteng[1:-1]}", end=" ")
-                                keyboard.write(prompteng[1:-1])
-                        if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
-                            print(LRE + f" ≈ " + SRA, end="")
-                            break
+        #: Запись на английском # при включённом Num Lock
+        elif (num_lock_state_check == 1 or num_lock_state_check == -127) and \
+                (caps_lock_state_check != 1 and caps_lock_state_check != -127):
+            time.sleep(.2)
+            print(YEL + f"›", end="")
+            while True:
+                if receng.AcceptWaveform(stream.read(4000)):
+                    prompteng = receng.Result()[13:-2]
+                    if prompteng != '""':
+                        key_write(prompteng[1:-1])
+                if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
+                    print(LRE + "›" + SRA, end="")
+                    break
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+                    turn_off_locks()
+                    print(LRE + "›" + SRA, end="")
+                    break
 
-                #: Запись с переводом # при включённом Caps Lock и Num Lock
-                if (num_lock_state_check == 1 or num_lock_state_check == -127) and \
-                        (caps_lock_state_check == 1 or caps_lock_state_check == -127):
+        #: Запись с переводом # при включённом Caps Lock и Num Lock
+        elif (num_lock_state_check == 1 or num_lock_state_check == -127) and \
+                (caps_lock_state_check == 1 or caps_lock_state_check == -127):
+            time.sleep(.2)
+            print(LGR + "»", end="")
+            while True:
+                if rec.AcceptWaveform(stream.read(4000)):
+                    prompt = rec.Result()[13:-2]
                     if prompt != '""':
-                        print(LGR + " ~ ", end="")
-                        wordstrans = str(prompt[1:-1])
+                        prompttrans = str(prompt[1:-1])
                         try:
-                            trans = translator.translate(wordstrans, "english", "russian")
+                            trans = translator.translate(prompttrans, "english", "russian")
                             keytrans_write(f"{trans}")
                         except Exception as e:
                             print(f" {LRE}! переводчик: ", e)
-                        prompt = '""'
-                        words = '""'
+                if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
+                    print(LRE + "»" + SRA, end="")
+                    break
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+                    turn_off_locks()
+                    print(LRE + "»" + SRA, end="")
+                    break
+
+        elif rec.AcceptWaveform(stream.read(4000)):  # - {   "text" : "распознавание голоса" }
+            try:
+                prompt = rec.Result()[13:-2]  # - "распознавание голоса"
+                words = prompt[1:-1].split()  # - ['распознавание', 'голоса'] - words[0], words[1]
 
                 #: для команд
-                elif prompt in ('"показать команды"', '"покажи команды"'):
+                if prompt in ('"показать команды"', '"покажи команды"'):
                     print(f'\n{convert_paint()}')
                 elif prompt in ('"команды русским"', '"команды перевод"', '"покажи русским"'):
                     print(f'\n{convert_trans()}')
@@ -412,7 +436,7 @@ if __name__ == '__main__':
                         change_model(model1)
                         print(LRE, e)
 
-                #: режим паузы
+                #: режим паузы # также можно зажать комбинацию ctrl-win-alt
                 elif prompt in ('"пауза"', '"паузы"', '"блокировка"', '"остановка"', '"режим паузы"'):
                     pause_mode()
 
@@ -482,7 +506,7 @@ if __name__ == '__main__':
                          ('заткнись на хрен', 'не так громко', 'слишком громко', 'минус громкость')) \
                         or prompt[1:-1] in ('громко', 'громкость', 'мут'):
                     key_press('volumemute')
-                elif len(words) == 2 and words[0] == 'громкость' and words[1] in words_num:
+                elif 3 >= len(words) >= 2 and words[0] == 'громкость' and words[1] in words_num:
                     on_num = sum(words_num[word] for word in words[1:]) // 2
                     print(LCY + '♪', end='')
                     for i in range(50):  # - ! костыль
