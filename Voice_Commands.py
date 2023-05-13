@@ -730,7 +730,8 @@ if __name__ == '__main__':
                 elif prompt in ('"тьма"', '"закат"'):
                     ctypes.windll.user32.SendMessageW(0xFFFF, 0x112, 0xF170, 2)
                 elif prompt in ('"свет"', '"расцвет"', '"рассвет"'):
-                    ctypes.windll.user32.SendMessageW(0xFFFF, 0x112, 0xF170, -1)
+                    key_press('ctrl')
+                    # - ctypes.windll.user32.SendMessageW(0xFFFF, 0x112, 0xF170, -1)
 
                 #: перезагрузка ассистента
                 elif len(words) > 0 and words[-1] in ('тихо', 'старт'):
