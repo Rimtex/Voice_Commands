@@ -1,17 +1,16 @@
 # http://balabolka.site/pavel.windows10.zip
-requests
+
 colorama
 keyboard
 pyautogui
 pyaudio
 vosk
+requests
+python_translator
 pyttsx3
-psutil
-
-PyGetWindow
 pypiwin32
 pywin32
-
-
-
+py_win_keyboard_layout
+psutil
+PyGetWindow
 
