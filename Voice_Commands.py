@@ -1,56 +1,54 @@
 import os
 
 try:
-    import traceback
     import requests
+    import traceback
     import re
     import time
     import random
     import keyboard
     import pyautogui
-    import pyaudio
     import py_win_keyboard_layout
-    from datetime import date, datetime
-    import vosk
+    import pyaudio
     import pyttsx3
-    import win32api
-    import win32clipboard
+    import vosk
     import win32com.client
-    import ctypes
     from vosk import Model, KaldiRecognizer
     import win32com.client as wincl
     from colorama import Fore, Style, init, Back
     from python_translator import Translator
+    from datetime import date, datetime
     import webbrowser
-    from urllib.parse import quote
+    import win32api
+    import win32clipboard
+    import ctypes
 except ImportError:
     print("Trying to Install required modules: requirements.txt")
-    #  os.system('pip install -r "requirements.txt"')
-    os.system('pip install --upgrade -r "requirements.txt"')
+    os.system('pip install -r "requirements.txt"')
+    import requests
     import traceback
     import re
     import time
     import random
     import keyboard
     import pyautogui
-    import pyaudio
     import py_win_keyboard_layout
-    from datetime import date, datetime
-    import vosk
+    import pyaudio
     import pyttsx3
-    import win32api
-    import win32clipboard
+    import vosk
     import win32com.client
-    import ctypes
     from vosk import Model, KaldiRecognizer
     import win32com.client as wincl
     from colorama import Fore, Style, init, Back
     from python_translator import Translator
+    from datetime import date, datetime
     import webbrowser
-    from urllib.parse import quote
+    import win32api
+    import win32clipboard
+    import ctypes
 
 from keyboard_scripts import script_writing_function, key_press, keyhot, key_down, key_write, key_up, \
-    click_print_cor, click_print, keyrus_write, keytrans_write
+    click_print, keyrus_write, keytrans_write
 import loader
 from loader import loader_screen_rimtex
 import vocabulary
@@ -160,26 +158,7 @@ def numbers_key():  # назначаем kps клавишу в скрипте н
                 for ione in range(one_num):
                     keyhot(*kps)
         except KeyError:
-            print(f"\b {WHI}({GRE}{words[0]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
-    elif len(words) == 2 and words[1] not in words_num:
-        if len(kps) == 1:
-            key_press(*kps)
-        elif len(kps) > 1:
-            keyhot(*kps)
-    elif len(words) > 2 and words[2] in words_num:
-        try:
-            if len(kps) == 1:
-                one_num = sum(words_num[word] for word in words[2:])
-                print(f"{YEL}*{LYE}{one_num}{LCY}", end="")
-                for ione in range(one_num):
-                    key_press(*kps)
-            elif len(kps) > 1:
-                one_num = sum(words_num[word] for word in words[2:])
-                print(f"{YEL}*{LYE}{one_num}{LCY}", end="")
-                for ione in range(one_num):
-                    keyhot(*kps)
-        except KeyError:
-            print(f"\b {WHI}({GRE}{words[0]} {words[1]}{WHI}) {YEL}+ {GRE}число {YEL}!={LRE}", end="")
+            print(f"\b {WHI}({GRE}{words[0]} {YEL}+ {GRE}число{WHI}) {YEL}!={LRE}", end="")
 
 
 print(Fore.RESET, end='')
@@ -488,7 +467,6 @@ if __name__ == '__main__':
                             if prompt != '':
                                 try:
                                     webbrowser.open('https://www.google.com/search?q=' + prompt)
-                                    print(f'\nhttps://www.google.com/search?q={quote(prompt)}')
                                     break
                                 except OSError:
                                     print(LCY + "г" + SRA, end='')
@@ -497,7 +475,6 @@ if __name__ == '__main__':
                 elif re.match('"окей гугл', prompt):  # + слова
                     try:
                         webbrowser.open('https://www.google.com/search?q=' + prompt[11:-1])
-                        print("\nhttps://www.google.com/search?q=" + quote(prompt[11:-1]))
                     except OSError:
                         print(LCY + "Г" + SRA, end='')
 
@@ -598,7 +575,7 @@ if __name__ == '__main__':
                 elif 7 > len(words) > 0 and words[0] in ('вставь', 'ставка', 'вставка', 'вставить', 'ставь'):
                     kps = ['ctrlleft', 'v']
                     numbers_key()
-                elif re.match('"закрыть вкладку|"закрой вкладку|"минус вкладка|"минус вкладку', prompt):
+                elif re.match('"вкладку|"вкладка|"крестик', prompt):
                     kps = ['ctrlleft', 'w']
                     numbers_key()
                 #: одноразовое нажатие
@@ -853,7 +830,6 @@ if __name__ == '__main__':
                 elif prompt in ('"слушай"', '"слышь"', '"слышишь"', '"слэш"', '"слышь ты"'):
                     loader.smile_gen_erator()
                     speak_tts(vocabulary.random_response())
-                    click_print_cor(677, 1345)  # координаты кнопки ответа https://chat.openai.com/
                 elif any(word in prompt[1:-1] for word in ('блядь', 'нихуя', 'бля', 'ахуеть', 'бляха', 'ебать')):
                     loader.smile_generator()
                     speak_tts(vocabulary.sp_rec_reaction_Fuck())
@@ -864,8 +840,8 @@ if __name__ == '__main__':
                 elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # - для последнего слова
                     loader.smile_gen_erator()
                     speak_tts("конечно. ты прав!")  # - диктует вам мудрость
-                    speak_tts(vocabulary.random_response_aphorism())  # - диктует модели мудрость
-                    # speak_tts("запрос?")  # - говорит триггер для старта запроса модели
+                    speak_tts(vocabulary.random_response_aphorism())
+
                 elif len(words) == 1 and words[0] == "ублюдок":
                     print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')
                     speak_tts(vocabulary.sp_rec_reaction_bastard())
