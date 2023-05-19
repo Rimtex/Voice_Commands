@@ -73,33 +73,28 @@ def download_generator():
 
 def down_generator():
     word = (f"""\
-(¯`·.¸¸.·´¯`·.¸¸.->\
-¸.·´¯¯`·.¸\
-..••°°°°••..\
-¸„.-•~¹°'ˆ˜¨\
-{random.choice(colors)}\
-random.choice(colors)\
-{random.choice(colors)}\
-¨˜ˆ'°¹~•-.„¸\
-¸,ø¤º°`°º¤ø,¸\
-<-.¸¸.·´¯`·.¸¸.·´¯)
+¸,ø*¤º°¨`¨°º¤*ø,¸
+¸,.·•°´ˆ¯ˆ`°•·.,¸
+¸„.-•~¹°"ˆ˜¨¨˜ˆ"°¹~•-.„¸
 """)
     lines = word.strip().split('\n')
-    for char in word:
-        print(char, end='', flush=True)
-        time.sleep(0.05)
-    for char in random.choice(lines):
-        print(random.choice(colors) + char, end='', flush=True)
-        time.sleep(0.05)
+    random_line = random.choice(lines)
+    while True:
+        for char in random_line:
+            print(char, end='', flush=True)
+            time.sleep(.05)
+            if keyboard.is_pressed('space'):
+                break
 
 
 #: генератор стенки
 def waal_generator():
     build = """
-╠╬╣╚╝╔╗╦═╩║═╠╬╣╚╝╔╗╦═╩═╠╬╣╚╝╔╗╦═╩═╠╬╣╚╝╔╗╦═╩═╚╝╔╗╚╝╔╗╚╝╔╗╚╝╔╗═
-╟╫╢╙╜╓╖╥─╨║─╟╫╢╙╜╓╖╥─╨─╟╫╢╙╜╓╖╥─╨─╟╫╢╙╜╓╖╥─╨─╙╜╓╖╙╜╓╖╙╜╓╖╙╜╓╖─
-╞╪╡╘╛╒╕╤═╧│═╞╪╡╘╛╒╕╤═╧═╞╪╡╘╛╒╕╤═╧═╞╪╡╘╛╒╕╤═╧═╘╛╒╕╘╛╒╕╘╛╒╕╘╛╒╕═
-├┼┤└┘┌┐┬─┴│─├┼┤└┘┌┐┬─┴─├┼┤└┘┌┐┬─┴─├┼┤└┘┌┐┬─┴─└┘┌┐└┘┌┐└┘┌┐└┘┌┐─
+╠╬╣╚╩╝╔╦╗║══
+╟╫╢╙╨╜╓╥╖║──
+╞╪╡╘╧╛╒╤╕│══
+├┼┤└┴┘┌┬┐│──
+╠╬╣╚╩╝╔╦╗║══╟╫╢╙╨╜╓╥╖║──╞╪╡╘╧╛╒╤╕│══├┼┤└┴┘┌┬┐│──
 """
     lines = build.strip().split('\n')
     random_line = random.choice(lines)
@@ -118,6 +113,7 @@ def letters_random():
 q        wertyuiopasdfghjklzxcvbnm
 ц        укенгшщзхфывапролджэячсмитбюёq        wertyuiopasdfghjklzxcvbnm
 $        ¥£€¢±‰÷≠=*·+-/¹²³☺▪▫°♠♣♥♦↔↕≤≥♀♂‼^_
+$        ¥£€¢±‰÷≠=*·+-/¹²³☺▪▫°♠♣♥♦↔↕≤≥♀♂‼^_ц        укенгшщзхфывапролджэячсмитбюёq        wertyuiopasdfghjklzxcvbnm
 """
 
     """
@@ -177,6 +173,30 @@ def smile_gen_erator():
 {edlesr}{col1}\
 {edger}\
 """, end='')
+
+
+#  генератор загрузок 2
+def download_gen_erator():
+    load_square = (f"""\
+[□□□□□□□□□□]
+[■□□□□□□□□□]
+[■■□□□□□□□□]
+[■■■□□□□□□□]
+[■■■■□□□□□□]
+[■■■■■□□□□□]
+[■■■■■■□□□□]
+[■■■■■■■□□□]
+[■■■■■■■■□□]
+[■■■■■■■■■□]
+[■■■■■■■■■■]
+""")
+    losq = load_square.strip().split('\n')
+    for char in losq:
+        for i in char:
+            print(i, end='', sep="")
+            time.sleep(.12)
+        print("\r", end='')
+        time.sleep(.12)
 
 
 #  удалитель дублирующихся символов

@@ -8,3 +8,10 @@ model1 = r"vosk-model-small-ru-0.22"
 model2 = r"vosk-model-small-en-us-0.15"
 model3 = r"vosk-model-ru-0.42"
 model4 = r"vosk-model-en-us-0.22"
+
+
+
+
+
+
+

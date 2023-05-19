@@ -36,7 +36,6 @@ while True:
     while True:
         if rec.AcceptWaveform(stream.read(4000)):
             prompt = rec.Result()[13:-2]
-            words = prompt[1:-1].split()
             if keyboard.is_pressed("ctrl") or keyboard.is_pressed("shift") or keyboard.is_pressed("alt"):
                 prompt = '""'
             if prompt != '""':

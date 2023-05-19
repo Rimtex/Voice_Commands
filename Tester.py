@@ -1,3 +1,4 @@
+"""
 m = int(input(""))
 n = int(input(""))
 
@@ -14,3 +15,9 @@ elif m < n:
 n = int(input(""))
 for i in range(1, 11):
     print(n, "x", i, "=", n*i) 
+"""
+from loader import down_generator, download_gen_erator, download_generator
+
+download_gen_erator()
+
+download_generator()

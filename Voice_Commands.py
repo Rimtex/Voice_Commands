@@ -47,16 +47,14 @@ except ImportError:
     import win32clipboard
     import ctypes
 
-from keyboard_scripts import script_writing_function, key_press, keyhot, key_down, key_write, key_up, \
-    click_print, keyrus_write, keytrans_write
+from keyboard_scripts import key_press, keyhot, key_down, key_write, key_up, click_print, keyrus_write, \
+    keytrans_write, words_num, scripts_pycharm, key_symbols, rimtex_personal, rimtex_reactions
+
 import loader
 from loader import loader_screen_rimtex
-import vocabulary
-from vocabulary import words_num
 from converter import convert_paint, convert_trans, convert_delete
 
-from address_config import path_to_shortcut, ideas, reminder, requirements_path, dir_path, model1, model2, model3, \
-    model4
+from address_config import path_to_shortcut, ideas, reminder, dir_path, model1, model2, model3, model4
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -107,6 +105,7 @@ def turn_off_locks():
 
 turn_off_locks()
 py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
+tts = pyttsx3.init()
 
 
 #: направление курсора: третье слово
@@ -263,7 +262,7 @@ def pause_mode():
                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
                 speak_tts("запускаю обычный режим!")
                 break
-            elif len(words) == 1 and words[0] == 'громкость':
+            elif paumpt == '"громкость"':
                 print(LCY + '♪' + SRA, end='')
                 key_press('volumemute')
             elif paumpt == '"тест"':
@@ -276,13 +275,14 @@ def pause_mode():
                 print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
                 os.startfile(f"\\{path_to_shortcut}ассистент")
                 exit()
-        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win") and keyboard.is_pressed("alt"):
+        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
             print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
             speak_tts("обычный режим!")
             break
 
 
 if __name__ == '__main__':
+
     # Находим окно с именем 'ассистент'
     assistant = None
     try:
@@ -308,7 +308,6 @@ if __name__ == '__main__':
         labels.append(label)
 
     translator = Translator()
-    tts = pyttsx3.init()
     tts.runAndWait()  # ! иногда наверно помогает от отключения микрофона
     loader_screen_rimtex()
     print(LGR + "\n ʕ/•ᴥ•ʔ/ Hi! " + SRA)
@@ -319,7 +318,7 @@ if __name__ == '__main__':
         num_lock_state_check = win32api.GetKeyState(0x90)
 
         # -: режим паузы
-        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win") and keyboard.is_pressed("alt"):
+        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
             pause_mode()
 
         #: Запись на русском # при включённом Caps Lock
@@ -328,16 +327,18 @@ if __name__ == '__main__':
             time.sleep(.2)
             print(LYE + "›", end="")
             while True:
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+                    pause_mode()
                 if rec.AcceptWaveform(stream.read(4000)):
                     prompt = rec.Result()[13:-2]
                     if prompt != '""':
                         keyrus_write(prompt[1:-1])
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
-                    print(LRE + "›" + SRA, end="")
+                    print(LRE + "‹" + SRA, end="")
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
-                    print(LRE + "›" + SRA, end="")
+                    print(LRE + "‹" + SRA, end="")
                     break
 
         #: Запись на английском # при включённом Num Lock
@@ -346,16 +347,18 @@ if __name__ == '__main__':
             time.sleep(.2)
             print(YEL + f"›", end="")
             while True:
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+                    pause_mode()
                 if receng.AcceptWaveform(stream.read(4000)):
                     prompteng = receng.Result()[13:-2]
                     if prompteng != '""':
                         key_write(prompteng[1:-1])
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
-                    print(LRE + "›" + SRA, end="")
+                    print(LRE + "‹" + SRA, end="")
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
-                    print(LRE + "›" + SRA, end="")
+                    print(LRE + "‹" + SRA, end="")
                     break
 
         #: Запись с переводом # при включённом Caps Lock и Num Lock
@@ -364,6 +367,8 @@ if __name__ == '__main__':
             time.sleep(.2)
             print(LGR + "»", end="")
             while True:
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+                    pause_mode()
                 if rec.AcceptWaveform(stream.read(4000)):
                     prompt = rec.Result()[13:-2]
                     if prompt != '""':
@@ -374,11 +379,11 @@ if __name__ == '__main__':
                         except Exception as e:
                             print(f" {LRE}! переводчик: ", e)
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
-                    print(LRE + "»" + SRA, end="")
+                    print(LRE + "«" + SRA, end="")
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
-                    print(LRE + "»" + SRA, end="")
+                    print(LRE + "«" + SRA, end="")
                     break
 
         elif rec.AcceptWaveform(stream.read(4000)):  # - {   "text" : "распознавание голоса" }
@@ -414,7 +419,7 @@ if __name__ == '__main__':
                         change_model(model1)
                         print(LRE, e)
 
-                #: режим паузы # также можно зажать комбинацию ctrl-win-alt
+                #: режим паузы # также можно зажать комбинацию ctrl-win
                 elif prompt in ('"пауза"', '"паузы"', '"блокировка"', '"остановка"', '"режим паузы"'):
                     pause_mode()
 
@@ -637,6 +642,7 @@ if __name__ == '__main__':
                     win32clipboard.CloseClipboard()
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
                     speak_pavel_tts(text)
+
                 #: зачитка из буфера другим голосом
                 elif prompt in ('"озвучь"', '"озвучивает"', '"озвучивать"'):
                     print(f"{LGR}♫", end='')
@@ -645,25 +651,6 @@ if __name__ == '__main__':
                     win32clipboard.CloseClipboard()
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
                     speak_irina_tts(text)
-
-                #: захват видео MSI Afterburner
-                elif prompt in ('"захват видео"', '"захвати видео"'):
-                    os.startfile(f"{path_to_shortcut}захват видео")  # ярлык MSI Afterburner
-                elif prompt in ('"запись видео"', '"запиши видео"'):
-                    speak_tts(prompt)
-                    os.startfile(f"{path_to_shortcut}видео")  # ярлык папки
-                    time.sleep(1)
-                    keyboard.press('ctrl')
-                    keyboard.press_and_release('-')
-                    keyboard.release('ctrl')
-                elif prompt in ('"конец видео"', '"видео стоп"', '"стоп видео"', '"стоп захват"', '"захват стоп"'):
-                    keyboard.press('ctrl')
-                    keyboard.press_and_release('-')
-                    keyboard.release('ctrl')
-                    time.sleep(1)
-                    os.startfile(f"{path_to_shortcut}видео")
-                    time.sleep(1)
-                    speak_tts(prompt)
 
                 #: Управление системой
                 elif re.match(r'"компьютер перезагруз\w{0,4}\b', prompt):
@@ -710,15 +697,6 @@ if __name__ == '__main__':
                     time.sleep(2)
                     exit()
 
-                #: озвучка проблем
-                elif prompt in ('"проблемы"', '"что за проблема"', '"в чем проблема"', '"проблема"',
-                                '"да блядь че за хуйня"', '"почему не работает"'):
-                    speak_tts(""
-                              "1 ! переводчик может не работать с впн"
-                              "2 ! иногда ассистент морозица. возможно помогает tts"
-                              "3 ! при старте на русской раскладке некоторые команды могут не работать"
-                              )
-
                 #: идеи
                 elif len(words) == 2 and words[1] in ('идеи', 'идея', 'идею', 'идейку', 'идей'):
                     if words[0] in ('озвучь', 'зачитай', 'прочти', 'озвучить'):  # озвучка идей
@@ -762,121 +740,14 @@ if __name__ == '__main__':
                     print(contents)
                     speak_tts(contents)
 
-                #: работа с требованиями requirements.txt
-                elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
-                    if re.match(r'установ\w{0,5}\b', words[0]):  # + установить
-                        os.startfile(f"{path_to_shortcut}консоль")
-                        time.sleep(1)
-                        keyboard.write(f"pip install -r {requirements_path}")
-                        key_press("enter")
-                    if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):  # + удалить
-                        os.startfile(f"{path_to_shortcut}консоль")
-                        time.sleep(1)
-                        keyboard.write(f"pip uninstall -r {requirements_path}")
-                        key_press("enter")
-                        speak_tts("если хочешь удалить всё! закрой меня! и зажми энтер в консоли!")
-                    if re.match(r'обнов\w{0,5}\b', words[0]):  # + обновить
-                        os.startfile(f"{path_to_shortcut}консоль")
-                        time.sleep(1)
-                        keyboard.write(f"pip install --upgrade -r {requirements_path}")
-                        key_press("enter")
-
-                #: работа с модулями из буфера
-                elif len(words) == 2 and re.match(r'(библиотек[ау]?.?)|(модул[ьи]?.?)|(пип.?)', words[1]):
-                    if re.match(r'установ\w{0,5}\b', words[0]):
-                        os.startfile(f"{path_to_shortcut}консоль")
-                        time.sleep(1)
-                        keyboard.write("pip install ")
-                        keyhot('ctrl', 'v')
-                        key_press("enter")
-                    if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):
-                        os.startfile(f"{path_to_shortcut}консоль")
-                        time.sleep(1)
-                        keyboard.write("pip uninstall ")
-                        keyhot('ctrl', 'v')
-                        key_press("enter")
-                        time.sleep(2)
-                        key_press("enter")
-                    if re.match(r'обнов\w{0,5}\b', words[0]):
-                        os.startfile(f"{path_to_shortcut}консоль")
-                        time.sleep(1)
-                        keyboard.write(f"pip install --upgrade ")
-                        keyhot('ctrl', 'v')
-                        key_press("enter")
-
-                #: ♪ реакции на слова или фразы
-                elif prompt == '"я робот"':
-                    print(random.choice(colors) + "[-_-]", end='')
-                    speak_irina_tts(vocabulary.random_response_robot())
-                elif prompt == '"не дано"':
-                    print(random.choice(colors) + "♪{•ᴥ•}♫", end='')
-                    speak_irina_tts(vocabulary.random_response_nedano())
-                elif prompt in ('"слушай"', '"слышь"', '"слышишь"', '"слэш"', '"слышь ты"'):
-                    loader.smile_gen_erator()
-                    speak_tts(vocabulary.random_response())
-                elif any(word in prompt[1:-1] for word in ('блядь', 'нихуя', 'бля', 'ахуеть', 'бляха', 'ебать')):
-                    loader.smile_generator()
-                    speak_tts(vocabulary.sp_rec_reaction_Fuck())
-                elif any(word in prompt[1:-1] for word in ('сука', 'сучара', 'охуел', 'нахуй', 'тварь')):
-                    speak_tts("давай без агрессии")
-                elif any(word in prompt[1:-1] for word in ('агрессии', 'агрессия', 'ладно')):
-                    print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')
-                elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # - для последнего слова
-                    loader.smile_gen_erator()
-                    speak_tts("конечно. ты прав!")
-                    speak_tts(vocabulary.random_response_aphorism())
-                elif len(words) == 1 and words[0] == "ублюдок":
-                    print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')
-                    speak_tts(vocabulary.sp_rec_reaction_bastard())
-                elif len(words) == 1 and (words[0] == "цитаты" or words[0] == "мемы"):
-                    print(random.choice(colors) + "(ʘ͜͡)", end='')
-                    speak_tts(vocabulary.sp_rec_reaction_memequotes())
-                elif len(words) == 1 and (words[0] == "внатуре" or words[0] == "чётко"):
-                    print(random.choice(colors) + "(⌐▪˽▪)", end='')
-                    speak_tts(vocabulary.sp_rec_reaction_auf())
-                elif len(words) == 1 and (words[0] == 'обама' or words[0] == 'барак'):
-                    print(random.choice(colors) + "(•`_´•)", end='')
-                    speak_tts(vocabulary.random_response_obeme())
-                elif prompt in ('"шаурма"', '"если хочешь кушать"', '"приходи в мой шаурма"'):
-                    print(random.choice(colors) + "(°□°)", end='')
-                    speak_tts(vocabulary.sp_rec_reaction_shawarma())
-                elif prompt in ('"ёбаная шиза"', '"шизо ебаная"', '"шиза ебаная"', '"шиза ебаное"'):
-                    print(random.choice(colors) + "(→ᴥ←)", end='')
-                    speak_tts(vocabulary.random_response_upyachka())
-                elif prompt in ('"идущий к реке"', '"идущие к реке"'):
-                    print(random.choice(colors) + "(→_→)", end='')
-                    speak_tts(vocabulary.random_response_Goingtotheriver())
-                elif prompt in ('"печенье лом"', '"а найди ка нам бригаду"'):
-                    print(random.choice(colors) + "└(`▪´)┐", end='')
-                    speak.rate = 0
-                    speak_tts(vocabulary.sp_rec_reaction_pechenielom())
-                elif prompt == '"история про говно"':
-                    print(random.choice(colors) + "(○´ ― `)", end='')
-                    speak_tts(vocabulary.random_response_shit())
-                elif prompt == '"бурлеск"':
-                    print(random.choice(colors) + "(’̀₀’̀Q )", end='')
-                    speak_tts(vocabulary.random_response_Burlestat())
-                elif prompt == '"месть"':
-                    print(random.choice(colors) + "(¬_¬`)", end='')
-                    random.choice(random_voice)(vocabulary.random_response_revenge())
-                elif prompt in ('"расскажи историю"', '"историю расскажи"'):
-                    print(random.choice(colors) + "(~‾▾‾)~ ╓───╖ ┌┤", end='')
-                    speak_tts(vocabulary.random_response_stories())
-                elif prompt in ('"матрица история"', '"история матрица"'):
-                    print(random.choice(colors) + "(⌐■˽■)⌐ ╓───╖ ┌┤", end='')
-                    speak_tts(vocabulary.response_matrix())
-                elif prompt in ('"история про бога"', '"про бога история"'):
-                    print(random.choice(colors) + "ʅ(ο_ο)ʃ", end='')
-                    speak_tts(vocabulary.reaction_godofchrist())
-                elif prompt in ('"афоризм"', '"афоризмы"', '"совет"', '"советы"', '"дай совет"', '"и афоризм"'):
-                    print(random.choice(colors) + '( •_•)>⌐', end='')
-                    speak_tts(vocabulary.random_response_aphorism())
-                elif prompt in ('"стишки"', '"стихи"', '"стих"', '"стишок"'):
-                    print(random.choice(colors) + '(ˇò_ó)', end='')
-                    speak_tts(vocabulary.random_rhymes())
-                elif prompt in ('"анекдот"', '"анекдоты"'):
-                    print(random.choice(colors) + '( •̪O )', end='')
-                    speak_tts(vocabulary.random_anecdote())
+                #: озвучка проблем
+                elif prompt in ('"проблемы"', '"что за проблема"', '"в чем проблема"', '"проблема"',
+                                '"да блядь че за хуйня"', '"почему не работает"'):
+                    speak_tts(""
+                              "1 ! переводчик может не работать с впн"
+                              "2 ! иногда ассистент морозица. возможно помогает tts"
+                              "3 ! при старте на русской раскладке некоторые команды могут не работать"
+                              )
 
                 #: ♫ включение случайной музыки
                 elif prompt in ('"радио"', '"включи радио"'):
@@ -907,26 +778,13 @@ if __name__ == '__main__':
                         file_path = os.path.join(dir_path, random_file)
                         os.startfile(file_path)
 
-                #: ♫ включение отдельных треков
-                elif prompt in ('"единый идол"', '"единой идол"', '"идол"'):
-                    os.startfile(f"{dir_path}\\United Idol - Hai Phút Hơn.mp3")
-                    print(random.choice(colors) + "┌(◄_►)┐", end='')
-                elif prompt in ('"я синица я аллигатор"', '"синица я аллигатор"', '"синица аллигатор"'):
-                    os.startfile(f"{dir_path}\\Ня - Аригато.mp3")
-                    print(random.choice(colors) + "(♥ᴗ♥)", end='')
-                elif prompt in ('"тут туру"', '"тот туру"', '"тот торо"', '"тот уро"', '"тот туру', '"тот тро"'):
-                    os.startfile(f"{dir_path}\\Mayuri-Tuturu (mp3cut.ru).mp3")
-                    print(random.choice(colors) + "(*ˊᵕˋ)~ * .·:*¨₊˚Lᵒᵛᵉᵧₒᵤ♥", end='')
-                elif prompt in ('"армянин"', '"арман эн"'):
-                    os.startfile(f"{dir_path}\\isyan-tetick-patlamaya-devam.mp3")
-                    print(random.choice(colors) + "ʕ‾•ᴥ•‾ʔ•ᴥ•‾ʔ", end='')
-
                 #: работа с мышкой
                 elif prompt == '"координаты"':
                     x, y = pyautogui.position()
-                    print(f"{LYE}({x}, {y}){LCY}", end='')  # координаты курсора
+                    print(f"{LYE}({x}, {y}){LCY}", end='')
                 elif prompt in ('"тэк"', '"клик"', '"кликни"', '"кликай"', '"кликнуть"'):
                     click_print()
+
                 #: зажать - отпустить
                 elif len(words) == 1 and words[0] in ('зажми', 'зажать', 'зажал', 'зажимать', 'схвати', 'схватить'):
                     print(f"{LCY}∆{LGR}▼{LCY}", end='')
@@ -934,6 +792,7 @@ if __name__ == '__main__':
                 elif len(words) == 1 and words[0] in ('отпусти', 'отпускай', 'отпустить', 'пусти', 'отпускай', 'отжал'):
                     print(f"{LCY}∆{LGR}▲{LCY}", end='')
                     pyautogui.mouseUp()
+
                 #: клик # + число
                 elif 7 > len(words) > 1 and re.match(r'клик\w{0,4}\b', words[0]):
                     try:
@@ -942,6 +801,7 @@ if __name__ == '__main__':
                             click_print()
                     except KeyError:
                         print(f"{LGR}{words[0]} {YEL}+ {LCY}число {YEL}!={LRE}", end="")
+
                 #: курсор в центр экрана
                 elif prompt in ('"центр"', '"в центр"', '"на центр"'):
                     print(f"{LCY}∆{LGR}○{LCY}", end='')
@@ -1078,37 +938,8 @@ if __name__ == '__main__':
                     assistant.minimize()  # - сворачивание
                     assistant.restore()  # - раздупляем восстанавливанием
                     print(LGR + "ø", end="")
-                elif prompt in ('"уйди"', '"свали"', '"угол"', '"место"', '"места"', '"наказан"'):
-                    print(LGR + "╔", end="")
-                    assistant.minimize()
-                    assistant.restore()
-                    assistant.moveTo(-8, 0)
-                    assistant.resizeTo(849, 327)
-                    assistant.activate()
-                    try:
-                        DeepL = pyautogui.getWindowsWithTitle('DeepL')[0]
-                        DeepL.minimize()
-                        DeepL.restore()
-                        DeepL.moveTo(2048, 0)
-                        DeepL.resizeTo(500, 1408)
-                    except IndexError:
-                        print(LRE + "D" + LGR, end="")
-                    try:
-                        Pysharm = pyautogui.getWindowsWithTitle('Voice_Commands.py')[0]
-                        Pysharm.minimize()
-                        Pysharm.restore()
-                        Pysharm.moveTo(826, 0)
-                        Pysharm.resizeTo(1450, 1408)
-                    except IndexError:
-                        print(LRE + "P" + LGR, end="")
-                    try:
-                        Edge = pyautogui.getWindowsWithTitle('Microsoft​ Edge')[0]
-                        Edge.minimize()
-                        Edge.restore()
-                        Edge.moveTo(-8, 319)
-                        Edge.resizeTo(849, 1089)
-                    except IndexError:
-                        print(LRE + "E" + LGR, end="")
+
+
 
                 #: встроенные утилиты
                 elif prompt == '"поговорим"':
@@ -1119,13 +950,13 @@ if __name__ == '__main__':
                     loader.download_generator()
 
                 elif prompt != '""':
-                    if caps_lock_state_check != 1 and caps_lock_state_check != -127:  # - проверка на запись
-                        script_writing_function(prompt, words)  # - для печати в keyboard_scripts.py
+                    key_symbols(prompt)
+                    scripts_pycharm(prompt, words)
+                    rimtex_personal(prompt, words)
+                    rimtex_reactions(prompt, words)
 
                 # -: открываем все своё с ярлыков
                 if prompt != '""' and 9 > len(words) > 0 and prompt[1:-1] in labels:
-                    # pyautogui.hotkey("alt", "tab")
-                    # pyautogui.hotkey("alt", "tab")
                     try:
                         os.startfile(f"{path_to_shortcut}{prompt[1:-1]}")
                         print(LCY + "√", end='')
@@ -1136,7 +967,7 @@ if __name__ == '__main__':
                         except FileNotFoundError:
                             print(Fore.WHITE + "_", end="")  # - индикатор попытки открытия файла
 
-                if prompt != '""':  # - пишем свои голос
+                if prompt != '""':  # - голос в консоль
                     print(f' {prompt[1:-1]}{SRA}', sep='', end=' ')
 
             # конвертер команд конец

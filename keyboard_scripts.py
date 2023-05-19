@@ -1,9 +1,17 @@
+import os
+import random
 import time
 import re
 import keyboard
 import pyautogui
 import py_win_keyboard_layout
 from colorama import init, Fore, Style
+from pyttsx3 import speak
+
+import loader
+import vocabulary
+
+from address_config import dir_path, path_to_shortcut, requirements_path
 
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -23,6 +31,20 @@ LMA = Fore.LIGHTMAGENTA_EX
 WHI = Fore.WHITE
 SRA = Style.RESET_ALL
 init(convert=True)
+
+#: для перевода слов в цифры
+words_num = {'ноль': 0, 'один': 1, 'два': 2, 'три': 3, 'четыре': 4, 'пять': 5, 'шесть': 6, 'семь': 7, 'восемь': 8,
+             'девять': 9, 'десять': 10, 'одиннадцать': 11, 'двенадцать': 12, 'тринадцать': 13, 'четырнадцать': 14,
+             'пятнадцать': 15, 'шестнадцать': 16, 'семнадцать': 17, 'восемнадцать': 18, 'девятнадцать': 19,
+             'двадцать': 20, 'тридцать': 30, 'сорок': 40, 'пятьдесят': 50, 'шестьдесят': 60, 'семьдесят': 70,
+             'восемьдесят': 80, 'девяносто': 90, 'сто': 100, 'двести': 200, 'триста': 300, 'четыреста': 400,
+             'пятьсот': 500, 'шестьсот': 600, 'семьсот': 700, 'восемьсот': 800, 'девятьсот': 900,
+             'тысяча': 1000
+             }
+"""
+         'плюс': '+', 'минус': '-', 'разделить': '/', 'умножить': '*', 'остаток': '%', 'возведение': '**',
+         'корень': 'sqrt'}
+"""
 
 
 #: курсор клик
@@ -95,10 +117,9 @@ def keyhot(*keys):
             print(F"{WHI}‒{LBL}{keys[2]}{WHI}{LCY}", end='')
 
 
-def script_writing_function(prompt, words):
-    # конвертер команд старт
-    # keyboard_scripts.py
-    #: для пишарм
+# конвертер команд старт
+
+def key_symbols(prompt):
     if prompt in ('"скобки"', '"скобы"', '"скобки"', '"скобка"', '"скоб очки"'):
         key_write('(')
     elif prompt in ('"фигурные"', '"фигурные скобки"', '"фигурная"', '"фигура"', '"формат"'):
@@ -111,8 +132,6 @@ def script_writing_function(prompt, words):
         key_write('"')
     elif prompt in ('"решётка"', '"решётки"', '"решёткой"', '"шарп"'):
         key_write('#')
-    elif prompt in ('"эф"', '"эф эф"'):
-        key_write('f')
     elif prompt == '"запятая"':
         key_write(',')
     elif prompt == '"точка"':
@@ -143,19 +162,11 @@ def script_writing_function(prompt, words):
         key_write('>')
     elif prompt == '"меньше чем"':
         key_write('<')
-    #: печать функций и скриптов ассистента
-    elif prompt in ('"говорит"', '"скажет"'):
-        key_write('speak')
-    elif prompt == '"фраза"':
-        key_write('prompt ')
-    elif prompt in ('"слово"', '"слов"', '"слова"'):
-        key_write('words')
-    elif prompt in ('"первое слово"', '"первая слова"'):
-        key_write('words[0] ')
-    elif prompt in ('"клавиша"', '"клавиши"', '"клавишам"', '"кнопка"'):
-        key_write('key')
+
+
+def scripts_pycharm(prompt, words):
     #: печать цветов
-    elif prompt == '"тёмно-красный"':
+    if prompt == '"тёмно-красный"':
         key_write('RED')
     elif prompt == '"красный"':
         key_write('LRE')
@@ -181,7 +192,10 @@ def script_writing_function(prompt, words):
         key_write('BWH')
     elif prompt == '"сброс цвета"':
         key_write('SRA')
+
     #: печать функций и скриптов
+    elif prompt in ('"эф"', '"эф эф"'):
+        key_write('f')
     elif prompt in ('"комментарий"', '"комментарии"'):
         key_write('"""')
     elif prompt == '"печать"':
@@ -221,6 +235,14 @@ def script_writing_function(prompt, words):
         key_write('\\r')
     elif prompt in ('" возврат на шаг"', '"возврат символа"', '"возврат буквы"'):
         key_write('\\b')
+    #: печать функций и скриптов ассистента
+    if prompt in ('"говорит"', '"скажет"'):
+        key_write('speak')
+    elif prompt == '"фраза"':
+        key_write('prompt ')
+    elif prompt in ('"слово"', '"слов"', '"слова"'):
+        key_write('words')
+
     #: пишарм и гитхаб
     elif prompt in ('"паста"', '"пасту"', '"пасты"'):
         keyhot('ctrl', 'shift', 'v')
@@ -259,6 +281,7 @@ def script_writing_function(prompt, words):
         key_press("space")
         time.sleep(2)
         keyhot('ctrl', 'enter')
+
     #: очистка буфера
     elif 3 > len(words) > 0 and (re.match(r'\w{0,2}чист\w{0,3}\b', words[0])) \
             and (re.match(r'буфер\w?\b', words[1])):
@@ -275,6 +298,67 @@ def script_writing_function(prompt, words):
         click_print()
         click_print()
         pyautogui.moveTo(awwx, awwy)
+
+    #: работа с требованиями requirements.txt
+    elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
+        if re.match(r'установ\w{0,5}\b', words[0]):  # + установить
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write(f"pip install -r {requirements_path}")
+            key_press("enter")
+        if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):  # + удалить
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write(f"pip uninstall -r {requirements_path}")
+            key_press("enter")
+        if re.match(r'обнов\w{0,5}\b', words[0]):  # + обновить
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write(f"pip install --upgrade -r {requirements_path}")
+            key_press("enter")
+
+    #: работа с модулями из буфера
+    elif len(words) == 2 and re.match(r'библиотек[ау]?.?|модул[ьи]?.?|пип.?', words[1]):
+        if re.match(r'установ\w{0,5}\b', words[0]):
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write("pip install ")
+            keyhot('ctrl', 'v')
+            key_press("enter")
+        if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write("pip uninstall ")
+            keyhot('ctrl', 'v')
+            key_press("enter")
+            time.sleep(2)
+            key_press("enter")
+        if re.match(r'обнов\w{0,5}\b', words[0]):
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write(f"pip install --upgrade ")
+            keyhot('ctrl', 'v')
+            key_press("enter")
+
+
+def rimtex_personal(prompt, words):
+    #: захват видео MSI Afterburner
+    if prompt in ('"захват видео"', '"захвати видео"'):
+        os.startfile(f"{path_to_shortcut}захват видео")  # ярлык MSI Afterburner
+    elif prompt in ('"запись видео"', '"запиши видео"'):
+        os.startfile(f"{path_to_shortcut}видео")  # ярлык папки
+        time.sleep(1)
+        keyboard.press('ctrl')
+        keyboard.press_and_release('-')
+        keyboard.release('ctrl')
+    elif prompt in ('"конец видео"', '"видео стоп"', '"стоп видео"', '"стоп захват"', '"захват стоп"'):
+        keyboard.press('ctrl')
+        keyboard.press_and_release('-')
+        keyboard.release('ctrl')
+        time.sleep(1)
+        os.startfile(f"{path_to_shortcut}видео")
+        time.sleep(1)
+
     #: для выебонов
     elif prompt == '"ты робот"':
         keyhot('winleft', 'tab')
@@ -292,3 +376,129 @@ def script_writing_function(prompt, words):
         pyautogui.moveTo(256, 962)
         time.sleep(0.2)
         click_print()
+
+    #: позиционирование окон
+    elif prompt in ('"уйди"', '"свали"', '"угол"', '"место"', '"места"', '"наказан"'):
+        print(LGR + "╔", end="")
+        assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
+        assistant.minimize()
+        assistant.restore()
+        assistant.moveTo(-8, 0)
+        assistant.resizeTo(849, 327)
+        assistant.activate()
+        try:
+            deepl = pyautogui.getWindowsWithTitle('DeepL')[0]
+            deepl.minimize()
+            deepl.restore()
+            deepl.moveTo(2048, 0)
+            deepl.resizeTo(500, 1408)
+        except IndexError:
+            print(LRE + "D" + LGR, end="")
+        try:
+            pysharm = pyautogui.getWindowsWithTitle('Voice_Commands.py')[0]
+            pysharm.minimize()
+            pysharm.restore()
+            pysharm.moveTo(826, 0)
+            pysharm.resizeTo(1450, 1408)
+        except IndexError:
+            print(LRE + "P" + LGR, end="")
+        try:
+            edge = pyautogui.getWindowsWithTitle('Microsoft​ Edge')[0]
+            edge.minimize()
+            edge.restore()
+            edge.moveTo(-8, 319)
+            edge.resizeTo(849, 1089)
+        except IndexError:
+            print(LRE + "E" + LGR, end="")
+
+
+def rimtex_reactions(prompt, words):
+    from Voice_Commands import speak_irina_tts, speak_tts, random_voice
+
+    #: ♫ включение отдельных треков
+    if prompt in ('"единый идол"', '"единой идол"', '"идол"'):
+        os.startfile(f"{dir_path}\\United Idol - Hai Phút Hơn.mp3")
+        print(random.choice(colors) + "┌(◄_►)┐", end='')
+    elif prompt in ('"я синица я аллигатор"', '"синица я аллигатор"', '"синица аллигатор"'):
+        os.startfile(f"{dir_path}\\Ня - Аригато.mp3")
+        print(random.choice(colors) + "(♥ᴗ♥)", end='')
+    elif prompt in ('"тут туру"', '"тот туру"', '"тот торо"', '"тот уро"', '"тот туру', '"тот тро"'):
+        os.startfile(f"{dir_path}\\Mayuri-Tuturu (mp3cut.ru).mp3")
+        print(random.choice(colors) + "(*ˊᵕˋ)~ * .·:*¨₊˚Lᵒᵛᵉᵧₒᵤ♥", end='')
+    elif prompt in ('"армянин"', '"арман эн"'):
+        os.startfile(f"{dir_path}\\isyan-tetick-patlamaya-devam.mp3")
+        print(random.choice(colors) + "ʕ‾•ᴥ•‾ʔ•ᴥ•‾ʔ", end='')
+
+    #: ♪ реакции на слова или фразы
+    elif prompt == '"я робот"':
+        print(random.choice(colors) + "[-_-]", end='')
+        speak_irina_tts(vocabulary.random_response_robot())
+    elif prompt == '"не дано"':
+        print(random.choice(colors) + "♪{•ᴥ•}♫", end='')
+        speak_irina_tts(vocabulary.random_response_nedano())
+    elif prompt in ('"слушай"', '"слышь"', '"слышишь"', '"слэш"', '"слышь ты"'):
+        loader.smile_gen_erator()
+        speak_tts(vocabulary.random_response())
+    elif any(word in prompt[1:-1] for word in ('блядь', 'нихуя', 'бля', 'ахуеть', 'бляха', 'ебать')):
+        loader.smile_generator()
+        speak_tts(vocabulary.sp_rec_reaction_Fuck())
+    elif any(word in prompt[1:-1] for word in ('сука', 'сучара', 'охуел', 'нахуй', 'тварь')):
+        speak_tts("давай без агрессии")
+    elif any(word in prompt[1:-1] for word in ('агрессии', 'агрессия', 'ладно')):
+        print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')
+    elif len(words) > 0 and words[-1] in ('согласен', 'согласись'):  # - для последнего слова
+        loader.smile_gen_erator()
+        speak_tts("конечно. ты прав!")
+        speak_tts(vocabulary.random_response_aphorism())
+    elif len(words) == 1 and words[0] == "ублюдок":
+        print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')
+        speak_tts(vocabulary.sp_rec_reaction_bastard())
+    elif len(words) == 1 and (words[0] == "цитаты" or words[0] == "мемы"):
+        print(random.choice(colors) + "(ʘ͜͡)", end='')
+        speak_tts(vocabulary.sp_rec_reaction_memequotes())
+    elif len(words) == 1 and (words[0] == "внатуре" or words[0] == "чётко"):
+        print(random.choice(colors) + "(⌐▪˽▪)", end='')
+        speak_tts(vocabulary.sp_rec_reaction_auf())
+    elif len(words) == 1 and (words[0] == 'обама' or words[0] == 'барак'):
+        print(random.choice(colors) + "(•`_´•)", end='')
+        speak_tts(vocabulary.random_response_obeme())
+    elif prompt in ('"шаурма"', '"если хочешь кушать"', '"приходи в мой шаурма"'):
+        print(random.choice(colors) + "(°□°)", end='')
+        speak_tts(vocabulary.sp_rec_reaction_shawarma())
+    elif prompt in ('"ёбаная шиза"', '"шизо ебаная"', '"шиза ебаная"', '"шиза ебаное"'):
+        print(random.choice(colors) + "(→ᴥ←)", end='')
+        speak_tts(vocabulary.random_response_upyachka())
+    elif prompt in ('"идущий к реке"', '"идущие к реке"'):
+        print(random.choice(colors) + "(→_→)", end='')
+        speak_tts(vocabulary.random_response_Goingtotheriver())
+    elif prompt in ('"печенье лом"', '"а найди ка нам бригаду"'):
+        print(random.choice(colors) + "└(`▪´)┐", end='')
+        speak.rate = 0
+        speak_tts(vocabulary.sp_rec_reaction_pechenielom())
+    elif prompt == '"история про говно"':
+        print(random.choice(colors) + "(○´ ― `)", end='')
+        speak_tts(vocabulary.random_response_shit())
+    elif prompt == '"бурлеск"':
+        print(random.choice(colors) + "(’̀₀’̀Q )", end='')
+        speak_tts(vocabulary.random_response_Burlestat())
+    elif prompt == '"месть"':
+        print(random.choice(colors) + "(¬_¬`)", end='')
+        random.choice(random_voice)(vocabulary.random_response_revenge())
+    elif prompt in ('"расскажи историю"', '"историю расскажи"'):
+        print(random.choice(colors) + "(~‾▾‾)~ ╓───╖ ┌┤", end='')
+        speak_tts(vocabulary.random_response_stories())
+    elif prompt in ('"матрица история"', '"история матрица"'):
+        print(random.choice(colors) + "(⌐■˽■)⌐ ╓───╖ ┌┤", end='')
+        speak_tts(vocabulary.response_matrix())
+    elif prompt in ('"история про бога"', '"про бога история"'):
+        print(random.choice(colors) + "ʅ(ο_ο)ʃ", end='')
+        speak_tts(vocabulary.reaction_godofchrist())
+    elif prompt in ('"афоризм"', '"афоризмы"', '"совет"', '"советы"', '"дай совет"', '"и афоризм"'):
+        print(random.choice(colors) + '( •_•)>⌐', end='')
+        speak_tts(vocabulary.random_response_aphorism())
+    elif prompt in ('"стишки"', '"стихи"', '"стих"', '"стишок"'):
+        print(random.choice(colors) + '(ˇò_ó)', end='')
+        speak_tts(vocabulary.random_rhymes())
+    elif prompt in ('"анекдот"', '"анекдоты"'):
+        print(random.choice(colors) + '( •̪O )', end='')
+        speak_tts(vocabulary.random_anecdote())
