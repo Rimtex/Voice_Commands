@@ -650,27 +650,55 @@ if __name__ == '__main__':
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
-                    if not re.search('[а-яА-Я]', text):
+                    if re.search('[a-zA-Z]', text):
                         print(f"{LGR}♪", end='')
-                        trans = translator.translate(text, "russian", "english")
+                        trans = translator.translate(text, "russian")
+                        speak_tts(f"{trans}")
+                    elif re.search('[а-яА-Я]', text):
+                        print(f"{LGR}♪", end='')
+                        trans = translator.translate(text, "russian", "uk")
                         speak_tts(f"{trans}")
                     else:
                         print(f"{LYE}♪", end='')
                         speak_tts(f"{text}")
 
-                #: вставка из буфера # с переводом
+                #: вставка из буфера # с авто переводом english\русский
                 elif re.match(r'"перев\w{0,5}\b"', prompt):
                     print(f"{LGR}♫", end='')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
                     if re.search('[а-яА-Я]', text):
-                        trans = translator.translate(text, "english", "russian")
+                        trans = translator.translate(text, "english")
+                    else:
+                        trans = translator.translate(text, "russian")
+                    keyboard.write(f"{trans}")
+
+                #: вставка из буфера # з перекладом на українську
+                elif re.match(r'"украинск\w{0,2}\b"', prompt):
+                    print(f"{LGR}♫", end='')
+                    win32clipboard.OpenClipboard()
+                    text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
+                    win32clipboard.CloseClipboard()
+                    if re.search('[а-яА-Я]', text):
+                        trans = translator.translate(text, "uk", "russian")
+                    else:
+                        trans = translator.translate(text, "uk", "english")
+                    keyboard.write(f"{trans}")
+
+                #: вставка из буфера # с переводом на русский
+                elif re.match(r'"русск\w{0,2}\b"', prompt):
+                    print(f"{LGR}♫", end='')
+                    win32clipboard.OpenClipboard()
+                    text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
+                    win32clipboard.CloseClipboard()
+                    if re.search('[а-яА-Я]', text):
+                        trans = translator.translate(text, "russian", "uk")
                     else:
                         trans = translator.translate(text, "russian", "english")
                     keyboard.write(f"{trans}")
 
-                #: одноразовое нажатие
+                #: одноразовое нажатие # если слово последнее
                 elif 7 > len(words) > 0 and words[-1] in ('капс', 'пиши', 'пишем', 'напиши', 'букве', 'буквы'):
                     key_press('CapsLock')
                 elif 7 > len(words) > 0 and words[-1] in ('цифры', 'цифра', 'инглиш', 'английски', 'английским'):
@@ -708,7 +736,7 @@ if __name__ == '__main__':
                         pyautogui.press('volumeup')
 
                 #: перезагрузка ассистента
-                elif len(words) > 0 and words[-1] in ('тихо', 'старт'):
+                elif len(words) > 0 and words[-1] in ('тихо', 'тихa', 'старт'):
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
                     os.startfile(f"{path_to_shortcut}ассистент")
                     exit()

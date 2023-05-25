@@ -407,7 +407,7 @@ def rimtex_personal(prompt):
             edge.minimize()
             edge.restore()
             edge.moveTo(-8, 319)
-            edge.resizeTo(849, 1089)
+            edge.resizeTo(836, 1089)
         except IndexError:
             print(LRE + "E" + LGR, end="")
 
