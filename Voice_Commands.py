@@ -394,7 +394,7 @@ if __name__ == '__main__':
                 #: для команд
                 if prompt in ('"показать команды"', '"покажи команды"'):
                     print(f'\n{convert_paint()}')
-                elif prompt in ('"команды русским"', '"команды перевод"', '"покажи русским"'):
+                elif prompt in ('"команды на русском"', '"покажи на русском"', '"команды перевод"'):
                     print(f'\n{convert_trans()}')
                 elif prompt in ('"покажи"', '"покажешь"'):
                     print(f'\n{convert_delete()}')
@@ -441,10 +441,10 @@ if __name__ == '__main__':
                 elif len(words) == 1 and words[0] in ('найти', 'найди'):
                     keyhot("ctrl", "f")
                 elif len(words) == 1 and words[0] == 'пуск':
-                    key_press("winleft")
+                    key_press("win")
                 elif len(words) > 1 and words[0] == 'найти':
                     write_prompt = prompt[6:-1]  # - убираем первое слово и кавычки из фразы
-                    key_press("winleft")  # - Открываем окно найти в пуске
+                    key_press("win")  # - Открываем окно найти в пуске
                     time.sleep(0.2)  # - Ждем, пока окно загрузится
                     keyboard.write(write_prompt)  # - Вводим слова
                     time.sleep(0.2)  # - Ждем на всякий случай
@@ -453,7 +453,7 @@ if __name__ == '__main__':
                     trans_prompt = prompt[6:-1]
                     try:
                         trans = translator.translate(trans_prompt, "english", "russian")
-                        keyhot("winleft", "q")
+                        keyhot("win", "q")
                         time.sleep(0.2)
                         keyboard.write(f"{trans}")
                         print(f"{YEL} {trans}", end=' ')
@@ -543,7 +543,7 @@ if __name__ == '__main__':
                     numbers_key()
                 #: комбинации клавиш # + число для повторений
                 elif 7 > len(words) > 0 and words[0] in ('уничтожь', 'уничтожить', 'уничтожать', 'уничтожает'):
-                    kps = ['hift', 'delete']
+                    kps = ['shift', 'delete']
                     numbers_key()
                 elif 7 > len(words) > 0 and words[0] in ('отмени', 'отмена', 'отменить', 'отменил', 'отмена'):
                     kps = ['ctrl', 'z']
@@ -570,7 +570,7 @@ if __name__ == '__main__':
                 elif re.match(r'"\w{0,2}хран\w{0,5}\b"', prompt):
                     keyhot('ctrlleft', 's')
                 elif re.match(r'"буфер\w?\b"|"спис\w{0,2}\b"', prompt):
-                    keyhot('winleft', 'v')
+                    keyhot('win', 'v')
                 elif re.match(r'"раскладк\w?\b"|"клавиатур\w{0,2}\b"', prompt):
                     keyhot('win', 'space')
                 elif prompt in ('"снимок"', '"скрин"', '"снимок экрана"'):
@@ -578,28 +578,28 @@ if __name__ == '__main__':
 
                 #: работа с окнами
                 elif len(words) == 1 and re.match(r'разв\w{0,6}\b', words[0]):
-                    keyhot('winleft', 'Up')
+                    keyhot('win', 'Up')
                 elif len(words) == 1 and re.match(r'свер\w{0,4}\b', words[0]):
-                    keyhot('winleft', 'Down')
+                    keyhot('win', 'Down')
                 elif len(words) == 1 and re.match(r'закр\w{0,4}\b', words[0]):
                     keyhot('altleft', 'F4')
                 elif prompt in ('"окна"', '"окошки"', '"вин таб"', '"показать окна"', '"режим окон"'):
-                    keyhot('winleft', 'tab')
+                    keyhot('win', 'tab')
                 elif prompt in ('"свернуть все"', '"сверни все"', '"чисто"'):
-                    keyhot('winleft', 'd')
+                    keyhot('win', 'd')
                 elif prompt in ('"свернуть лишнее"', '"свернуть лишнее"', '"лишнее"'):
-                    keyhot('winleft', 'Home')
+                    keyhot('win', 'Home')
                 elif prompt in ('"обновить"', '"обнови"', '"об нова"', '"эф пять"'):
                     key_press("f5")
                 elif 3 > len(words) > 0 and words[0] == 'окно':
                     if 2 >= len(words) > 1 and re.match(r'^.{0,3}прав.{0,3}$', words[1]):
-                        keyhot('winleft', 'Right')
+                        keyhot('win', 'Right')
                     if 2 >= len(words) > 1 and re.match(r'^.{0,3}лев.{0,3}$', words[1]):
-                        keyhot('winleft', 'Left')
+                        keyhot('win', 'Left')
                     if 2 >= len(words) > 1 and re.match(r'^.{0,3}верх.{0,3}$', words[1]):
-                        keyhot('winleft', 'Up')
+                        keyhot('win', 'Up')
                     if 2 >= len(words) > 1 and re.match(r'^.{0,3}низ.{0,3}$', words[1]):
-                        keyhot('winleft', 'Down')
+                        keyhot('win', 'Down')
 
                 #: закрывание всех окон
                 elif prompt in ('"убей всех"', '"растрелли"', '"расстрел"', '"застрели"', '"расстрел окон"'
@@ -634,23 +634,26 @@ if __name__ == '__main__':
                     keyboard.write(date.today().strftime("%d.%m.%Y "))
                     keyboard.write(datetime.now().strftime("%H,%M,%S")[0:5])  # - убрал секунды
 
-                #: зачитка из буфера
-                elif prompt in ('"зачитай"', '"прочитай"', '"прочти"', '"прочитать"', '"говори"', '"скажи"'):
+                #: зачитка выделенного текста
+                elif prompt in ('"зачитай"', '"прочитай"', '"прочти"', '"прочитать"'):
                     print(f"{LBL}♪", end='')
+                    keyhot('ctrlleft', 'c')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
-                    speak_pavel_tts(text)
+                    speak_tts(text)
 
-                #: зачитка из буфера другим голосом
-                elif prompt in ('"озвучь"', '"озвучивает"', '"озвучивать"'):
+                #: зачитка выделенного текста с переводом на русский
+                elif prompt in ('"по-русски"', '"на русском"', '"русский"'):
                     print(f"{LGR}♫", end='')
+                    keyhot('ctrlleft', 'c')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
+                    trans = translator.translate(text, "russian", "english")
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
-                    speak_irina_tts(text)
+                    speak_tts(f"{trans}")
 
                 #: Управление системой
                 elif re.match(r'"компьютер перезагруз\w{0,4}\b', prompt):
@@ -914,18 +917,18 @@ if __name__ == '__main__':
                     keyhot('alt', 'tab')
                 elif len(words) == 1 and words[0] == 'бах':  # вин таб х2
                     print(LRE + "↕2 ", end='')
-                    keyhot('winleft', 'tab')
+                    keyhot('win', 'tab')
                     time.sleep(.5)
-                    keyhot('winleft', 'tab')
+                    keyhot('win', 'tab')
                 elif len(words) == 1 and words[0] == 'бабах':  # альт таб х2 - вин таб х2
                     print(LRE + "↔2↕2 ", end='')
                     keyhot('alt', 'tab')
                     time.sleep(.5)
                     keyhot('alt', 'tab')
                     time.sleep(.5)
-                    keyhot('winleft', 'tab')
+                    keyhot('win', 'tab')
                     time.sleep(.5)
-                    keyhot('winleft', 'tab')
+                    keyhot('win', 'tab')
                 elif len(words) > 1 and words[0] == 'раз':  # альт таб равен количеству слов после 'раз'
                     print(LRE + "↔+w▸ ", end='')
                     puk_length = len(words)
@@ -939,20 +942,11 @@ if __name__ == '__main__':
                     assistant.restore()  # - раздупляем восстанавливанием
                     print(LGR + "ø", end="")
 
-
-
-                #: встроенные утилиты
-                elif prompt == '"поговорим"':
-                    os.startfile(f"Voice_neuro_responder.py")
-                    loader.download_generator()
-                elif prompt == '"писатель"':
-                    os.startfile(f"Heavy_writer.py")
-                    loader.download_generator()
-
+                #: встроенные команды из keyboard_scripts.py
                 elif prompt != '""':
                     key_symbols(prompt)
                     scripts_pycharm(prompt, words)
-                    rimtex_personal(prompt, words)
+                    rimtex_personal(prompt)
                     rimtex_reactions(prompt, words)
 
                 # -: открываем все своё с ярлыков
