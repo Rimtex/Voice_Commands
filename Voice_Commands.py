@@ -645,7 +645,7 @@ if __name__ == '__main__':
                     speak_tts(text)
 
                 #: зачитка выделенного текста # с переводом на русский
-                elif prompt in ('"по-русски"', '"на русском"', '"русский"'):
+                elif prompt in ('"по-русски"', '"на русском"', '"на русский"', '"русский"'):
                     print(f"{LGR}♫", end='')
                     keyhot('ctrlleft', 'c')
                     win32clipboard.OpenClipboard()
