@@ -158,9 +158,9 @@ def key_symbols(prompt):
         key_write('!=')
     elif prompt in ('"равенства"', '"равенство"'):
         key_write('==')
-    elif prompt == '"больше чем"':
+    elif prompt == '"знак больше"':
         key_write('>')
-    elif prompt == '"меньше чем"':
+    elif prompt == '"знак меньше"':
         key_write('<')
 
 

@@ -24,7 +24,7 @@ try:
     import ctypes
 except ImportError:
     print("Trying to Install required modules: requirements.txt")
-    os.system('pip install -r "requirements.txt"')
+    os.system('pip install --upgrade -r "requirements.txt"')
     import requests
     import traceback
     import re
@@ -634,8 +634,8 @@ if __name__ == '__main__':
                     keyboard.write(date.today().strftime("%d.%m.%Y "))
                     keyboard.write(datetime.now().strftime("%H,%M,%S")[0:5])  # - убрал секунды
 
-                #: зачитка выделенного текста
-                elif prompt in ('"зачитай"', '"прочитай"', '"прочти"', '"прочитать"'):
+                #: озвучка выделенного текста
+                elif prompt in ('"озвучь"', '"озвучить"', '"зачитай"', '"прочитай"', '"прочти"', '"прочитать"'):
                     print(f"{LBL}♪", end='')
                     keyhot('ctrlleft', 'c')
                     win32clipboard.OpenClipboard()
@@ -644,8 +644,8 @@ if __name__ == '__main__':
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
                     speak_tts(text)
 
-                #: зачитка выделенного текста # с переводом на русский
-                elif prompt in ('"по-русски"', '"на русском"', '"на русский"', '"русский"'):
+                #: озвучка выделенного текста # с переводом на русский
+                elif prompt in ('"по-русски"', '"на русском"', '"на русский"', '"русский"', '"русским"', '"русское"'):
                     print(f"{LGR}♫", end='')
                     keyhot('ctrlleft', 'c')
                     win32clipboard.OpenClipboard()
@@ -654,6 +654,26 @@ if __name__ == '__main__':
                     trans = translator.translate(text, "russian", "english")
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
                     speak_tts(f"{trans}")
+
+                #: вставка из буфера # с переводом на русский
+                elif prompt == '"пиши по-русски"' or re.match(r'"пиши русск\w{0,2}\b"', prompt):
+                    print(f"{LGR}♫", end='')
+                    win32clipboard.OpenClipboard()
+                    text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
+                    win32clipboard.CloseClipboard()
+                    trans = translator.translate(text, "russian", "english")
+                    speak = win32com.client.Dispatch("SAPI.SpVoice")
+                    keyboard.write(f"{trans}")
+
+                #: вставка из буфера # с переводом на английский
+                elif prompt == '"пиши по-английски"' or re.match(r'"пиши английск\w{0,2}\b"', prompt):
+                    print(f"{LGR}♫", end='')
+                    win32clipboard.OpenClipboard()
+                    text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
+                    win32clipboard.CloseClipboard()
+                    trans = translator.translate(text, "russian", "english")
+                    speak = win32com.client.Dispatch("SAPI.SpVoice")
+                    keyboard.write(f"{trans}")
 
                 #: Управление системой
                 elif re.match(r'"компьютер перезагруз\w{0,4}\b', prompt):
