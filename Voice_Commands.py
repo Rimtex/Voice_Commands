@@ -48,7 +48,7 @@ except ImportError:
     import ctypes
 
 from keyboard_scripts import key_press, keyhot, key_down, key_write, key_up, click_print, keyrus_write, \
-    keytrans_write, words_num, scripts_pycharm, key_symbols, rimtex_personal, rimtex_reactions
+    keytrans_write, words_num
 
 import loader
 from loader import loader_screen_rimtex
@@ -663,7 +663,7 @@ if __name__ == '__main__':
                         speak_tts(f"{text}")
 
                 #: вставка из буфера # с авто переводом english\русский
-                elif re.match(r'"перев\w{0,5}\b"', prompt):
+                elif re.match(r'"перев\w{0,3}\b"', prompt):
                     print(f"{LGR}♫", end='')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
@@ -703,7 +703,7 @@ if __name__ == '__main__':
                     key_press('CapsLock')
                 elif 7 > len(words) > 0 and words[-1] in ('цифры', 'цифра', 'инглиш', 'английски', 'английским'):
                     key_press('numlock')
-                elif 7 > len(words) > 0 and words[-1] in ('переведи', 'переводи', 'переводом'):
+                elif 7 > len(words) > 0 and words[-1] in ('переведи', 'переводи', 'переводом', 'переводчик'):
                     key_press('CapsLock')
                     key_press('numlock')
 
@@ -996,6 +996,7 @@ if __name__ == '__main__':
 
                 #: встроенные команды из keyboard_scripts.py
                 elif prompt != '""':
+                    from keyboard_scripts import key_symbols, scripts_pycharm, rimtex_personal, rimtex_reactions
                     key_symbols(prompt)
                     scripts_pycharm(prompt, words)
                     rimtex_personal(prompt)
