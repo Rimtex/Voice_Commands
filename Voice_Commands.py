@@ -276,6 +276,8 @@ def pause_mode():
                 os.startfile(f"\\{path_to_shortcut}ассистент")
                 exit()
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+            assistant.minimize()
+            assistant.restore()
             print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
             speak_tts("обычный режим!")
             break
@@ -337,6 +339,8 @@ if __name__ == '__main__':
                     print(LRE + "‹" + SRA, end="")
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
+                    assistant.minimize()
+                    assistant.restore()
                     turn_off_locks()
                     print(LRE + "‹" + SRA, end="")
                     break
@@ -357,6 +361,8 @@ if __name__ == '__main__':
                     print(LRE + "‹" + SRA, end="")
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
+                    assistant.minimize()
+                    assistant.restore()
                     turn_off_locks()
                     print(LRE + "‹" + SRA, end="")
                     break
@@ -382,6 +388,8 @@ if __name__ == '__main__':
                     print(LRE + "«" + SRA, end="")
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
+                    assistant.minimize()
+                    assistant.restore()
                     turn_off_locks()
                     print(LRE + "«" + SRA, end="")
                     break
@@ -558,13 +566,6 @@ if __name__ == '__main__':
                     kps = ['ctrlleft', 'w']
                     numbers_key()
                 #: одноразовое нажатие
-                elif 7 > len(words) > 0 and words[-1] in ('капс', 'пиши', 'пишем', 'напиши', 'букве', 'буквы'):
-                    key_press('CapsLock')
-                elif 7 > len(words) > 0 and words[-1] in ('цифры', 'цифра', 'инглиш', 'английски', 'английским'):
-                    key_press('numlock')
-                elif 7 > len(words) > 0 and words[-1] in ('переведи', 'переводи', 'переводом'):
-                    key_press('CapsLock')
-                    key_press('numlock')
                 elif re.match(r'"\w?копир\w{0,6}\b"', prompt):
                     keyhot('ctrlleft', 'c')
                 elif re.match(r'"\w{0,2}хран\w{0,5}\b"', prompt):
@@ -656,7 +657,9 @@ if __name__ == '__main__':
                     speak_tts(f"{trans}")
 
                 #: вставка из буфера # с переводом на русский
-                elif prompt == '"пиши по-русски"' or re.match(r'"пиши русск\w{0,2}\b"', prompt):
+                elif prompt == '"пиши по-русски"' \
+                        or re.match(r'"\w{0,2}пиши русск\w{0,2}\b"', prompt)\
+                        or re.match(r'"буфер русск\w{0,2}\b"', prompt):
                     print(f"{LGR}♫", end='')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
@@ -666,14 +669,25 @@ if __name__ == '__main__':
                     keyboard.write(f"{trans}")
 
                 #: вставка из буфера # с переводом на английский
-                elif prompt == '"пиши по-английски"' or re.match(r'"пиши английск\w{0,2}\b"', prompt):
+                elif prompt == '"пиши по-английски"' \
+                        or re.match(r'"\w{0,2}пиши английск\w{0,2}\b"', prompt) \
+                        or re.match(r'"буфер английск\w{0,2}\b"', prompt):
                     print(f"{LGR}♫", end='')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
-                    trans = translator.translate(text, "russian", "english")
+                    trans = translator.translate(text, "english", "russian")
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
                     keyboard.write(f"{trans}")
+
+                #: одноразовое нажатие
+                elif 7 > len(words) > 0 and words[-1] in ('капс', 'пиши', 'пишем', 'напиши', 'букве', 'буквы'):
+                    key_press('CapsLock')
+                elif 7 > len(words) > 0 and words[-1] in ('цифры', 'цифра', 'инглиш', 'английски', 'английским'):
+                    key_press('numlock')
+                elif 7 > len(words) > 0 and words[-1] in ('переведи', 'переводи', 'переводом'):
+                    key_press('CapsLock')
+                    key_press('numlock')
 
                 #: Управление системой
                 elif re.match(r'"компьютер перезагруз\w{0,4}\b', prompt):
