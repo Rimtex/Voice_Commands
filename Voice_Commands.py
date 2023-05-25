@@ -644,7 +644,7 @@ if __name__ == '__main__':
                     speak = win32com.client.Dispatch("SAPI.SpVoice")
                     speak_tts(text)
 
-                #: зачитка выделенного текста с переводом на русский
+                #: зачитка выделенного текста # с переводом на русский
                 elif prompt in ('"по-русски"', '"на русском"', '"русский"'):
                     print(f"{LGR}♫", end='')
                     keyhot('ctrlleft', 'c')
