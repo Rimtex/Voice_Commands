@@ -170,17 +170,17 @@ def scripts_pycharm(prompt, words):
         key_write('RED')
     elif prompt == '"красный"':
         key_write('LRE')
-    elif prompt == '"темно жёлтый"':
+    elif prompt == '"оранжевый"':
         key_write('YEL')
     elif prompt == '"жёлтый"':
         key_write('LYE')
     elif prompt == '"тёмно-синий"':
         key_write('LBL')
-    elif prompt in ('"синий"', '"синей"'):
+    elif prompt in ('"синий"', '"синей"', '"голубой"'):
         key_write('LCY')
-    elif prompt in ('"темно зелёный"', '"тёмная зелёный"', '"зелёная"'):
+    elif prompt in ('"темно зелёный"', '"тёмная зелёный"'):
         key_write('GRE')
-    elif prompt in ('"зелёной"', '"зелёный"'):
+    elif prompt in ('"зелёный"', '"зелёной"', '"зелёная"'):
         key_write('LGR')
     elif prompt in ('"сиреневый"', '"фиолетовый"'):
         key_write('LMA')
@@ -341,7 +341,7 @@ def scripts_pycharm(prompt, words):
             key_press("enter")
 
 
-def rimtex_personal(prompt, words):
+def rimtex_personal(prompt):
     #: захват видео MSI Afterburner
     if prompt in ('"захват видео"', '"захвати видео"'):
         os.startfile(f"{path_to_shortcut}захват видео")  # ярлык MSI Afterburner
