@@ -636,48 +636,38 @@ if __name__ == '__main__':
                     keyboard.write(datetime.now().strftime("%H,%M,%S")[0:5])  # - убрал секунды
 
                 #: озвучка выделенного текста
-                elif prompt in ('"озвучь"', '"озвучить"', '"зачитай"', '"прочитай"', '"прочти"', '"прочитать"'):
-                    print(f"{LBL}♪", end='')
+                elif prompt in ('"озвучь"', '"озвучка"', '"озвучить"', '"озвучивает"', '"озвучивать"'):
+                    print(f"{LYE}♪", end='')
                     keyhot('ctrlleft', 'c')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
-                    speak = win32com.client.Dispatch("SAPI.SpVoice")
-                    speak_tts(text)
+                    speak_tts(f"{text}")
 
-                #: озвучка выделенного текста # с переводом на русский
-                elif prompt in ('"по-русски"', '"на русском"', '"на русский"', '"русский"', '"русским"', '"русское"'):
-                    print(f"{LGR}♫", end='')
+                #: озвучка выделенного текста с переводом
+                elif prompt in ('"зачитай"', '"прочитай"', '"прочти"', '"прочитать"'):
                     keyhot('ctrlleft', 'c')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
-                    trans = translator.translate(text, "russian", "english")
-                    speak = win32com.client.Dispatch("SAPI.SpVoice")
-                    speak_tts(f"{trans}")
+                    if not re.search('[а-яА-Я]', text):
+                        print(f"{LGR}♪", end='')
+                        trans = translator.translate(text, "russian", "english")
+                        speak_tts(f"{trans}")
+                    else:
+                        print(f"{LYE}♪", end='')
+                        speak_tts(f"{text}")
 
-                #: вставка из буфера # с переводом на русский
-                elif prompt == '"пиши по-русски"' \
-                        or re.match(r'"\w{0,2}пиши русск\w{0,2}\b"', prompt)\
-                        or re.match(r'"буфер русск\w{0,2}\b"', prompt):
+                #: вставка из буфера # с переводом
+                elif re.match(r'"перев\w{0,5}\b"', prompt):
                     print(f"{LGR}♫", end='')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
-                    trans = translator.translate(text, "russian", "english")
-                    speak = win32com.client.Dispatch("SAPI.SpVoice")
-                    keyboard.write(f"{trans}")
-
-                #: вставка из буфера # с переводом на английский
-                elif prompt == '"пиши по-английски"' \
-                        or re.match(r'"\w{0,2}пиши английск\w{0,2}\b"', prompt) \
-                        or re.match(r'"буфер английск\w{0,2}\b"', prompt):
-                    print(f"{LGR}♫", end='')
-                    win32clipboard.OpenClipboard()
-                    text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
-                    win32clipboard.CloseClipboard()
-                    trans = translator.translate(text, "english", "russian")
-                    speak = win32com.client.Dispatch("SAPI.SpVoice")
+                    if re.search('[а-яА-Я]', text):
+                        trans = translator.translate(text, "english", "russian")
+                    else:
+                        trans = translator.translate(text, "russian", "english")
                     keyboard.write(f"{trans}")
 
                 #: одноразовое нажатие
