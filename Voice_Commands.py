@@ -182,7 +182,7 @@ except Exception as e:
     printt(LRE + "Не удалось открыть модели.\n")
     printt(LGR + " 1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip\n"
                  " 2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip\n")
-    printt(LCY + " Идет загрузка и распаковка моделей распознования подождите...\n")
+    printt(LCY + " (!o_O) Идет загрузка и распаковка моделей распознования подождите... (↓O_o)\n")
     loader.download_generator()
     import os
     import requests
