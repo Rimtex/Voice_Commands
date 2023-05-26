@@ -9,14 +9,13 @@
 ### Основные требования
 
 * [Python](https://www.python.org/downloads/release/python-3113/)
-* [распаковать сам помощник](https://github.com/Rimtex/Voice_Commands.py/archive/refs/heads/master.zip)
-  * две модели распознавания голоса в него  
+* [распаковать сам помощник](https://github.com/Rimtex/Voice_Commands.py/archive/refs/heads/master.zip) и две модели распознавания голоса в него  
    1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip  
    2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip  
 
 <hr>
 
-* * если нужно переключаться   
+* если нужно переключаться   
    3 https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip   
    4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip  
 
