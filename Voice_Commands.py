@@ -194,10 +194,9 @@ try:
     english_model = Model(model2)
 except Exception as e:
     print("Exception:", str(e))
-    printt(LRE + "Не удалось открыть модели.\n")
     print(LGR + " 1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip\n"
                 " 2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip")
-    printt(LCY + " (!o_O) Идет загрузка и распаковка моделей распознования подождите... (↓O_o)\n")
+    printt(LCY + " загрузка и распаковка моделей распознования подождите... (↓O_o)\n")
     loader.download_generator()
 
     from tqdm import tqdm
@@ -231,10 +230,11 @@ except Exception as e:
 
         # Удаляем загруженный архив ZIP
         os.remove(filename)
-
+    assistant.minimize()
+    assistant.restore()
     print("Модели скачались и распаковались успешно.")
-    current_model = Model(model1)
-    english_model = Model(model2)
+    os.startfile(path_to_shortcut + assistant_window)
+    exit()
 
 rec = KaldiRecognizer(current_model, 48000)
 receng = KaldiRecognizer(english_model, 48000)
