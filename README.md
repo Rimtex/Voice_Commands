@@ -11,18 +11,19 @@
 * [Python](https://www.python.org/downloads/release/python-3113/)
 * [распаковать сам помощник](https://github.com/Rimtex/Voice_Commands.py/archive/refs/heads/master.zip)
 * запустить **Voice_Commands.py**
-* две модели должны загрузится сами как и библиотеки  
+
 <hr>
 
+    автозагрузка  
     1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip  
     2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip  
 
 **voskmodels**\  
 если нужно переключаться на более точные модели распаковать  
 3 https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip   
-4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip  
+4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip
 
-[для мужского голоса](http://balabolka.site/pavel.windows10.zip) 
+[для мужского голоса](http://balabolka.site/pavel.windows10.zip)
 <hr>
 
 ### для запуска файлов голосом
