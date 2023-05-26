@@ -22,3 +22,5 @@
 /__pycache__/
 /apps/__pycache__/
 /.vs/
+
+/voskmodels/
