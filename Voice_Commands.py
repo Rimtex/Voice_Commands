@@ -184,18 +184,14 @@ except Exception as e:
                  " 2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip\n")
     printt(LCY + " (!o_O) Идет загрузка и распаковка моделей распознования подождите... (↓O_o)\n")
     loader.download_generator()
-    import os
-    import requests
+
     from tqdm import tqdm
     import zipfile
-
     model_urls = [
         "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip",
         "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
     ]
-
     os.makedirs(models_directory, exist_ok=True)
-
     for model_url in model_urls:
         filename = os.path.join(models_directory, model_url.split("/")[-1])
 
