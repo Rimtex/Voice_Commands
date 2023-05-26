@@ -56,7 +56,8 @@ import loader
 from loader import loader_screen_rimtex
 from converter import convert_paint, convert_trans, convert_delete
 
-from address_config import assistant_window, path_to_shortcut, ideas, reminder, dir_path, model1, model2, model3, model4
+from address_config import assistant_window, path_to_shortcut, ideas, reminder, dir_path, models_directory, \
+    model1, model2, model3, model4
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -173,13 +174,12 @@ model_urls = [
     "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
 ]
 
-models_directory = "voskmodels"
-
 try:
     current_model = Model(model1)
+    english_model = Model(model2)
 except Exception as e:
     print("Exception:", str(e))
-    printt(LRE + "Не удалось открыть модель.\n")
+    printt(LRE + "Не удалось открыть модели.\n")
     loader.download_generator()
     printt("Идет загрузка и распаковка моделей распознования подождите...\n")
 
@@ -205,12 +205,9 @@ except Exception as e:
 
     print("Модели скачались и распаковались успешно.")
     current_model = Model(model1)
-    rec = KaldiRecognizer(current_model, 48000)
+    english_model = Model(model2)
 
 rec = KaldiRecognizer(current_model, 48000)
-
-# Инициализация распознавателя с английской моделью
-english_model = Model(model2)
 receng = KaldiRecognizer(english_model, 48000)
 
 # Инициализация аудио потока

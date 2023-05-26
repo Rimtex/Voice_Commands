@@ -44,7 +44,7 @@ Ctrl - Alt выключает Caps Lock и Num Lock
 
 * **Voice_Commands.py**
     * **address_config.py**        конфигурации адресов файлов
-    * **Heavy_writer.py**          `писатель` для более точной модели **ru-0.42**
+    * **Heavy_writer.py**          `писатель` для более точной модели **[ru-0.42](https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip)**
     * **converter.py**             `покажи` преобразователь для показа команд
     * **loader.py**                для генерации всяких вещей
     * **vocabulary.py**            словарь ассистента
