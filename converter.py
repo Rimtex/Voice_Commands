@@ -47,7 +47,7 @@ os.start
 """
 code_patterns += added_code_patterns.strip().split("\n")
 
-with open(filename, encoding="utf-8") as f:
+with open(keyboard_scripts, encoding="utf-8") as f:
     print_started = False
     ctline = ""
     for line in f:
@@ -62,7 +62,7 @@ with open(filename, encoding="utf-8") as f:
             elif start_marker in line:
                 print_started = True
 
-with open(keyboard_scripts, encoding="utf-8") as f:
+with open(filename, encoding="utf-8") as f:
     print_started = False
     for line in f:
         if re.search('[а-яА-Я]', line):  # ! если надо добавлять так - [а-яА-Я]|нужные строки|еще нужные строки|

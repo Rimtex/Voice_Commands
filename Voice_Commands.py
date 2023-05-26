@@ -994,7 +994,7 @@ if __name__ == '__main__':
                     assistant.restore()  # - раздупляем восстанавливанием
                     print(LGR + "ø", end="")
 
-                #: встроенные команды из keyboard_scripts.py
+                # -: встроенные команды из keyboard_scripts.py
                 elif prompt != '""':
                     from keyboard_scripts import key_symbols, scripts_pycharm, rimtex_personal, rimtex_reactions
                     key_symbols(prompt)
