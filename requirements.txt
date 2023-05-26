@@ -1,5 +1,3 @@
-# http://balabolka.site/pavel.windows10.zip - для голоса павла
-
 colorama
 keyboard
 pyautogui
