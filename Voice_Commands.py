@@ -996,10 +996,12 @@ if __name__ == '__main__':
 
                 # -: встроенные команды из keyboard_scripts.py
                 elif prompt != '""':
-                    from keyboard_scripts import key_symbols, scripts_pycharm, rimtex_personal, rimtex_reactions
-
+                    from keyboard_scripts import \
+                        key_symbols, rimtex_pycharm, rimtex_personal, rimtex_reactions, scripts_others
                     key_symbols(prompt)
-                    scripts_pycharm(prompt, words)
+                    scripts_others(words)
+
+                    rimtex_pycharm(prompt)
                     rimtex_personal(prompt)
                     rimtex_reactions(prompt, words)
 

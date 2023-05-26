@@ -164,7 +164,67 @@ def key_symbols(prompt):
         key_write('<')
 
 
-def scripts_pycharm(prompt, words):
+def scripts_others(words):
+    #: очистка буфера
+    if 3 > len(words) > 0 and (re.match(r'\w{0,2}чист\w{0,3}\b', words[0])) \
+            and (re.match(r'буфер\w?\b', words[1])):
+        awwx, awwy = pyautogui.position()
+        keyhot('winleft', 'r')
+        time.sleep(0.01)
+        keyhot('winleft', 'v')
+        time.sleep(.5)
+        click_print_cor(373, 948)
+        pyautogui.moveTo(375, 1064)
+        click_print()
+        click_print()
+        pyautogui.moveTo(429, 1195)
+        click_print()
+        click_print()
+        pyautogui.moveTo(awwx, awwy)
+
+    #: работа с требованиями requirements.txt
+    elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
+        if re.match(r'установ\w{0,5}\b', words[0]):  # + установить
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write(f"pip install -r {requirements_path}")
+            key_press("enter")
+        if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):  # + удалить
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write(f"pip uninstall -r {requirements_path}")
+            key_press("enter")
+        if re.match(r'обнов\w{0,5}\b', words[0]):  # + обновить
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write(f"pip install --upgrade -r {requirements_path}")
+            key_press("enter")
+
+    #: работа с модулями из буфера
+    elif len(words) == 2 and re.match(r'библиотек[ау]?.?|модул[ьи]?.?|пип.?', words[1]):
+        if re.match(r'установ\w{0,5}\b', words[0]):
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write("pip install ")
+            keyhot('ctrl', 'v')
+            key_press("enter")
+        if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write("pip uninstall ")
+            keyhot('ctrl', 'v')
+            key_press("enter")
+            time.sleep(2)
+            key_press("enter")
+        if re.match(r'обнов\w{0,5}\b', words[0]):
+            os.startfile(f"{path_to_shortcut}консоль")
+            time.sleep(1)
+            keyboard.write(f"pip install --upgrade ")
+            keyhot('ctrl', 'v')
+            key_press("enter")
+
+
+def rimtex_pycharm(prompt):
     #: печать цветов
     if prompt == '"тёмно-красный"':
         key_write('RED')
@@ -252,93 +312,25 @@ def scripts_pycharm(prompt, words):
     elif prompt in ('"новый"', '"новое"', '"новая"', '"новые"'):
         keyhot('shift', 'f4')
     elif prompt in ('"камент"', '"комент"', '"коммент"'):
-        keyhot('alt', '0')
+        keyhot('ctrl', 'k')
     elif prompt in ('"пуш"', '"закинь"', '"закинуть"'):  #: авто пуш
-        keyhot('alt', '0')  # - вызов окна комментирования
+        keyhot('ctrl', 'k')
         time.sleep(.3)
-        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft  # - Получаем позицию
-        pyautogui.moveTo(window_position)  # - Делаем окно активным
-        pyautogui.moveRel(33, 92)  # - ставим галку
-        pyautogui.click()
-        key_press("tab")
+        key_press("down")
         key_press("tab")
         key_press("tab")
         key_press("space")
         time.sleep(2)
         keyhot('ctrl', 'enter')
     elif re.match('"закинь камент|"закинуть коммент|"закинуть камент|"закинь коммент', prompt):
-        keyhot('alt', '0')
+        keyhot('ctrl', 'k')
         time.sleep(.3)
-        window_position = pyautogui.getWindowsWithTitle('Commit')[0].topleft
-        pyautogui.moveTo(window_position)
-        pyautogui.moveRel(33, 92)
-        pyautogui.click()
-        key_press("tab")
-        key_press("space")
         keyhot('ctrl', 'v')  # - закидывает из буфера
         key_press("tab")
         key_press("tab")
         key_press("space")
         time.sleep(2)
         keyhot('ctrl', 'enter')
-
-    #: очистка буфера
-    elif 3 > len(words) > 0 and (re.match(r'\w{0,2}чист\w{0,3}\b', words[0])) \
-            and (re.match(r'буфер\w?\b', words[1])):
-        awwx, awwy = pyautogui.position()
-        keyhot('winleft', 'r')
-        time.sleep(0.01)
-        keyhot('winleft', 'v')
-        time.sleep(.5)
-        click_print_cor(373, 948)
-        pyautogui.moveTo(375, 1064)
-        click_print()
-        click_print()
-        pyautogui.moveTo(429, 1195)
-        click_print()
-        click_print()
-        pyautogui.moveTo(awwx, awwy)
-
-    #: работа с требованиями requirements.txt
-    elif len(words) == 2 and re.match(r'(требован\w{0,2}\b)', words[1]):
-        if re.match(r'установ\w{0,5}\b', words[0]):  # + установить
-            os.startfile(f"{path_to_shortcut}консоль")
-            time.sleep(1)
-            keyboard.write(f"pip install -r {requirements_path}")
-            key_press("enter")
-        if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):  # + удалить
-            os.startfile(f"{path_to_shortcut}консоль")
-            time.sleep(1)
-            keyboard.write(f"pip uninstall -r {requirements_path}")
-            key_press("enter")
-        if re.match(r'обнов\w{0,5}\b', words[0]):  # + обновить
-            os.startfile(f"{path_to_shortcut}консоль")
-            time.sleep(1)
-            keyboard.write(f"pip install --upgrade -r {requirements_path}")
-            key_press("enter")
-
-    #: работа с модулями из буфера
-    elif len(words) == 2 and re.match(r'библиотек[ау]?.?|модул[ьи]?.?|пип.?', words[1]):
-        if re.match(r'установ\w{0,5}\b', words[0]):
-            os.startfile(f"{path_to_shortcut}консоль")
-            time.sleep(1)
-            keyboard.write("pip install ")
-            keyhot('ctrl', 'v')
-            key_press("enter")
-        if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):
-            os.startfile(f"{path_to_shortcut}консоль")
-            time.sleep(1)
-            keyboard.write("pip uninstall ")
-            keyhot('ctrl', 'v')
-            key_press("enter")
-            time.sleep(2)
-            key_press("enter")
-        if re.match(r'обнов\w{0,5}\b', words[0]):
-            os.startfile(f"{path_to_shortcut}консоль")
-            time.sleep(1)
-            keyboard.write(f"pip install --upgrade ")
-            keyhot('ctrl', 'v')
-            key_press("enter")
 
 
 def rimtex_personal(prompt):
