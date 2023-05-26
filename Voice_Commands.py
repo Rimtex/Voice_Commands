@@ -54,7 +54,7 @@ import loader
 from loader import loader_screen_rimtex
 from converter import convert_paint, convert_trans, convert_delete
 
-from address_config import path_to_shortcut, ideas, reminder, dir_path, model1, model2, model3, model4
+from address_config import assistant_window, path_to_shortcut, ideas, reminder, dir_path, model1, model2, model3, model4
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -271,9 +271,9 @@ def pause_mode():
                 speak_tts("я итак на паузе!")
             elif paumpt in ('"слушай"', '"слышь"', '"слышь ты"', '"слышишь"', '"слэш"'):
                 speak_tts("я на паузе если что!")
-            elif paumpt in ('"ассистент"', '"перезапуск"', '"рестарт"'):
+            elif paumpt in ('"ассистент"', '"помощник"', '"перезапуск"', '"рестарт"'):
                 print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
-                os.startfile(f"\\{path_to_shortcut}ассистент")
+                os.startfile(f"\\{path_to_shortcut}{assistant_window}")
                 exit()
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
             assistant.minimize()
@@ -288,7 +288,7 @@ if __name__ == '__main__':
     # Находим окно с именем 'ассистент'
     assistant = None
     try:
-        assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
+        assistant = pyautogui.getWindowsWithTitle(assistant_window)[0]
         assistant.moveTo(-8, 0)
         assistant.resizeTo(849, 327)
     except Exception as e:
@@ -296,7 +296,7 @@ if __name__ == '__main__':
             assistant = pyautogui.getWindowsWithTitle('python.exe')[0]
             assistant.moveTo(-8, 0)
             assistant.resizeTo(849, 327)
-            printt(f"\r                                                   (!o_O) --> ассистент.lnk\r")
+            printt(f"\r                                                   (!o_O) ярлык --> {assistant_window}\r")
         except Exception as e:
             print(e)
 
@@ -608,7 +608,7 @@ if __name__ == '__main__':
                     print(f"""{LRE} ({LGR}√{LRE}¬_¬)ԅ⌐╦╦═─‒=═≡Ξ{SRA}""", end='')
                     assistant.minimize()
                     assistant.restore()
-                    os.startfile(f"{path_to_shortcut}ассистент")
+                    os.startfile(f"{path_to_shortcut}{assistant_window}")
                     key_down('alt')  # ! не забыть отжать альт
                     key_press('tab')
                     key_press('right')
@@ -738,13 +738,13 @@ if __name__ == '__main__':
                 #: перезагрузка ассистента
                 elif len(words) > 0 and words[-1] in ('тихо', 'тихa', 'старт'):
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
-                    os.startfile(f"{path_to_shortcut}ассистент")
+                    os.startfile(f"{path_to_shortcut}{assistant_window}")
                     exit()
                 elif prompt in ('"ассистент"', '"рестарт"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"'):
                     assistant.moveRel(0, 20)
                     print(LRE, end="")
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
-                    os.startfile(f"{path_to_shortcut}ассистент")
+                    os.startfile(f"{path_to_shortcut}{assistant_window}")
                     for i in range(15):
                         printt('\n')
                     printt(' ʕ/·ᴥ·ʔ/')
@@ -997,6 +997,7 @@ if __name__ == '__main__':
                 # -: встроенные команды из keyboard_scripts.py
                 elif prompt != '""':
                     from keyboard_scripts import key_symbols, scripts_pycharm, rimtex_personal, rimtex_reactions
+
                     key_symbols(prompt)
                     scripts_pycharm(prompt, words)
                     rimtex_personal(prompt)

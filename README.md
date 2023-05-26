@@ -11,6 +11,7 @@
 * [Python](https://www.python.org/downloads/release/python-3113/)
 * [сам помощник](https://github.com/Rimtex/Voice_Commands.py/archive/refs/heads/master.zip)
 * обе модели распознавания голоса
+
 1. https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip
 2. https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
 
@@ -18,8 +19,8 @@
 
 если нужно переключаться
 
-3. https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip
-4. https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip
+3.https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip  
+4.https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip  
 
 <hr>
 
@@ -30,7 +31,6 @@
 * переименовываем ярлык в нужные **слова** **или фразы**
 * запускаем его устно этим `словом` `или фразой`
 * также можно запускать ярлыки адресов браузера
-
 <hr>
 
 ### по-умолчанию
@@ -38,11 +38,12 @@
 Caps Lock или `пиши` пишет русский голос  
 Num Lock или `инглиш` пишет английский голос  
 Caps Lock и Num Lock или `переводчик` пишет переведённый на английский голос  
-Ctrl - Alt выключает Caps Lock и Num Lock
+Ctrl - Alt выключает Caps Lock и Num Lock  
+название `ассистент` настроено для запуска с ярлыка 
 <hr>
 
 * **Voice_Commands.py**
-    * **address_config.py**        переменные адресов для файлов
+    * **address_config.py**        конфигурации адресов файлов
     * **Heavy_writer.py**          `писатель` для более точной модели **ru-0.42**
     * **converter.py**             `покажи` преобразователь для показа команд
     * **loader.py**                для генерации всяких вещей
