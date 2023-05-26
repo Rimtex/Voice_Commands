@@ -1,6 +1,6 @@
 # Voice_Commands.py
 
-простой голосовой помощник в консоли на Python для Windows.   
+простой голосовой помощник в консоли на Python для Windows 10.   
 управляющийся в основном `голосовыми` командами.   
 реагирует на фразы или слова, нажимает клавиши, пишет голос, переводит, и прочие функции.  
 функции можно посмотреть командой `покажи`
@@ -8,9 +8,9 @@
 
 ### Основные требования
 
-* Python
-* модели распознавании голоса - в эту же папку
-
+* [Python](https://www.python.org/downloads/release/python-3113/)
+* [сам помощник](https://github.com/Rimtex/Voice_Commands.py/archive/refs/heads/master.zip)
+* обе модели распознавания голоса
 1. https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip
 2. https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
 
