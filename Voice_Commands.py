@@ -177,7 +177,9 @@ try:
     current_model = Model(model1)
 except Exception as e:
     print("Exception:", str(e))
-    print("Не удалось создать модель. Загрузка и распаковка моделей...")
+    printt(LRE + "Не удалось открыть модель.\n")
+    loader.download_generator()
+    printt("Идет загрузка и распаковка моделей распознования подождите...\n")
 
     import zipfile
 
@@ -198,7 +200,7 @@ except Exception as e:
 
         # Удалить ZIP-файлы
         os.remove(os.path.join(models_directory, filename))
-    print("Модели скачались и распаковались успешно.")
+    printt(LGR + "Модели скачались и распаковались успешно.")
     current_model = Model(model1)
     rec = KaldiRecognizer(current_model, 48000)
 rec = KaldiRecognizer(current_model, 48000)
