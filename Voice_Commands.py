@@ -22,8 +22,9 @@ try:
     import win32api
     import win32clipboard
     import ctypes
+    import tqdm
 except ImportError:
-    print("Trying to Install required modules: requirements.txt")
+    print("Попытка установить необходимые модули: requirements.txt")
     os.system('pip install --upgrade -r "requirements.txt"')
     import requests
     import traceback
@@ -46,6 +47,7 @@ except ImportError:
     import win32api
     import win32clipboard
     import ctypes
+    import tqdm
 
 from keyboard_scripts import key_press, keyhot, key_down, key_write, key_up, click_print, keyrus_write, \
     keytrans_write, words_num
@@ -185,7 +187,7 @@ except Exception as e:
 
     os.makedirs(models_directory, exist_ok=True)
 
-    for model_url in model_urls:
+    for model_url in tqdm.tqdm(model_urls, desc="Downloading models"):
         # Извлечь имя файла из URL
         filename = model_url.split("/")[-1]
 
@@ -200,9 +202,11 @@ except Exception as e:
 
         # Удалить ZIP-файлы
         os.remove(os.path.join(models_directory, filename))
-    printt(LGR + "Модели скачались и распаковались успешно.")
+
+    print("Модели скачались и распаковались успешно.")
     current_model = Model(model1)
     rec = KaldiRecognizer(current_model, 48000)
+
 rec = KaldiRecognizer(current_model, 48000)
 
 # Инициализация распознавателя с английской моделью
