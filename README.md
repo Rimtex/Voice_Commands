@@ -11,7 +11,7 @@
 * [Python](https://www.python.org/downloads/release/python-3113/)
 * [распаковать сам помощник](https://github.com/Rimtex/Voice_Commands.py/archive/refs/heads/master.zip)
 * запустить **Voice_Commands.py** 
-* две модели должны загрузится и распаковаться сами  
+* две модели должны загрузится сами как и библиотеки  
 
 <hr>
 
