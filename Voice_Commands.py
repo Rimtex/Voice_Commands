@@ -253,12 +253,12 @@ def pause_mode():
     while True:
         if rec.AcceptWaveform(stream.read(4000)):
             paumpt = rec.Result()[13:-2]
-            if paumpt in ('"стенка"', '"стену"', '"строй"', '"стройка"', '"построй"'):
+            if paumpt in ('"стена"', '"стенка"', '"стену"', '"строй"', '"стройка"', '"построй"'):
                 loader.waal_generator()
             elif paumpt in ('"бред"', '"умом"'):
                 loader.smile_generator()
                 loader.letters_random()
-            elif paumpt in ('"запуск"', '"запустить"', '"запусти"', '"обычный режим"'):
+            elif paumpt in ('"ассистент"', '"помощник"', '"запуск"', '"запустить"', '"запусти"', '"обычный режим"'):
                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
                 speak_tts("запускаю обычный режим!")
                 break
@@ -271,7 +271,7 @@ def pause_mode():
                 speak_tts("я итак на паузе!")
             elif paumpt in ('"слушай"', '"слышь"', '"слышь ты"', '"слышишь"', '"слэш"'):
                 speak_tts("я на паузе если что!")
-            elif paumpt in ('"ассистент"', '"помощник"', '"перезапуск"', '"рестарт"'):
+            elif paumpt in ('"перезапуск"', '"рестарт"'):
                 print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
                 os.startfile(f"\\{path_to_shortcut}{assistant_window}")
                 exit()
@@ -736,11 +736,11 @@ if __name__ == '__main__':
                         pyautogui.press('volumeup')
 
                 #: перезагрузка ассистента
-                elif len(words) > 0 and words[-1] in ('тихо', 'тихa', 'старт'):
+                elif prompt in ('"тихо"', '"тихa"', '"старт"'):
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
                     os.startfile(f"{path_to_shortcut}{assistant_window}")
                     exit()
-                elif prompt in ('"ассистент"', '"рестарт"', '"перезагрузка"', '"перезагрузить"', '"перезапуск"'):
+                elif prompt == '"рестарт"' or re.match(r'"переза\w{0,6}\b"', prompt):
                     assistant.moveRel(0, 20)
                     print(LRE, end="")
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
