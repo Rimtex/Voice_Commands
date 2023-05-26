@@ -47,9 +47,6 @@ except ImportError:
     import win32clipboard
     import ctypes
 
-
-
-
 from keyboard_scripts import key_press, keyhot, key_down, key_write, key_up, click_print, keyrus_write, \
     keytrans_write, words_num
 
@@ -168,7 +165,6 @@ vosk.SetLogLevel(-1)  # удаляем логи
 
 # Инициализация распознавателя с основной моделью
 
-import zipfile
 
 model_urls = [
     "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip",
@@ -181,31 +177,30 @@ try:
     current_model = Model(model1)
 except Exception as e:
     print("Exception:", str(e))
-    print("Failed to create a model. Downloading and unpacking models...")
+    print("Не удалось создать модель. Загрузка и распаковка моделей...")
+
+    import zipfile
 
     os.makedirs(models_directory, exist_ok=True)
 
     for model_url in model_urls:
-        # Extract the filename from the URL
+        # Извлечь имя файла из URL
         filename = model_url.split("/")[-1]
 
-        # Download the model ZIP file
+        # Загрузите ZIP-файл модели
         response = requests.get(model_url)
         with open(os.path.join(models_directory, filename), "wb") as file:
             file.write(response.content)
 
-        # Extract the ZIP file
+        # Извлеките ZIP-файлы
         with zipfile.ZipFile(os.path.join(models_directory, filename), "r") as zip_ref:
             zip_ref.extractall(models_directory)
 
-    print("Models downloaded and unpacked successfully.")
-
-
-
-
-
-
-
+        # Удалить ZIP-файлы
+        os.remove(os.path.join(models_directory, filename))
+    print("Модели скачались и распаковались успешно.")
+    current_model = Model(model1)
+    rec = KaldiRecognizer(current_model, 48000)
 rec = KaldiRecognizer(current_model, 48000)
 
 # Инициализация распознавателя с английской моделью
@@ -1039,6 +1034,7 @@ if __name__ == '__main__':
                 elif prompt != '""':
                     from keyboard_scripts import \
                         key_symbols, rimtex_pycharm, rimtex_personal, rimtex_reactions, scripts_others
+
                     key_symbols(prompt)
                     scripts_others(words)
 
