@@ -164,10 +164,41 @@ def numbers_key():  # назначаем kps клавишу в скрипте н
 
 print(Fore.RESET, end='')
 
+# Находим окно с именем 'ассистент'
+assistant = None
+try:
+    assistant = pyautogui.getWindowsWithTitle(assistant_window)[0]
+    assistant.moveTo(-8, 0)
+    assistant.resizeTo(849, 327)
+except Exception as e:
+    printt(f"\r                                                   (!o_O) ярлык --> {assistant_window}\r")
+    # Получить путь к текущему скрипту
+    script_path = os.path.abspath(__file__)
+
+    # Получить путь к папке, в которой находится скрипт
+    script_directory = os.path.dirname(script_path)
+
+    # Проверить наличие ярлыка ассистента
+    assistant_link_path = os.path.join(script_directory, path_to_shortcut + assistant_window + ".lnk")
+    if not os.path.isfile(assistant_link_path):
+        # Создать объект ярлыка
+        shell = win32com.client.Dispatch("WScript.Shell")
+        shortcut = shell.CreateShortCut(assistant_link_path)
+        # Установить путь к исходному скрипту в ярлыке
+        shortcut.TargetPath = script_path
+        # Установить имя ярлыка
+        shortcut.Description = assistant_window
+        # Установить рабочую папку
+        shortcut.WorkingDirectory = script_directory
+        # Сохранить ярлык
+        shortcut.Save()
+    print(e)
+    os.startfile(path_to_shortcut + assistant_window)
+    exit()
+
 vosk.SetLogLevel(-1)  # удаляем логи
 
 # Инициализация распознавателя с основной моделью
-
 
 model_urls = [
     "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip",
@@ -180,13 +211,14 @@ try:
 except Exception as e:
     print("Exception:", str(e))
     printt(LRE + "Не удалось открыть модели.\n")
-    printt(LGR + " 1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip\n"
-                 " 2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip\n")
+    print(LGR + " 1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip\n"
+                " 2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip")
     printt(LCY + " (!o_O) Идет загрузка и распаковка моделей распознования подождите... (↓O_o)\n")
     loader.download_generator()
 
     from tqdm import tqdm
     import zipfile
+
     model_urls = [
         "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip",
         "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
@@ -336,38 +368,6 @@ def pause_mode():
 
 
 if __name__ == '__main__':
-
-    # Находим окно с именем 'ассистент'
-    assistant = None
-    try:
-        assistant = pyautogui.getWindowsWithTitle(assistant_window)[0]
-        assistant.moveTo(-8, 0)
-        assistant.resizeTo(849, 327)
-    except Exception as e:
-        printt(f"\r                                                   (!o_O) ярлык --> {assistant_window}\r")
-        # Получить путь к текущему скрипту
-        script_path = os.path.abspath(__file__)
-
-        # Получить путь к папке, в которой находится скрипт
-        script_directory = os.path.dirname(script_path)
-
-        # Проверить наличие ярлыка ассистента
-        assistant_link_path = os.path.join(script_directory, path_to_shortcut + assistant_window + ".lnk")
-        if not os.path.isfile(assistant_link_path):
-            # Создать объект ярлыка
-            shell = win32com.client.Dispatch("WScript.Shell")
-            shortcut = shell.CreateShortCut(assistant_link_path)
-            # Установить путь к исходному скрипту в ярлыке
-            shortcut.TargetPath = script_path
-            # Установить имя ярлыка
-            shortcut.Description = assistant_window
-            # Установить рабочую папку
-            shortcut.WorkingDirectory = script_directory
-            # Сохранить ярлык
-            shortcut.Save()
-        print(e)
-        os.startfile(path_to_shortcut + assistant_window)
-        exit()
 
     #: состав словаря из названий ярлыков
     file_list = os.listdir(path_to_shortcut)
