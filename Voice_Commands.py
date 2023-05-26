@@ -328,13 +328,30 @@ if __name__ == '__main__':
         assistant.moveTo(-8, 0)
         assistant.resizeTo(849, 327)
     except Exception as e:
-        try:
-            assistant = pyautogui.getWindowsWithTitle('python.exe')[0]
-            assistant.moveTo(-8, 0)
-            assistant.resizeTo(849, 327)
-            printt(f"\r                                                   (!o_O) ярлык --> {assistant_window}\r")
-        except Exception as e:
-            print(e)
+        printt(f"\r                                                   (!o_O) ярлык --> {assistant_window}\r")
+        # Получить путь к текущему скрипту
+        script_path = os.path.abspath(__file__)
+
+        # Получить путь к папке, в которой находится скрипт
+        script_directory = os.path.dirname(script_path)
+
+        # Проверить наличие ярлыка ассистента
+        assistant_link_path = os.path.join(script_directory, path_to_shortcut + assistant_window + ".lnk")
+        if not os.path.isfile(assistant_link_path):
+            # Создать объект ярлыка
+            shell = win32com.client.Dispatch("WScript.Shell")
+            shortcut = shell.CreateShortCut(assistant_link_path)
+            # Установить путь к исходному скрипту в ярлыке
+            shortcut.TargetPath = script_path
+            # Установить имя ярлыка
+            shortcut.Description = assistant_window
+            # Установить рабочую папку
+            shortcut.WorkingDirectory = script_directory
+            # Сохранить ярлык
+            shortcut.Save()
+        print(e)
+        os.startfile(path_to_shortcut + assistant_window)
+        exit()
 
     #: состав словаря из названий ярлыков
     file_list = os.listdir(path_to_shortcut)

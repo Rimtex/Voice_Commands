@@ -9,9 +9,14 @@
 ### Основные требования
 
 * [Python](https://www.python.org/downloads/release/python-3113/)
-* [распаковать сам помощник](https://github.com/Rimtex/Voice_Commands.py/archive/refs/heads/master.zip) и две модели распознавания голоса в него  
+* [распаковать сам помощник](https://github.com/Rimtex/Voice_Commands.py/archive/refs/heads/master.zip)
+* запустить **Voice_Commands.py** модели должны загрузится сами  
+
+<hr>
+
    1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip  
    2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip  
+
 
 <hr>
 
@@ -36,7 +41,7 @@ Caps Lock или `пиши` пишет русский голос
 Num Lock или `инглиш` пишет английский голос  
 Caps Lock и Num Lock или `переводчик` пишет переведённый на английский голос  
 Ctrl - Alt выключает Caps Lock и Num Lock  
-название `ассистент` настроено для запуска с ярлыка 
+название `ассистент` настроено для запуска помощника с ярлыка 
 <hr>
 
 * **Voice_Commands.py**
