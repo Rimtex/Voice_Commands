@@ -180,28 +180,45 @@ try:
 except Exception as e:
     print("Exception:", str(e))
     printt(LRE + "Не удалось открыть модели.\n")
+    printt(LGR + " 1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip\n"
+                 " 2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip\n")
+    printt(LCY + " Идет загрузка и распаковка моделей распознования подождите...\n")
     loader.download_generator()
-    printt("Идет загрузка и распаковка моделей распознования подождите...\n")
-
+    import os
+    import requests
+    from tqdm import tqdm
     import zipfile
+
+    model_urls = [
+        "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip",
+        "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
+    ]
 
     os.makedirs(models_directory, exist_ok=True)
 
-    for model_url in tqdm.tqdm(model_urls, desc="Downloading models"):
-        # Извлечь имя файла из URL
-        filename = model_url.split("/")[-1]
+    for model_url in model_urls:
+        filename = os.path.join(models_directory, model_url.split("/")[-1])
 
-        # Загрузите ZIP-файл модели
-        response = requests.get(model_url)
-        with open(os.path.join(models_directory, filename), "wb") as file:
-            file.write(response.content)
+        # Создаем запрос на загрузку файла
+        response = requests.get(model_url, stream=True)
+        total_size = int(response.headers.get("content-length", 0))
 
-        # Извлеките ZIP-файлы
-        with zipfile.ZipFile(os.path.join(models_directory, filename), "r") as zip_ref:
+        # Открываем файл для записи в бинарном режиме
+        with open(filename, "wb") as f:
+            # Используем tqdm для отображения индикатора загрузки
+            with tqdm(total=total_size, unit="B", unit_scale=True) as progress_bar:
+                for data in response.iter_content(chunk_size=4096):
+                    # Записываем полученные данные в файл
+                    f.write(data)
+                    # Обновляем индикатор загрузки
+                    progress_bar.update(len(data))
+
+        # Извлекаем файлы из архива ZIP
+        with zipfile.ZipFile(filename, "r") as zip_ref:
             zip_ref.extractall(models_directory)
 
-        # Удалить ZIP-файлы
-        os.remove(os.path.join(models_directory, filename))
+        # Удаляем загруженный архив ZIP
+        os.remove(filename)
 
     print("Модели скачались и распаковались успешно.")
     current_model = Model(model1)
