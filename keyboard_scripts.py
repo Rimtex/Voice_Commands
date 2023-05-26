@@ -223,6 +223,7 @@ def open_music(prompt):
         os.startfile(f"{dir_path}\\isyan-tetick-patlamaya-devam.mp3")
         print(random.choice(colors) + "ʕ‾•ᴥ•‾ʔ•ᴥ•‾ʔ", end='')
 
+
 def scripts_others(words):
     #: очистка буфера
     if 3 > len(words) > 0 and (re.match(r'\w{0,2}чист\w{0,3}\b', words[0])) \
