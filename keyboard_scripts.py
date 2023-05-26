@@ -11,7 +11,7 @@ from pyttsx3 import speak
 import loader
 import vocabulary
 
-from address_config import dir_path, path_to_shortcut, requirements_path
+from address_config import path_to_shortcut, requirements_path
 
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -117,6 +117,23 @@ def keyhot(*keys):
             print(F"{WHI}‒{LBL}{keys[2]}{WHI}{LCY}", end='')
 
 
+# для проигрывания случайной музыки
+def play_music():
+    from address_config import dir_path
+    music_files = []
+    for root, dirs, files_op in os.walk(dir_path):
+        for file_op in files_op:
+            if file_op.endswith(".mp3") or file_op.endswith(".wav"):
+                file_path_op = os.path.join(root, file_op)
+                music_files.append(file_path_op)
+    if not music_files:
+        print("The directory is empty.")
+    else:
+        random_file_op = random.choice(music_files)
+        os.startfile(random_file_op)
+        print(f" {LGR}Playing: {WHI}{random_file_op}{LGR}", end='')
+
+
 # конвертер команд старт
 
 def key_symbols(prompt):
@@ -163,6 +180,48 @@ def key_symbols(prompt):
     elif prompt == '"знак меньше"':
         key_write('<')
 
+
+def open_music(prompt):
+    from address_config import dir_path
+    #: ♫ включение случайной музыки
+    if prompt in ('"радио"', '"включи радио"'):
+        print(f"{RED}Ϟ{LMA}?{GRE}♫{CYA} ˃˃˃{GRE}", end='')
+        play_music()
+    #: ♫ включение случайной музыки в одной папке
+    elif prompt in ('"включи музыку"', '"включить музыку"', '"музычка"', '"музыку"'):
+        files = os.listdir(dir_path)
+        print(f" {RED}Ϟ{YEL}♪{GRE}♫{CYA} ˃˃˃ {WHI}{dir_path}{LGR}", end='')
+        if not files:
+            print("The directory is empty.")
+        else:
+            random_file = random.choice(files)
+            file_path = os.path.join(dir_path, random_file)
+            os.startfile(file_path)
+    #: ♫ включение случайной музыки в другой папке
+    elif prompt in ('"автомата"', '"мир автомата"', '"нир автомата"'):
+        dir_path = rf"{dir_path}\NieR Automata OST"
+        files = os.listdir(dir_path)
+        filtered_files = [f for f in files if "NieR Automata" in f and f.endswith(".mp3")]
+        print(f"{RED}Ϟ{CYA}Ǽ{GRE}♫{CYA} ˃˃˃{GRE}", end='')
+        if not filtered_files:
+            print("There are no files that match the filter criteria.")
+        else:
+            random_file = random.choice(filtered_files)
+            file_path = os.path.join(dir_path, random_file)
+            os.startfile(file_path)
+    #: ♫ включение отдельных треков
+    elif prompt in ('"единый идол"', '"единой идол"', '"идол"'):
+        os.startfile(f"{dir_path}\\United Idol - Hai Phút Hơn.mp3")
+        print(random.choice(colors) + "┌(◄_►)┐", end='')
+    elif prompt in ('"я синица я аллигатор"', '"синица я аллигатор"', '"синица аллигатор"'):
+        os.startfile(f"{dir_path}\\Ня - Аригато.mp3")
+        print(random.choice(colors) + "(♥ᴗ♥)", end='')
+    elif prompt in ('"тут туру"', '"тот туру"', '"тот торо"', '"тот уро"', '"тот туру', '"тот тро"'):
+        os.startfile(f"{dir_path}\\Mayuri-Tuturu (mp3cut.ru).mp3")
+        print(random.choice(colors) + "(*ˊᵕˋ)~ * .·:*¨₊˚Lᵒᵛᵉᵧₒᵤ♥", end='')
+    elif prompt in ('"армянин"', '"арман эн"'):
+        os.startfile(f"{dir_path}\\isyan-tetick-patlamaya-devam.mp3")
+        print(random.choice(colors) + "ʕ‾•ᴥ•‾ʔ•ᴥ•‾ʔ", end='')
 
 def scripts_others(words):
     #: очистка буфера
@@ -407,22 +466,8 @@ def rimtex_personal(prompt):
 def rimtex_reactions(prompt, words):
     from Voice_Commands import speak_irina_tts, speak_tts, random_voice
 
-    #: ♫ включение отдельных треков
-    if prompt in ('"единый идол"', '"единой идол"', '"идол"'):
-        os.startfile(f"{dir_path}\\United Idol - Hai Phút Hơn.mp3")
-        print(random.choice(colors) + "┌(◄_►)┐", end='')
-    elif prompt in ('"я синица я аллигатор"', '"синица я аллигатор"', '"синица аллигатор"'):
-        os.startfile(f"{dir_path}\\Ня - Аригато.mp3")
-        print(random.choice(colors) + "(♥ᴗ♥)", end='')
-    elif prompt in ('"тут туру"', '"тот туру"', '"тот торо"', '"тот уро"', '"тот туру', '"тот тро"'):
-        os.startfile(f"{dir_path}\\Mayuri-Tuturu (mp3cut.ru).mp3")
-        print(random.choice(colors) + "(*ˊᵕˋ)~ * .·:*¨₊˚Lᵒᵛᵉᵧₒᵤ♥", end='')
-    elif prompt in ('"армянин"', '"арман эн"'):
-        os.startfile(f"{dir_path}\\isyan-tetick-patlamaya-devam.mp3")
-        print(random.choice(colors) + "ʕ‾•ᴥ•‾ʔ•ᴥ•‾ʔ", end='')
-
     #: ♪ реакции на слова или фразы
-    elif prompt == '"я робот"':
+    if prompt == '"я робот"':
         print(random.choice(colors) + "[-_-]", end='')
         speak_irina_tts(vocabulary.random_response_robot())
     elif prompt == '"не дано"':

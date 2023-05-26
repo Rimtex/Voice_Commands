@@ -123,22 +123,6 @@ def cursor_direction():
         pyautogui.moveRel(0, -numss)
 
 
-# для проигрывания случайной музыки
-def play_music():
-    music_files = []
-    for root, dirs, files_op in os.walk(dir_path):
-        for file_op in files_op:
-            if file_op.endswith(".mp3") or file_op.endswith(".wav"):
-                file_path_op = os.path.join(root, file_op)
-                music_files.append(file_path_op)
-    if not music_files:
-        print("The directory is empty.")
-    else:
-        random_file_op = random.choice(music_files)
-        os.startfile(random_file_op)
-        print(f" {LGR}Playing: {WHI}{random_file_op}{LGR}", end='')
-
-
 #: повтор нажатий клавиш плюс цифры
 def numbers_key():  # назначаем kps клавишу в скрипте например:
     if len(words) == 1:
@@ -873,35 +857,6 @@ if __name__ == '__main__':
                               "3 ! при старте на русской раскладке некоторые команды могут не работать"
                               )
 
-                #: ♫ включение случайной музыки
-                elif prompt in ('"радио"', '"включи радио"'):
-                    print(f"{RED}Ϟ{LMA}?{GRE}♫{CYA} ˃˃˃{GRE}", end='')
-                    play_music()
-
-                #: ♫ включение случайной музыки в одной папке
-                elif prompt in ('"включи музыку"', '"включить музыку"', '"музычка"', '"музыку"'):
-                    files = os.listdir(dir_path)
-                    print(f" {RED}Ϟ{YEL}♪{GRE}♫{CYA} ˃˃˃ {WHI}{dir_path}{LGR}", end='')
-                    if not files:
-                        print("The directory is empty.")
-                    else:
-                        random_file = random.choice(files)
-                        file_path = os.path.join(dir_path, random_file)
-                        os.startfile(file_path)
-
-                #: ♫ включение случайной музыки в другой папке
-                elif prompt in ('"автомата"', '"мир автомата"', '"нир автомата"'):
-                    dir_path = rf"{dir_path}\NieR Automata OST"
-                    files = os.listdir(dir_path)
-                    filtered_files = [f for f in files if "NieR Automata" in f and f.endswith(".mp3")]
-                    print(f"{RED}Ϟ{CYA}Ǽ{GRE}♫{CYA} ˃˃˃{GRE}", end='')
-                    if not filtered_files:
-                        print("There are no files that match the filter criteria.")
-                    else:
-                        random_file = random.choice(filtered_files)
-                        file_path = os.path.join(dir_path, random_file)
-                        os.startfile(file_path)
-
                 #: работа с мышкой
                 elif prompt == '"координаты"':
                     x, y = pyautogui.position()
@@ -1063,14 +1018,15 @@ if __name__ == '__main__':
                     assistant.restore()  # - раздупляем восстанавливанием
                     print(LGR + "ø", end="")
 
-                # -: встроенные команды из keyboard_scripts.py
+                # -: встроенные группы команд из keyboard_scripts.py
                 elif prompt != '""':
                     from keyboard_scripts import \
-                        key_symbols, rimtex_pycharm, rimtex_personal, rimtex_reactions, scripts_others
+                        key_symbols, open_music, scripts_others, rimtex_pycharm, rimtex_personal, rimtex_reactions
 
                     key_symbols(prompt)
+                    open_music(prompt)
                     scripts_others(words)
-
+                    # - за комментировать если не нужны
                     rimtex_pycharm(prompt)
                     rimtex_personal(prompt)
                     rimtex_reactions(prompt, words)
