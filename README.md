@@ -18,7 +18,7 @@
 * **voskmodels**\    
    1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip  
    2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip  
-   если нужно переключаться на более точные модели   
+   если нужно переключаться на более точные модели распаковать  
    3 https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip   
    4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip  
 
