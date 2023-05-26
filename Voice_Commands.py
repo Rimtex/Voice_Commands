@@ -47,6 +47,9 @@ except ImportError:
     import win32clipboard
     import ctypes
 
+
+
+
 from keyboard_scripts import key_press, keyhot, key_down, key_write, key_up, click_print, keyrus_write, \
     keytrans_write, words_num
 
@@ -164,7 +167,45 @@ print(Fore.RESET, end='')
 vosk.SetLogLevel(-1)  # удаляем логи
 
 # Инициализация распознавателя с основной моделью
-current_model = Model(model1)
+
+import zipfile
+
+model_urls = [
+    "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip",
+    "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip"
+]
+
+models_directory = "voskmodels"
+
+try:
+    current_model = Model(model1)
+except Exception as e:
+    print("Exception:", str(e))
+    print("Failed to create a model. Downloading and unpacking models...")
+
+    os.makedirs(models_directory, exist_ok=True)
+
+    for model_url in model_urls:
+        # Extract the filename from the URL
+        filename = model_url.split("/")[-1]
+
+        # Download the model ZIP file
+        response = requests.get(model_url)
+        with open(os.path.join(models_directory, filename), "wb") as file:
+            file.write(response.content)
+
+        # Extract the ZIP file
+        with zipfile.ZipFile(os.path.join(models_directory, filename), "r") as zip_ref:
+            zip_ref.extractall(models_directory)
+
+    print("Models downloaded and unpacked successfully.")
+
+
+
+
+
+
+
 rec = KaldiRecognizer(current_model, 48000)
 
 # Инициализация распознавателя с английской моделью
