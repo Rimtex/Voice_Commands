@@ -1,20 +1,20 @@
 import pyautogui
 import os
 
-
 def load_coordinates_from_file(file_path):
     coordinates = {}
     with open(file_path, 'r', encoding='utf-8') as file:
         lines = file.readlines()
         for line in lines:
             line = line.strip()
-            if line.startswith("'") and line.endswith("),"):
-                parts = line.split(':')
-                title = parts[0].strip()[1:-1]
-                values = [int(x.strip()) for x in parts[1].strip()[1:-2].split(',')]
+            if line.endswith(")"):
+                parts = line.split('(')
+                title = parts[0].strip()
+                values = [int(x.strip()) for x in parts[1].strip()[:-1].split(',')]
                 if len(values) == 4:
                     coordinates[title] = tuple(values)
     return coordinates
+
 
 
 def app_titles_recovery():
@@ -39,7 +39,8 @@ for i, window in enumerate(windows):
         app_title = window.title  # получаем заголовок приложения с заданным номером
         app = pyautogui.getWindowsWithTitle(app_title)[0]  # получаем объект окна с заданным заголовком
         size = app._getWindowRect()
-        print(f"'{app_title}': {size.left, size.top, size.right - size.left, size.bottom - size.top},")
+        print(f"{app_title}({size.left}, {size.top}, {size.right - size.left}, {size.bottom - size.top})")
+
 
 print("\n Enter восстанавливает позиции окон из window_coordinates.txt <- space ")
 
