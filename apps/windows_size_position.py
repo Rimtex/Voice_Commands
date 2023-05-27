@@ -1,18 +1,29 @@
 import pyautogui
+import keyboard
+import os
+
+
+def load_coordinates_from_file(file_path):
+    coordinates = {}
+    with open(file_path, 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        for line in lines:
+            line = line.strip()
+            if line.startswith("'") and line.endswith("),"):
+                parts = line.split(':')
+                title = parts[0].strip()[1:-1]
+                values = [int(x.strip()) for x in parts[1].strip()[1:-2].split(',')]
+                if len(values) == 4:
+                    coordinates[title] = tuple(values)
+    return coordinates
 
 
 def app_titles_recovery():
-    app_restore = {
-        # ! размещаем нужные позиции копи пастой
-
-        'ассистент': (-8, 0, 836, 327),
-        'Voice_Commands.py': (813, 0, 1450, 1408),
-        'DeepL  ': (2048, 0, 520, 1408),
-        'Microsoft​ Edge': (-8, 319, 836, 1089)
-
-    }
+    app_restore = load_coordinates_from_file('windows_coordinates.txt')
     return app_restore
 
+
+print("\n текущие координаты окон:\n")
 
 # Получаем список всех окон на рабочем столе
 windows = pyautogui.getAllWindows()
@@ -23,21 +34,26 @@ for i, window in enumerate(windows):
         app_title = window.title  # получаем заголовок приложения с заданным номером
         app = pyautogui.getWindowsWithTitle(app_title)[0]  # получаем объект окна с заданным заголовком
         size = app._getWindowRect()
-        print(f"        '{app_title}': {size.left, size.top, size.right - size.left, size.bottom - size.top}")
+        print(f"'{app_title}': {size.left, size.top, size.right - size.left, size.bottom - size.top},")
 
-print("\n Enter восстанавливает позиции окон из функции")
+print("\n Enter восстанавливает позиции окон из window_coordinates.txt <- space ")
 
-# while True:
-try:
-    app_number = input("")
-    app_titles = app_titles_recovery()
-    for title, pos in app_titles.items():
-        try:
-            app_title = pyautogui.getWindowsWithTitle(title)[0]
-            app_title.moveTo(*pos[:2])
-            app_title.resizeTo(*pos[2:])
-        except IndexError:
-            print("~", end="")
+while True:
+    try:
+        app_number = input("")
+        if app_number == "":
+            app_titles = app_titles_recovery()
+            for title, pos in app_titles.items():
+                try:
+                    app_title = pyautogui.getWindowsWithTitle(title)[0]
+                    app_title.moveTo(*pos[:2])
+                    app_title.resizeTo(*pos[2:])
+                except IndexError:
+                    print("~", end="")
+        if app_number == " ":
+            text_file_path = 'windows_coordinates.txt'
+            if os.path.exists(text_file_path):
+                os.startfile(text_file_path)
 
-except Exception as e:
-    print(e)
+    except Exception as e:
+        print(e)
