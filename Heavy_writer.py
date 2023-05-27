@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     app_title = pyautogui.getWindowsWithTitle(Heavy_writer_window)[0]
     app_title.moveTo(-8, 319)
-    app_title.resizeTo(849, 185)
+    app_title.resizeTo(836, 185)
 
     current_model = Model(model3)
     rec = KaldiRecognizer(current_model, 48000)

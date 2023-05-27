@@ -153,7 +153,7 @@ assistant = None
 try:
     assistant = pyautogui.getWindowsWithTitle(assistant_window)[0]
     assistant.moveTo(-8, 0)
-    assistant.resizeTo(849, 327)
+    assistant.resizeTo(836, 327)
 except Exception as e:
     printt(f"\r                                                   (!o_O) ярлык --> {assistant_window}\r")
     # Получить путь к текущему скрипту
@@ -326,10 +326,6 @@ def pause_mode():
             elif paumpt in ('"бред"', '"умом"'):
                 loader.smile_generator()
                 loader.letters_random()
-            elif paumpt in ('"ассистент"', '"помощник"', '"запуск"', '"запустить"', '"запусти"', '"обычный режим"'):
-                print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
-                speak_tts("запускаю обычный режим!")
-                break
             elif paumpt == '"громкость"':
                 print(LCY + '♪' + SRA, end='')
                 key_press('volumemute')
@@ -343,6 +339,12 @@ def pause_mode():
                 print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
                 os.startfile(f"\\{path_to_shortcut}{assistant_window}")
                 exit()
+            elif paumpt in ('"ассистент"', '"помощник"', '"запуск"', '"запустить"', '"запусти"', '"обычный режим"'):
+                assistant.minimize()
+                assistant.restore()
+                print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
+                speak_tts("запускаю обычный режим!")
+                break
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
             assistant.minimize()
             assistant.restore()
@@ -392,8 +394,6 @@ if __name__ == '__main__':
                     print(LRE + "‹" + SRA, end="")
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
-                    assistant.minimize()
-                    assistant.restore()
                     turn_off_locks()
                     print(LRE + "‹" + SRA, end="")
                     break
@@ -414,8 +414,6 @@ if __name__ == '__main__':
                     print(LRE + "‹" + SRA, end="")
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
-                    assistant.minimize()
-                    assistant.restore()
                     turn_off_locks()
                     print(LRE + "‹" + SRA, end="")
                     break
@@ -441,8 +439,6 @@ if __name__ == '__main__':
                     print(LRE + "«" + SRA, end="")
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
-                    assistant.minimize()
-                    assistant.restore()
                     turn_off_locks()
                     print(LRE + "«" + SRA, end="")
                     break
@@ -643,8 +639,11 @@ if __name__ == '__main__':
                     keyhot('win', 'd')
                 elif prompt in ('"свернуть лишнее"', '"свернуть лишнее"', '"лишнее"'):
                     keyhot('win', 'Home')
-                elif prompt in ('"обновить"', '"обнови"', '"об нова"', '"эф пять"'):
+                elif prompt in ('"обновить"', '"обнови"', '"об нова"'):
                     key_press("f5")
+                elif len(words) == 2 and words[0] == 'эф' and words[1] in words_num:
+                    nums = words_num[words[1]]
+                    key_press(f"f{nums}")
                 elif 3 > len(words) > 0 and words[0] == 'окно':
                     if 2 >= len(words) > 1 and re.match(r'^.{0,3}прав.{0,3}$', words[1]):
                         keyhot('win', 'Right')

@@ -107,6 +107,7 @@ def key_press(key):
 
 #: клавиши с принтом
 def keyhot(*keys):
+    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
     # Нажать комбинацию клавиш
     pyautogui.hotkey(*keys)
     # Вывести информацию о нажатой комбинации клавиш
@@ -137,18 +138,30 @@ def play_music():
 # конвертер команд старт
 
 def key_symbols(prompt):
-    if prompt in ('"скобки"', '"скобы"', '"скобки"', '"скобка"', '"скоб очки"'):
+    if prompt in ('"скоба"', '"скобка"', '"скоб бачка"'):
         key_write('(')
-    elif prompt in ('"фигурные"', '"фигурные скобки"', '"фигурная"', '"фигура"', '"формат"'):
+    elif prompt in ('"скобы"', '"скобки"', '"скоб очки"'):
+        key_write('()')
+    elif prompt in ('"фигурная"', '"фигура"', '"формат"'):
         key_write('{')
-    elif prompt in ('"квадратные"', '"квадратные скобки"', '"квадратная"', '"квадратное"', '"квадрат"'):
+    elif prompt in ('"фигурные"', '"фигуры"', '"фигурные скобки"'):
+        key_write('{}')
+    elif prompt in ('"квадратная"', '"квадратное"', '"квадрат"'):
         key_write('[')
+    elif prompt in ('"квадратные"', '"квадратной"', '"квадраты"'):
+        key_write('[]')
     elif prompt in ('"кавычках"', '"кавычка"', '"одинарные кавычки"', '"тонкие кавычки"'):
         key_write("'")
     elif prompt in ('"кавычки"', '"жирные кавычки"', '"толстые кавычки"'):
         key_write('"')
     elif prompt in ('"решётка"', '"решётки"', '"решёткой"', '"шарп"'):
         key_write('#')
+    elif prompt == '"слэш"':
+        key_write('\\')
+    elif prompt == '"пайп"':
+        key_write('|')
+    elif prompt == '"обратный слэш"':
+        key_write('/')
     elif prompt == '"запятая"':
         key_write(',')
     elif prompt == '"точка"':
@@ -157,15 +170,29 @@ def key_symbols(prompt):
         key_write(':')
     elif prompt == '"точка с запятой"':
         key_write(';')
+    elif prompt == '"апостроф"':
+        key_write('`')
     elif prompt == '"минус"':
         key_write('-')
     elif prompt == '"плюс"':
         key_write('+')
+    elif prompt in ('"подчёркивание"', '"почерк"'):
+        key_write('_')
+    elif prompt in ('"цирком флекс"', '"флекс"', '"крышечка"'):
+        key_write('^')
+    elif prompt in ('"проценты"', '"процентов"', '"процент"'):
+        key_write('%')
+    elif prompt == '"доллар"':
+        key_write('$')
     elif prompt == '"вопрос"':
         key_write('?')
+    elif prompt == '"номер"':
+        key_write('№')
+    elif prompt in ('"звёздочка"', '"умножить"', '"умножь"'):
+        key_write('*')
     elif prompt in ('"восклицательный знак"', '"твердо"', '"твёрдый"'):
         key_write('!')
-    elif prompt == '"собачка"':
+    elif prompt in ('"собачка"', '"собака"', '"собакой"'):
         key_write('@')
     elif prompt == '"тильда"':
         key_write('~')
@@ -429,40 +456,6 @@ def rimtex_personal(prompt):
         time.sleep(0.2)
         click_print()
 
-    #: позиционирование окон
-    elif prompt in ('"уйди"', '"свали"', '"угол"', '"место"', '"места"', '"наказан"'):
-        print(LGR + "╔", end="")
-        assistant = pyautogui.getWindowsWithTitle('ассистент')[0]
-        assistant.minimize()
-        assistant.restore()
-        assistant.moveTo(-8, 0)
-        assistant.resizeTo(849, 327)
-        assistant.activate()
-        try:
-            deepl = pyautogui.getWindowsWithTitle('DeepL')[0]
-            deepl.minimize()
-            deepl.restore()
-            deepl.moveTo(2048, 0)
-            deepl.resizeTo(500, 1408)
-        except IndexError:
-            print(LRE + "D" + LGR, end="")
-        try:
-            pysharm = pyautogui.getWindowsWithTitle('Voice_Commands.py')[0]
-            pysharm.minimize()
-            pysharm.restore()
-            pysharm.moveTo(826, 0)
-            pysharm.resizeTo(1450, 1408)
-        except IndexError:
-            print(LRE + "P" + LGR, end="")
-        try:
-            edge = pyautogui.getWindowsWithTitle('Microsoft​ Edge')[0]
-            edge.minimize()
-            edge.restore()
-            edge.moveTo(-8, 319)
-            edge.resizeTo(836, 1089)
-        except IndexError:
-            print(LRE + "E" + LGR, end="")
-
 
 def rimtex_reactions(prompt, words):
     from Voice_Commands import speak_irina_tts, speak_tts, random_voice
@@ -474,7 +467,7 @@ def rimtex_reactions(prompt, words):
     elif prompt == '"не дано"':
         print(random.choice(colors) + "♪{•ᴥ•}♫", end='')
         speak_irina_tts(vocabulary.random_response_nedano())
-    elif prompt in ('"слушай"', '"слышь"', '"слышишь"', '"слэш"', '"слышь ты"'):
+    elif prompt in ('"слушай"', '"слышь"', '"слышишь"', '"слышь ты"'):
         loader.smile_gen_erator()
         speak_tts(vocabulary.random_response())
     elif any(word in prompt[1:-1] for word in ('блядь', 'нихуя', 'бля', 'ахуеть', 'бляха', 'ебать')):
