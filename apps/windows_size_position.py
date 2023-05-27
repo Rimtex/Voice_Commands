@@ -1,5 +1,4 @@
 import pyautogui
-import keyboard
 import os
 
 
@@ -22,6 +21,12 @@ def app_titles_recovery():
     app_restore = load_coordinates_from_file('windows_coordinates.txt')
     return app_restore
 
+
+# Проверяем существование файла с координатами окон и создаем его при необходимости
+coordinates_file_path = 'windows_coordinates.txt'
+if not os.path.exists(coordinates_file_path):
+    with open(coordinates_file_path, 'w') as file:
+        pass  # Создаем пустой файл, если он не существует
 
 print("\n текущие координаты окон:\n")
 
@@ -51,9 +56,7 @@ while True:
                 except IndexError:
                     print("~", end="")
         if app_number == " ":
-            text_file_path = 'windows_coordinates.txt'
-            if os.path.exists(text_file_path):
-                os.startfile(text_file_path)
+            os.startfile(coordinates_file_path)
 
     except Exception as e:
         print(e)
