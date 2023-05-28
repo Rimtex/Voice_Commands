@@ -1,6 +1,7 @@
 import pyautogui
 import os
 
+
 def load_coordinates_from_file(file_path):
     coordinates = {}
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -16,7 +17,6 @@ def load_coordinates_from_file(file_path):
     return coordinates
 
 
-
 def app_titles_recovery():
     app_restore = load_coordinates_from_file('windows_coordinates.txt')
     return app_restore
@@ -28,7 +28,7 @@ if not os.path.exists(coordinates_file_path):
     with open(coordinates_file_path, 'w') as file:
         pass  # Создаем пустой файл, если он не существует
 
-print("\n текущие координаты окон:\n")
+print("\n текущие координаты и размеры окон:\n")
 
 # Получаем список всех окон на рабочем столе
 windows = pyautogui.getAllWindows()
@@ -41,8 +41,7 @@ for i, window in enumerate(windows):
         size = app._getWindowRect()
         print(f"{app_title}({size.left}, {size.top}, {size.right - size.left}, {size.bottom - size.top})")
 
-
-print("\n Enter восстанавливает позиции окон из window_coordinates.txt <- space ")
+print("\n Enter восстанавливает позиции окон из window_coordinates.txt <- Space Enter ")
 
 while True:
     try:

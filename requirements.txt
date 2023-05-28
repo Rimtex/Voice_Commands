@@ -12,3 +12,4 @@ py_win_keyboard_layout
 psutil
 PyGetWindow
 tqdm
+pynput

@@ -1019,16 +1019,9 @@ if __name__ == '__main__':
 
                 # -: встроенные группы команд из keyboard_scripts.py
                 elif prompt != '""':
-                    from keyboard_scripts import \
-                        key_symbols, open_music, scripts_others, rimtex_pycharm, rimtex_personal, rimtex_reactions
+                    from address_config import command_groups
 
-                    key_symbols(prompt)
-                    open_music(prompt)
-                    scripts_others(words)
-                    # - за комментировать если не нужны
-                    rimtex_pycharm(prompt)
-                    rimtex_personal(prompt)
-                    rimtex_reactions(prompt, words)
+                    command_groups(prompt, words)
 
                 # -: открываем все своё с ярлыков
                 if prompt != '""' and 9 > len(words) > 0 and prompt[1:-1] in labels:

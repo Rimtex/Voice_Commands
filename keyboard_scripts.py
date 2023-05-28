@@ -311,7 +311,7 @@ def scripts_others(words):
             key_press("enter")
 
 
-def rimtex_pycharm(prompt):
+def rimtex_colors(prompt):
     #: печать цветов
     if prompt == '"тёмно-красный"':
         key_write('RED')
@@ -340,8 +340,10 @@ def rimtex_pycharm(prompt):
     elif prompt == '"сброс цвета"':
         key_write('SRA')
 
+
+def rimtex_pycharm(prompt):
     #: печать функций и скриптов
-    elif prompt in ('"эф"', '"эф эф"'):
+    if prompt in ('"эф"', '"эф эф"'):
         key_write('f')
     elif prompt in ('"комментарий"', '"комментарии"'):
         key_write('"""')
