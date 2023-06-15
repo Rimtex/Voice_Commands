@@ -35,7 +35,6 @@ def capture_area():
     screenshot.show()
 
     try:
-
         import pytesseract
         from PIL import Image
         import os
