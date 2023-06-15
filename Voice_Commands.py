@@ -317,7 +317,8 @@ random_voice = [speak_pavel_tts, speak_irina_tts]
 
 def pause_mode():
     print(LCY + '\n ʕ℗•ᴥ•℗ʔ' + SRA, end='')
-    speak_tts("режим паузы!")
+    speak_tts("пауза!")
+    assistant.minimize()
     while True:
         if rec.AcceptWaveform(stream.read(4000)):
             paumpt = rec.Result()[13:-2]

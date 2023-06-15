@@ -13,3 +13,4 @@ psutil
 PyGetWindow
 tqdm
 pynput
+Pillow
