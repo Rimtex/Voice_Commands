@@ -48,8 +48,8 @@ def capture_area():
         image = Image.open("screenshot.png")
 
         # Преобразуем изображение в текст
-        text = pytesseract.image_to_string(image)
-        # text = pytesseract.image_to_string(image, lang="auto")
+        # text = pytesseract.image_to_string(image)
+        text = pytesseract.image_to_string(image, lang="rus")
 
         # Выводим полученный текст
         print(text)
