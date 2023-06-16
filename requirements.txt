@@ -12,5 +12,9 @@ py_win_keyboard_layout
 psutil
 PyGetWindow
 tqdm
+
+# apps
 pynput
 Pillow
+pytesseract
+pyperclip

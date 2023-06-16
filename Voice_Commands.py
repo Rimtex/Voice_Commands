@@ -688,18 +688,16 @@ if __name__ == '__main__':
                     keyboard.write(date.today().strftime("%d.%m.%Y "))
                     keyboard.write(datetime.now().strftime("%H,%M,%S")[0:5])  # - убрал секунды
 
-                #: озвучка выделенного текста
+                #: озвучка текста из буфера
                 elif prompt in ('"озвучь"', '"озвучка"', '"озвучить"', '"озвучивает"', '"озвучивать"'):
                     print(f"{LYE}♪", end='')
-                    keyhot('ctrlleft', 'c')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
                     speak_tts(f"{text}")
 
-                #: озвучка выделенного текста с переводом
+                #: озвучка текста из буфера с переводом
                 elif prompt in ('"зачитай"', '"прочитай"', '"прочти"', '"прочитать"'):
-                    keyhot('ctrlleft', 'c')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()

@@ -40,7 +40,7 @@ def download_bye():
           ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
            ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
             ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
-           ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
+          ʕ/·ᴥ·ʔ/\b\b\b\b\b\b\b
 """)
     losq = load_square.strip().split('\n')
     for char in losq:
