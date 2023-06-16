@@ -19,9 +19,9 @@
 
 
 /models/*.bin
+/apps/*.png
 /__pycache__/
 /apps/__pycache__/
-/apps/screenshot.*
 /.vs/
 
 
