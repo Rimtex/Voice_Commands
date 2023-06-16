@@ -21,7 +21,7 @@
 /models/*.bin
 /__pycache__/
 /apps/__pycache__/
-/apps/screenshot.png/
+/apps/screenshot.*
 /.vs/
 
 
