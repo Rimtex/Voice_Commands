@@ -20,9 +20,11 @@
 
 /models/*.bin
 /apps/*.png
+/apps/*.txt
 /__pycache__/
 /apps/__pycache__/
 /.vs/
 
 
 /voskmodels/*
+/apps/windows_coordinates.txt
