@@ -6,7 +6,8 @@ import keyboard
 title = "работа с выделенными скриншотами: преобразование в текст > копирование в буфер"
 tesseract = "https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-5.3.1.20230401.exe"
 tesseract_path = r"C:\Program Files\Tesseract-OCR"  # ! путь к установленному Tesseract OCR
-lang = "eng+rus+ukr"  # ! нужные языки
+lang = "eng"  # ! нужные языки
+# lang = "eng+rus+ukr"  # ! нужные языки
 
 
 def capture_area():
