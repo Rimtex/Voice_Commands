@@ -2,8 +2,11 @@ import pyautogui
 from PIL import ImageGrab
 import time
 import keyboard
+
 title = "работа с выделенными скриншотами: преобразование в текст > копирование в буфер"
-# C:\Program Files\Tesseract-OCR   |   eng+rus+ukr
+tesseract = "https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-5.3.1.20230401.exe"
+tesseract_path = r"C:\Program Files\Tesseract-OCR"  # ! путь к установленному Tesseract OCR
+lang = "eng+rus+ukr"  # ! нужные языки
 
 
 def capture_area():
@@ -30,8 +33,6 @@ def capture_area():
 
     screenshot = ImageGrab.grab(bbox=(left, top, left + width, top + height))
     screenshot.save("screenshot.png")
-
-    # ! нужно чтобы файл копировался в буфер
     screenshot.show()
 
     try:
@@ -40,15 +41,15 @@ def capture_area():
         import os
         import pyperclip
 
-        os.environ['TESSDATA_PREFIX'] = r'C:\Program Files\Tesseract-OCR\tessdata'
-        # Укажите путь к установленному Tesseract OCR, если он отличается от стандартного пути
-        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+        # путь к установленному Tesseract OCR, если он отличается от стандартного пути
+        os.environ['TESSDATA_PREFIX'] = tesseract_path + r'\tessdata'
+        pytesseract.pytesseract.tesseract_cmd = tesseract_path + r'\tesseract.exe'
 
         # Открываем изображение
         image = Image.open("screenshot.png")
 
         # Преобразуем изображение в текст
-        text = pytesseract.image_to_string(image, lang="eng+rus+ukr")
+        text = pytesseract.image_to_string(image, lang)
 
         # Выводим полученный текст
         print(text)
@@ -59,7 +60,7 @@ def capture_area():
         # exit()
         # print("Скриншот сохранен в файл 'screenshot.png' и запущен.")
     except Exception as e:
-        print(e, "https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-5.3.1.20230401.exe")
+        print(e, tesseract)
 
 
 def main():
