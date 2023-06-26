@@ -1,13 +1,18 @@
-import pyautogui
+import imageio
 from PIL import ImageGrab
 import time
+from python_translator import Translator
+import os
 import keyboard
+import pyautogui
+import win32com
+import win32com.client as wincl
 
-title = "работа с выделенными скриншотами: преобразование в текст > копирование в буфер"
+title = "работа с выделенными скриншотами: конверт в ICO > преобразование в текст > перевод > копирование в буфер"
 tesseract = "https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-5.3.1.20230401.exe"
 tesseract_path = r"C:\Program Files\Tesseract-OCR"  # ! путь к установленному Tesseract OCR
-lang = "eng"  # ! нужные языки
-# lang = "eng+rus+ukr"  # ! нужные языки
+lang = "eng+rus+ukr" # "eng"  ! нужные языки "eng+rus+ukr"
+translang = "russian"  # ! перевод eng ua
 
 
 def capture_area():
@@ -33,8 +38,12 @@ def capture_area():
     height = abs(end_y - start_y)
 
     screenshot = ImageGrab.grab(bbox=(left, top, left + width, top + height))
-    screenshot.save("screenshot.png")
+    screen_path = "screenshot.png"
+    screenshot.save(screen_path)
     screenshot.show()
+
+    img = imageio.v3.imread(screen_path)
+    imageio.imwrite("screenshot.ico", img)
 
     try:
         import pytesseract
@@ -50,18 +59,29 @@ def capture_area():
         image = Image.open("screenshot.png")
 
         # Преобразуем изображение в текст
+        # text = pytesseract.image_to_string(image)
         text = pytesseract.image_to_string(image, lang)
-
-        # Выводим полученный текст
         print(text)
+        pyperclip.copy(f"{text}")
+        # переводим полученный текст
+        try:
+            translator = Translator()
+            trans = translator.translate(f"{text}", translang)
+            print(trans)
+            # pyperclip.copy(f"{trans}")
+            screenshot = pyautogui.getWindowsWithTitle("скриншот")[0]
+            screenshot.minimize()
+            screenshot.restore()
+        except Exception as er:
+            print(er)
 
         # Копируем текст в буфер обмена
-        pyperclip.copy(text)
+        # pyperclip.copy(text)
 
         # exit()
         # print("Скриншот сохранен в файл 'screenshot.png' и запущен.")
-    except Exception as e:
-        print(e, tesseract)
+    except Exception as er:
+        print(er, tesseract)
 
 
 def main():
@@ -73,4 +93,36 @@ def main():
 
 
 if __name__ == "__main__":
+    # Находим окно с именем 'писатель'
+    screen = None
+    screenshot_window = "скриншот"
+    try:
+        screen = pyautogui.getWindowsWithTitle(screenshot_window)[0]
+        screen.moveTo(88, 220)
+        screen.resizeTo(849, 327)
+    except Exception as e:
+        print(f"\r                                                   (!o_O) ярлык --> {screenshot_window}\r")
+        # Получить путь к текущему скрипту
+        script_path = os.path.abspath(__file__)
+
+        # Получить путь к папке, в которой находится скрипт
+        script_directory = os.path.dirname(script_path)
+
+        # Проверить наличие ярлыка писатель
+        screenshot_window_link_path = os.path.join(script_directory, screenshot_window + ".lnk")
+        if not os.path.isfile(screenshot_window_link_path):
+            # Создать объект ярлыка
+            shell = win32com.client.Dispatch("WScript.Shell")
+            shortcut = shell.CreateShortCut(screenshot_window_link_path)
+            # Установить путь к исходному скрипту в ярлыке
+            shortcut.TargetPath = script_path
+            # Установить имя ярлыка
+            shortcut.Description = screenshot_window
+            # Установить рабочую папку
+            shortcut.WorkingDirectory = script_directory
+            # Сохранить ярлык
+            shortcut.Save()
+        print(e)
+        os.startfile(screenshot_window)
+        exit()
     main()
