@@ -8,10 +8,11 @@ import pyautogui
 import win32com
 import win32com.client as wincl
 
-title = "работа с выделенными скриншотами: конверт в ICO > преобразование в текст > перевод > копирование в буфер"
+title = "работа с выделенными скриншотами: " \
+        "сохранение в png > преобразование в текст > перевод > копирование в буфер > конверт в ICO"
 tesseract = "https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-5.3.1.20230401.exe"
 tesseract_path = r"C:\Program Files\Tesseract-OCR"  # ! путь к установленному Tesseract OCR
-lang = "eng+rus+ukr" # "eng"  ! нужные языки "eng+rus+ukr"
+lang = "eng+rus+ukr"  # "eng"  ! нужные языки "eng+rus+ukr"
 translang = "russian"  # ! перевод eng ua
 
 
@@ -40,10 +41,10 @@ def capture_area():
     screenshot = ImageGrab.grab(bbox=(left, top, left + width, top + height))
     screen_path = "screenshot.png"
     screenshot.save(screen_path)
-    screenshot.show()
+    #  screenshot.show()  #  открывает файл
 
     img = imageio.v3.imread(screen_path)
-    imageio.imwrite("screenshot.ico", img)
+    imageio.imwrite("screenshot.ico", img)  # создаёт иконку
 
     try:
         import pytesseract

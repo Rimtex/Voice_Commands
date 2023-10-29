@@ -715,7 +715,7 @@ if __name__ == '__main__':
 
                 #: вставка из буфера # с авто переводом english\русский
                 elif re.match(r'"перев\w{0,3}\b"', prompt):
-                    print(f"{LGR}♫", end='')
+                    print(f"{LGR}~=", end='')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
@@ -727,7 +727,7 @@ if __name__ == '__main__':
 
                 #: вставка из буфера # з перекладом на українську
                 elif re.match(r'"украинск\w{0,2}\b"', prompt):
-                    print(f"{LGR}♫", end='')
+                    print(f"{LGR}~=", end='')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
@@ -739,7 +739,7 @@ if __name__ == '__main__':
 
                 #: вставка из буфера # с переводом на русский
                 elif re.match(r'"русск\w{0,2}\b"', prompt):
-                    print(f"{LGR}♫", end='')
+                    print(f"{LGR}~=", end='')
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
