@@ -686,7 +686,7 @@ if __name__ == '__main__':
                 #: запись даты
                 elif prompt == '"дата"' or prompt == '"дату"':
                     keyboard.write(date.today().strftime("%d.%m.%Y "))
-                    keyboard.write(datetime.now().strftime("%H,%M,%S")[0:5])  # - убрал секунды
+                    keyboard.write(datetime.now().strftime("%H:%M:%S")[0:5])  # - убрал секунды
 
                 #: озвучка текста из буфера
                 elif prompt in ('"озвучь"', '"озвучка"', '"озвучить"', '"озвучивает"', '"озвучивать"'):
@@ -821,7 +821,12 @@ if __name__ == '__main__':
                         speak_tts("говори быстрей пока не убежала")
                         key_press("down")
                         key_press("enter")
+                        key_press("enter")
                         key_press("up")
+                        key_press("space")
+                        keyboard.write(date.today().strftime("%d.%m.%Y "))
+                        keyboard.write(datetime.now().strftime("%H:%M:%S")[0:5])
+                        key_press("enter")
                         keyboard.write("! - ")
                         time.sleep(0.5)
                         key_press('CapsLock')
