@@ -10,7 +10,7 @@ import win32com.client as wincl
 
 title = "работа с выделенными скриншотами: " \
         "сохранение в png > преобразование в текст > перевод > копирование в буфер > конверт в ICO"
-tesseract = "https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-5.3.1.20230401.exe"
+tesseract = "https://github.com/UB-Mannheim/tesseract/wiki"
 tesseract_path = r"C:\Program Files\Tesseract-OCR"  # ! путь к установленному Tesseract OCR
 lang = "eng+rus+ukr"  # "eng"  ! нужные языки "eng+rus+ukr"
 translang = "russian"  # ! перевод eng ua
@@ -94,7 +94,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # Находим окно с именем 'писатель'
     screen = None
     screenshot_window = "скриншот"
     try:
