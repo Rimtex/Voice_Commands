@@ -3,14 +3,27 @@ import keyboard
 import pyaudio
 import pyautogui
 import win32com
+
 import win32com.client as wincl
 from colorama import Fore, init
 from vosk import Model, KaldiRecognizer
 
 from address_config import path_to_shortcut, model1
 
-import sounddevice as sd
-sd.query_devices()
+current_model = Model(model1)
+
+# Инициализация аудио потока
+rec = KaldiRecognizer(current_model, 48000)
+p = pyaudio.PyAudio()
+stream = p.open(
+    format=pyaudio.paInt16,
+    channels=1,
+    rate=48000,
+    input=True,
+    frames_per_buffer=4000
+)
+stream.start_stream()
+
 Heavy_writer_window = "голосовой переводчик"
 if __name__ == '__main__':
 

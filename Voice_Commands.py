@@ -236,10 +236,9 @@ except Exception as e:
     os.startfile(path_to_shortcut + assistant_window)
     exit()
 
+# Инициализация аудио потока
 rec = KaldiRecognizer(current_model, 48000)
 receng = KaldiRecognizer(english_model, 48000)
-
-# Инициализация аудио потока
 p = pyaudio.PyAudio()
 stream = p.open(
     format=pyaudio.paInt16,
@@ -976,7 +975,7 @@ if __name__ == '__main__':
 
                 #: рисование квадрата # + числа
                 elif 7 > len(words) > 1 and words[0] in ('черти', 'чертить', 'черкани') \
-                    and words[1] == 'квадрат':
+                        and words[1] == 'квадрат':
                     try:
                         repeat_num = sum(words_num[word] for word in words[2:])
                         num_ns = repeat_num
