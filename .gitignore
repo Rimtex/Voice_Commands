@@ -26,6 +26,6 @@
 /.vs/
 
 
-/voskmodels/*
+voskmodels/*
 /apps/screenshot.ico
 /apps/скриншот.lnk
