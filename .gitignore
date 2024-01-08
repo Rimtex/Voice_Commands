@@ -10,4 +10,4 @@ voskmodels/vosk-model-en-us-0.22/
 ярлыки/*.lnk
 ярлыки/*.url
 
-/apps/!*.py
+!apps/!*.py
