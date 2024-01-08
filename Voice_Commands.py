@@ -81,7 +81,7 @@ BLA = Fore.BLACK
 BWH = Back.WHITE
 SRA = Style.RESET_ALL
 
-init(convert=True)  # активация покраски
+init(convert=True)  # активация покраски hhhhhhhhhhhhh
 
 
 def printt(textt):
