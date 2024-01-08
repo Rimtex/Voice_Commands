@@ -2,9 +2,9 @@ import pyaudio
 import wave
 import keyboard
 from pydub import AudioSegment
-from pydub.playback import play
 
 filename = "recorded_audio.wav"  # Имя файла для записи
+
 
 def record_audio():
     frames = []
@@ -38,6 +38,7 @@ def record_audio():
 
     return frames
 
+
 def save_to_file(frames):
     wf = wave.open(filename, 'wb')
     wf.setnchannels(2)
@@ -46,10 +47,12 @@ def save_to_file(frames):
     wf.writeframes(b''.join(frames))
     wf.close()
 
+
 def increase_volume(input_file, output_file, gain):
     sound = AudioSegment.from_wav(input_file)
     louder_sound = sound + gain
     louder_sound.export(output_file, format="wav")
+
 
 # Запуск записи по нажатию кнопки
 audio_frames = record_audio()
