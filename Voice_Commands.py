@@ -56,7 +56,7 @@ import loader
 from loader import loader_screen_rimtex
 from converter import convert_paint, convert_trans, convert_delete
 
-from address_config import assistant_window, path_to_shortcut, ideas, reminder, models_directory, \
+from Setup_config import assistant_window, path_to_shortcut, ideas, reminder, models_directory, \
     model1, model2, model3, model4
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
@@ -1022,7 +1022,7 @@ if __name__ == '__main__':
 
                 # -: встроенные группы команд из keyboard_scripts.py
                 elif prompt != '""':
-                    from address_config import command_groups
+                    from Setup_config import command_groups
 
                     command_groups(prompt, words)
 
