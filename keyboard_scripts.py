@@ -11,7 +11,7 @@ from pyttsx3 import speak
 import loader
 import vocabulary
 
-from address_config import path_to_shortcut, requirements_path
+from Setup_config import path_to_shortcut, requirements_path
 
 colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN,
           Fore.LIGHTRED_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTBLUE_EX,
@@ -120,7 +120,7 @@ def keyhot(*keys):
 
 # для проигрывания случайной музыки
 def play_music():
-    from address_config import dir_path
+    from Setup_config import dir_path
     music_files = []
     for root, dirs, files_op in os.walk(dir_path):
         for file_op in files_op:
@@ -209,7 +209,7 @@ def key_symbols(prompt):
 
 
 def open_music(prompt):
-    from address_config import dir_path
+    from Setup_config import dir_path
     #: ♫ включение случайной музыки
     if prompt in ('"радио"', '"включи радио"'):
         print(f"{RED}Ϟ{LMA}?{GRE}♫{CYA} ˃˃˃{GRE}", end='')
@@ -539,7 +539,7 @@ def rimtex_reactions(prompt, words):
     elif prompt in ('"анекдот"', '"анекдоты"'):
         #  print(random.choice(colors) + '( •̪O )', end='')
         #  speak_tts(vocabulary.random_anecdote())
-        file_path = "F:\Rimtex\блокнот\анекдоты.txt"
+        file_path = "F:\\Rimtex\\блокнот\\анекдоты.txt"
         with open(file_path, 'r', encoding='utf-8') as file:
             jokes = file.read().split('\n\n')
             if jokes:

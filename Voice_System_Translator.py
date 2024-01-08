@@ -8,7 +8,7 @@ import win32com.client as wincl
 from colorama import Fore, init
 from vosk import Model, KaldiRecognizer
 
-from address_config import path_to_shortcut, model1
+from Setup_config import path_to_shortcut, model1
 
 current_model = Model(model1)
 

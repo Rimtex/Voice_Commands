@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cedeec9-66b8-4639-b43e-69a9062b0ace" name="Changes" comment="_">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Voice_Commands.py" beforeDir="false" afterPath="$PROJECT_DIR$/Voice_Commands.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Heavy_writer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Heavy_writer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Voice_System_Translator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Voice_System_Translator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keyboard_scripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/keyboard_scripts.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1704734732362</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="_">
+      <created>1704735034569</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1704735034569</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
