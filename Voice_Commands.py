@@ -56,7 +56,7 @@ import loader
 from loader import loader_screen_rimtex
 from converter import convert_paint, convert_trans, convert_delete
 
-from Setup_config import assistant_window, path_to_shortcut, ideas, reminder, models_directory, \
+from Setup_config import path_to_shortcut, ideas, reminder, models_directory, \
     model1, model2, model3, model4
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
@@ -150,6 +150,7 @@ print(Fore.RESET, end='')
 
 # Находим окно с именем 'ассистент'
 assistant = None
+assistant_window = "ассистент"
 try:
     assistant = pyautogui.getWindowsWithTitle(assistant_window)[0]
     assistant.moveTo(-8, 0)
