@@ -1,11 +1,5 @@
-/.idea/.gitignore
-/.idea/.name
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/inspectionProfiles/profiles_settings.xml
-/.idea/inspectionProfiles/Project_Default.xml
-/.idea/vcs.xml
-/.idea/Voice_Commands.iml
+/.idea/*
+/__pycache__/
 
 voskmodels/vosk-model-small-ru-0.22/
 voskmodels/vosk-model-ru-0.42/
@@ -16,12 +10,4 @@ voskmodels/vosk-model-en-us-0.22/
 ярлыки/*.lnk
 ярлыки/*.url
 
-/models/*.bin
-/apps/*.png
-/apps/*.txt
-/__pycache__/
-/apps/__pycache__/
-/.vs/
-
-/apps/screenshot.ico
-/apps/скриншот.lnk
+/apps/!*.py
