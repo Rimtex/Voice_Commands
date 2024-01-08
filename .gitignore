@@ -22,7 +22,6 @@ voskmodels/vosk-model-en-us-0.22/
 /__pycache__/
 /apps/__pycache__/
 /.vs/
-/venv/
 
 /apps/screenshot.ico
 /apps/скриншот.lnk
