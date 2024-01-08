@@ -293,12 +293,14 @@ def scripts_others(words):
             os.startfile(f"{path_to_shortcut}консоль")
             time.sleep(1)
             keyboard.write("pip install ")
+            time.sleep(1)
             keyhot('ctrl', 'v')
             key_press("enter")
         if re.match(r'\w{0,2}брос\w?\b|выки\w{0,5}\b|помойк\w?\b', words[0]):
             os.startfile(f"{path_to_shortcut}консоль")
             time.sleep(1)
             keyboard.write("pip uninstall ")
+            time.sleep(1)
             keyhot('ctrl', 'v')
             key_press("enter")
             time.sleep(2)
@@ -307,6 +309,7 @@ def scripts_others(words):
             os.startfile(f"{path_to_shortcut}консоль")
             time.sleep(1)
             keyboard.write(f"pip install --upgrade ")
+            time.sleep(1)
             keyhot('ctrl', 'v')
             key_press("enter")
 
@@ -476,6 +479,7 @@ def rimtex_reactions(prompt, words):
         loader.smile_generator()
         speak_tts(vocabulary.sp_rec_reaction_Fuck())
     elif any(word in prompt[1:-1] for word in ('сука', 'сучара', 'охуел', 'нахуй', 'тварь')):
+        loader.smile_generator()
         speak_tts("давай без агрессии")
     elif any(word in prompt[1:-1] for word in ('агрессии', 'агрессия', 'ладно')):
         print(random.choice(colors) + f"{LRE}♥ {GRE}cԅ(‾ε‾ԅ)", end='')
@@ -533,5 +537,12 @@ def rimtex_reactions(prompt, words):
         print(random.choice(colors) + '(ˇò_ó)', end='')
         speak_tts(vocabulary.random_rhymes())
     elif prompt in ('"анекдот"', '"анекдоты"'):
-        print(random.choice(colors) + '( •̪O )', end='')
-        speak_tts(vocabulary.random_anecdote())
+        #  print(random.choice(colors) + '( •̪O )', end='')
+        #  speak_tts(vocabulary.random_anecdote())
+        file_path = "F:\Rimtex\блокнот\анекдоты.txt"
+        with open(file_path, 'r', encoding='utf-8') as file:
+            jokes = file.read().split('\n\n')
+            if jokes:
+                speak_tts(random.choice(jokes))
+            else:
+                print("Файл с анекдотами пуст.")

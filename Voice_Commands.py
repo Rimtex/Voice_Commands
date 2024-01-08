@@ -81,7 +81,7 @@ BLA = Fore.BLACK
 BWH = Back.WHITE
 SRA = Style.RESET_ALL
 
-init(convert=True)  # активация покраски hhhhhhhhhhhhh
+init(convert=True)  # активация покраски
 
 
 def printt(textt):
@@ -697,7 +697,7 @@ if __name__ == '__main__':
                     speak_tts(f"{text}")
 
                 #: озвучка текста из буфера с переводом
-                elif prompt in ('"зачитай"', '"прочитай"', '"прочти"', '"прочитать"'):
+                elif prompt in ('"зачитай"', '"прочитай"', '"прочти"', '"прочитать"', '"читай"'):
                     win32clipboard.OpenClipboard()
                     text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
                     win32clipboard.CloseClipboard()
@@ -975,8 +975,8 @@ if __name__ == '__main__':
                         print(f"{LRE}{e} {WHI}({LGR}{words[0]} + направление(я) + числа{WHI}) {YEL}!= {LRE}", end='')
 
                 #: рисование квадрата # + числа
-                elif 7 > len(words) > 1 and words[0] in ('нарисуй', 'рисуй', 'рисунок', 'рисования', 'рисование') and \
-                        words[1] == 'квадрат':
+                elif 7 > len(words) > 1 and words[0] in ('черти', 'чертить', 'черкани') \
+                    and words[1] == 'квадрат':
                     try:
                         repeat_num = sum(words_num[word] for word in words[2:])
                         num_ns = repeat_num
