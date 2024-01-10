@@ -20,3 +20,7 @@ pytesseract
 pyperclip
 imageio
 sounddevice
+
+discord.py
+discord
+g4f
