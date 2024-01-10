@@ -16,4 +16,5 @@ voskmodels/vosk-model-en-us-0.22/
 /apps/*.png
 
 
-/Token.py
+/token.txt
+

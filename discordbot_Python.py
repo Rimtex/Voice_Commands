@@ -3,9 +3,8 @@ import g4f
 
 import vocabulary
 
-import Token
-
-TOKEN = Token.Discord_token  # Устанавливаем токен Discord
+with open('token.txt', 'r') as token_file:
+    token = token_file.readline()
 
 # Устанавливаем Intents для доступа к различным возможностям Discord, включая прослушивание сообщений.
 intents = discord.Intents.all()
@@ -20,8 +19,20 @@ async def on_ready():
     for channel in channels:
         if channel.type == discord.ChannelType.text:
             print(f'Connected to text channel: {channel}')
-            # Print all available providers
 
+
+"""
+target_channel_id = 1068528493605961821
+
+# Функция, которая будет вызываться, когда бот будет готов работать.
+@client.event
+async def on_ready():
+    print(f'{client.user} has connected to Discord!')
+    for guild in client.guilds:
+        for channel in guild.channels:
+            if channel.type == discord.ChannelType.text and channel.id == target_channel_id:
+                print(f'Connected to text channel: {channel}')
+"""
 
 role1 = "!!Твоя роль - пьяный боевой генерал алкоголик! отвечай по-русски и с придурковатостью!!"
 role2 = "!!отвечай на русском!!"
@@ -62,7 +73,7 @@ async def on_message(message):
         await message.channel.send(vocabulary.random_anecdote())
     elif len(words) == 1 and (words[0] == "мем"):
         await message.channel.send(vocabulary.sp_rec_reaction_memequotes())
-    elif len(words) == 1 and (words[0] == "ауф"):
+    elif len(words) == 1 and (words[0] == "волк"):
         await message.channel.send(vocabulary.sp_rec_reaction_auf())
     elif len(words) == 1 and (words[0] == "афоризм"):
         await message.channel.send(vocabulary.random_response_aphorism())
@@ -71,4 +82,4 @@ async def on_message(message):
 
 
 # Запускаем бота
-client.run(TOKEN)
+client.run(token)
