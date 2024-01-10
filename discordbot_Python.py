@@ -35,7 +35,7 @@ async def on_ready():
 """
 
 
-def process_message(gptprompt):
+def process_message_bing(gptprompt):
     response = g4f.ChatCompletion.create(
         model=g4f.models.gpt_4,
         messages=[{"role": "user", "content": gptprompt}],
@@ -65,15 +65,15 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    elif message.content.startswith('1!'):
+    elif message.content.startswith('2!'):
         gptprompt = message.content[2:]
 
         if gptprompt is not None:
-            response = await client.loop.run_in_executor(executor, process_message, gptprompt)
+            response = await client.loop.run_in_executor(executor, process_message_bing, gptprompt)
             await message.channel.send(response)
 
-    elif message.content.startswith('2!'):
-        gptprompt = message.content[2:]
+    elif message.content.startswith('!'):
+        gptprompt = message.content[1:]
         if gptprompt is not None:
             response = await client.loop.run_in_executor(executor, process_message_gpt, gptprompt)
             response_text = ''.join(response)
@@ -94,10 +94,3 @@ async def on_message(message):
 
 # Запускаем бота
 client.run(token)
-
-"""
-
-
-
-
-"""
