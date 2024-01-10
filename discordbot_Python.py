@@ -1,7 +1,8 @@
 import discord
 import g4f
-
+from concurrent.futures import ThreadPoolExecutor
 import vocabulary
+
 
 with open('token.txt', 'r') as token_file:
     token = token_file.readline()
@@ -11,7 +12,6 @@ intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
 
-# Функция, которая будет вызываться, когда бот будет готов работать.
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
@@ -21,24 +21,26 @@ async def on_ready():
             print(f'Connected to text channel: {channel}')
 
 
-"""
-target_channel_id = 1068528493605961821
+def process_message(gptprompt):
+    response = g4f.ChatCompletion.create(
+        model=g4f.models.gpt_4,
+        messages=[{"role": "user", "content": gptprompt}],
+    )
+    return response
 
-# Функция, которая будет вызываться, когда бот будет готов работать.
-@client.event
-async def on_ready():
-    print(f'{client.user} has connected to Discord!')
-    for guild in client.guilds:
-        for channel in guild.channels:
-            if channel.type == discord.ChannelType.text and channel.id == target_channel_id:
-                print(f'Connected to text channel: {channel}')
-"""
-
-role1 = "!!Твоя роль - пьяный боевой генерал алкоголик! отвечай по-русски и с придурковатостью!!"
-role2 = "!!отвечай на русском!!"
+def process_message_gpt(gptprompt):
+    response = g4f.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": gptprompt}],
+        stream=True,
+    )
+    bot_responses = []
+    for gptmessage in response:
+        bot_responses.append(gptmessage)
+    return bot_responses
 
 
-# Обработчик сообщений в дискорде
+executor = ThreadPoolExecutor()
 @client.event
 async def on_message(message):
     prompt = message.content
@@ -48,26 +50,18 @@ async def on_message(message):
 
     elif message.content.startswith('1!'):
         gptprompt = message.content[2:]
-        response = g4f.ChatCompletion.create(
-            model=g4f.models.gpt_4,
-            messages=[{"role": "user", "content": gptprompt}],
-        )  # Alternative model setting
+
         if gptprompt is not None:
+            response = await client.loop.run_in_executor(executor, process_message, gptprompt)
             await message.channel.send(response)
 
     elif message.content.startswith('2!'):
         gptprompt = message.content[2:]
-        response = g4f.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": gptprompt}],
-            stream=True,
-        )
-        bot_responses = []
         if gptprompt is not None:
-            for gptmessage in response:
-                bot_responses.append(gptmessage)
-        if bot_responses:
-            await message.channel.send(bot_responses[0])
+            response = await client.loop.run_in_executor(executor, process_message_gpt, gptprompt)
+            response_text = ' '.join(response)
+            response_text = response_text.strip()
+            await message.channel.send(response_text)
 
     elif len(words) == 1 and (words[0] == "анекдот"):
         await message.channel.send(vocabulary.random_anecdote())
@@ -80,6 +74,12 @@ async def on_message(message):
     elif len(words) == 1 and (words[0] == "стих"):
         await message.channel.send(vocabulary.random_rhymes())
 
-
 # Запускаем бота
 client.run(token)
+
+"""
+
+
+
+
+"""

@@ -656,8 +656,8 @@ if __name__ == '__main__':
                         keyhot('win', 'Down')
 
                 #: закрывание всех окон
-                elif prompt in ('"убей всех"', '"растрелли"', '"расстрел"', '"застрели"', '"расстрел окон"'
-                                , '"расстреле"', '"расстрелять"'):
+                elif prompt in ('"убей всех"', '"растрелли"', '"расстрел"', '"застрели"', '"расстрел окон"',
+                                '"расстреле"', '"расстрелять"'):
                     print(f"""{LRE} ({LGR}√{LRE}¬_¬)ԅ⌐╦╦═─‒=═≡Ξ{SRA}""", end='')
                     assistant.minimize()
                     assistant.restore()
@@ -1045,4 +1045,4 @@ if __name__ == '__main__':
             # конвертер команд конец
             except Exception as e:
                 print(traceback.format_exc())
-                print(f"{LRE} ʕ•ᴥ•ʔʃ Ошибка :{SRA}", e)
+                print(f"{LRE} ʕ•ᴥ•ʔʃОшибка{SRA}", e)
