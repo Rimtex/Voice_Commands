@@ -3,12 +3,14 @@ import g4f
 
 import vocabulary
 
+import Token
+
+TOKEN = Token.Discord_token  # Устанавливаем токен Discord
+
 # Устанавливаем Intents для доступа к различным возможностям Discord, включая прослушивание сообщений.
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
-import Token
-TOKEN = Token.Discord_token  # Устанавливаем токен Discord
 
 # Функция, которая будет вызываться, когда бот будет готов работать.
 @client.event
@@ -66,6 +68,7 @@ async def on_message(message):
         await message.channel.send(vocabulary.random_response_aphorism())
     elif len(words) == 1 and (words[0] == "стих"):
         await message.channel.send(vocabulary.random_rhymes())
+
 
 # Запускаем бота
 client.run(TOKEN)
