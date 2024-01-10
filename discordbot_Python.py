@@ -59,7 +59,7 @@ async def on_message(message):
         gptprompt = message.content[2:]
         if gptprompt is not None:
             response = await client.loop.run_in_executor(executor, process_message_gpt, gptprompt)
-            response_text = ' '.join(response)
+            response_text = ''.join(response)
             response_text = response_text.strip()
             await message.channel.send(response_text)
 
