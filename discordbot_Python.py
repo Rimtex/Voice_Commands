@@ -8,7 +8,7 @@ import vocabulary
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
-TOKEN = "MTA3MzI5OTgyMDY4MjQyNDM1MA.GPC8da.-Y2OIyxXggb39AYYF1b_0n562kPyCR7G9SFmgo"  # Устанавливаем токен Discord
+TOKEN = ""  # Устанавливаем токен Discord
 
 # Функция, которая будет вызываться, когда бот будет готов работать.
 @client.event
