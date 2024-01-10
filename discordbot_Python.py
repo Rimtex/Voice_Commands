@@ -3,7 +3,6 @@ import g4f
 from concurrent.futures import ThreadPoolExecutor
 import vocabulary
 
-
 with open('token.txt', 'r') as token_file:
     token = token_file.readline()
 
@@ -11,7 +10,21 @@ with open('token.txt', 'r') as token_file:
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
+# ID канала, в котором бот должен работать
+target_channel_ids = [1068528493605961821, 1134946605372559360]  # Замените на реальный ID вашего канала
 
+
+@client.event
+async def on_ready():
+    print(f'{client.user} has connected to Discord!')
+    for guild in client.guilds:
+        for channel in guild.channels:
+            if channel.type == discord.ChannelType.text and channel.id in target_channel_ids:
+                print(f'Connected to text channel: {channel}')
+
+
+# для всех каналов
+"""
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
@@ -19,6 +32,7 @@ async def on_ready():
     for channel in channels:
         if channel.type == discord.ChannelType.text:
             print(f'Connected to text channel: {channel}')
+"""
 
 
 def process_message(gptprompt):
@@ -27,6 +41,7 @@ def process_message(gptprompt):
         messages=[{"role": "user", "content": gptprompt}],
     )
     return response
+
 
 def process_message_gpt(gptprompt):
     response = g4f.ChatCompletion.create(
@@ -41,6 +56,8 @@ def process_message_gpt(gptprompt):
 
 
 executor = ThreadPoolExecutor()
+
+
 @client.event
 async def on_message(message):
     prompt = message.content
@@ -73,6 +90,7 @@ async def on_message(message):
         await message.channel.send(vocabulary.random_response_aphorism())
     elif len(words) == 1 and (words[0] == "стих"):
         await message.channel.send(vocabulary.random_rhymes())
+
 
 # Запускаем бота
 client.run(token)
