@@ -1,4 +1,3 @@
-
 import discord
 import g4f
 
@@ -8,7 +7,8 @@ import vocabulary
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
-TOKEN = ""  # Устанавливаем токен Discord
+import Token
+TOKEN = Token.Discord_token  # Устанавливаем токен Discord
 
 # Функция, которая будет вызываться, когда бот будет готов работать.
 @client.event

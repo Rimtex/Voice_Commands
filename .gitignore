@@ -15,4 +15,5 @@ voskmodels/vosk-model-en-us-0.22/
 /apps/*.ico
 /apps/*.png
 
-discordbot_Python.py
+
+/Token.py
