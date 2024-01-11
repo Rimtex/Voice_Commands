@@ -117,8 +117,8 @@ async def on_message(message):  # Обработчик сообщений в д�
                 second_part = response[5:]
 
                 # Join the image URLs into strings
-                first_part_message = " ".join(first_part)
-                second_part_message = " ".join(second_part)
+                first_part_message = "\n".join(first_part)
+                second_part_message = "\n".join(second_part)
 
                 # Send two separate messages with each set of URLs
                 await message.channel.send(first_part_message)
