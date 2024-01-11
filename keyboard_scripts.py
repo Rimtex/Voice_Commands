@@ -463,21 +463,12 @@ def rimtex_personal(prompt):
 
 
 def rimtex_reactions(prompt, words):
-    from Voice_Commands import speak_irina_tts, speak_tts, random_voice
+    from Voice_Commands import speak_tts
 
     #: ♪ реакции на слова или фразы
-    if prompt == '"я робот"':
-        print(random.choice(colors) + "[-_-]", end='')
-        speak_irina_tts(vocabulary.random_response_robot())
-    elif prompt == '"не дано"':
-        print(random.choice(colors) + "♪{•ᴥ•}♫", end='')
-        speak_irina_tts(vocabulary.random_response_nedano())
-    elif prompt in ('"слушай"', '"слышь"', '"слышишь"', '"слышь ты"'):
+    if prompt in ('"слушай"', '"слышь"', '"слышишь"', '"слышь ты"'):
         loader.smile_gen_erator()
         speak_tts(vocabulary.random_response())
-    elif any(word in prompt[1:-1] for word in ('блядь', 'нихуя', 'бля', 'ахуеть', 'бляха', 'ебать')):
-        loader.smile_generator()
-        speak_tts(vocabulary.sp_rec_reaction_Fuck())
     elif any(word in prompt[1:-1] for word in ('сука', 'сучара', 'охуел', 'нахуй', 'тварь')):
         loader.smile_generator()
         speak_tts("давай без агрессии")
@@ -487,24 +478,9 @@ def rimtex_reactions(prompt, words):
         loader.smile_gen_erator()
         speak_tts("конечно. ты прав!")
         speak_tts(vocabulary.random_response_aphorism())
-    elif len(words) == 1 and words[0] == "ублюдок":
-        print(random.choice(colors) + "┌п┐(._.)┌∩┐", end='')
-        speak_tts(vocabulary.sp_rec_reaction_bastard())
-    elif len(words) == 1 and (words[0] == "цитаты" or words[0] == "мемы"):
-        print(random.choice(colors) + "(ʘ͜͡)", end='')
-        speak_tts(vocabulary.sp_rec_reaction_memequotes())
     elif len(words) == 1 and (words[0] == "внатуре" or words[0] == "чётко"):
         print(random.choice(colors) + "(⌐▪˽▪)", end='')
         speak_tts(vocabulary.sp_rec_reaction_auf())
-    elif len(words) == 1 and (words[0] == 'обама' or words[0] == 'барак'):
-        print(random.choice(colors) + "(•`_´•)", end='')
-        speak_tts(vocabulary.random_response_obeme())
-    elif prompt in ('"шаурма"', '"если хочешь кушать"', '"приходи в мой шаурма"'):
-        print(random.choice(colors) + "(°□°)", end='')
-        speak_tts(vocabulary.sp_rec_reaction_shawarma())
-    elif prompt in ('"ёбаная шиза"', '"шизо ебаная"', '"шиза ебаная"', '"шиза ебаное"'):
-        print(random.choice(colors) + "(→ᴥ←)", end='')
-        speak_tts(vocabulary.random_response_upyachka())
     elif prompt in ('"идущий к реке"', '"идущие к реке"'):
         print(random.choice(colors) + "(→_→)", end='')
         speak_tts(vocabulary.random_response_Goingtotheriver())
@@ -512,15 +488,6 @@ def rimtex_reactions(prompt, words):
         print(random.choice(colors) + "└(`▪´)┐", end='')
         speak.rate = 0
         speak_tts(vocabulary.sp_rec_reaction_pechenielom())
-    elif prompt == '"история про говно"':
-        print(random.choice(colors) + "(○´ ― `)", end='')
-        speak_tts(vocabulary.random_response_shit())
-    elif prompt == '"бурлеск"':
-        print(random.choice(colors) + "(’̀₀’̀Q )", end='')
-        speak_tts(vocabulary.random_response_Burlestat())
-    elif prompt == '"месть"':
-        print(random.choice(colors) + "(¬_¬`)", end='')
-        random.choice(random_voice)(vocabulary.random_response_revenge())
     elif prompt in ('"расскажи историю"', '"историю расскажи"'):
         print(random.choice(colors) + "(~‾▾‾)~ ╓───╖ ┌┤", end='')
         speak_tts(vocabulary.random_response_stories())
@@ -537,12 +504,4 @@ def rimtex_reactions(prompt, words):
         print(random.choice(colors) + '(ˇò_ó)', end='')
         speak_tts(vocabulary.random_rhymes())
     elif prompt in ('"анекдот"', '"анекдоты"'):
-        #  print(random.choice(colors) + '( •̪O )', end='')
-        #  speak_tts(vocabulary.random_anecdote())
-        file_path = "F:\\Rimtex\\блокнот\\анекдоты.txt"
-        with open(file_path, 'r', encoding='utf-8') as file:
-            jokes = file.read().split('\n\n')
-            if jokes:
-                speak_tts(random.choice(jokes))
-            else:
-                print("Файл с анекдотами пуст.")
+        speak_tts(vocabulary.random_anecdote())
