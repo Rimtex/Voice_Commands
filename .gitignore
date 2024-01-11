@@ -7,7 +7,7 @@ voskmodels/vosk-model-ru-0.42/
 voskmodels/vosk-model-small-en-us-0.15/
 voskmodels/vosk-model-en-us-0.22/
 
-ярлыки/напоминалка.txt
+ярлыки/*.txt
 ярлыки/*.lnk
 ярлыки/*.url
 
