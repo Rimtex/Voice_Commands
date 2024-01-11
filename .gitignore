@@ -19,3 +19,7 @@ voskmodels/vosk-model-en-us-0.22/
 /token.txt
 
 /apps/gpt_answer.txt
+/apps/g4f_neyro.py
+/apps/actions_remember.txt
+
+/Tester.py

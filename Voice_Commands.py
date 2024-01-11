@@ -56,7 +56,7 @@ import loader
 from loader import loader_screen_rimtex
 from converter import convert_paint, convert_trans, convert_delete
 
-from Setup_config import path_to_shortcut, ideas, reminder, models_directory, \
+from setup_config import path_to_shortcut, ideas, reminder, models_directory, \
     model1, model2, model3, model4
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
