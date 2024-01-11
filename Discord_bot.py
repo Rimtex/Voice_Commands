@@ -1,7 +1,9 @@
 import discord
 import g4f
+from craiyon import Craiyon
 from concurrent.futures import ThreadPoolExecutor
 import vocabulary
+import asyncio
 
 with open('token.txt', 'r') as token_file:  # токен Discord скопировать в token.txt
     token = token_file.readline()
@@ -34,13 +36,7 @@ async def on_ready():
             print(f'Connected to text channel: {channel}')
 """
 
-
-def process_message_bing(gptprompt):
-    response = g4f.ChatCompletion.create(
-        model=g4f.models.gpt_4,  # по сути - Bing
-        messages=[{"role": "user", "content": gptprompt}],
-    )
-    return response
+executor = ThreadPoolExecutor()
 
 
 def process_message_gpt(gptprompt):
@@ -55,7 +51,23 @@ def process_message_gpt(gptprompt):
     return bot_responses
 
 
-executor = ThreadPoolExecutor()
+def process_message_bing(gptprompt):
+    response = g4f.ChatCompletion.create(
+        model=g4f.models.gpt_4,  # по сути - Bing
+        messages=[{"role": "user", "content": gptprompt}],
+    )
+    return response
+
+
+def genimage(imgprompt):
+    generator = Craiyon()  # Instantiate the api wrapper
+    try:
+        result = generator.generate(imgprompt)
+        image_urls = result.images  # Get the list of image URLs
+        return image_urls
+    except Exception as e:
+        print(f"Error generating image: {e}")
+        return None
 
 
 @client.event
@@ -65,12 +77,6 @@ async def on_message(message):  # Обработчик сообщений в д�
     if message.author == client.user:
         return
 
-    elif message.content.startswith('2!'):
-        gptprompt = message.content[2:]
-        if gptprompt is not None:
-            response = await client.loop.run_in_executor(executor, process_message_bing, gptprompt)
-            await message.channel.send(response)
-
     elif message.content.startswith('!'):
         gptprompt = message.content[1:]
         if gptprompt is not None:
@@ -78,6 +84,47 @@ async def on_message(message):  # Обработчик сообщений в д�
             response_text = ''.join(response)
             response_text = response_text.strip()
             await message.channel.send(response_text)
+
+    elif message.content.startswith('2!'):
+        gptprompt = message.content[2:]
+        if gptprompt is not None:
+            response = await client.loop.run_in_executor(executor, process_message_bing, gptprompt)
+            await message.channel.send(response)
+
+    elif message.content.startswith('3!'):
+        imgprompt = message.content[2:]
+        if imgprompt is not None:
+            await message.channel.send(f"Малюю каляку \"{imgprompt}\"...")
+
+            retry_count = 9  # Set the maximum number of retries
+            response = None
+
+            while retry_count > 0:
+                response = await client.loop.run_in_executor(executor, genimage, imgprompt)
+                if response is not None:
+                    break  # Break out of the loop if the response is successful
+                else:
+                    await asyncio.sleep(5)  # Wait for 5 seconds before retrying
+                    retry_count -= 1
+
+            if response is not None:
+                async for msg in message.channel.history(limit=2):
+                    if msg.author == client.user:
+                        await msg.delete()
+
+                # Split the list of image URLs into two parts
+                first_part = response[:5]
+                second_part = response[5:]
+
+                # Join the image URLs into strings
+                first_part_message = " ".join(first_part)
+                second_part_message = " ".join(second_part)
+
+                # Send two separate messages with each set of URLs
+                await message.channel.send(first_part_message)
+                await message.channel.send(second_part_message)
+            else:
+                await message.channel.send("Не удалось выполнить запрос после нескольких попыток.")
 
     elif len(words) == 1 and (words[0] == "анекдот"):
         await message.channel.send(vocabulary.random_anecdote())
