@@ -1023,7 +1023,7 @@ if __name__ == '__main__':
 
                 # -: встроенные группы команд из keyboard_scripts.py
                 elif prompt != '""':
-                    from Setup_config import command_groups
+                    from setup_config import command_groups
 
                     command_groups(prompt, words)
 
