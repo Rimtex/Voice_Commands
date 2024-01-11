@@ -7,7 +7,7 @@ import win32com.client as wincl
 from colorama import Fore, init
 from vosk import Model, KaldiRecognizer
 
-from Setup_config import path_to_shortcut, model3
+from setup_config import path_to_shortcut, model3
 
 Heavy_writer_window = "писатель"
 if __name__ == '__main__':

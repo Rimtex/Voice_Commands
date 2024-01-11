@@ -14,12 +14,12 @@ voskmodels/vosk-model-en-us-0.22/
 
 /apps/*.ico
 /apps/*.png
-
+/apps/*.txt
 
 /token.txt
 
-/apps/gpt_answer.txt
-/apps/g4f_neyro.py
-/apps/actions_remember.txt
+
+
+
 
 /Tester.py
