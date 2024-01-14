@@ -61,9 +61,10 @@ toggle_switch = True
 
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
-        model=g4f.models.gpt_35_turbo,
+        model=g4f.models.gpt_4_turbo,
         messages=messages)
     # print(response)
+
     return response
 
 
@@ -100,6 +101,7 @@ async def on_message(message):  # Обработчик сообщений в д�
             messagesgpt.append({"role": "assistant", "content": ask_gpt(messages=messagesgpt)})
             response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
             # response = ask_gpt(messages=messagesgpt)
+            await asyncio.sleep(1)
             await message.channel.send(response)
 
     elif message.content.startswith('3!'):
