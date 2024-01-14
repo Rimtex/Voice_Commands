@@ -13,15 +13,15 @@ psutil
 PyGetWindow
 tqdm
 
-## (apps requirements)
-# pynput
-# Pillow
-# pytesseract
-# pyperclip
-# imageio
-# sounddevice
-# pydub
+discord.py
+discord
+g4f
 
-# discord.py
-# discord
-# g4f==0.1.9.9
+## (apps requirements)
+pynput
+Pillow
+pytesseract
+pyperclip
+imageio
+sounddevice
+pydub

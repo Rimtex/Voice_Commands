@@ -5,6 +5,8 @@ from concurrent.futures import ThreadPoolExecutor
 import vocabulary
 import asyncio
 
+# from discord.ext import commands
+
 with open('token.txt', 'r') as token_file:  # токен Discord скопировать в token.txt
     token = token_file.readline()
 
@@ -15,7 +17,7 @@ client = discord.Client(intents=intents)
 # ID канала, в котором бот должен работать: пкм на канал - копировать ID канала
 target_channel_ids = [1068528493605961821, 1134946605372559360]  # Замените на реальный ID вашего канала
 
-
+"""
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
@@ -23,10 +25,11 @@ async def on_ready():
         for channel in guild.channels:
             if channel.type == discord.ChannelType.text and channel.id in target_channel_ids:
                 print(f'Connected to text channel: {channel}')
+"""
 
 
 # для всех каналов
-"""
+
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
@@ -34,29 +37,6 @@ async def on_ready():
     for channel in channels:
         if channel.type == discord.ChannelType.text:
             print(f'Connected to text channel: {channel}')
-"""
-
-executor = ThreadPoolExecutor()
-
-
-def process_message_gpt(gptprompt):
-    response = g4f.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": gptprompt}],
-        stream=True,
-    )
-    bot_responses = []
-    for gptmessage in response:
-        bot_responses.append(gptmessage)
-    return bot_responses
-
-
-def process_message_bing(gptprompt):
-    response = g4f.ChatCompletion.create(
-        model=g4f.models.gpt_4,  # по сути - Bing
-        messages=[{"role": "user", "content": gptprompt}],
-    )
-    return response
 
 
 def genimage(imgprompt):
@@ -70,35 +50,64 @@ def genimage(imgprompt):
         return None
 
 
+"""
+(√¬_¬)
+"""
+
+executor = ThreadPoolExecutor()
+
+toggle_switch = True
+
+
+def ask_gpt(messages: list) -> str:
+    response = g4f.ChatCompletion.create(
+        model=g4f.models.gpt_35_turbo,
+        messages=messages)
+    # print(response)
+    return response
+
+
+messagesgpt = []
+
+
 @client.event
 async def on_message(message):  # Обработчик сообщений в дискорде
+    global toggle_switch
     prompt = message.content
     words = prompt.split()
     if message.author == client.user:
         return
 
-    elif message.content.startswith('!'):
-        gptprompt = message.content[1:]
-        if gptprompt is not None:
-            response = await client.loop.run_in_executor(executor, process_message_gpt, gptprompt)
-            response_text = ''.join(response)
-            response_text = response_text.strip()
-            await message.channel.send(response_text)
+    elif not toggle_switch and message.content in ["!", "ё"]:
+        toggle_switch = True
+        messagesgpt.clear()
+        await message.channel.send("(√¬_¬) готов базарить! че надо?")
 
-    elif message.content.startswith('2!'):
-        gptprompt = message.content[2:]
-        if gptprompt is not None:
-            response = await client.loop.run_in_executor(executor, process_message_bing, gptprompt)
+    elif toggle_switch and len(words) == 1 and message.content in ["сброс", "сначала", "снова", "#", "№", "$"]:
+        messagesgpt.clear()
+        await message.channel.send("(↺▪˽▪) чат сброшен")
+
+    elif toggle_switch and message.content in ["!", "ё"]:
+        toggle_switch = False
+        messagesgpt.clear()
+        await message.channel.send("(ꞁꞁ×_×)")
+
+    elif toggle_switch and not message.content.startswith('3!') and not message.content.startswith('`'):
+        gptgprompt = message.content
+        if gptgprompt is not None:
+            print(gptgprompt)
+            messagesgpt.append({"role": "user", "content": gptgprompt})
+            messagesgpt.append({"role": "assistant", "content": ask_gpt(messages=messagesgpt)})
+            response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+            # response = ask_gpt(messages=messagesgpt)
             await message.channel.send(response)
 
     elif message.content.startswith('3!'):
         imgprompt = message.content[2:]
         if imgprompt is not None:
-            await message.channel.send(f"Малюю каляку \"{imgprompt}\"...")
-
+            await message.channel.send(f"(~o▾o) Малюю каляку \"{imgprompt}\"...")
             retry_count = 9  # Set the maximum number of retries
             response = None
-
             while retry_count > 0:
                 response = await client.loop.run_in_executor(executor, genimage, imgprompt)
                 if response is not None:
@@ -126,6 +135,21 @@ async def on_message(message):  # Обработчик сообщений в д�
             else:
                 await message.channel.send("Не удалось выполнить запрос после нескольких попыток.")
 
+    elif message.content.startswith('`clear'):
+        if message.author.display_name == "Rimtex":
+            # Check if the command has the correct number of arguments
+            args = message.content.split()
+            if len(args) != 2 or not args[1].isdigit():
+                await message.channel.send('Usage: `clear X (X should be a number)')
+                return
+            num_messages_to_delete = int(args[1])
+            await message.channel.purge(limit=num_messages_to_delete + 1)
+
+
+"""
+    prompt = message.content
+    words = prompt.split()
+
     elif len(words) == 1 and (words[0] == "анекдот"):
         await message.channel.send(vocabulary.random_anecdote())
     elif len(words) == 1 and (words[0] == "волк"):
@@ -134,6 +158,6 @@ async def on_message(message):  # Обработчик сообщений в д�
         await message.channel.send(vocabulary.random_response_aphorism())
     elif len(words) == 1 and (words[0] == "стих"):
         await message.channel.send(vocabulary.random_rhymes())
-
+"""
 
 client.run(token)  # Запускаем бота
