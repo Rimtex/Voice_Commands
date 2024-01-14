@@ -145,11 +145,6 @@ async def on_message(message):  # Обработчик сообщений в д�
             num_messages_to_delete = int(args[1])
             await message.channel.purge(limit=num_messages_to_delete + 1)
 
-
-"""
-    prompt = message.content
-    words = prompt.split()
-
     elif len(words) == 1 and (words[0] == "анекдот"):
         await message.channel.send(vocabulary.random_anecdote())
     elif len(words) == 1 and (words[0] == "волк"):
@@ -158,6 +153,6 @@ async def on_message(message):  # Обработчик сообщений в д�
         await message.channel.send(vocabulary.random_response_aphorism())
     elif len(words) == 1 and (words[0] == "стих"):
         await message.channel.send(vocabulary.random_rhymes())
-"""
+
 
 client.run(token)  # Запускаем бота
