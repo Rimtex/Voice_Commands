@@ -1,5 +1,4 @@
 import os
-
 import discord
 import g4f
 from craiyon import Craiyon
@@ -7,10 +6,10 @@ from concurrent.futures import ThreadPoolExecutor
 import vocabulary
 import asyncio
 
-# Ensure a single event loop
-loop = asyncio.get_event_loop()
-
-# from discord.ext import commands
+# Проверка наличия файла '2000.txt' и его создание при необходимости
+if not os.path.exists('2000.txt'):
+    with open('2000.txt', 'w', encoding='utf-8') as file2000:
+        file2000.write("")
 
 with open('token.txt', 'r') as token_file:  # токен Discord скопировать в token.txt
     token = token_file.readline()
@@ -19,10 +18,9 @@ with open('token.txt', 'r') as token_file:  # токен Discord скопиро�
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
+"""
 # ID канала, в котором бот должен работать: пкм на канал - копировать ID канала
 target_channel_ids = [1068528493605961821, 1134946605372559360]  # Замените на реальный ID вашего канала
-
-"""
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
@@ -33,17 +31,16 @@ async def on_ready():
 """
 
 
-# для всех каналов
-
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
-    channels = client.get_all_channels()
+    channels = client.get_all_channels()  # для всех каналов
     for channel in channels:
         if channel.type == discord.ChannelType.text:
             print(f'Connected to text channel: {channel}')
 
 
+# вызов рисовалки
 def genimage(imgprompt):
     generator = Craiyon()  # Instantiate the api wrapper
     try:
@@ -55,15 +52,7 @@ def genimage(imgprompt):
         return None
 
 
-"""
-(√¬_¬)
-"""
-
-executor = ThreadPoolExecutor()
-
-toggle_switch = True
-
-
+# вызов нейро чата
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
         model=g4f.models.gpt_4_turbo,
@@ -74,10 +63,9 @@ def ask_gpt(messages: list) -> str:
 
 messagesgpt = []
 
-# Проверка наличия файла '2000.txt' и его создание при необходимости
-if not os.path.exists('2000.txt'):
-    with open('2000.txt', 'w', encoding='utf-8') as file2000:
-        file2000.write("")
+executor = ThreadPoolExecutor()  # без него ошибка - client.py:441>> is being executed.
+
+toggle_switch = True  # выключатель нейро чата
 
 
 @client.event
@@ -85,8 +73,10 @@ async def on_message(message):  # Обработчик сообщений в д�
 
     global toggle_switch
     global messagesgpt
+
     prompt = message.content
     words = prompt.split()
+
     if message.author == client.user:
         return
 
@@ -103,15 +93,13 @@ async def on_message(message):  # Обработчик сообщений в д�
         toggle_switch = True
         messagesgpt.clear()
         await message.channel.send("(√¬_¬) готов базарить! че надо?")
-
-    elif toggle_switch and len(words) == 1 and message.content in ["сброс", "сначала", "снова", "#", "№", "$"]:
-        messagesgpt.clear()
-        await message.channel.send("(↺▪˽▪) чат сброшен")
-
     elif toggle_switch and message.content in ["!", "ё"]:
         toggle_switch = False
         messagesgpt.clear()
         await message.channel.send("(ꞁꞁ×_×)")
+    elif toggle_switch and len(words) == 1 and message.content in ["сброс", "сначала", "снова", "#", "№", "$"]:
+        messagesgpt.clear()
+        await message.channel.send("(↺▪˽▪) чат сброшен")
 
     elif toggle_switch and not message.content.startswith('3!') and not message.content.startswith('`'):
         gptgprompt = message.content
