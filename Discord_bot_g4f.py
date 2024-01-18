@@ -1,9 +1,14 @@
+import os
+
 import discord
 import g4f
 from craiyon import Craiyon
 from concurrent.futures import ThreadPoolExecutor
 import vocabulary
 import asyncio
+
+# Ensure a single event loop
+loop = asyncio.get_event_loop()
 
 # from discord.ext import commands
 
@@ -64,20 +69,35 @@ def ask_gpt(messages: list) -> str:
         model=g4f.models.gpt_4_turbo,
         messages=messages)
     # print(response)
-
     return response
 
 
 messagesgpt = []
 
+# Проверка наличия файла '2000.txt' и его создание при необходимости
+if not os.path.exists('2000.txt'):
+    with open('2000.txt', 'w', encoding='utf-8') as file2000:
+        file2000.write("")
+
 
 @client.event
 async def on_message(message):  # Обработчик сообщений в дискорде
+
     global toggle_switch
+    global messagesgpt
     prompt = message.content
     words = prompt.split()
     if message.author == client.user:
         return
+
+    elif len(words) == 1 and (words[0] == "анекдот"):
+        await message.channel.send(vocabulary.random_anecdote())
+    elif len(words) == 1 and (words[0] == "волк"):
+        await message.channel.send(vocabulary.sp_rec_reaction_auf())
+    elif len(words) == 1 and (words[0] == "афоризм"):
+        await message.channel.send(vocabulary.random_response_aphorism())
+    elif len(words) == 1 and (words[0] == "стих"):
+        await message.channel.send(vocabulary.random_rhymes())
 
     elif not toggle_switch and message.content in ["!", "ё"]:
         toggle_switch = True
@@ -98,11 +118,15 @@ async def on_message(message):  # Обработчик сообщений в д�
         if gptgprompt is not None:
             print(gptgprompt)
             messagesgpt.append({"role": "user", "content": gptgprompt})
-            messagesgpt.append({"role": "assistant", "content": ask_gpt(messages=messagesgpt)})
             response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
-            # response = ask_gpt(messages=messagesgpt)
-            await asyncio.sleep(1)
-            await message.channel.send(response)
+            messagesgpt.append({"role": "assistant", "content": response})
+            if len(response) > 2000:
+                filename = '2000.txt'
+                with open(filename, 'w', encoding='utf-8') as file:
+                    file.write(response)
+                await message.reply(file=discord.File('2000.txt'))
+            else:
+                await message.reply(response)
 
     elif message.content.startswith('3!'):
         imgprompt = message.content[2:]
@@ -146,15 +170,6 @@ async def on_message(message):  # Обработчик сообщений в д�
                 return
             num_messages_to_delete = int(args[1])
             await message.channel.purge(limit=num_messages_to_delete + 1)
-
-    elif len(words) == 1 and (words[0] == "анекдот"):
-        await message.channel.send(vocabulary.random_anecdote())
-    elif len(words) == 1 and (words[0] == "волк"):
-        await message.channel.send(vocabulary.sp_rec_reaction_auf())
-    elif len(words) == 1 and (words[0] == "афоризм"):
-        await message.channel.send(vocabulary.random_response_aphorism())
-    elif len(words) == 1 and (words[0] == "стих"):
-        await message.channel.send(vocabulary.random_rhymes())
 
 
 client.run(token)  # Запускаем бота
