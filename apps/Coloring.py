@@ -102,8 +102,8 @@ print(f"""\
 \r  ╓─────────────────────────────────────────────┬─────────────────────────────────╖
 \r  ║ {LGR}'слова' должны быть без '"двойных"' кавычек{SRA} │ {LRE}!!!{SRA}                             ║
 \r  ╠═════════════════════════════════════════════╧════════════════════════╦════════╣ 
-\r  ║ {CYA}"C:\\Users\\raide\\AppData\\Local\\Programs\\Python\\Python311\\python.exe" {SRA} ║ {LBL}Питон  {SRA}║
-\r  ║ {LGR}"F:\\Program Files\\PyCharm\\bin\\pycharm64.exe"                        {SRA} ║ {GRE}Пишарм {SRA}║
+\r  ║ {CYA}"C:\\Users\\raide\\AppData\\Local\\Programs\\Python\\Python312\\python.exe" {SRA} ║ {LBL}Питон  {SRA}║
+\r  ║ {LGR}"F:\\My_Portable_soft\\PyCharm\\bin\\pycharm64.exe"                     {SRA} ║ {GRE}Пишарм {SRA}║
 \r  ╚══════════════════════════════════════════════════════════════════════╩════════╝ 
     """, sep='', end='')
 #  print("-------------------------- Escape Codes: -------------------")
