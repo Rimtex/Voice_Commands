@@ -1,0 +1,11 @@
+discord.py
+discord
+g4f
+
+pynput
+Pillow
+pytesseract
+pyperclip
+imageio
+sounddevice
+pydub

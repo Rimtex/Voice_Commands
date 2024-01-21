@@ -12,16 +12,3 @@ py_win_keyboard_layout
 psutil
 PyGetWindow
 tqdm
-
-discord.py
-discord
-g4f
-
-## (apps requirements)
-pynput
-Pillow
-pytesseract
-pyperclip
-imageio
-sounddevice
-pydub
