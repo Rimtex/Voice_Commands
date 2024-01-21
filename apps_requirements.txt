@@ -1,4 +1,3 @@
-discord.py
 discord
 craiyon.py
 g4f
