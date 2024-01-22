@@ -3,8 +3,7 @@
 простой голосовой помощник в консоли на Python для Windows 10.   
 реагирует в основном на слова или фразы:  
 нажимает клавиши, пишет голос, переводит, и прочие функции.  
-команды можно посмотреть словом `покажи`
-<hr>
+команды можно посмотреть словом `покажи`  
 
 ### Основные требования
 
@@ -15,13 +14,13 @@
 <hr>
 
     автозагрузка  
-    1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip  
-    2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip  
+      1 https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip  
+      2 https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip  
 
-**voskmodels**\  
 если нужно переключаться на более точные модели распаковать  
-3 https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip   
-4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip
+ **voskmodels**\
+  * 3 https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip   
+  * 4 https://alphacephei.com/vosk/models/vosk-model-en-us-0.22.zip   
 
 [для мужского голоса](http://balabolka.site/pavel.windows10.zip)
 <hr>
@@ -37,19 +36,32 @@
 
 ### по-умолчанию
 
-* Caps Lock или `пиши` пишет русский голос
-* Num Lock или `инглиш` пишет английский голос
-* Caps Lock и Num Lock или `переводчик` пишет переведённый на английский голос
-* Ctrl - Alt выключает Caps Lock и Num Lock
-* Ctrl - Win режим паузы - `пауза`
+* **Caps Lock** или `пиши` пишет русский голос
+* **Num Lock** или `инглиш` пишет английский голос
+* **Caps Lock** и **Num Lock** или `переводчик` пишет переведённый на английский голос
+* **Ctrl - Alt** выключает **Caps Lock** и **Num Lock**
+* **Ctrl - Win** режим паузы - `пауза`
 
 <hr>
 
-* **Voice_Commands.py**
-    * **setup_config.py**          конфигурации адресов файлов
-    * **Heavy_writer.py**          `писатель` для более точной модели
-      **[ru-0.42](https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip)**
-    * **converter.py**             `покажи` преобразователь для показа команд
-    * **loader.py**                для генерации всяких вещей
-    * **vocabulary.py**            словарь ассистента
-    * **keyboard_scripts.py**      для скриптов клавиш, и встраивания доп. команд
+* **Voice_Commands**
+    * **Voice_Commands.py**          ассистент
+      * **setup_config.py**          конфигурации адресов файлов
+      * **converter.py**             `покажи` преобразователь показа команд
+      * **loader.py**                генератор загрузок
+      * **vocabulary.py**            словарь ассистента
+      * **keyboard_scripts.py**      для скриптов клавиш, и встраивания доп. команд
+
+* разные утилиты.   
+    * **Heavy_writer.py**          `писатель` для более точной модели  
+    **[ru-0.42](https://alphacephei.com/vosk/models/vosk-model-ru-0.42.zip)**  
+    * **Discord_bot_g4f.py**         простой бот дискорд для общения с нейронкой  
+    * **Voice_talking_g4f.py**     `болтать` вслух с нейронкой  
+  * **apps**  
+    * **screen_tesseract.py**    изображение в текст. -**ALT**- выделение области > создание изображения\иконки >  
+     **[преобразование в текст](https://alphacephei.com/vosk/models/vosk-model-ru-0.4zip)** > в буфер обмена > перевод на русский в консоль
+    * **windows_size_position.py** закрепитель окон
+    * **simple_g4f.py** нейронка в консоли
+
+
+
