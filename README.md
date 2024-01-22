@@ -59,7 +59,7 @@
     * **Voice_talking_g4f.py**     `болтать` вслух с нейронкой  
   * **apps**  
     * **screen_tesseract.py**    изображение в текст. -**ALT**- выделение области > создание изображения\иконки >  
-     **[преобразование в текст](https://alphacephei.com/vosk/models/vosk-model-ru-0.4zip)** > в буфер обмена > перевод на русский в консоль
+     **[преобразование в текст](https://github.com/UB-Mannheim/tesseract/wiki)** > в буфер обмена > перевод на русский в консоль
     * **windows_size_position.py** закрепитель окон
     * **simple_g4f.py** нейронка в консоли
 
