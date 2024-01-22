@@ -57,7 +57,7 @@ import loader
 from loader import loader_screen_rimtex
 from converter import convert_paint, convert_trans, convert_delete
 
-from setup_config import path_to_shortcut, ideas, reminder, models_directory, \
+from setup_config import create_shortcut, path_to_shortcut, ideas, reminder, models_directory, \
     model1, model2, model3, model4
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
@@ -150,37 +150,12 @@ def numbers_key():  # назначаем kps клавишу в скрипте н
 print(Fore.RESET, end='')
 
 # Находим окно с именем 'ассистент'
-assistant = None
-assistant_window = "ассистент"
-try:
-    assistant = pyautogui.getWindowsWithTitle(assistant_window)[0]
-    assistant.moveTo(-8, 0)
-    assistant.resizeTo(836, 327)
-except Exception as e:
-    printt(f"\r                                                   (!o_O) ярлык --> {assistant_window}\r")
-    # Получить путь к текущему скрипту
-    script_path = os.path.abspath(__file__)
-
-    # Получить путь к папке, в которой находится скрипт
-    script_directory = os.path.dirname(script_path)
-
-    # Проверить наличие ярлыка ассистента
-    assistant_link_path = os.path.join(script_directory, path_to_shortcut + assistant_window + ".lnk")
-    if not os.path.isfile(assistant_link_path):
-        # Создать объект ярлыка
-        shell = win32com.client.Dispatch("WScript.Shell")
-        shortcut = shell.CreateShortCut(assistant_link_path)
-        # Установить путь к исходному скрипту в ярлыке
-        shortcut.TargetPath = script_path
-        # Установить имя ярлыка
-        shortcut.Description = assistant_window
-        # Установить рабочую папку
-        shortcut.WorkingDirectory = script_directory
-        # Сохранить ярлык
-        shortcut.Save()
-    print(e)
-    os.startfile(path_to_shortcut + assistant_window)
-    exit()
+app_title = None
+app_title_window = "ассистент"
+create_shortcut("ассистент", os.path.abspath(__file__))
+app_title = pyautogui.getWindowsWithTitle("ассистент")[0]
+app_title.moveTo(-8, 0)
+app_title.resizeTo(836, 327)
 
 vosk.SetLogLevel(-1)  # удаляем логи
 
@@ -232,10 +207,10 @@ except Exception as e:
 
         # Удаляем загруженный архив ZIP
         os.remove(filename)
-    assistant.minimize()
-    assistant.restore()
+    app_title.minimize()
+    app_title.restore()
     print("Модели скачались и распаковались успешно.")
-    os.startfile(path_to_shortcut + assistant_window)
+    os.startfile(path_to_shortcut + app_title_window)
     exit()
 
 # Инициализация аудио потока
@@ -317,9 +292,10 @@ random_voice = [speak_pavel_tts, speak_irina_tts]
 
 
 def pause_mode():
+    # конвертер команд старт
     print(LCY + '\n ʕ℗•ᴥ•℗ʔ' + SRA, end='')
     speak_tts("пауза!")
-    assistant.minimize()
+    app_title.minimize()
     while True:
         if rec.AcceptWaveform(stream.read(4000)):
             paumpt = rec.Result()[13:-2]
@@ -339,17 +315,17 @@ def pause_mode():
                 speak_tts("я на паузе если что!")
             elif paumpt in ('"перезапуск"', '"рестарт"'):
                 print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
-                os.startfile(f"\\{path_to_shortcut}{assistant_window}")
+                os.startfile(f"\\{path_to_shortcut}{app_title_window}")
                 exit()
             elif paumpt in ('"ассистент"', '"помощник"', '"запуск"', '"запустить"', '"запусти"', '"обычный режим"'):
-                assistant.minimize()
-                assistant.restore()
+                app_title.minimize()
+                app_title.restore()
                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
                 speak_tts("запускаю обычный режим!")
                 break
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
-            assistant.minimize()
-            assistant.restore()
+            app_title.minimize()
+            app_title.restore()
             print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
             speak_tts("обычный режим!")
             break
@@ -372,7 +348,7 @@ if __name__ == '__main__':
     print(LGR + "\n ʕ/•ᴥ•ʔ/ Hi! " + SRA)
 
     while True:
-        # конвертер команд старт
+
         caps_lock_state_check = win32api.GetKeyState(0x14)
         num_lock_state_check = win32api.GetKeyState(0x90)
 
@@ -458,7 +434,7 @@ if __name__ == '__main__':
                 elif prompt in ('"покажи"', '"покажешь"'):
                     print(f'\n{convert_delete()}')
                 elif prompt in ('"показать"', '"показывай"'):
-                    assistant.resizeTo(1170, 1407)
+                    app_title.resizeTo(1170, 1407)
                     print(f'\n{convert_delete()}')
 
                 #: смена модели распознавания
@@ -660,9 +636,9 @@ if __name__ == '__main__':
                 elif prompt in ('"убей всех"', '"растрелли"', '"расстрел"', '"застрели"', '"расстрел окон"',
                                 '"расстреле"', '"расстрелять"'):
                     print(f"""{LRE} ({LGR}√{LRE}¬_¬)ԅ⌐╦╦═─‒=═≡Ξ{SRA}""", end='')
-                    assistant.minimize()
-                    assistant.restore()
-                    os.startfile(f"{path_to_shortcut}{assistant_window}")
+                    app_title.minimize()
+                    app_title.restore()
+                    os.startfile(f"{path_to_shortcut}{app_title_window}")
                     key_down('alt')  # ! не забыть отжать альт
                     key_press('tab')
                     key_press('right')
@@ -790,13 +766,13 @@ if __name__ == '__main__':
                 #: перезагрузка ассистента
                 elif prompt in ('"тихо"', '"тихa"', '"старт"'):
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
-                    os.startfile(f"{path_to_shortcut}{assistant_window}")
+                    os.startfile(f"{path_to_shortcut}{app_title_window}")
                     exit()
                 elif prompt == '"рестарт"' or re.match(r'"переза\w{0,6}\b"', prompt):
-                    assistant.moveRel(0, 20)
+                    app_title.moveRel(0, 20)
                     print(LRE, end="")
                     py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
-                    os.startfile(f"{path_to_shortcut}{assistant_window}")
+                    os.startfile(f"{path_to_shortcut}{app_title_window}")
                     for i in range(15):
                         printt('\n')
                     printt(' ʕ/·ᴥ·ʔ/')
@@ -1018,8 +994,8 @@ if __name__ == '__main__':
                         key_press('tab')
                     key_up('alt')
                 elif prompt in ('"эй"', '"ты где"', '"ты тут"', '"себя"', '"в себя"', '"покажись"', '"панель"'):
-                    assistant.minimize()  # - сворачивание
-                    assistant.restore()  # - раздупляем восстанавливанием
+                    app_title.minimize()  # - сворачивание
+                    app_title.restore()  # - раздупляем восстанавливанием
                     print(LGR + "ø", end="")
 
                 # -: встроенные группы команд из keyboard_scripts.py

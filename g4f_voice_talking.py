@@ -2,20 +2,19 @@ import os
 import keyboard
 import pyaudio
 import pyautogui
-import win32com
-import win32com.client as wincl
 from colorama import Fore, init
 from vosk import Model, KaldiRecognizer
 from setup_config import create_shortcut, path_to_shortcut, model1, model2, model3, model4
 
 init(convert=True)
 
-create_shortcut("писатель", os.path.abspath(__file__))
-app_title = pyautogui.getWindowsWithTitle("писатель")[0]
+create_shortcut("болтатель", os.path.abspath(__file__))
+app_title = pyautogui.getWindowsWithTitle("болтатель")[0]
 app_title.moveTo(-8, 319)
 app_title.resizeTo(836, 185)
 
-model_glob = model3
+
+model_glob = model1
 current_model = Model(model_glob)
 rec = KaldiRecognizer(current_model, 48000)
 p = pyaudio.PyAudio()
@@ -28,8 +27,10 @@ stream = p.open(
 )
 stream.start_stream()
 
-if __name__ == '__main__':
-    print(f"""\
+
+if __name__ == "__main__":
+    print(
+        f"""\
 ╔{"═" * len(model_glob)}══╤════════════╗
 ║ {Fore.LIGHTGREEN_EX}{model_glob}{Fore.RESET} │{Fore.LIGHTCYAN_EX} загружена!{Fore.RESET} ║
 ╚{"═" * len(model_glob)}══╧════════════╝
@@ -38,14 +39,19 @@ if __name__ == '__main__':
 ║ для остановки                       │{Fore.LIGHTCYAN_EX} Ctrl - Shift{Fore.RESET}       ║
 ║ зажмите одну из клавиш для пропуска │{Fore.LIGHTCYAN_EX}▾Ctrl▾ ▾Shift▾ ▾alt▾{Fore.RESET}║
 ╚═════════════════════════════════════╧════════════════════╝\
-""")
+"""
+    )
     while True:
         input(Fore.LIGHTGREEN_EX + " нажмите Enter")
         print(Fore.LIGHTCYAN_EX + " запись голоса:")
         while True:
             if rec.AcceptWaveform(stream.read(4000)):
                 prompt = rec.Result()[13:-2]
-                if keyboard.is_pressed("ctrl") or keyboard.is_pressed("shift") or keyboard.is_pressed("alt"):
+                if (
+                    keyboard.is_pressed("ctrl")
+                    or keyboard.is_pressed("shift")
+                    or keyboard.is_pressed("alt")
+                ):
                     prompt = '""'
                 if prompt != '""':
                     keyboard.write(prompt[1:-1] + " ")
