@@ -109,7 +109,6 @@ def turn_off_locks():
 
 turn_off_locks()
 py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
-tts = pyttsx3.init()
 
 
 #: направление курсора: третье слово
@@ -213,7 +212,7 @@ except Exception as e:
     os.startfile(path_to_shortcut + app_title_window)
     exit()
 
-# Инициализация аудио потока
+# Старт модели определеия голоса
 rec = KaldiRecognizer(current_model, 48000)
 receng = KaldiRecognizer(english_model, 48000)
 p = pyaudio.PyAudio()
@@ -231,7 +230,7 @@ speak = wincl.Dispatch("SAPI.SpVoice")
 voices = speak.GetVoices()
 speak.Volume = 100  # громкость
 speakrate_set = 4  # скорость
-
+tts = pyttsx3.init()
 
 # Функция для смены модели
 def change_model(new_model):
