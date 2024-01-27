@@ -52,10 +52,15 @@ def genimage(imgprompt):
         return None
 
 
+"""
+FakeGpt
+GPTalk
+"""
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
-        model=g4f.models.gpt_4_turbo,
+        model=g4f.models.gpt_35_turbo_16k_0613,
+        provider=g4f.Provider.GPTalk,
         messages=messages)
     # print(response)
     return response
