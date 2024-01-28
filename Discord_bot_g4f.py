@@ -5,12 +5,12 @@ from craiyon import Craiyon
 from concurrent.futures import ThreadPoolExecutor
 import vocabulary
 import asyncio
+import json
 
 # Проверка наличия файла '2000.txt' и его создание при необходимости
 if not os.path.exists('2000.txt'):
     with open('2000.txt', 'w', encoding='utf-8') as file2000:
         file2000.write("")
-
 with open('token.txt', 'r') as token_file:  # токен Discord скопировать в token.txt
     token = token_file.readline()
 
@@ -66,7 +66,55 @@ def ask_gpt(messages: list) -> str:
     return response
 
 
-messagesgpt = []
+# Проверка наличия файлов и создание при необходимости
+if not os.path.exists('messagesgpt.txt'):
+    with open('messagesgpt.txt', 'w', encoding='utf-8') as filemessagesgpt:
+        filemessagesgpt.write("")
+if not os.path.exists('gptrole.txt'):        
+    with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+        filemessagesgpt.write("")    
+
+# Загрузка сообщений из файла
+def load_messages():
+    try:
+        with open('messagesgpt.txt', 'r', encoding='utf-8') as file:
+            messages = json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        messages = []
+    return messages
+
+# Сохранение сообщений в файл
+def save_messages(messages):
+    with open('messagesgpt.txt', 'w', encoding='utf-8') as file:
+        json.dump(messages, file, ensure_ascii=False, indent=4)
+
+# Функция для чтения роли по умолчанию из файла
+def read_default_role(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            default_role = file.read().strip()
+        return default_role
+    except FileNotFoundError:
+        return None
+
+# Функция проверки того, пуст ли файл
+def is_file_empty(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return not bool(file.read().strip())
+    except FileNotFoundError:
+        return True
+
+gptrole_file_path = 'messagesgpt.txt'
+
+# Инициализировать роль по умолчанию
+default_role = read_default_role('gptrole.txt')
+if is_file_empty(gptrole_file_path):
+    # Создайте список, содержащий только сообщение роли по умолчанию.
+    role_message = [{"role": "user", "content": default_role}]
+    # Сохраните сообщение роли в файл
+    save_messages(role_message)
+
 
 executor = ThreadPoolExecutor()  # без него ошибка - client.py:441>> is being executed.
 
@@ -77,14 +125,16 @@ toggle_switch = True  # выключатель нейро чата
 async def on_message(message):  # Обработчик сообщений в дискорде
 
     global toggle_switch
-    global messagesgpt
+
+    default_role = read_default_role('gptrole.txt')
+    messagesgpt = load_messages()
 
     prompt = message.content
     words = prompt.split()
 
     if message.author == client.user:
         return
-
+    
     elif len(words) == 1 and (words[0] == "анекдот"):
         await message.channel.send(vocabulary.random_anecdote())
     elif len(words) == 1 and (words[0] == "волк"):
@@ -93,31 +143,53 @@ async def on_message(message):  # Обработчик сообщений в д�
         await message.channel.send(vocabulary.random_response_aphorism())
     elif len(words) == 1 and (words[0] == "стих"):
         await message.channel.send(vocabulary.random_rhymes())
+    elif len(words) == 1 and words[0] == "история":
+        response = vocabulary.random_response_stories()
+        if len(response) > 2000:
+            chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
+            for chunk in chunks:
+                await message.reply(chunk)
+        else:
+            await message.reply(response)
 
-    elif not toggle_switch and message.content in ["!", "ё"]:
+    elif not toggle_switch and message.content in '#':
         toggle_switch = True
-        messagesgpt.clear()
         await message.channel.send("(√¬_¬) готов базарить! че надо?")
-    elif toggle_switch and message.content in ["!", "ё"]:
+    elif toggle_switch and message.content in '#':
         toggle_switch = False
-        messagesgpt.clear()
-        await message.channel.send("(ꞁꞁ×_×)")
-    elif toggle_switch and len(words) == 1 and message.content in ["сброс", "сначала", "снова", "#", "№", "$"]:
-        messagesgpt.clear()
+        await message.channel.send("(ꞁꞁ×_×) свалил в помойку.")
+    elif toggle_switch and message.content in '?':    
+        with open('gptrole.txt', 'r', encoding='utf-8') as filemessagesgpt:
+            role = filemessagesgpt.read() 
+        await message.channel.send(f"(?o_O) моя роль: {role}")
+    elif toggle_switch and message.content in '$':
+        with open("messagesgpt.txt", "w") as file:
+            file.truncate(0)
+        save_messages([{"role": "user", "content": default_role}])
         await message.channel.send("(↺▪˽▪) чат сброшен")
-
+    elif toggle_switch and message.content.startswith('!'):
+        with open("messagesgpt.txt", "w") as file:
+            file.truncate(0)
+        role_message = [{"role": "user", "content": f"!твоя роль: {message.content[1:]}!"}]
+        with open("gptrole.txt", "w") as file:
+            file.truncate(0)
+        with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+            filemessagesgpt.write(message.content[1:])   
+        save_messages(role_message)
+        await message.channel.send(f"(!▸_▸) роль установлена на: {message.content[1:]}")
+            
     elif toggle_switch and not message.content.startswith('3!') and not message.content.startswith('`'):
         gptgprompt = message.content
         if gptgprompt is not None:
-            print(gptgprompt)
-            messagesgpt.append({"role": "user", "content": gptgprompt})
+            print(message.author.display_name + ": " + gptgprompt)
+            messagesgpt.append({"role": "user", "content": message.author.display_name + ": " + gptgprompt})
             response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
             messagesgpt.append({"role": "assistant", "content": response})
+            save_messages(messagesgpt)
             if len(response) > 2000:
-                filename = '2000.txt'
-                with open(filename, 'w', encoding='utf-8') as file:
-                    file.write(response)
-                await message.reply(file=discord.File('2000.txt'))
+                chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
+                for chunk in chunks:
+                    await message.reply(chunk)
             else:
                 await message.reply(response)
 
