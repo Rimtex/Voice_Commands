@@ -31,15 +31,6 @@ async def on_ready():
 """
 
 
-@client.event
-async def on_ready():
-    print(f'{client.user} has connected to Discord!')
-    channels = client.get_all_channels()  # для всех каналов
-    for channel in channels:
-        if channel.type == discord.ChannelType.text:
-            print(f'Connected to text channel: {channel}')
-
-
 # вызов рисовалки
 def genimage(imgprompt):
     generator = Craiyon()  # Instantiate the api wrapper
@@ -60,7 +51,8 @@ GPTalk
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
         model=g4f.models.gpt_35_turbo_16k_0613,
-        provider=g4f.Provider.GPTalk,
+        # model=g4f.models.gpt_35_turbo_16k_0613,
+        # provider=g4f.Provider.FakeGpt,
         messages=messages)
     # print(response)
     return response
@@ -80,7 +72,7 @@ def load_messages():
         with open('messagesgpt.txt', 'r', encoding='utf-8') as file:
             messages = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
-        messages = []
+        messages = []        
     return messages
 
 # Сохранение сообщений в файл
@@ -105,20 +97,52 @@ def is_file_empty(file_path):
     except FileNotFoundError:
         return True
 
-gptrole_file_path = 'messagesgpt.txt'
+messagesgpt_file_path = 'messagesgpt.txt'
+gptrole_file_path = 'gptrole.txt'
 
-# Инициализировать роль по умолчанию
-default_role = read_default_role('gptrole.txt')
-if is_file_empty(gptrole_file_path):
+import random
+
+def change_role_gpt():
+    with open("random_role.txt", "r", encoding="utf-8") as file:
+        roles_text = file.read()
+    roles_list = roles_text.split('\n\n')  # Пустая строка разделяет роли
+    random_role = random.choice(roles_list)
     # Создайте список, содержащий только сообщение роли по умолчанию.
-    role_message = [{"role": "user", "content": default_role}]
+    role_message = [{"role": "user", "content": f"{random_role}"}]
     # Сохраните сообщение роли в файл
-    save_messages(role_message)
+    with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+        filemessagesgpt.write(random_role)
+    save_messages(role_message)    
 
+if is_file_empty(gptrole_file_path):
+    change_role_gpt()
 
 executor = ThreadPoolExecutor()  # без него ошибка - client.py:441>> is being executed.
 
 toggle_switch = True  # выключатель нейро чата
+
+if is_file_empty(messagesgpt_file_path):  
+    role_message = [{"role": "user", "content": f"!Твоя роль: {read_default_role('gptrole.txt')}!"}]
+    save_messages(role_message)
+
+default_role = read_default_role('gptrole.txt')
+
+@client.event
+async def on_ready():
+    # Устанавливаем статус "играет в:"
+    await client.change_presence(activity=discord.Game(default_role[:128]))
+    print(f'{client.user} has connected to Discord!')
+    channels = client.get_all_channels()  # для всех каналов
+    for channel in channels:
+        if channel.type == discord.ChannelType.text:
+            print(f'Connected to text channel: {channel}')
+    if not is_file_empty(messagesgpt_file_path):           
+        with open('messagesgpt.txt', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        for item in data:
+            for key, value in item.items():
+                print(f'"{key}": "{value}"')
+            print()       
 
 
 @client.event
@@ -159,9 +183,11 @@ async def on_message(message):  # Обработчик сообщений в д�
         toggle_switch = False
         await message.channel.send("(ꞁꞁ×_×) свалил в помойку.")
     elif toggle_switch and message.content in '?':    
-        with open('gptrole.txt', 'r', encoding='utf-8') as filemessagesgpt:
-            role = filemessagesgpt.read() 
-        await message.channel.send(f"(?o_O) моя роль: {role}")
+        with open("messagesgpt.txt", "w") as file:
+            file.truncate(0)
+        change_role_gpt()
+        default_role = read_default_role('gptrole.txt')
+        await client.change_presence(activity=discord.Game(default_role[:128]))
     elif toggle_switch and message.content in '$':
         with open("messagesgpt.txt", "w") as file:
             file.truncate(0)
@@ -170,13 +196,12 @@ async def on_message(message):  # Обработчик сообщений в д�
     elif toggle_switch and message.content.startswith('!'):
         with open("messagesgpt.txt", "w") as file:
             file.truncate(0)
-        role_message = [{"role": "user", "content": f"!твоя роль: {message.content[1:]}!"}]
-        with open("gptrole.txt", "w") as file:
-            file.truncate(0)
+        role_message = [{"role": "user", "content": f"!Твоя роль: {message.content[1:]}!"}]
         with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
-            filemessagesgpt.write(message.content[1:])   
+            filemessagesgpt.write(f"{message.content[1:]}")   
         save_messages(role_message)
-        await message.channel.send(f"(!▸_▸) роль установлена на: {message.content[1:]}")
+        default_role = read_default_role('gptrole.txt')
+        await client.change_presence(activity=discord.Game(default_role[:128]))
             
     elif toggle_switch and not message.content.startswith('3!') and not message.content.startswith('`'):
         gptgprompt = message.content
