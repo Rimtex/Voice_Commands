@@ -6,30 +6,14 @@ from concurrent.futures import ThreadPoolExecutor
 import vocabulary
 import asyncio
 import json
+import random
 
-# Проверка наличия файла '2000.txt' и его создание при необходимости
-if not os.path.exists('2000.txt'):
-    with open('2000.txt', 'w', encoding='utf-8') as file2000:
-        file2000.write("")
 with open('token.txt', 'r') as token_file:  # токен Discord скопировать в token.txt
     token = token_file.readline()
 
 # Устанавливаем Intents для доступа к различным возможностям Discord, включая прослушивание сообщений.
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
-
-"""
-# ID канала, в котором бот должен работать: пкм на канал - копировать ID канала
-target_channel_ids = [1068528493605961821, 1134946605372559360]  # Замените на реальный ID вашего канала
-@client.event
-async def on_ready():
-    print(f'{client.user} has connected to Discord!')
-    for guild in client.guilds:
-        for channel in guild.channels:
-            if channel.type == discord.ChannelType.text and channel.id in target_channel_ids:
-                print(f'Connected to text channel: {channel}')
-"""
-
 
 # вызов рисовалки
 def genimage(imgprompt):
@@ -42,37 +26,41 @@ def genimage(imgprompt):
         print(f"Error generating image: {e}")
         return None
 
-
-"""
-FakeGpt
-GPTalk
-"""
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
         model=g4f.models.gpt_35_turbo_16k_0613,
-        # model=g4f.models.gpt_35_turbo_16k_0613,
-        # provider=g4f.Provider.FakeGpt,
+        # provider=g4f.Provider.FakeGpt,  # FakeGpt GPTalk 
         messages=messages)
     # print(response)
     return response
 
-
 # Проверка наличия файлов и создание при необходимости
+if not os.path.exists('2000.txt'):
+    with open('2000.txt', 'w', encoding='utf-8') as file2000:
+        file2000.write("")
 if not os.path.exists('messagesgpt.txt'):
     with open('messagesgpt.txt', 'w', encoding='utf-8') as filemessagesgpt:
         filemessagesgpt.write("")
 if not os.path.exists('gptrole.txt'):        
-    with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
-        filemessagesgpt.write("")    
+    with open('gptrole.txt', 'w', encoding='utf-8') as filegptrole:
+        filegptrole.write("")    
+
+# Функция проверки того, пуст ли файл
+def is_file_empty(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            return not bool(file.read().strip())
+    except FileNotFoundError:
+        return True
 
 # Загрузка сообщений из файла
 def load_messages():
     try:
         with open('messagesgpt.txt', 'r', encoding='utf-8') as file:
-            messages = json.load(file)
+            messages = json.load(file)  # messages для нейро чата
     except (FileNotFoundError, json.JSONDecodeError):
-        messages = []        
+        messages = [] 
     return messages
 
 # Сохранение сообщений в файл
@@ -89,19 +77,7 @@ def read_default_role(file_path):
     except FileNotFoundError:
         return None
 
-# Функция проверки того, пуст ли файл
-def is_file_empty(file_path):
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return not bool(file.read().strip())
-    except FileNotFoundError:
-        return True
-
-messagesgpt_file_path = 'messagesgpt.txt'
-gptrole_file_path = 'gptrole.txt'
-
-import random
-
+# Функция смены случайной роли
 def change_role_gpt():
     with open("random_role.txt", "r", encoding="utf-8") as file:
         roles_text = file.read()
@@ -114,29 +90,45 @@ def change_role_gpt():
         filemessagesgpt.write(random_role)
     save_messages(role_message)    
 
-if is_file_empty(gptrole_file_path):
+if is_file_empty('gptrole.txt'):
     change_role_gpt()
 
-executor = ThreadPoolExecutor()  # без него ошибка - client.py:441>> is being executed.
-
-toggle_switch = True  # выключатель нейро чата
-
-if is_file_empty(messagesgpt_file_path):  
+if is_file_empty('messagesgpt.txt'):  
     role_message = [{"role": "user", "content": f"!Твоя роль: {read_default_role('gptrole.txt')}!"}]
     save_messages(role_message)
 
 default_role = read_default_role('gptrole.txt')
 
+executor = ThreadPoolExecutor()  # без него ошибка - client.py:441>> is being executed.
+toggle_switch = True  # выключатель нейро чата
+
+
+"""
+# ID канала, в котором бот должен работать: пкм на канал - копировать ID канала
+target_channel_ids = [1068528493605961821, 1134946605372559360]  # Замените на реальный ID вашего канала
 @client.event
 async def on_ready():
-    # Устанавливаем статус "играет в:"
-    await client.change_presence(activity=discord.Game(default_role[:128]))
+    print(f'{client.user} has connected to Discord!')
+    for guild in client.guilds:
+        for channel in guild.channels:
+            if channel.type == discord.ChannelType.text and channel.id in target_channel_ids:
+                print(f'Connected to text channel: {channel}')
+"""
+
+
+@client.event
+async def on_ready():
     print(f'{client.user} has connected to Discord!')
     channels = client.get_all_channels()  # для всех каналов
     for channel in channels:
         if channel.type == discord.ChannelType.text:
             print(f'Connected to text channel: {channel}')
-    if not is_file_empty(messagesgpt_file_path):           
+
+    # Устанавливаем статус "играет в:"
+    await client.change_presence(activity=discord.Game(default_role[:128]))
+
+    # вывод сохраненного чата в консоль
+    if not is_file_empty('messagesgpt.txt'):
         with open('messagesgpt.txt', 'r', encoding='utf-8') as file:
             data = json.load(file)
         for item in data:
