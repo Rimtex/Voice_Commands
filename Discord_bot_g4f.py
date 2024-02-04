@@ -1,101 +1,21 @@
-import os
 import discord
-import g4f
-from craiyon import Craiyon
 from concurrent.futures import ThreadPoolExecutor
 import vocabulary
 import asyncio
-import json
-import random
+import pyautogui
+from bot_config import *
 
 with open('token.txt', 'r') as token_file:  # токен Discord скопировать в token.txt
     token = token_file.readline()
+
+from setup_config import create_shortcut
+create_shortcut("чат бот", os.path.abspath(__file__))
+app_title = pyautogui.getWindowsWithTitle("чат бот")[0]
 
 # Устанавливаем Intents для доступа к различным возможностям Discord, включая прослушивание сообщений.
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 
-# вызов рисовалки
-def genimage(imgprompt):
-    generator = Craiyon()  # Instantiate the api wrapper
-    try:
-        result = generator.generate(imgprompt)
-        image_urls = result.images  # Get the list of image URLs
-        return image_urls
-    except Exception as e:
-        print(f"Error generating image: {e}")
-        return None
-
-# вызов нейро чата
-def ask_gpt(messages: list) -> str:
-    response = g4f.ChatCompletion.create(
-        model=g4f.models.gpt_35_turbo_16k_0613,
-        # provider=g4f.Provider.FakeGpt,  # FakeGpt GPTalk 
-        messages=messages)
-    # print(response)
-    return response
-
-# Проверка наличия файлов и создание при необходимости
-if not os.path.exists('2000.txt'):
-    with open('2000.txt', 'w', encoding='utf-8') as file2000:
-        file2000.write("")
-if not os.path.exists('messagesgpt.txt'):
-    with open('messagesgpt.txt', 'w', encoding='utf-8') as filemessagesgpt:
-        filemessagesgpt.write("")
-if not os.path.exists('gptrole.txt'):        
-    with open('gptrole.txt', 'w', encoding='utf-8') as filegptrole:
-        filegptrole.write("")    
-
-# Функция проверки того, пуст ли файл
-def is_file_empty(file_path):
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return not bool(file.read().strip())
-    except FileNotFoundError:
-        return True
-
-# Загрузка сообщений из файла
-def load_messages():
-    try:
-        with open('messagesgpt.txt', 'r', encoding='utf-8') as file:
-            messages = json.load(file)  # messages для нейро чата
-    except (FileNotFoundError, json.JSONDecodeError):
-        messages = [] 
-    return messages
-
-# Сохранение сообщений в файл
-def save_messages(messages):
-    with open('messagesgpt.txt', 'w', encoding='utf-8') as file:
-        json.dump(messages, file, ensure_ascii=False, indent=4)
-
-# Функция для чтения роли по умолчанию из файла
-def read_default_role(file_path):
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            default_role = file.read().strip()
-        return default_role
-    except FileNotFoundError:
-        return None
-
-# Функция смены случайной роли
-def change_role_gpt():
-    with open("random_role.txt", "r", encoding="utf-8") as file:
-        roles_text = file.read()
-    roles_list = roles_text.split('\n\n')  # Пустая строка разделяет роли
-    random_role = random.choice(roles_list)
-    # Создайте список, содержащий только сообщение роли по умолчанию.
-    role_message = [{"role": "user", "content": f"{random_role}"}]
-    # Сохраните сообщение роли в файл
-    with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
-        filemessagesgpt.write(random_role)
-    save_messages(role_message)    
-
-if is_file_empty('gptrole.txt'):
-    change_role_gpt()
-
-if is_file_empty('messagesgpt.txt'):  
-    role_message = [{"role": "user", "content": f"!Твоя роль: {read_default_role('gptrole.txt')}!"}]
-    save_messages(role_message)
 
 default_role = read_default_role('gptrole.txt')
 
@@ -134,8 +54,9 @@ async def on_ready():
         for item in data:
             for key, value in item.items():
                 print(f'"{key}": "{value}"')
-            print()       
-
+            print()    
+        await asyncio.sleep(1)
+        app_title.minimize()
 
 @client.event
 async def on_message(message):  # Обработчик сообщений в дискорде
@@ -151,10 +72,114 @@ async def on_message(message):  # Обработчик сообщений в д�
     if message.author == client.user:
         return
     
+
+    elif len(words) == 1 and (words[0] == "волк"):
+        await message.message.delete() if message.guild else None
+        auf_answer = vocabulary.sp_rec_reaction_auf()
+        await message.channel.send(auf_answer)
+        gptgprompt = auf_answer
+        if gptgprompt is not None:
+
+            # роли случайно
+            response = gptgprompt
+            t = 5
+            for i in range(t):                
+                change_role_gpt()
+                default_role = read_default_role('gptrole.txt')      
+                messagesgpt = load_messages()  
+                response = response
+                await client.change_presence(activity=discord.Game(f"{t} {default_role[:126]}"))
+                await asyncio.sleep(2)
+                messagesgpt.append({"role": "user", "content": response})                
+                response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+                messagesgpt.append({"role": "assistant", "content": response})
+                save_messages(messagesgpt)
+                response = response
+                if len(response) > 2000:
+                    chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
+                    for chunk in chunks:
+                        await message.reply(f"{t} {chunk}")
+                else:
+                    await message.reply(f"{t} {response}")
+                t = t - 1
+
+            """
+            # роли по порядку
+            t = len(open("sequences_role.txt", "r", encoding="utf-8").read().split('\n\n'))
+            response = gptgprompt
+            for i in range(t):             
+                # change_role_gpt()
+                default_role = sequences_role_gpt()      
+                messagesgpt = load_messages()  
+                response = response
+                await client.change_presence(activity=discord.Game(f"{t} {default_role[:126]}"))
+                await asyncio.sleep(2)
+                messagesgpt.append({"role": "user", "content": response})                
+                response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+                messagesgpt.append({"role": "assistant", "content": response})
+                save_messages(messagesgpt)                
+                if len(response) > 2000:
+                    chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
+                    for chunk in chunks:
+                        await message.reply(f"{t} {chunk}")
+                else:
+                    await message.reply(f"{t} {response}")
+                t = t - 1
+            """
+
+            """
+            change_role_gpt()    
+            random_role = "сгенерируй код на Python на тему:"   
+            role_message = [{"role": "user", "content": f"{random_role}"}]
+            # Сохраните сообщение роли в файл
+            with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+                filemessagesgpt.write(random_role)        
+            save_messages(role_message)
+            default_role = read_default_role('gptrole.txt')      
+            messagesgpt = load_messages()  
+            response = response
+            await client.change_presence(activity=discord.Game(f"+ {default_role[:126]}"))
+            await asyncio.sleep(2)
+            messagesgpt.append({"role": "user", "content": response})                
+            response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+            messagesgpt.append({"role": "assistant", "content": response})
+            save_messages(messagesgpt)
+            response = response
+            if len(response) > 2000:
+                chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
+                for chunk in chunks:
+                    await message.reply(chunk)
+            else:
+                await message.reply(response)
+
+            change_role_gpt()    
+            random_role = "сгенерируй реальную идею для заработка на тему:"   
+            role_message = [{"role": "user", "content": f"{random_role}"}]
+            # Сохраните сообщение роли в файл
+            with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+                filemessagesgpt.write(random_role)        
+            save_messages(role_message)            
+            default_role = read_default_role('gptrole.txt')      
+            messagesgpt = load_messages()  
+            response = response
+            await client.change_presence(activity=discord.Game(f"= {default_role[:126]}"))
+            await asyncio.sleep(2)
+            messagesgpt.append({"role": "user", "content": response})                
+            response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+            messagesgpt.append({"role": "assistant", "content": response})
+            save_messages(messagesgpt)
+            response = response
+            if len(response) > 2000:
+                chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
+                for chunk in chunks:
+                    await message.reply(chunk)
+            else:
+                await message.reply(response)
+            """
+
+
     elif len(words) == 1 and (words[0] == "анекдот"):
         await message.channel.send(vocabulary.random_anecdote())
-    elif len(words) == 1 and (words[0] == "волк"):
-        await message.channel.send(vocabulary.sp_rec_reaction_auf())
     elif len(words) == 1 and (words[0] == "афоризм"):
         await message.channel.send(vocabulary.random_response_aphorism())
     elif len(words) == 1 and (words[0] == "стих"):
@@ -170,29 +195,34 @@ async def on_message(message):  # Обработчик сообщений в д�
 
     elif not toggle_switch and message.content in '#':
         toggle_switch = True
+        await message.message.delete() if message.guild else None
         await message.channel.send("(√¬_¬) готов базарить! че надо?")
     elif toggle_switch and message.content in '#':
         toggle_switch = False
+        await message.message.delete() if message.guild else None
         await message.channel.send("(ꞁꞁ×_×) свалил в помойку.")
     elif toggle_switch and message.content in '?':    
         with open("messagesgpt.txt", "w") as file:
             file.truncate(0)
         change_role_gpt()
         default_role = read_default_role('gptrole.txt')
+        await message.message.delete() if message.guild else None
         await client.change_presence(activity=discord.Game(default_role[:128]))
     elif toggle_switch and message.content in '$':
         with open("messagesgpt.txt", "w") as file:
             file.truncate(0)
         save_messages([{"role": "user", "content": default_role}])
+        await message.message.delete() if message.guild else None
         await message.channel.send("(↺▪˽▪) чат сброшен")
     elif toggle_switch and message.content.startswith('!'):
         with open("messagesgpt.txt", "w") as file:
             file.truncate(0)
-        role_message = [{"role": "user", "content": f"!Твоя роль: {message.content[1:]}!"}]
+        role_message = [{"role": "user", "content": f"{message.content[1:]}"}]
         with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
             filemessagesgpt.write(f"{message.content[1:]}")   
         save_messages(role_message)
         default_role = read_default_role('gptrole.txt')
+        await message.message.delete() if message.guild else None
         await client.change_presence(activity=discord.Game(default_role[:128]))
             
     elif toggle_switch and not message.content.startswith('3!') and not message.content.startswith('`'):
