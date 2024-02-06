@@ -22,6 +22,9 @@ default_role = read_default_role('gptrole.txt')
 executor = ThreadPoolExecutor()  # без него ошибка - client.py:441>> is being executed.
 toggle_switch = True  # выключатель нейро чата
 
+last_role = "сгенерируй реально возможную уникальную идею для заработка на тему:"
+
+
 
 """
 # ID канала, в котором бот должен работать: пкм на канал - копировать ID канала
@@ -60,228 +63,285 @@ async def on_ready():
 
 @client.event
 async def on_message(message):  # Обработчик сообщений в дискорде
+    try:
+        global toggle_switch
 
-    global toggle_switch
+        default_role = read_default_role('gptrole.txt')
+        messagesgpt = load_messages()
 
-    default_role = read_default_role('gptrole.txt')
-    messagesgpt = load_messages()
+        prompt = message.content
+        words = prompt.split()
 
-    prompt = message.content
-    words = prompt.split()
+        if message.author == client.user:
+            return
 
-    if message.author == client.user:
-        return
-    
+        elif len(words) == 1 and (words[0] == "ауф"):
+            await message.message.delete() if message.guild else None
+            auf_answer =  random.choice([vocabulary.sp_rec_reaction_auf(), vocabulary.random_response_aphorism()])
+            await message.channel.send(auf_answer)
+            gptgprompt = auf_answer
+            if gptgprompt is not None:
 
-    elif len(words) == 1 and (words[0] == "волк"):
-        await message.message.delete() if message.guild else None
-        auf_answer = vocabulary.sp_rec_reaction_auf()
-        await message.channel.send(auf_answer)
-        gptgprompt = auf_answer
-        if gptgprompt is not None:
+                # роли случайно
+                response = gptgprompt
+                t = 5
+                for i in range(t):                
+                    change_new_role_gpt()
+                    default_role = read_default_role('gptrole.txt')      
+                    messagesgpt = load_messages()  
+                    response = response
+                    await client.change_presence(activity=discord.Game(f"{t} {default_role[:126]}"))
+                    await asyncio.sleep(1)
+                    messagesgpt.append({"role": "user", "content": response})                
+                    response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+                    messagesgpt.append({"role": "assistant", "content": response})
+                    save_messages(messagesgpt)
+                    await asyncio.sleep(1)
+                    response = response
+                    if len(response) > 1980:
+                        chunks = [response[i:i+1980] for i in range(0, len(response), 1980)]
+                        for chunk in chunks:
+                            await message.reply(f"{t} {chunk}")
+                    else:
+                        await message.reply(f"{t} {response}")
+                    t = t - 1
 
-            # роли случайно
-            response = gptgprompt
-            t = 5
-            for i in range(t):                
-                change_role_gpt()
+                change_new_role_gpt()    
+                role_message = [{"role": "user", "content": f"{last_role}"}]
+                with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+                    filemessagesgpt.write(last_role)        
+                save_messages(role_message)            
                 default_role = read_default_role('gptrole.txt')      
                 messagesgpt = load_messages()  
                 response = response
-                await client.change_presence(activity=discord.Game(f"{t} {default_role[:126]}"))
-                await asyncio.sleep(2)
+                await client.change_presence(activity=discord.Game(f"= {default_role[:126]}"))
+                await asyncio.sleep(1)
                 messagesgpt.append({"role": "user", "content": response})                
                 response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
                 messagesgpt.append({"role": "assistant", "content": response})
                 save_messages(messagesgpt)
+                await asyncio.sleep(1)
                 response = response
-                if len(response) > 2000:
-                    chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
+                if len(response) > 1980:
+                    chunks = [response[i:i+1980] for i in range(0, len(response), 1980)]
                     for chunk in chunks:
-                        await message.reply(f"{t} {chunk}")
+                        await message.reply(f"= {chunk}")
                 else:
-                    await message.reply(f"{t} {response}")
-                t = t - 1
+                    await message.reply(f"= {response}")
 
-            """
-            # роли по порядку
-            t = len(open("sequences_role.txt", "r", encoding="utf-8").read().split('\n\n'))
-            response = gptgprompt
-            for i in range(t):             
-                # change_role_gpt()
-                default_role = sequences_role_gpt()      
+                """
+                # роли по порядку
+                t = len(open("sequences_role.txt", "r", encoding="utf-8").read().split('\n\n'))
+                response = gptgprompt
+                for i in range(t):             
+                    # change_role_gpt()
+                    default_role = sequences_role_gpt()      
+                    messagesgpt = load_messages()  
+                    response = response
+                    await client.change_presence(activity=discord.Game(f"{t} {default_role[:126]}"))
+                    await asyncio.sleep(2)
+                    messagesgpt.append({"role": "user", "content": response})                
+                    response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+                    messagesgpt.append({"role": "assistant", "content": response})
+                    save_messages(messagesgpt)                
+                    if len(response) > 1980:
+                        chunks = [response[i:i+1980] for i in range(0, len(response), 1980)]
+                        for chunk in chunks:
+                            await message.reply(f"{t} {chunk}")
+                    else:
+                        await message.reply(f"{t} {response}")
+                    t = t - 1
+                """
+
+                """
+                change_role_gpt()    
+                random_role = "сгенерируй код на Python на тему:"   
+                role_message = [{"role": "user", "content": f"{random_role}"}]
+                # Сохраните сообщение роли в файл
+                with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+                    filemessagesgpt.write(random_role)        
+                save_messages(role_message)
+                default_role = read_default_role('gptrole.txt')      
                 messagesgpt = load_messages()  
                 response = response
-                await client.change_presence(activity=discord.Game(f"{t} {default_role[:126]}"))
-                await asyncio.sleep(2)
+                await client.change_presence(activity=discord.Game(f"+ {default_role[:126]}"))
+                await asyncio.sleep(1)
                 messagesgpt.append({"role": "user", "content": response})                
                 response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
                 messagesgpt.append({"role": "assistant", "content": response})
-                save_messages(messagesgpt)                
-                if len(response) > 2000:
-                    chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
+                save_messages(messagesgpt)
+                await asyncio.sleep(1)
+                response = response
+                if len(response) > 1980:
+                    chunks = [response[i:i+1980] for i in range(0, len(response), 1980)]
                     for chunk in chunks:
-                        await message.reply(f"{t} {chunk}")
+                        await message.reply(chunk)
                 else:
-                    await message.reply(f"{t} {response}")
-                t = t - 1
-            """
+                    await message.reply(response)
+                """
+        elif len(words) == 1 and (words[0] == "волк"):
+            await message.channel.send(vocabulary.sp_rec_reaction_auf())
+        elif len(words) == 1 and (words[0] == "анекдот"):
+            await message.channel.send(vocabulary.random_anecdote())
+        elif len(words) == 1 and (words[0] == "афоризм"):
+            await message.channel.send(vocabulary.random_response_aphorism())
+        elif len(words) == 1 and (words[0] == "стих"):
+            await message.channel.send(vocabulary.random_rhymes())
+        elif len(words) == 1 and words[0] == "история":
+            response = vocabulary.random_response_stories()
+            if len(response) > 1980:
+                chunks = [response[i:i+1980] for i in range(0, len(response), 1980)]
+                for chunk in chunks:
+                    await message.reply(chunk)
+            else:
+                await message.reply(response)
 
-            """
-            change_role_gpt()    
-            random_role = "сгенерируй код на Python на тему:"   
-            role_message = [{"role": "user", "content": f"{random_role}"}]
-            # Сохраните сообщение роли в файл
+        elif not toggle_switch and message.content in '#':
+            toggle_switch = True
+            await message.message.delete() if message.guild else None
+            await message.channel.send("(√¬_¬) готов базарить! че надо?")
+        elif toggle_switch and message.content in '#':
+            toggle_switch = False
+            await message.message.delete() if message.guild else None
+            await message.channel.send("(ꞁꞁ×_×) свалил в помойку.")
+        elif toggle_switch and message.content in '?':    
+            with open("messagesgpt.txt", "w") as file:
+                file.truncate(0)
+            change_role_gpt()
+            default_role = read_default_role('gptrole.txt')
+            await message.message.delete() if message.guild else None
+            await client.change_presence(activity=discord.Game(default_role[:128]))
+        elif toggle_switch and message.content in '$':
+            with open("messagesgpt.txt", "w") as file:
+                file.truncate(0)
+            save_messages([{"role": "user", "content": default_role}])
+            await message.message.delete() if message.guild else None
+            await message.channel.send("(↺▪˽▪) чат сброшен")
+        elif toggle_switch and message.content.startswith('!'):
+            with open("messagesgpt.txt", "w") as file:
+                file.truncate(0)
+            role_message = [{"role": "user", "content": f"{message.content[1:]}"}]
             with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
-                filemessagesgpt.write(random_role)        
+                filemessagesgpt.write(f"{message.content[1:]}")   
             save_messages(role_message)
-            default_role = read_default_role('gptrole.txt')      
-            messagesgpt = load_messages()  
-            response = response
-            await client.change_presence(activity=discord.Game(f"+ {default_role[:126]}"))
-            await asyncio.sleep(2)
-            messagesgpt.append({"role": "user", "content": response})                
-            response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
-            messagesgpt.append({"role": "assistant", "content": response})
-            save_messages(messagesgpt)
-            response = response
-            if len(response) > 2000:
-                chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
-                for chunk in chunks:
-                    await message.reply(chunk)
-            else:
-                await message.reply(response)
+            default_role = read_default_role('gptrole.txt')
+            await message.message.delete() if message.guild else None
+            await client.change_presence(activity=discord.Game(default_role[:128]))
 
-            change_role_gpt()    
-            random_role = "сгенерируй реальную идею для заработка на тему:"   
-            role_message = [{"role": "user", "content": f"{random_role}"}]
-            # Сохраните сообщение роли в файл
-            with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
-                filemessagesgpt.write(random_role)        
-            save_messages(role_message)            
-            default_role = read_default_role('gptrole.txt')      
-            messagesgpt = load_messages()  
-            response = response
-            await client.change_presence(activity=discord.Game(f"= {default_role[:126]}"))
-            await asyncio.sleep(2)
-            messagesgpt.append({"role": "user", "content": response})                
-            response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
-            messagesgpt.append({"role": "assistant", "content": response})
-            save_messages(messagesgpt)
-            response = response
-            if len(response) > 2000:
-                chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
-                for chunk in chunks:
-                    await message.reply(chunk)
-            else:
-                await message.reply(response)
-            """
+        # чат с разными ролями  
+        elif message.content.startswith('.'):  
+            gptgprompt = message.content[1:]
+            if gptgprompt is not None:
 
+                # роли случайно
+                response = gptgprompt
+                t = 5
+                for i in range(t):                
+                    change_new_role_gpt()
+                    default_role = read_default_role('gptrole.txt')      
+                    messagesgpt = load_messages()  
+                    response = response
+                    await client.change_presence(activity=discord.Game(f"{t} {default_role[:126]}"))
+                    await asyncio.sleep(1)
+                    messagesgpt.append({"role": "user", "content": response})                
+                    response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+                    messagesgpt.append({"role": "assistant", "content": response})
+                    save_messages(messagesgpt)
+                    await asyncio.sleep(1)
+                    response = response
+                    if len(response) > 1980:
+                        chunks = [response[i:i+1980] for i in range(0, len(response), 1980)]
+                        for chunk in chunks:
+                            await message.reply(f"{t} {chunk}")
+                    else:
+                        await message.reply(f"{t} {response}")
+                    t = t - 1
 
-    elif len(words) == 1 and (words[0] == "анекдот"):
-        await message.channel.send(vocabulary.random_anecdote())
-    elif len(words) == 1 and (words[0] == "афоризм"):
-        await message.channel.send(vocabulary.random_response_aphorism())
-    elif len(words) == 1 and (words[0] == "стих"):
-        await message.channel.send(vocabulary.random_rhymes())
-    elif len(words) == 1 and words[0] == "история":
-        response = vocabulary.random_response_stories()
-        if len(response) > 2000:
-            chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
-            for chunk in chunks:
-                await message.reply(chunk)
-        else:
-            await message.reply(response)
-
-    elif not toggle_switch and message.content in '#':
-        toggle_switch = True
-        await message.message.delete() if message.guild else None
-        await message.channel.send("(√¬_¬) готов базарить! че надо?")
-    elif toggle_switch and message.content in '#':
-        toggle_switch = False
-        await message.message.delete() if message.guild else None
-        await message.channel.send("(ꞁꞁ×_×) свалил в помойку.")
-    elif toggle_switch and message.content in '?':    
-        with open("messagesgpt.txt", "w") as file:
-            file.truncate(0)
-        change_role_gpt()
-        default_role = read_default_role('gptrole.txt')
-        await message.message.delete() if message.guild else None
-        await client.change_presence(activity=discord.Game(default_role[:128]))
-    elif toggle_switch and message.content in '$':
-        with open("messagesgpt.txt", "w") as file:
-            file.truncate(0)
-        save_messages([{"role": "user", "content": default_role}])
-        await message.message.delete() if message.guild else None
-        await message.channel.send("(↺▪˽▪) чат сброшен")
-    elif toggle_switch and message.content.startswith('!'):
-        with open("messagesgpt.txt", "w") as file:
-            file.truncate(0)
-        role_message = [{"role": "user", "content": f"{message.content[1:]}"}]
-        with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
-            filemessagesgpt.write(f"{message.content[1:]}")   
-        save_messages(role_message)
-        default_role = read_default_role('gptrole.txt')
-        await message.message.delete() if message.guild else None
-        await client.change_presence(activity=discord.Game(default_role[:128]))
-            
-    elif toggle_switch and not message.content.startswith('3!') and not message.content.startswith('`'):
-        gptgprompt = message.content
-        if gptgprompt is not None:
-            print(message.author.display_name + ": " + gptgprompt)
-            messagesgpt.append({"role": "user", "content": message.author.display_name + ": " + gptgprompt})
-            response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
-            messagesgpt.append({"role": "assistant", "content": response})
-            save_messages(messagesgpt)
-            if len(response) > 2000:
-                chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
-                for chunk in chunks:
-                    await message.reply(chunk)
-            else:
-                await message.reply(response)
-
-    elif message.content.startswith('3!'):
-        imgprompt = message.content[2:]
-        if imgprompt is not None:
-            await message.channel.send(f"(~o▾o) Малюю каляку \"{imgprompt}\"...")
-            retry_count = 9  # Set the maximum number of retries
-            response = None
-            while retry_count > 0:
-                response = await client.loop.run_in_executor(executor, genimage, imgprompt)
-                if response is not None:
-                    break  # Break out of the loop if the response is successful
+                change_new_role_gpt()    
+                role_message = [{"role": "user", "content": f"{last_role}"}]
+                # Сохраните сообщение роли в файл
+                with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+                    filemessagesgpt.write(last_role)        
+                save_messages(role_message)            
+                default_role = read_default_role('gptrole.txt')      
+                messagesgpt = load_messages()  
+                response = response
+                await client.change_presence(activity=discord.Game(f"= {default_role[:126]}"))
+                await asyncio.sleep(1)
+                messagesgpt.append({"role": "user", "content": response})                
+                response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+                messagesgpt.append({"role": "assistant", "content": response})
+                save_messages(messagesgpt)
+                await asyncio.sleep(1)
+                response = response
+                if len(response) > 1980:
+                    chunks = [response[i:i+1980] for i in range(0, len(response), 1980)]
+                    for chunk in chunks:
+                        await message.reply(f"= {chunk}")
                 else:
-                    await asyncio.sleep(5)  # Wait for 5 seconds before retrying
-                    retry_count -= 1
+                    await message.reply(f"= {response}")
 
-            if response is not None:
-                async for msg in message.channel.history(limit=2):
-                    if msg.author == client.user:
-                        await msg.delete()
+        # стандартный чат         
+        elif toggle_switch and not message.content.startswith(('3!', '`', '.')):
+            gptgprompt = message.content
+            if gptgprompt is not None:
+                print(message.author.display_name + ": " + gptgprompt)
+                messagesgpt.append({"role": "user", "content": message.author.display_name + ": " + gptgprompt})
+                response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
+                messagesgpt.append({"role": "assistant", "content": response})
+                save_messages(messagesgpt)
+                if len(response) > 1980:
+                    chunks = [response[i:i+1980] for i in range(0, len(response), 1980)]
+                    for chunk in chunks:
+                        await message.reply(chunk)
+                else:
+                    await message.reply(response)
 
-                # Split the list of image URLs into two parts
-                first_part = response[:5]
-                second_part = response[5:]
+        # рисовалка
+        elif message.content.startswith('3!'):
+            imgprompt = message.content[2:]
+            if imgprompt is not None:
+                await message.channel.send(f"(~o▾o) Малюю каляку \"{imgprompt}\"...")
+                retry_count = 9  # Set the maximum number of retries
+                response = None
+                while retry_count > 0:
+                    response = await client.loop.run_in_executor(executor, genimage, imgprompt)
+                    if response is not None:
+                        break  # Break out of the loop if the response is successful
+                    else:
+                        await asyncio.sleep(5)  # Wait for 5 seconds before retrying
+                        retry_count -= 1
 
-                # Join the image URLs into strings
-                first_part_message = "\n".join(first_part)
-                second_part_message = "\n".join(second_part)
+                if response is not None:
+                    async for msg in message.channel.history(limit=2):
+                        if msg.author == client.user:
+                            await msg.delete()
 
-                # Send two separate messages with each set of URLs
-                await message.channel.send(first_part_message)
-                await message.channel.send(second_part_message)
-            else:
-                await message.channel.send("Не удалось выполнить запрос после нескольких попыток.")
+                    # Split the list of image URLs into two parts
+                    first_part = response[:5]
+                    second_part = response[5:]
 
-    elif message.content.startswith('`clear'):
-        if message.author.display_name == "Rimtex":
-            # Check if the command has the correct number of arguments
-            args = message.content.split()
-            if len(args) != 2 or not args[1].isdigit():
-                await message.channel.send('Usage: `clear X (X should be a number)')
-                return
-            num_messages_to_delete = int(args[1])
-            await message.channel.purge(limit=num_messages_to_delete + 1)
+                    # Join the image URLs into strings
+                    first_part_message = "\n".join(first_part)
+                    second_part_message = "\n".join(second_part)
 
+                    # Send two separate messages with each set of URLs
+                    await message.channel.send(first_part_message)
+                    await message.channel.send(second_part_message)
+                else:
+                    await message.channel.send("Не удалось выполнить запрос после нескольких попыток.")
+
+        elif message.content.startswith('`clear'):
+            if message.author.display_name == "Rimtex":
+                # Check if the command has the correct number of arguments
+                args = message.content.split()
+                if len(args) != 2 or not args[1].isdigit():
+                    await message.channel.send('Usage: `clear X (X should be a number)')
+                    return
+                num_messages_to_delete = int(args[1])
+                await message.channel.purge(limit=num_messages_to_delete + 1)
+    except Exception as e:                
+                app_title.restore()
+                print(e)
 
 client.run(token)  # Запускаем бота

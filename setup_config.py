@@ -1,7 +1,7 @@
 import os
 import pyautogui
 import win32com
-
+import win32com.client as wincl
 path_to_shortcut = "ярлыки\\"  # папка ярлыков
 ideas = path_to_shortcut + "идеи.txt"
 reminder = path_to_shortcut + "напоминалка.txt"

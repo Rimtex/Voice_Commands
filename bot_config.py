@@ -70,7 +70,7 @@ def read_default_role(file_path):
 def change_role_gpt():
     with open("random_role.txt", "r", encoding="utf-8") as file:
         roles_text = file.read()
-    roles_list = roles_text.split('\n\n')  # Пустая строка разделяет роли
+    roles_list = roles_text.split('\n')  # Пустая строка разделяет роли
     random_role = random.choice(roles_list)
     # Создайте список, содержащий только сообщение роли по умолчанию.
     role_message = [{"role": "user", "content": f"{random_role}"}]
@@ -79,6 +79,41 @@ def change_role_gpt():
         filemessagesgpt.write(random_role)        
     save_messages(role_message)    
 
+# Переменная для хранения выбранных ролей
+chosen_roles = []
+
+# Функция смены случайной роли, избегать повторного выбора определенных ролей
+def change_new_role_gpt():
+    # Чтение ролей из файла
+    with open("random_role.txt", "r", encoding="utf-8") as file:
+        roles_text = file.read()
+
+    # Получение списка ролей из текста
+    roles_list = roles_text.split('\n')
+
+    # Исключение уже выбранных ролей из списка
+    available_roles = [role for role in roles_list if role not in chosen_roles]
+
+    if not available_roles:
+        print("Все роли уже были выбраны.")
+        return
+
+    # Выбор случайной роли
+    random_role = random.choice(available_roles)
+
+    # Создание списка сообщений с новой ролью
+    role_message = [{"role": "user", "content": f"{random_role}"}]
+
+    # Добавление выбранной роли к уже выбранным
+    chosen_roles.append(random_role)
+
+    # Сохранение выбранной роли в файл (необязательно)
+    with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+        filemessagesgpt.write(random_role)
+
+    # Сохранение сообщений
+    save_messages(role_message)
+
 # роли по очереди
 def sequences_role_gpt():
     global current_role_index
@@ -86,7 +121,7 @@ def sequences_role_gpt():
     with open("sequences_role.txt", "r", encoding="utf-8") as file:
         roles_text = file.read()
     
-    roles_list = roles_text.split('\n\n')  # Пустая строка разделяет роли
+    roles_list = roles_text.split('\n')  # Пустая строка разделяет роли
     
     if not hasattr(sequences_role_gpt, 'current_role_index'):
         # Если переменная не существует, создаем ее и устанавливаем в 0
@@ -106,7 +141,7 @@ def sequences_role_gpt():
     return current_role
 """
 # Пример использования
-for _ in range(len(open("sequences_role.txt", "r", encoding="utf-8").read().split('\n\n'))):
+for _ in range(len(open("sequences_role.txt", "r", encoding="utf-8").read().split('\n'))):
     role = sequences_role_gpt()
     print(role)
 """
