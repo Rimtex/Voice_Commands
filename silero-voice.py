@@ -27,13 +27,13 @@ def speaker_gtts(text):
 models_urls = ['https://models.silero.ai/models/tts/ru/v3_1_ru.pt',
                'https://models.silero.ai/models/tts/en/v3_en.pt']
 
-if not os.path.exists("silero-models"):
-    os.mkdir("silero-models")
+if not os.path.exists("silero_models"):
+    os.mkdir("silero_models")
     os.makedirs("silero-models/ru", exist_ok=True)
     os.makedirs("silero-models/en", exist_ok=True)
 
-model_ru = 'silero-models/ru/model.pt'
-model_en = 'silero-models/en/model.pt'
+model_ru = 'silero_models/ru/model.pt'
+model_en = 'silero_models/en/model.pt'
 
 device = torch.device('cpu')
 torch.set_num_threads(4)
