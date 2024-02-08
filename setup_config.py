@@ -6,15 +6,15 @@ import win32com.client as wincl
 path_to_shortcut = "ярлыки\\"  # папка ярлыков
 ideas = path_to_shortcut + "идеи.txt"
 reminder = path_to_shortcut + "напоминалка.txt"
-models_directory = "voskmodels"
+models_directory = "vosk_models"
 dir_path = r"E:\Muzic"  # ! путь для проигрывания музыки
 current_folder = os.path.dirname(os.path.abspath(__file__))
 requirements_path = os.path.join(current_folder, "requirements.txt")  # ! для команд библиотек
 
-model1 = r"voskmodels\vosk-model-small-ru-0.22"
-model2 = r"voskmodels\vosk-model-small-en-us-0.15"
-model3 = r"voskmodels\vosk-model-ru-0.42"
-model4 = r"voskmodels\vosk-model-en-us-0.22"
+model1 = r"vosk_models\vosk-model-small-ru-0.22"
+model2 = r"vosk_models\vosk-model-small-en-us-0.15"
+model3 = r"vosk_models\vosk-model-ru-0.42"
+model4 = r"vosk_models\vosk-model-en-us-0.22"
 
 
 # группы команд

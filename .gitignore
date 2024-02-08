@@ -3,10 +3,10 @@
 .idea/workspace.xml
 /__pycache__/
 
-voskmodels/vosk-model-small-ru-0.22/
-voskmodels/vosk-model-ru-0.42/
-voskmodels/vosk-model-small-en-us-0.15/
-voskmodels/vosk-model-en-us-0.22/
+vosk_models/vosk-model-small-ru-0.22/
+vosk_models/vosk-model-ru-0.42/
+vosk_models/vosk-model-small-en-us-0.15/
+vosk_models/vosk-model-en-us-0.22/
 silero_models/
 
 ярлыки/*.txt
