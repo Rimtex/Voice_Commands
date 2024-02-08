@@ -213,11 +213,15 @@ except Exception as e:
     os.startfile(path_to_shortcut + app_title_window)
     exit()
 
-# определение
+
+
+
+
+# определение частоты дискретизации
 device = sd.default.device = 0, 4  # sd.default.device = 1, 3 ////finput, output [1 , 4]
 samplerate = int(sd.query_devices(device[0], 'input')['default_samplerate'])
 
-# Старт модели определеия голоса
+# Старт модели определения голоса
 rec = KaldiRecognizer(current_model, samplerate)
 receng = KaldiRecognizer(english_model, samplerate)
 p = pyaudio.PyAudio()
@@ -362,8 +366,8 @@ if __name__ == '__main__':
             pause_mode()
 
         #: Запись на русском # при включённом Caps Lock
-        elif (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
-                (num_lock_state_check != 1 and num_lock_state_check != -127):
+        elif (caps_lock_state_check == True) and \
+                (num_lock_state_check == False):
             time.sleep(.2)
             print(LYE + "›", end="")
             while True:
@@ -375,6 +379,7 @@ if __name__ == '__main__':
                         keyrus_write(prompt[1:-1])
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "‹" + SRA, end="")
+                    time.sleep(.1)
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
@@ -382,8 +387,8 @@ if __name__ == '__main__':
                     break
 
         #: Запись на английском # при включённом Num Lock
-        elif (num_lock_state_check == 1 or num_lock_state_check == -127) and \
-                (caps_lock_state_check != 1 and caps_lock_state_check != -127):
+        elif (num_lock_state_check == True) and \
+                (caps_lock_state_check == False):
             time.sleep(.2)
             print(YEL + f"›", end="")
             while True:
@@ -395,6 +400,7 @@ if __name__ == '__main__':
                         key_write(prompteng[1:-1])
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "‹" + SRA, end="")
+                    time.sleep(.1)
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
@@ -402,8 +408,8 @@ if __name__ == '__main__':
                     break
 
         #: Запись с переводом # при включённом Caps Lock и Num Lock
-        elif (num_lock_state_check == 1 or num_lock_state_check == -127) and \
-                (caps_lock_state_check == 1 or caps_lock_state_check == -127):
+        elif (num_lock_state_check == True) and \
+                (caps_lock_state_check == True):
             time.sleep(.2)
             print(LGR + "»", end="")
             while True:
@@ -420,6 +426,7 @@ if __name__ == '__main__':
                             print(f" {LRE}! переводчик: ", e)
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "«" + SRA, end="")
+                    time.sleep(.1)
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
