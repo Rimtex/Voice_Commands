@@ -3,8 +3,8 @@ import random
 import time
 import re
 import keyboard
+import ctypes
 import pyautogui
-import py_win_keyboard_layout
 from colorama import init, Fore, Style
 from pyttsx3 import speak
 
@@ -47,6 +47,22 @@ words_num = {'ноль': 0, 'один': 1, 'два': 2, 'три': 3, 'четыр
 """
 
 
+# переключение на английскую раскладку
+def check_and_switch_to_english_layout():
+    layout_name = ctypes.create_string_buffer(8)
+    ctypes.windll.user32.GetKeyboardLayoutNameA(layout_name)
+    current_layout = layout_name.value.decode()
+    if current_layout != "00000409":  # 00000409 - идентификатор английской раскладки
+        # Получаем хэндл текущего окна
+        hwnd = ctypes.windll.user32.GetForegroundWindow()
+        # Получаем английскую раскладку клавиатуры
+        english_layout_id = 0x04090409
+        # Устанавливаем раскладку клавиатуры
+        ctypes.windll.user32.ActivateKeyboardLayout(english_layout_id, 0)
+        # Уведомляем систему о смене раскладки
+        ctypes.windll.user32.PostMessageA(hwnd, 0x50, 0, 0)
+
+
 #: курсор клик
 def click_print():
     pyautogui.click()
@@ -62,35 +78,32 @@ def click_print_cor(asdx, asdy, button='left'):
 
 
 def keyrus_write(string):
-    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04190419)  # для переключения на русскую раскладку
     print(LYE + f"{string} " + SRA, end='')
     keyboard.write(string)
 
 
 def key_write(string):
-    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
     print(YEL + f"{string} ", end='')
     keyboard.write(string)  # запись в курсор
 
 
 def keytrans_write(string):
-    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
     print(GRE + f"{string} " + SRA, end='')
     keyboard.write(string)  # запись в курсор
 
 
 def key_down(string):
-    pyautogui.keyDown(string)  # зажатие клавиши
+    keyboard.press(string)  # зажатие клавиши
     print(f"{LGR}▾{LBL}{string}{LGR}▾{LCY} ", end='')
 
 
 def key_up(string):
-    pyautogui.keyUp(string)  # отпускание клавиши
+    keyboard.release(string)  # отпускание клавиши
     print(f"{LGR}▴{LBL}{string}{LGR}▴{LCY} ", end='')
 
 
 def key_press(key):
-    pyautogui.press(key)  # нажатие на клавишу
+    keyboard.press_and_release(key)  # нажатие на клавишу
     print(Fore.LIGHTCYAN_EX + f"{key} ", end='')
 
     """
@@ -107,9 +120,10 @@ def key_press(key):
 
 #: клавиши с принтом
 def keyhot(*keys):
-    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
+    check_and_switch_to_english_layout()
     # Нажать комбинацию клавиш
-    pyautogui.hotkey(*keys)
+    keys_str = ' + '.join(keys)
+    keyboard.press_and_release(keys_str)
     # Вывести информацию о нажатой комбинации клавиш
     print(F" {WHI}{LCY}{keys[0]}{WHI}{LCY}", end='')
     if len(keys) > 1:

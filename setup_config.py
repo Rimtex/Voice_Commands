@@ -1,7 +1,8 @@
 import os
-import pyautogui
+import pygetwindow
 import win32com
 import win32com.client as wincl
+
 path_to_shortcut = "ярлыки\\"  # папка ярлыков
 ideas = path_to_shortcut + "идеи.txt"
 reminder = path_to_shortcut + "напоминалка.txt"
@@ -14,6 +15,7 @@ model1 = r"voskmodels\vosk-model-small-ru-0.22"
 model2 = r"voskmodels\vosk-model-small-en-us-0.15"
 model3 = r"voskmodels\vosk-model-ru-0.42"
 model4 = r"voskmodels\vosk-model-en-us-0.22"
+
 
 # группы команд
 def command_groups(prompt, words):
@@ -29,11 +31,11 @@ def command_groups(prompt, words):
     rimtex_personal(prompt)
     rimtex_reactions(prompt, words)
 
+
 # создание ярлыка + запуск с него
 def create_shortcut(shortcut_name, target_script_path):
-    shortcut_if_create = None
     try:
-        shortcut_if_create = pyautogui.getWindowsWithTitle(shortcut_name)[0]
+        shortcut_if_create = pygetwindow.getWindowsWithTitle(shortcut_name)[0]
         shortcut_if_create.moveTo(88, 220)
         shortcut_if_create.resizeTo(849, 327)
     except Exception as e:
@@ -52,3 +54,6 @@ def create_shortcut(shortcut_name, target_script_path):
         print(e)
         os.startfile(path_to_shortcut + shortcut_name)
         exit()
+
+# пример использования
+# create_shortcut("ассистент", os.path.abspath(__file__))

@@ -1,13 +1,12 @@
 import os
 import keyboard
 import pyaudio
-import pyautogui
 import g4f
-import pyttsx3
+import pygetwindow
 import win32com.client as wincl
 from colorama import Fore, Style, init
 from vosk import Model, KaldiRecognizer
-from setup_config import create_shortcut, path_to_shortcut, model1, model2, model3, model4
+from setup_config import create_shortcut, model1
 
 LYE = Fore.LIGHTYELLOW_EX
 LCY = Fore.LIGHTCYAN_EX
@@ -16,7 +15,7 @@ SRA = Style.RESET_ALL
 init(convert=True)
 
 create_shortcut("болтать", os.path.abspath(__file__))
-app_title = pyautogui.getWindowsWithTitle("болтать")[0]
+app_title = pygetwindow.getWindowsWithTitle("болтать")[0]
 app_title.moveTo(-8, 319)
 app_title.resizeTo(836, 210)
 
@@ -46,6 +45,7 @@ for voice in voices:
 # вызов нейро чата
 neyro_model = "gpt_4_turbo"
 
+
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
         model=getattr(g4f.models, neyro_model),
@@ -53,6 +53,8 @@ def ask_gpt(messages: list) -> str:
     print(LYE + response)
     speak.speak(response)
     return response
+
+
 messagesgpt = []
 
 if __name__ == "__main__":
@@ -60,7 +62,7 @@ if __name__ == "__main__":
         f"""\
 ╔{"═" * len(voice_model)}══╤════════════╗
 ║ {LGR}{voice_model}{SRA} │{LCY} загружена!{SRA} ║
-║{" " * (len(voice_model) -len(neyro_model))} {LYE}{neyro_model}{SRA} │{LCY} загружена!{SRA} ║
+║{" " * (len(voice_model) - len(neyro_model))} {LYE}{neyro_model}{SRA} │{LCY} загружена!{SRA} ║
 ╚{"═" * len(voice_model)}══╧════════════╝
 ╔═════════════════════════════════════╤════════════════════╗
 ║ для сброса чата                     │{LCY} Ctrl - Shift{SRA}       ║
@@ -74,9 +76,9 @@ if __name__ == "__main__":
             if rec.AcceptWaveform(stream.read(4000)):
                 prompt = rec.Result()[13:-2]
                 if (
-                    keyboard.is_pressed("ctrl")
-                    or keyboard.is_pressed("shift")
-                    or keyboard.is_pressed("alt")
+                        keyboard.is_pressed("ctrl")
+                        or keyboard.is_pressed("shift")
+                        or keyboard.is_pressed("alt")
                 ):
                     prompt = '""'
                 if prompt != '""':

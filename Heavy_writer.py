@@ -1,17 +1,15 @@
 import os
 import keyboard
 import pyaudio
-import pyautogui
-import win32com
-import win32com.client as wincl
+import pygetwindow
 from colorama import Fore, init
 from vosk import Model, KaldiRecognizer
-from setup_config import create_shortcut, path_to_shortcut, model1, model2, model3, model4
+from setup_config import create_shortcut, model1, model2, model3, model4
 
 init(convert=True)
 
 create_shortcut("писатель", os.path.abspath(__file__))
-app_title = pyautogui.getWindowsWithTitle("писатель")[0]
+app_title = pygetwindow.getWindowsWithTitle("писатель")[0]
 app_title.moveTo(-8, 319)
 app_title.resizeTo(836, 185)
 

@@ -8,7 +8,6 @@ try:
     import random
     import keyboard
     import pyautogui
-    import py_win_keyboard_layout
     import pyaudio
     import pyttsx3
     import vosk
@@ -23,6 +22,8 @@ try:
     import win32clipboard
     import ctypes
     import tqdm
+    import pygetwindow
+    import sounddevice as sd
 except ImportError:
     print("Попытка установить необходимые модули: requirements.txt")
     os.system('python.exe -m pip install --upgrade pip')
@@ -34,7 +35,6 @@ except ImportError:
     import random
     import keyboard
     import pyautogui
-    import py_win_keyboard_layout
     import pyaudio
     import pyttsx3
     import vosk
@@ -49,9 +49,11 @@ except ImportError:
     import win32clipboard
     import ctypes
     import tqdm
+    import pygetwindow
+    import sounddevice as sd
 
 from keyboard_scripts import key_press, keyhot, key_down, key_write, key_up, click_print, keyrus_write, \
-    keytrans_write, words_num
+    keytrans_write, words_num, check_and_switch_to_english_layout
 
 import loader
 from loader import loader_screen_rimtex
@@ -94,21 +96,23 @@ def printt(textt):
 # функция выключения Caps Lock и Num Lock
 def turn_off_locks():
     # Проверить, включена ли клавиша Caps Lock
-    caps_lock_state = win32api.GetKeyState(0x14)  # 0x14 - код клавиши Caps Lock
+    caps_lock_state = ctypes.windll.user32.GetKeyState(0x14) & 0xFFFF != 0  # 0x14 - код клавиши Caps Lock
     if caps_lock_state == 1 or caps_lock_state == -127:  # Если клавиша включена
         # Нажать клавишу Caps Lock, чтобы выключить её
-        win32api.keybd_event(0x14, 0x45, 0x1, 0)
-        win32api.keybd_event(0x14, 0x45, 0x3, 0)
+        ctypes.windll.user32.keybd_event(0x14, 0x45, 0x1, 0)
+        ctypes.windll.user32.keybd_event(0x14, 0x45, 0x3, 0)
     # Проверить, включена ли клавиша Num Lock
-    num_lock_state = win32api.GetKeyState(0x90)  # 0x90 - код клавиши Num Lock
+    num_lock_state = ctypes.windll.user32.GetKeyState(0x90) & 0xFFFF != 0  # 0x90 - код клавиши Num Lock
     if num_lock_state == 1 or num_lock_state == -127:  # Если клавиша включена
         # Нажать клавишу Num Lock, чтобы выключить её
-        win32api.keybd_event(0x90, 0x45, 0x1, 0)
-        win32api.keybd_event(0x90, 0x45, 0x3, 0)
+        ctypes.windll.user32.keybd_event(0x90, 0x45, 0x1, 0)
+        ctypes.windll.user32.keybd_event(0x90, 0x45, 0x3, 0)
 
 
 turn_off_locks()
-py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
+
+# Вызываем функцию для проверки и при необходимости переключения на английскую раскладку
+check_and_switch_to_english_layout()
 
 
 #: направление курсора: третье слово
@@ -149,16 +153,13 @@ def numbers_key():  # назначаем kps клавишу в скрипте н
 print(Fore.RESET, end='')
 
 # Находим окно с именем 'ассистент'
-app_title = None
 app_title_window = "ассистент"
 create_shortcut("ассистент", os.path.abspath(__file__))
-app_title = pyautogui.getWindowsWithTitle("ассистент")[0]
+app_title = pygetwindow.getWindowsWithTitle("ассистент")[0]
 app_title.moveTo(-8, 0)
 app_title.resizeTo(836, 327)
 
 vosk.SetLogLevel(-1)  # удаляем логи
-
-# Инициализация распознавателя с основной моделью
 
 model_urls = [
     "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip",
@@ -212,14 +213,18 @@ except Exception as e:
     os.startfile(path_to_shortcut + app_title_window)
     exit()
 
+# определение
+device = sd.default.device = 0, 4  # sd.default.device = 1, 3 ////finput, output [1 , 4]
+samplerate = int(sd.query_devices(device[0], 'input')['default_samplerate'])
+
 # Старт модели определеия голоса
-rec = KaldiRecognizer(current_model, 48000)
-receng = KaldiRecognizer(english_model, 48000)
+rec = KaldiRecognizer(current_model, samplerate)
+receng = KaldiRecognizer(english_model, samplerate)
 p = pyaudio.PyAudio()
 stream = p.open(
     format=pyaudio.paInt16,
     channels=1,
-    rate=48000,
+    rate=samplerate,
     input=True,
     frames_per_buffer=4000
 )
@@ -231,6 +236,7 @@ voices = speak.GetVoices()
 speak.Volume = 100  # громкость
 speakrate_set = 4  # скорость
 tts = pyttsx3.init()
+
 
 # Функция для смены модели
 def change_model(new_model):
@@ -348,8 +354,8 @@ if __name__ == '__main__':
 
     while True:
 
-        caps_lock_state_check = win32api.GetKeyState(0x14)
-        num_lock_state_check = win32api.GetKeyState(0x90)
+        caps_lock_state_check = ctypes.windll.user32.GetKeyState(0x14) & 0xFFFF != 0
+        num_lock_state_check = ctypes.windll.user32.GetKeyState(0x90) & 0xFFFF != 0
 
         # -: режим паузы
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
@@ -593,9 +599,9 @@ if __name__ == '__main__':
                     numbers_key()
                 #: одноразовое нажатие
                 elif re.match(r'"\w?копир\w{0,6}\b"', prompt):
-                    keyhot('ctrlleft', 'c')
+                    keyhot('ctrl', 'c')
                 elif re.match(r'"\w{0,2}хран\w{0,5}\b"', prompt):
-                    keyhot('ctrlleft', 's')
+                    keyhot('ctrl', 's')
                 elif re.match(r'"буфер\w?\b"|"спис\w{0,2}\b"', prompt):
                     keyhot('win', 'v')
                 elif re.match(r'"раскладк\w?\b"|"клавиатур\w{0,2}\b"', prompt):
@@ -764,13 +770,13 @@ if __name__ == '__main__':
 
                 #: перезагрузка ассистента
                 elif prompt in ('"тихо"', '"тихa"', '"старт"'):
-                    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
+                    check_and_switch_to_english_layout()
                     os.startfile(f"{path_to_shortcut}{app_title_window}")
                     exit()
                 elif prompt == '"рестарт"' or re.match(r'"переза\w{0,6}\b"', prompt):
                     app_title.moveRel(0, 20)
                     print(LRE, end="")
-                    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
+                    check_and_switch_to_english_layout()
                     os.startfile(f"{path_to_shortcut}{app_title_window}")
                     for i in range(15):
                         printt('\n')
