@@ -667,6 +667,7 @@ if __name__ == '__main__':
 
                 #: запись даты
                 elif prompt == '"дата"' or prompt == '"дату"':
+                    print(f'{LCY}', sep='', end='')
                     keyboard.write(date.today().strftime("%d.%m.%Y "))
                     keyboard.write(datetime.now().strftime("%H:%M:%S")[0:5])  # - убрал секунды
 

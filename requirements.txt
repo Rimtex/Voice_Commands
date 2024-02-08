@@ -9,7 +9,6 @@ bs4
 pyttsx3
 pypiwin32
 pywin32
-py_win_keyboard_layout
 psutil
 PyGetWindow
 tqdm
