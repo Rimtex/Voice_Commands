@@ -38,7 +38,7 @@ neyro_model = "gpt_35_turbo_16k_0613"
 
 default_role = "!Пиши только Python код!"
 
-role_message = [{"role": "user", "content": default_role}]
+role_message = [{"role": "system", "content": default_role}]
 
 # Проверка наличия файлов и создание при необходимости
 if not os.path.exists('prompt_gpt.txt'):
@@ -65,7 +65,7 @@ with open('prompt_gpt.txt', 'r', encoding='utf-8') as file:
 
 first_object = data[0]["content"]
 
-role_message = [{"role": "user", "content": first_object}]
+role_message = [{"role": "system", "content": first_object}]
 
 with open("prompt_gpt.txt", "w") as file:
     file.truncate()
@@ -140,7 +140,7 @@ if __name__ == "__main__":
                 prompt_gpt = load_messages()
                 with open("prompt_gpt.txt", "w") as file:
                     file.truncate()
-                role_message = [{"role": "user", "content": input("введите роль: ")}]
+                role_message = [{"role": "system", "content": input("введите роль: ")}]
                 save_messages(role_message)
             elif keyboard.is_pressed('shift+ctrl'):
                 print("-", sep='', end='', flush=True)
@@ -150,5 +150,5 @@ if __name__ == "__main__":
                 first_object = data[0]["content"]
                 with open("prompt_gpt.txt", "w") as file:
                     file.truncate()
-                role_message = [{"role": "user", "content": first_object}]
+                role_message = [{"role": "system", "content": first_object}]
                 save_messages(role_message)

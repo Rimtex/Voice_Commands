@@ -82,7 +82,7 @@ def change_role_gpt():
     roles_list = roles_text.split('\n')  # Пустая строка разделяет роли
     random_role = random.choice(roles_list)
     # Создайте список, содержащий только сообщение роли по умолчанию.
-    role_message = [{"role": "user", "content": f"{random_role}"}]
+    role_message = [{"role": "system", "content": f"{random_role}"}]
     # Сохраните сообщение роли в файл
     with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
         filemessagesgpt.write(random_role)
@@ -113,7 +113,7 @@ def change_new_role_gpt():
     random_role = random.choice(available_roles)
 
     # Создание списка сообщений с новой ролью
-    role_message = [{"role": "user", "content": f"{random_role}"}]
+    role_message = [{"role": "system", "content": f"{random_role}"}]
 
     # Добавление выбранной роли к уже выбранным
     chosen_roles.append(random_role)
@@ -148,7 +148,7 @@ def sequences_role_gpt():
     # Если все роли использованы, обнуляем счетчик
     if sequences_role_gpt.current_role_index == 0:
         sequences_role_gpt.current_role_index = 0
-    role_message = [{"role": "user", "content": f"{current_role}"}]
+    role_message = [{"role": "system", "content": f"{current_role}"}]
     save_messages(role_message)
     return current_role
 
@@ -164,7 +164,7 @@ if is_file_empty('gptrole.txt'):
     change_role_gpt()
 
 if is_file_empty('messagesgpt.txt'):
-    role_message = [{"role": "user", "content": f"{read_default_role('gptrole.txt')}"}]
+    role_message = [{"role": "system", "content": f"{read_default_role('gptrole.txt')}"}]
     save_messages(role_message)
 
 default_role = read_default_role('gptrole.txt')

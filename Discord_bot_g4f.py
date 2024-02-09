@@ -92,7 +92,7 @@ async def on_message(message):  # Обработчик сообщений в д�
                     response = response
                     await client.change_presence(activity=discord.Game(f"{t} {default_role[:126]}"))
                     await asyncio.sleep(1)
-                    messagesgpt.append({"role": "user", "content": response})                
+                    messagesgpt.append({"role": "system", "content": response})                
                     response = await client.loop.run_in_executor(executor, ask_gpt, messagesgpt)
                     messagesgpt.append({"role": "assistant", "content": response})
                     save_messages(messagesgpt)
@@ -107,7 +107,7 @@ async def on_message(message):  # Обработчик сообщений в д�
                     t = t - 1
 
                 change_new_role_gpt()    
-                role_message = [{"role": "user", "content": f"{last_role}"}]
+                role_message = [{"role": "system", "content": f"{last_role}"}]
                 with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
                     filemessagesgpt.write(last_role)        
                 save_messages(role_message)            
@@ -156,7 +156,7 @@ async def on_message(message):  # Обработчик сообщений в д�
                 """
                 change_role_gpt()    
                 random_role = "сгенерируй код на Python на тему:"   
-                role_message = [{"role": "user", "content": f"{random_role}"}]
+                role_message = [{"role": "system", "content": f"{random_role}"}]
                 # Сохраните сообщение роли в файл
                 with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
                     filemessagesgpt.write(random_role)        
@@ -214,13 +214,13 @@ async def on_message(message):  # Обработчик сообщений в д�
         elif toggle_switch and message.content in '$':
             with open("messagesgpt.txt", "w") as file:
                 file.truncate(0)
-            save_messages([{"role": "user", "content": default_role}])
+            save_messages([{"role": "system", "content": default_role}])
             await message.message.delete() if message.guild else None
             await message.channel.send("(↺▪˽▪) чат сброшен")
         elif toggle_switch and message.content.startswith('!'):
             with open("messagesgpt.txt", "w") as file:
                 file.truncate(0)
-            role_message = [{"role": "user", "content": f"{message.content[1:]}"}]
+            role_message = [{"role": "system", "content": f"{message.content[1:]}"}]
             with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
                 filemessagesgpt.write(f"{message.content[1:]}")   
             save_messages(role_message)
@@ -258,7 +258,7 @@ async def on_message(message):  # Обработчик сообщений в д�
                     t = t - 1
 
                 change_new_role_gpt()    
-                role_message = [{"role": "user", "content": f"{last_role}"}]
+                role_message = [{"role": "system", "content": f"{last_role}"}]
                 # Сохраните сообщение роли в файл
                 with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
                     filemessagesgpt.write(last_role)        
