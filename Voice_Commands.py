@@ -375,7 +375,7 @@ if __name__ == '__main__':
                         keyrus_write(prompt[1:-1])
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "‹" + SRA, end="")
-                    time.sleep(.1)
+                    time.sleep(.2)
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
@@ -396,7 +396,7 @@ if __name__ == '__main__':
                         key_write(prompteng[1:-1])
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "‹" + SRA, end="")
-                    time.sleep(.1)
+                    time.sleep(.2)
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
@@ -422,7 +422,7 @@ if __name__ == '__main__':
                             print(f" {LRE}! переводчик: ", e)
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "«" + SRA, end="")
-                    time.sleep(.1)
+                    time.sleep(.2)
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
