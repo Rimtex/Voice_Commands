@@ -94,6 +94,6 @@ if __name__ == "__main__":
                 break
 
             elapsed_time = time.time() - start_time
-            if elapsed_time >= 6:
+            if elapsed_time >= 30:
                 input("Пауза! Нажмите Enter, чтобы продолжить...")
                 break
