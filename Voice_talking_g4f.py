@@ -2,6 +2,7 @@ import os
 import keyboard
 import pyaudio
 import g4f
+import time
 import pygetwindow
 import win32com.client as wincl
 from colorama import Fore, Style, init
@@ -71,6 +72,7 @@ if __name__ == "__main__":
 """
     )
     while True:
+        start_time = time.time()
         print(LCY + " начало чата: ")
         while True:
             if rec.AcceptWaveform(stream.read(4000)):
@@ -89,4 +91,9 @@ if __name__ == "__main__":
             if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift"):
                 messagesgpt = None
                 prompt = '""'
+                break
+
+            elapsed_time = time.time() - start_time
+            if elapsed_time >= 6:
+                input("Пауза! Нажмите Enter, чтобы продолжить...")
                 break

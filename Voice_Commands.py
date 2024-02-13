@@ -1,5 +1,4 @@
 import os
-
 try:
     import requests
     import traceback
@@ -152,9 +151,10 @@ def numbers_key():  # назначаем kps клавишу в скрипте н
 
 print(Fore.RESET, end='')
 
+if __name__ == '__main__':
+    create_shortcut("ассистент", os.path.abspath(__file__))
 # Находим окно с именем 'ассистент'
 app_title_window = "ассистент"
-create_shortcut("ассистент", os.path.abspath(__file__))
 app_title = pygetwindow.getWindowsWithTitle("ассистент")[0]
 app_title.moveTo(-8, 0)
 app_title.resizeTo(836, 327)
@@ -212,10 +212,6 @@ except Exception as e:
     print("Модели скачались и распаковались успешно.")
     os.startfile(path_to_shortcut + app_title_window)
     exit()
-
-
-
-
 
 # определение частоты дискретизации
 device = sd.default.device = 0, 4  # sd.default.device = 1, 3 ////finput, output [1 , 4]

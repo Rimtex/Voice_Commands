@@ -1,9 +1,6 @@
 import os
-from gtts import gTTS
-from io import BytesIO
 import torch
 import sounddevice as sd
-import soundfile as sf
 
 """
 ipython
@@ -13,16 +10,6 @@ PyYAML
 torch
 torchaudio
 """
-
-
-def speaker_gtts(text):
-    lang = os.getenv("LANG")
-    with BytesIO() as f:
-        gTTS(text=text, lang=lang, slow=False).write_to_fp(f)
-        f.seek(0)
-        data, fs = sf.read(f)
-        sd.play(data, fs, blocking=True)
-
 
 models_urls = ['https://models.silero.ai/models/tts/ru/v3_1_ru.pt',
                'https://models.silero.ai/models/tts/en/v3_en.pt']
@@ -37,7 +24,6 @@ model_en = 'silero_models/en/model.pt'
 
 device = torch.device('cpu')
 torch.set_num_threads(4)
-
 local_file = model_ru
 
 if not os.path.isfile(local_file):
@@ -49,6 +35,7 @@ model.to(device)
 
 sample_rate = 48000
 speaker = 'kseniya'  # aidar, baya, kseniya, xenia, eugene
+en_speaker = 'en_6'
 
 
 def speaker_silero(text):
@@ -57,11 +44,11 @@ def speaker_silero(text):
                             sample_rate=sample_rate)
     sd.play(audio, blocking=True)
 
+
 """
 - Кто там? - Я! - Я? Да ты гонишь!
 """
-
-while True:
-    sss = input('1')
-    if sss != '':
+if __name__ == '__main__':
+    while True:
+        sss = '32131- Кто там? - Я! - Я? Да ты гонишь!'
         speaker_silero(sss)
