@@ -12,7 +12,7 @@ title = "работа с выделенными скриншотами: " \
         "сохранение в png > преобразование в текст > перевод > копирование в буфер > конверт в ICO"
 tesseract = "https://github.com/UB-Mannheim/tesseract/wiki"
 tesseract_path = r"C:\Program Files\Tesseract-OCR"  # ! путь к установленному Tesseract OCR
-lang = "eng"  # "eng"  ! нужные языки "eng+rus+ukr"
+lang = "eng+rus+ukr"  ! нужные языки "eng+rus+ukr"
 translang = "russian"  # ! перевод eng ua
 
 

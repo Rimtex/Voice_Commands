@@ -3,9 +3,14 @@ import time
 import json
 import g4f
 import keyboard
+import pyautogui
 import pyperclip
 import ctypes
 
+
+app_title_window = "G4f_buffer"
+# create_shortcut(app_title_window, os.path.abspath(__file__))
+# app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
 
 def get_keyboard_layout_name():
     # Преобразуем хэндл в строку
@@ -75,23 +80,25 @@ def print_text_by_character(text):
     for char in text:
         print(char)
 
-
-print(f"буферная нейронка")
-print(f"модель: {neyro_model}")
-print(f"роль: {first_object}")
-print("SHIFT + WIN для смены роли")
-print("SHIFT + STRL для сброса чата")
-print("выделите текст и нажмите: ALT + WIN для генерации")
-
-prov = "GPTalk"
-
+print(f"""\
+╔{"═" * 41}╗
+║ буферная нейронка                       ║
+╠{"═" * 41}╣
+║ SHIFT + WIN для смены роли              ║
+║ SHIFT + STRL для сброса чата            ║
+║ LT + WIN - выделить текст для генерации ║
+╟{"─" * 41}╢
+║ модель: {neyro_model}{" " * (31 - len(neyro_model))} ║
+╚{"═" * 41}╝
+роль: {first_object}
+""")
 
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
         model=getattr(g4f.models, neyro_model),
         # model=g4f.models.gpt_35_turbo_16k_0613,
-        provider=g4f.Provider.GPTalk,  # FakeGpt GPTalk
+        # provider=g4f.Provider.GPTalk,  # FakeGpt GPTalk
         messages=messages)
     return response
 
@@ -140,8 +147,11 @@ if __name__ == "__main__":
                 prompt_gpt = load_messages()
                 with open("prompt_gpt.txt", "w") as file:
                     file.truncate()
-                role_message = [{"role": "system", "content": input("введите роль: ")}]
+                    rolegpt = input("введите роль: ")
+                role_message = [{"role": "system", "content": rolegpt}]
                 save_messages(role_message)
+                os.startfile(f"{app_title_window}")
+                exit()
             elif keyboard.is_pressed('shift+ctrl'):
                 print("-", sep='', end='', flush=True)
                 prompt_gpt = load_messages()

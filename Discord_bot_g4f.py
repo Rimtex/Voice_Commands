@@ -22,9 +22,6 @@ default_role = read_default_role('gptrole.txt')
 executor = ThreadPoolExecutor()  # без него ошибка - client.py:441>> is being executed.
 toggle_switch = True  # выключатель нейро чата
 
-last_role = "сгенерируй реально возможную уникальную идею для заработка на тему:"
-
-
 
 """
 # ID канала, в котором бот должен работать: пкм на канал - копировать ID канала

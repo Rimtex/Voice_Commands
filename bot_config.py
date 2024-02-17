@@ -38,9 +38,13 @@ if not os.path.exists('gptrole.txt'):
     with open('gptrole.txt', 'w', encoding='utf-8') as filegptrole:
         filegptrole.write("")
 
-    # Функция проверки того, пуст ли файл
+
+# чтение последней роли
+with open('last_gptrole.txt', 'r', encoding='utf-8') as last_gptrole:
+    last_role = last_gptrole.read()
 
 
+# Функция проверки того, пуст ли файл
 def is_file_empty(file_path):
     try:
         with open(file_path, 'r', encoding='utf-8') as file:

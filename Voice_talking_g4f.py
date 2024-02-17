@@ -44,7 +44,7 @@ for voice in voices:
         speak.Voice = voice
 
 # вызов нейро чата
-neyro_model = "gpt_4_turbo"
+neyro_model = "gpt_35_turbo_16k_0613"
 
 
 def ask_gpt(messages: list) -> str:

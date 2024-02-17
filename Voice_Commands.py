@@ -1,4 +1,5 @@
 import os
+
 try:
     import requests
     import traceback
@@ -7,6 +8,7 @@ try:
     import random
     import keyboard
     import pyautogui
+    import py_win_keyboard_layout
     import pyaudio
     import pyttsx3
     import vosk
@@ -21,8 +23,6 @@ try:
     import win32clipboard
     import ctypes
     import tqdm
-    import pygetwindow
-    import sounddevice as sd
 except ImportError:
     print("Попытка установить необходимые модули: requirements.txt")
     os.system('python.exe -m pip install --upgrade pip')
@@ -34,6 +34,7 @@ except ImportError:
     import random
     import keyboard
     import pyautogui
+    import py_win_keyboard_layout
     import pyaudio
     import pyttsx3
     import vosk
@@ -48,11 +49,9 @@ except ImportError:
     import win32clipboard
     import ctypes
     import tqdm
-    import pygetwindow
-    import sounddevice as sd
 
 from keyboard_scripts import key_press, keyhot, key_down, key_write, key_up, click_print, keyrus_write, \
-    keytrans_write, words_num, check_and_switch_to_english_layout
+    keytrans_write, words_num
 
 import loader
 from loader import loader_screen_rimtex
@@ -95,23 +94,21 @@ def printt(textt):
 # функция выключения Caps Lock и Num Lock
 def turn_off_locks():
     # Проверить, включена ли клавиша Caps Lock
-    caps_lock_state = ctypes.windll.user32.GetKeyState(0x14) & 0xFFFF != 0  # 0x14 - код клавиши Caps Lock
+    caps_lock_state = win32api.GetKeyState(0x14)  # 0x14 - код клавиши Caps Lock
     if caps_lock_state == 1 or caps_lock_state == -127:  # Если клавиша включена
         # Нажать клавишу Caps Lock, чтобы выключить её
-        ctypes.windll.user32.keybd_event(0x14, 0x45, 0x1, 0)
-        ctypes.windll.user32.keybd_event(0x14, 0x45, 0x3, 0)
+        win32api.keybd_event(0x14, 0x45, 0x1, 0)
+        win32api.keybd_event(0x14, 0x45, 0x3, 0)
     # Проверить, включена ли клавиша Num Lock
-    num_lock_state = ctypes.windll.user32.GetKeyState(0x90) & 0xFFFF != 0  # 0x90 - код клавиши Num Lock
+    num_lock_state = win32api.GetKeyState(0x90)  # 0x90 - код клавиши Num Lock
     if num_lock_state == 1 or num_lock_state == -127:  # Если клавиша включена
         # Нажать клавишу Num Lock, чтобы выключить её
-        ctypes.windll.user32.keybd_event(0x90, 0x45, 0x1, 0)
-        ctypes.windll.user32.keybd_event(0x90, 0x45, 0x3, 0)
+        win32api.keybd_event(0x90, 0x45, 0x1, 0)
+        win32api.keybd_event(0x90, 0x45, 0x3, 0)
 
 
 turn_off_locks()
-
-# Вызываем функцию для проверки и при необходимости переключения на английскую раскладку
-check_and_switch_to_english_layout()
+py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)  # переключение на английскую раскладку
 
 
 #: направление курсора: третье слово
@@ -151,15 +148,17 @@ def numbers_key():  # назначаем kps клавишу в скрипте н
 
 print(Fore.RESET, end='')
 
-if __name__ == '__main__':
-    create_shortcut("ассистент", os.path.abspath(__file__))
 # Находим окно с именем 'ассистент'
+app_title = None
 app_title_window = "ассистент"
-app_title = pygetwindow.getWindowsWithTitle("ассистент")[0]
+create_shortcut("ассистент", os.path.abspath(__file__))
+app_title = pyautogui.getWindowsWithTitle("ассистент")[0]
 app_title.moveTo(-8, 0)
 app_title.resizeTo(836, 327)
 
 vosk.SetLogLevel(-1)  # удаляем логи
+
+# Инициализация распознавателя с основной моделью
 
 model_urls = [
     "https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip",
@@ -213,18 +212,16 @@ except Exception as e:
     os.startfile(path_to_shortcut + app_title_window)
     exit()
 
-# определение частоты дискретизации
-device = sd.default.device = 0, 4  # sd.default.device = 1, 3 ////finput, output [1 , 4]
-samplerate = int(sd.query_devices(device[0], 'input')['default_samplerate'])
+
 
 # Старт модели определения голоса
-rec = KaldiRecognizer(current_model, samplerate)
-receng = KaldiRecognizer(english_model, samplerate)
+rec = KaldiRecognizer(current_model, 48000)
+receng = KaldiRecognizer(english_model, 48000)
 p = pyaudio.PyAudio()
 stream = p.open(
     format=pyaudio.paInt16,
     channels=1,
-    rate=samplerate,
+    rate=48000,
     input=True,
     frames_per_buffer=4000
 )
@@ -236,7 +233,6 @@ voices = speak.GetVoices()
 speak.Volume = 100  # громкость
 speakrate_set = 4  # скорость
 tts = pyttsx3.init()
-
 
 # Функция для смены модели
 def change_model(new_model):
@@ -322,7 +318,7 @@ def pause_mode():
                 print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
                 os.startfile(f"\\{path_to_shortcut}{app_title_window}")
                 exit()
-            elif paumpt in ('"ассистент"', '"помощник"', '"запуск"', '"запустить"', '"запусти"', '"обычный режим"'):
+            elif paumpt in ('"ассистент"', '"помощник"', '"запуск"', '"запустить"', '"запусти"', '"обычный режим"', '"бот"'):
                 app_title.minimize()
                 app_title.restore()
                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
@@ -354,16 +350,16 @@ if __name__ == '__main__':
 
     while True:
 
-        caps_lock_state_check = ctypes.windll.user32.GetKeyState(0x14) & 0xFFFF != 0
-        num_lock_state_check = ctypes.windll.user32.GetKeyState(0x90) & 0xFFFF != 0
+        caps_lock_state_check = win32api.GetKeyState(0x14)
+        num_lock_state_check = win32api.GetKeyState(0x90)
 
         # -: режим паузы
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
             pause_mode()
 
         #: Запись на русском # при включённом Caps Lock
-        elif (caps_lock_state_check == True) and \
-                (num_lock_state_check == False):
+        elif (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
+                (num_lock_state_check != 1 and num_lock_state_check != -127):
             time.sleep(.2)
             print(LYE + "›", end="")
             while True:
@@ -375,7 +371,6 @@ if __name__ == '__main__':
                         keyrus_write(prompt[1:-1])
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "‹" + SRA, end="")
-                    time.sleep(.2)
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
@@ -383,8 +378,8 @@ if __name__ == '__main__':
                     break
 
         #: Запись на английском # при включённом Num Lock
-        elif (num_lock_state_check == True) and \
-                (caps_lock_state_check == False):
+        elif (num_lock_state_check == 1 or num_lock_state_check == -127) and \
+                (caps_lock_state_check != 1 and caps_lock_state_check != -127):
             time.sleep(.2)
             print(YEL + f"›", end="")
             while True:
@@ -396,7 +391,6 @@ if __name__ == '__main__':
                         key_write(prompteng[1:-1])
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "‹" + SRA, end="")
-                    time.sleep(.2)
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
@@ -404,8 +398,8 @@ if __name__ == '__main__':
                     break
 
         #: Запись с переводом # при включённом Caps Lock и Num Lock
-        elif (num_lock_state_check == True) and \
-                (caps_lock_state_check == True):
+        elif (num_lock_state_check == 1 or num_lock_state_check == -127) and \
+                (caps_lock_state_check == 1 or caps_lock_state_check == -127):
             time.sleep(.2)
             print(LGR + "»", end="")
             while True:
@@ -422,7 +416,6 @@ if __name__ == '__main__':
                             print(f" {LRE}! переводчик: ", e)
                 if keyboard.is_pressed("numlock") or keyboard.is_pressed("capslock"):
                     print(LRE + "«" + SRA, end="")
-                    time.sleep(.2)
                     break
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("alt"):
                     turn_off_locks()
@@ -595,10 +588,10 @@ if __name__ == '__main__':
                     kps = ['shift', 'ctrl', 'z']
                     numbers_key()
                 elif 7 > len(words) > 0 and words[0] in ('вставь', 'ставка', 'вставка', 'вставить', 'ставь'):
-                    kps = ['ctrlleft', 'v']
+                    kps = ['ctrl', 'v']
                     numbers_key()
                 elif re.match('"вкладку|"вкладка|"крестик', prompt):  # закрытие вкладки Chrome
-                    kps = ['ctrlleft', 'w']
+                    kps = ['ctrl', 'w']
                     numbers_key()
                 #: одноразовое нажатие
                 elif re.match(r'"\w?копир\w{0,6}\b"', prompt):
@@ -618,7 +611,7 @@ if __name__ == '__main__':
                 elif len(words) == 1 and re.match(r'свер\w{0,4}\b', words[0]):
                     keyhot('win', 'Down')
                 elif len(words) == 1 and re.match(r'закр\w{0,4}\b', words[0]):
-                    keyhot('altleft', 'F4')
+                    keyhot('alt', 'F4')
                 elif prompt in ('"окна"', '"окошки"', '"вин таб"', '"показать окна"', '"режим окон"'):
                     keyhot('win', 'tab')
                 elif prompt in ('"свернуть все"', '"сверни все"', '"чисто"'):
@@ -670,7 +663,6 @@ if __name__ == '__main__':
 
                 #: запись даты
                 elif prompt == '"дата"' or prompt == '"дату"':
-                    print(f'{LCY}', sep='', end='')
                     keyboard.write(date.today().strftime("%d.%m.%Y "))
                     keyboard.write(datetime.now().strftime("%H:%M:%S")[0:5])  # - убрал секунды
 
@@ -774,13 +766,13 @@ if __name__ == '__main__':
 
                 #: перезагрузка ассистента
                 elif prompt in ('"тихо"', '"тихa"', '"старт"'):
-                    check_and_switch_to_english_layout()
+                    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
                     os.startfile(f"{path_to_shortcut}{app_title_window}")
                     exit()
                 elif prompt == '"рестарт"' or re.match(r'"переза\w{0,6}\b"', prompt):
                     app_title.moveRel(0, 20)
                     print(LRE, end="")
-                    check_and_switch_to_english_layout()
+                    py_win_keyboard_layout.change_foreground_window_keyboard_layout(0x04090409)
                     os.startfile(f"{path_to_shortcut}{app_title_window}")
                     for i in range(15):
                         printt('\n')
