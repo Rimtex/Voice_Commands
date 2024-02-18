@@ -7,10 +7,11 @@ import pyautogui
 import pyperclip
 import ctypes
 
-
-app_title_window = "G4f_buffer"
-# create_shortcut(app_title_window, os.path.abspath(__file__))
-# app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
+""""""
+from setup_config_apps import create_shortcut
+app_title_window = os.path.basename(__file__).replace('.py', '')
+create_shortcut(app_title_window, os.path.abspath(__file__))
+app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
 
 def get_keyboard_layout_name():
     # Преобразуем хэндл в строку
@@ -41,7 +42,7 @@ check_and_switch_to_english_layout()
 
 neyro_model = "gpt_35_turbo_16k_0613"
 
-default_role = "!Пиши только Python код!"
+default_role = "!Пиши Python код!"
 
 role_message = [{"role": "system", "content": default_role}]
 
@@ -162,3 +163,5 @@ if __name__ == "__main__":
                     file.truncate()
                 role_message = [{"role": "system", "content": first_object}]
                 save_messages(role_message)
+                os.startfile(f"{app_title_window}")
+                exit()

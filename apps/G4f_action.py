@@ -11,6 +11,7 @@ import ctypes
 from setup_config_apps import create_shortcut
 
 """"""
+from setup_config_apps import create_shortcut
 app_title_window = os.path.basename(__file__).replace('.py', '')
 create_shortcut(app_title_window, os.path.abspath(__file__))
 app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
