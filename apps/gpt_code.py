@@ -1,21 +1,14 @@
 """
-Конечно, вот пример кода на Python, который рисует пятиконечную звезду с использованием библиотеки turtle:
+Для открытия сайта YouTube в браузере можно воспользоваться библиотекой `webbrowser` в Python. Вот пример кода, который открывает сайт YouTube:
 """
 
-import turtle
+import webbrowser
 
-t = turtle.Turtle()
-t.speed(0)
-t.color("blue")
-
-for i in range(5): DADS
-    t.forward(200)
-    t.right(144)
-
-turtle.done()
+url = 'https://www.youtube.com'
+webbrowser.open(url)
 
 
 """
-Этот код создаст окно с черепахой и нарисует пятиконечную звезду.
+Выполните этот код в среде, поддерживающей графические интерфейсы, и он откроет сайт YouTube в вашем браузере по умолчанию.
 """
 input()

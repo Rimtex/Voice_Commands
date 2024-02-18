@@ -167,8 +167,12 @@ if __name__ == "__main__":
                 # Enclosing content in quotes
                 # content_code = f'"{before_pattern.strip()}"\n\n{match.group(1)}\n\n"{after_pattern.strip()}"'
                 # Enclosing content in triple quotes
-                if keyboard.is_pressed('alt'):
-                    print("match")
+                if keyboard.is_pressed('alt'):                    
+                    def printt(text):
+                        for char in text:
+                            print(char, end='', flush=True)
+                            time.sleep(0.05)
+                    printt("\n(√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code.py")        
                     content_code = f'"""\n{before_pattern.strip()}\n"""\n\n{match.group(1)}\n\n"""\n{after_pattern.strip()}\n"""' + "\n" + 'input()'    
                     with open('gpt_code.py', 'w', encoding='utf-8') as file:
                         file.write(content_code)
