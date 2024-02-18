@@ -13,7 +13,7 @@ from setup_config_apps import create_shortcut
 """"""
 app_title_window = os.path.basename(__file__).replace('.py', '')
 create_shortcut(app_title_window, os.path.abspath(__file__))
-# app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
+app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
 
 def get_keyboard_layout_name():
     # Преобразуем хэндл в строку
@@ -42,10 +42,16 @@ def check_and_switch_to_english_layout():
 # Вызываем функцию для проверки и при необходимости переключения на английскую раскладку
 check_and_switch_to_english_layout()
 
-neyro_model = "gpt_35_turbo_16k_0613"
+neyro_model = "gpt_35_turbo_16k"
 
-default_role = "Python. ты нужен чтобы создавать работающие программы из описания текста. твой ответ должен содержать только работающий код."
+# model=g4f.models.gpt_35_turbo_16k,
 
+
+default_role = f"""\
+Python
+ты нужен чтобы создавать работающие программы из описания текста
+твой ответ должен содержать только работающий код\
+"""
 role_message = [{"role": "system", "content": default_role}]
 
 # Проверка наличия файлов и создание при необходимости
@@ -88,25 +94,25 @@ def print_text_by_character(text):
         print(char)
 
 x = 64
-print(f"""\
+print(f"""
 ╔{"═" * x}╗
 ║ буферная нейронка для запуска файла с кодом ответа GPT         ║
 ╠{"═" * x}╣
 ║ SHIFT + WIN для смены роли                                     ║
-║ SHIFT + STRL для сброса чата                                   ║
-║ LT + WIN - выделить текст для работы                           ║
+║ SHIFT + STRL для сброса                                        ║
+║ LT + WIN - для ответа из буфера                                ║
 ╟{"─" * x}╢
 ║ модель: {neyro_model}{" " * (x - 10 - len(neyro_model))} ║
 ╚{"═" * x}╝
-роль: {first_object}
+роль: {first_object}\
 """)
 
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
         model=getattr(g4f.models, neyro_model),
-        # model=g4f.models.gpt_35_turbo_16k_0613,
-        # provider=g4f.Provider.GPTalk,  # FakeGpt GPTalk
+        # model=g4f.models.gpt_35_long,
+        provider=g4f.Provider.GPTalk,  # FakeGpt GPTalk
         messages=messages)
     return response
 
@@ -136,25 +142,37 @@ if __name__ == "__main__":
         event = keyboard.read_event()
         if event.event_type == keyboard.KEY_DOWN:
             if keyboard.is_pressed('alt+win'):
-                print("+", sep='', end='', flush=True)
+                app_title.minimize()
+                app_title.restore()
                 prompt_gpt_action = load_messages()
-                data = pyperclip.paste()                
+                data = pyperclip.paste()
+                print("+")
+                print(data)             
                 prompt_gpt_action.append({"role": "user", "content": data})                
-                responses = ask_gpt(prompt_gpt_action)    
-                print("=", sep='', end='', flush=True)      
+                responses = ask_gpt(prompt_gpt_action)
                 prompt_gpt_action.append({"role": "assistant", "content": responses})
                 save_messages(prompt_gpt_action)
-
-
                 response_code = responses
-                pattern = r'```python\n(.*?)```' or r'```Python\n(.*?)```'
-                content_code = re.search(pattern, response_code, re.DOTALL).group(1)
-                first_line = response_code.split('\n')[0]                
-                with open('gpt_code.py', 'w', encoding='utf-8') as file:
-                    file.write(content_code)
-                os.system('python gpt_code.py')
+                first_line = response_code.split('\n')[0]
+                print("=", sep='', end='', flush=True) 
+                print(responses)
+                pattern1 = r'```python\n(.*?)```'
+                pattern2 = r'```Python\n(.*?)```'
+                match = re.search(pattern1 + '|' + pattern2, response_code, re.DOTALL)  
+                if match:             
+                    content_code = match.group(1)                     
+                    with open('gpt_code.py', 'w', encoding='utf-8') as file:
+                        file.write(content_code)
+                    os.startfile("gpt_code.py")
+                elif responses.strip().startswith("import"):    
+                    content_code = responses              
+                    with open('gpt_code.py', 'w', encoding='utf-8') as file:
+                        file.write(content_code)
+                    os.startfile("gpt_code.py")
 
             elif keyboard.is_pressed('shift+win'):
+                app_title.minimize()
+                app_title.restore()
                 prompt_gpt_action = load_messages()
                 with open("prompt_gpt_action.txt", "w") as file:
                     file.truncate()
@@ -173,3 +191,5 @@ if __name__ == "__main__":
                     file.truncate()
                 role_message = [{"role": "system", "content": first_object}]
                 save_messages(role_message)
+                os.startfile(f"{app_title_window}")
+                exit()
