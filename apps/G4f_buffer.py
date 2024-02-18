@@ -42,7 +42,7 @@ check_and_switch_to_english_layout()
 
 neyro_model = "gpt_35_turbo_16k_0613"
 
-default_role = "!Пиши Python код!"
+default_role = "!Нужен Python код!"
 
 role_message = [{"role": "system", "content": default_role}]
 
