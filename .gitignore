@@ -15,6 +15,7 @@ silero_models/
 /apps/*.ico
 /apps/*.png
 /apps/*.txt
+/apps/*.lnk
 
 /token.txt
 /tester.py
