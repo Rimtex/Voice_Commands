@@ -86,7 +86,7 @@ first_object = data[0]["content"]
 role_message = [{"role": "system", "content": first_object}]
 
 
-with open("prompt_gpt_action.txt", "w") as file:
+with open("prompt_gpt_action.txt", "w", encoding='utf-8') as file:
     file.truncate()
 
 if not os.path.exists("gpt_code.py"):

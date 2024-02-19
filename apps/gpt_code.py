@@ -1,5 +1,5 @@
 """
-Для отображения графика биткоина мы можем использовать библиотеку `matplotlib` вместе с библиотекой `requests` для получения данных о цене биткоина. Давайте создадим программу, которая получает данные о цене биткоина за последние 30 дней и строит график.
+Для отображения графика биткоина нам понадобится библиотека `matplotlib` для построения графиков и `requests` для получения данных о цене биткоина. Установим эти библиотеки и создадим код для построения графика цены биткоина за последние 30 дней:
 
 ```python
 """
@@ -13,35 +13,38 @@ except ImportError:
     import matplotlib.pyplot as plt
     import requests
 
-# Получаем данные о цене биткоина за последние 30 дней
-url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
-params = {
-    'currency': 'USD',
-    'start': '2021-12-01',
-    'end': '2021-12-31'
-}
-response = requests.get(url, params=params)
-data = response.json()
+# Функция для получения цен биткоина за последние 30 дней
+def get_bitcoin_prices():
+    url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
+    params = {'start': '2022-10-01', 'end': '2022-10-30'}
+    response = requests.get(url, params=params)
+    data = response.json()
+    return data['bpi']
 
-# Извлекаем даты и цены для построения графика
-dates = list(data['bpi'].keys())
-prices = list(data['bpi'].values())
+# Получаем данные о ценах биткоина
+bitcoin_prices = get_bitcoin_prices()
 
-# Строим график цены биткоина
+# Разделяем даты и цены для построения графика
+dates = list(bitcoin_prices.keys())
+prices = list(bitcoin_prices.values())
+
+# Строим график
 plt.figure(figsize=(10, 6))
-plt.plot(dates, prices, color='orange', marker='o', linestyle='-')
-plt.title('Bitcoin Price in December 2021')
+plt.plot(dates, prices, marker='o', color='b', linestyle='-')
+plt.title('Bitcoin Price Chart for the Last 30 Days')
 plt.xlabel('Date')
 plt.ylabel('Price (USD)')
 plt.xticks(rotation=45)
 plt.grid(True)
 plt.tight_layout()
+
+# Отображаем график
 plt.show()
 
 
 """
 ```
 
-Этот код отправляет запрос к API CoinDesk для получения цены биткоина за декабрь 2021 года и строит график цены биткоина за этот период.
+Этот код отправляет запрос к API Coindesk, чтобы получить цены биткоина за последние 30 дней, затем строит график цены биткоина по этим данным.
 """
 input()
