@@ -37,36 +37,95 @@ for i in range(20):
     app_title.moveRel(0, 10)
     time.sleep(0.005)
 
-"""
-gpt_35_long
+
+# model=g4f.models.gpt_,
+# provider=g4f.Provider.FakeGpt,  # FakeGpt GPTalk
+
+neyro_models = """
 gpt_35_turbo
-gpt_35_turbo_9613
+gpt_35_turbo_0613
 gpt_35_turbo_16k
 gpt_35_turbo_16k_0613
+gpt_35_long
 gpt_4
 gpt_4 0613
 gpt_4_32k
-gpt_4_32k_@613
-gpt_4 turbo
+gpt_4_32k_0613
+gpt_4_turbo
+Gpt6
+GptForLove           
 """
-neyro_model = "gpt_35_long"
 
-# model=g4f.models.gpt_
+# Преобразование строки в список построчно
+neyro_models_list = neyro_models.strip().split('\n')
+
+current_model_idx = 0
 
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
-    response = g4f.ChatCompletion.create(
-        model=getattr(g4f.models, neyro_model),
-        # model=g4f.models.gpt_35_long,
-        # provider=g4f.Provider.FakeGpt,  # FakeGpt GPTalk
-        messages=messages)
-    return response
+    global current_model_idx
+    while current_model_idx < len(neyro_models_list):
+        printt(f'{neyro_models_list[current_model_idx]} ')
+        try:
+            response = g4f.ChatCompletion.create(
+                model=getattr(g4f.models, neyro_models_list[current_model_idx]),
+                messages=messages)
+            return response
+        except Exception as e:
+            print(f"Error")
+            current_model_idx += 1
+    return "All models failed to provide a response."
+
+"""
+
+Код, который вы предоставили, содержит ошибку. Поправим его:
+
+```python
+neyro_models = [
+    "gpt_35_turbo",
+    "gpt_35_turbo_0613",
+    "gpt_35_turbo_16k",
+    "gpt_35_turbo_16k_0613",
+    "gpt_35_long",
+    "gpt_4",
+    "gpt_4_0613",
+    "gpt_4_32k",
+    "gpt_4_32k_0613",
+    "gpt_4_turbo",
+    "Gpt6",
+    "GptForLove"
+]
+
+# начальный индекс модели
+current_model_idx = 0
+
+# вызов нейро-чата
+def ask_gpt(messages: list) -> str:
+    global current_model_idx
+    while current_model_idx < len(neyro_models):
+        print(f'{neyro_models[current_model_idx]} ')
+        try:
+            response = g4f.ChatCompletion.create(
+                model=getattr(g4f.models, neyro_models[current_model_idx]),
+                messages=messages)
+            return response
+        except Exception as e:
+            print(f"Error: {e}")
+            current_model_idx += 1
+    return "All models failed to provide a response."
+```
+
+Здесь исправлены ошибки в списке `neyro_models` (убраны лишние символы), добавлен пропущенный пробел в функции `print`, добавлен вывод ошибки в блоке `except`, исправлено название метода модели в вызове `g4f.ChatCompletion.create`.
+
+"""
+
+
 
 default_role = f"""\
 Python
 ты нужен чтобы создавать работающие программы из описания текста
-твой ответ должен содержать работающий код
-если нужны библиотеки - добавить скрипт для установки их в начало кода с помощью: try: imports, except subprocess.call(['pip', 'install'])\
+твой ответ должен содержать полностью работающий код
+в начале кода должен быть скрипт для установки нужных библиотек через - try: imports, except subprocess.call(['pip', 'install'])
 """
 role_message = [{"role": "system", "content": default_role}]
 
@@ -149,8 +208,7 @@ if __name__ == "__main__":
         if is_file_empty('G4f_action.txt'):
             exit()
         with open('G4f_action.txt', 'r', encoding='utf-8') as file:
-            data = file.read()
-        printt(f'{neyro_model}' + "\n")
+            data = file.read()        
         printt('G4f_action.txt' + "\n")
         print("▾" * len('G4f_action.txt'))    
         printt(data + "\n")

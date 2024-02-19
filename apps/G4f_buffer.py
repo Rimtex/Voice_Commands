@@ -40,9 +40,8 @@ def check_and_switch_to_english_layout():
 # Вызываем функцию для проверки и при необходимости переключения на английскую раскладку
 check_and_switch_to_english_layout()
 
-neyro_model = "gpt_35_turbo_16k_0613"
 
-default_role = "!Нужен Python код!"
+default_role = "Python"
 
 role_message = [{"role": "system", "content": default_role}]
 
@@ -88,20 +87,44 @@ print(f"""\
 ║ SHIFT + WIN для смены роли              ║
 ║ SHIFT + STRL для сброса чата            ║
 ║ LT + WIN - выделить текст для генерации ║
-╟{"─" * 41}╢
-║ модель: {neyro_model}{" " * (31 - len(neyro_model))} ║
 ╚{"═" * 41}╝
 роль: {first_object}
 """)
 
+neyro_models = """
+gpt_35_turbo
+gpt_35_turbo_0613
+gpt_35_turbo_16k
+gpt_35_turbo_16k_0613
+gpt_35_long
+gpt_4
+gpt_4 0613
+gpt_4_32k
+gpt_4_32k_0613
+gpt_4_turbo
+Gpt6
+GptForLove           
+"""
+
+# Преобразование строки в список построчно
+neyro_models_list = neyro_models.strip().split('\n')
+
+current_model_idx = 0
+
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
-    response = g4f.ChatCompletion.create(
-        model=getattr(g4f.models, neyro_model),
-        # model=g4f.models.gpt_35_turbo_16k_0613,
-        # provider=g4f.Provider.GPTalk,  # FakeGpt GPTalk
-        messages=messages)
-    return response
+    global current_model_idx
+    while current_model_idx < len(neyro_models_list):
+        print(f'{neyro_models_list[current_model_idx]} ', end="")
+        try:
+            response = g4f.ChatCompletion.create(
+                model=getattr(g4f.models, neyro_models_list[current_model_idx]),
+                messages=messages)
+            return response
+        except Exception as e:
+            print(f"Error")
+            current_model_idx += 1
+    return "All models failed to provide a response."
 
 
 # Сохранение сообщений в файл
@@ -130,11 +153,7 @@ if __name__ == "__main__":
             if keyboard.is_pressed('alt+win'):
                 print("+", sep='', end='', flush=True)
                 prompt_gpt = load_messages()
-                time.sleep(1)
-                keyboard.press_and_release('ctrl + c')
-                time.sleep(0.1)
                 data = pyperclip.paste()
-                time.sleep(0.1)
                 prompt_gpt.append({"role": "user", "content": data})
                 responses = ask_gpt(prompt_gpt)
                 print("=", sep='', end='', flush=True)

@@ -109,20 +109,44 @@ print(f"""\
 ║ SHIFT + STRL        сброс                                      ║
 ║ WIN + ALT           ответ из буфера                            ║
 ║ STRL + WIN + ALT    запуск ответа из gpt_code.py               ║
-╟{"─" * x}╢
-║ модель: {neyro_model}{" " * (x - 10 - len(neyro_model))} ║
 ╚{"═" * x}╝
 роль: {first_object}\
 """)
 
+neyro_models = """
+gpt_35_turbo
+gpt_35_turbo_0613
+gpt_35_turbo_16k
+gpt_35_turbo_16k_0613
+gpt_35_long
+gpt_4
+gpt_4 0613
+gpt_4_32k
+gpt_4_32k_0613
+gpt_4_turbo
+Gpt6
+GptForLove           
+"""
+
+# Преобразование строки в список построчно
+neyro_models_list = neyro_models.strip().split('\n')
+
+current_model_idx = 0
+
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
-    response = g4f.ChatCompletion.create(
-        model=getattr(g4f.models, neyro_model),
-        # model=g4f.models.gpt_35_long,
-        # provider=g4f.Provider.GPTalk,  # FakeGpt GPTalk
-        messages=messages)
-    return response
+    global current_model_idx
+    while current_model_idx < len(neyro_models_list):
+        printt(f'{neyro_models_list[current_model_idx]} ')
+        try:
+            response = g4f.ChatCompletion.create(
+                model=getattr(g4f.models, neyro_models_list[current_model_idx]),
+                messages=messages)
+            return response
+        except Exception as e:
+            print(f"Error")
+            current_model_idx += 1
+    return "All models failed to provide a response."
 
 
 # Сохранение сообщений в файл
