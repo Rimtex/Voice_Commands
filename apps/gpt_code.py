@@ -1,43 +1,44 @@
 """
-Для построения графика биткоина я воспользуюсь библиотекой matplotlib для визуализации данных и библиотекой requests для получения данных о цене биткоина с API. 
+Для построения графика биткоина мы можем использовать библиотеку matplotlib. Если у вас ее нет, то можно установить ее с помощью следующего скрипта:
 
 ```python
 """
 
 try:
     import matplotlib.pyplot as plt
-    import requests
 except ImportError:
     import subprocess
-    subprocess.call(['pip', 'install', 'matplotlib', 'requests'])
+    subprocess.call(['pip', 'install', 'matplotlib'])
     import matplotlib.pyplot as plt
-    import requests
 
-# Получаем данные о цене биткоина с API
+import requests
+import matplotlib.pyplot as plt
+
+# Получаем данные о цене биткоина с помощью API
 url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
-params = {'start': '2021-01-01', 'end': '2021-12-31'}
-response = requests.get(url, params=params)
+response = requests.get(url, params={'start': '2022-01-01', 'end': '2022-12-31'})
 data = response.json()
 
-# Извлекаем даты и цены биткоина
 dates = list(data['bpi'].keys())
 prices = list(data['bpi'].values())
 
-# Построение графика
+# Создаем график
 plt.figure(figsize=(12, 6))
 plt.plot(dates, prices, color='orange', marker='o', linestyle='-')
 plt.xlabel('Date')
-plt.ylabel('Bitcoin Price (USD)')
-plt.title('Bitcoin Price Chart in 2021')
-plt.xticks(range(0, len(dates), 30), rotation=45)
+plt.ylabel('Price (USD)')
+plt.title('Bitcoin Price Chart 2022')
+plt.xticks(rotation=45)
 plt.grid(True)
 plt.tight_layout()
+
+# Отображаем график
 plt.show()
 
 
 """
 ```
 
-Этот код получит данные о цене биткоина за 2021 год с API и построит график цены биткоина по дням.
+Этот код отправляет запрос к API Coindesk для получения исторических данных о цене биткоина за 2022 год и строит график цены биткоина. Вы можете запустить этот код в среде, поддерживающей Python, чтобы увидеть график цены биткоина.
 """
 input()

@@ -49,7 +49,7 @@ gpt_4_32k
 gpt_4_32k_@613
 gpt_4 turbo
 """
-neyro_model = "gpt_35_turbo_16k"
+neyro_model = "gpt_35_long"
 
 # model=g4f.models.gpt_
 
@@ -119,14 +119,6 @@ def print_text_by_character(text):
     for char in text:
         print(char)
 
-x = 7
-print(f"""\
-роль: {first_object}
-╔{"═" * (x + len(neyro_model))}╗
-║ G4F: {neyro_model}{" " * (x - len(neyro_model))} ║
-╚{"═" * (x + len(neyro_model))}╝\
-""")
-
 # Сохранение сообщений в файл
 def save_messages(messages):
     with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file_s:
@@ -158,6 +150,7 @@ if __name__ == "__main__":
             exit()
         with open('G4f_action.txt', 'r', encoding='utf-8') as file:
             data = file.read()
+        printt(f'{neyro_model}' + "\n")
         printt('G4f_action.txt' + "\n")
         print("▾" * len('G4f_action.txt'))    
         printt(data + "\n")

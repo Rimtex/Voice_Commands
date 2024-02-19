@@ -8,6 +8,15 @@ import pyautogui
 import win32com
 import win32com.client as wincl
 
+""""""
+from setup_config_apps import create_shortcut
+app_title_window = os.path.basename(__file__).replace('.py', '')
+create_shortcut(app_title_window, os.path.abspath(__file__))
+app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
+app_title.resizeTo(836, 444)
+app_title.moveTo(-8, 319)
+
+
 title = "работа с выделенными скриншотами: " \
         "сохранение в png > преобразование в текст > перевод > копирование в буфер > конверт в ICO"
 tesseract = "https://github.com/UB-Mannheim/tesseract/wiki"
@@ -28,12 +37,11 @@ def capture_area():
                 lang = "eng+rus+ukr"
             if start_x is None and start_y is None:
                 start_x, start_y = pyautogui.position()
-                print(f"Начальная позиция: {start_x}, {start_y}")
+                print(f"____________________({start_x}, {start_y})____________________")
             time.sleep(0.1)
         else:
             if start_x is not None and start_y is not None:
-                end_x, end_y = pyautogui.position()
-                print(f"Конечная позиция: {end_x}, {end_y}")
+                end_x, end_y = pyautogui.position()                
                 break
             time.sleep(0.1)
 
@@ -68,14 +76,17 @@ def capture_area():
         # text = pytesseract.image_to_string(image)
         text = pytesseract.image_to_string(image, lang)
         print(text)
+        print(f"‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾({end_x}, {end_y})‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
         pyperclip.copy(f"{text}")
         # переводим полученный текст
         try:
             translator = Translator()
             trans = translator.translate(f"{text}", translang)
+            print(f"__________(translator)__________")
             print(trans)
+            print(f"‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
             # pyperclip.copy(f"{trans}")
-            screenshot = pyautogui.getWindowsWithTitle("скриншот")[0]
+            screenshot = pyautogui.getWindowsWithTitle(app_title_window)[0]
             screenshot.minimize()
             screenshot.restore()
         except Exception as er:
@@ -105,35 +116,4 @@ def main():
 
 
 if __name__ == "__main__":
-    screen = None
-    screenshot_window = "скриншот"
-    try:
-        screen = pyautogui.getWindowsWithTitle(screenshot_window)[0]
-        screen.moveTo(88, 220)
-        screen.resizeTo(849, 327)
-    except Exception as e:
-        print(f"\r                                                   (!o_O) ярлык --> {screenshot_window}\r")
-        # Получить путь к текущему скрипту
-        script_path = os.path.abspath(__file__)
-
-        # Получить путь к папке, в которой находится скрипт
-        script_directory = os.path.dirname(script_path)
-
-        # Проверить наличие ярлыка писатель
-        screenshot_window_link_path = os.path.join(script_directory, screenshot_window + ".lnk")
-        if not os.path.isfile(screenshot_window_link_path):
-            # Создать объект ярлыка
-            shell = win32com.client.Dispatch("WScript.Shell")
-            shortcut = shell.CreateShortCut(screenshot_window_link_path)
-            # Установить путь к исходному скрипту в ярлыке
-            shortcut.TargetPath = script_path
-            # Установить имя ярлыка
-            shortcut.Description = screenshot_window
-            # Установить рабочую папку
-            shortcut.WorkingDirectory = script_directory
-            # Сохранить ярлык
-            shortcut.Save()
-        print(e)
-        os.startfile(screenshot_window)
-        exit()
     main()
