@@ -42,23 +42,30 @@ def check_and_switch_to_english_layout():
 # Вызываем функцию для проверки и при необходимости переключения на английскую раскладку
 check_and_switch_to_english_layout()
 
+"""
+gpt_35_turbo_16k_0613
+gpt_4
+gpt_4_32k_0613
+gpt_4_turbo
+"""
 neyro_model = "gpt_35_turbo_16k_0613"
 
-# model=g4f.models.gpt_35_turbo_16k,
-
+# model=g4f.models.gpt_4_turbo
 
 default_role = f"""\
 Python
 ты нужен чтобы создавать работающие программы из описания текста
-твой ответ должен содержать работающий код\
+твой ответ должен содержать работающий код
+если нужны библиотеки - добавить скрипт для установки их в начало кода с помощью: try: imports, except subprocess.call(['pip', 'install'])\
 """
 role_message = [{"role": "system", "content": default_role}]
 
-# Проверка наличия файлов и создание при необходимости
-if not os.path.exists('prompt_gpt_action.txt'):
-    with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file_prompt_gpt_action:
-        file_prompt_gpt_action.write("")
-
+def txt_create(text):
+    # Проверка наличия файлов и создание при необходимости
+    if not os.path.exists(text):
+        with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file_prompt_gpt_action:
+            file_prompt_gpt_action.write("")
+txt_create('prompt_gpt_action.txt')
 
 # Функция проверки того, пуст ли файл
 def is_file_empty(file_path):
@@ -94,14 +101,14 @@ def print_text_by_character(text):
         print(char)
 
 x = 64
-print(f"""
+print(f"""\
 ╔{"═" * x}╗
-║ буферная нейронка для запуска файла с кодом ответа GPT         ║
+║ ¯`·.¸¸.·´¯`·.¸¸.->    буферная нейронка    <-.¸¸.·´¯`·.¸¸.·´¯  ║
 ╠{"═" * x}╣
-║ SHIFT + WIN         для смены роли                             ║
-║ SHIFT + STRL        для сброса                                 ║
-║ ALT + WIN           для ответа из буфера                       ║
-║ ALT + WIN + ALT     для запуска кода                           ║
+║ SHIFT + WIN         смена роли                                 ║
+║ SHIFT + STRL        сброс                                      ║
+║ WIN + ALT           ответ из буфера                            ║
+║ STRL + WIN + ALT    запуск ответа из gpt_code.py               ║
 ╟{"─" * x}╢
 ║ модель: {neyro_model}{" " * (x - 10 - len(neyro_model))} ║
 ╚{"═" * x}╝
@@ -138,71 +145,93 @@ save_messages(role_message)
 
 
 if __name__ == "__main__":
-    while True:
-        time.sleep(0.1)
-        event = keyboard.read_event()
-        if event.event_type == keyboard.KEY_DOWN:
-            if keyboard.is_pressed('alt+win'):
-                app_title.minimize()
-                app_title.restore()
-                prompt_gpt_action = load_messages()
-                data = pyperclip.paste()
-                print("+")
-                print(data)             
-                prompt_gpt_action.append({"role": "user", "content": data})                
-                responses = ask_gpt(prompt_gpt_action)
-                prompt_gpt_action.append({"role": "assistant", "content": responses})
-                save_messages(prompt_gpt_action)
+    try:
+        while True:
+            time.sleep(0.1)
+            event = keyboard.read_event()
+            if event.event_type == keyboard.KEY_DOWN:
 
-                response_code = responses
-                # first_line = response_code.split('\n')[0]
-                print(response_code)
-                pattern = r'```python\n(.*?)```'
-                match = re.search(pattern, response_code, re.IGNORECASE | re.DOTALL)
-
-                # Extracting content before and after the pattern
-                before_pattern = response_code[:match.start()]
-                after_pattern = response_code[match.end():]
-
-                # Enclosing content in quotes
-                # content_code = f'"{before_pattern.strip()}"\n\n{match.group(1)}\n\n"{after_pattern.strip()}"'
-                # Enclosing content in triple quotes
-                if keyboard.is_pressed('alt'):                    
+                if keyboard.is_pressed('ctrl+alt+win'):
+                    prompt_gpt_action = load_messages()
+                    data = pyperclip.paste()
+                    print("start script:")
+                    print(data)             
+                    prompt_gpt_action.append({"role": "user", "content": data})                
+                    responses = ask_gpt(prompt_gpt_action)
+                    prompt_gpt_action.append({"role": "assistant", "content": responses})
+                    save_messages(prompt_gpt_action)
+                    response_code = responses
+                    # first_line = response_code.split('\n')[0]
+                    print(response_code)
+                    pattern = r'```python\n(.*?)```'
+                    matches = re.findall(pattern, response_code, re.IGNORECASE | re.DOTALL)
+                    match = '\n'.join(matches)
+                    # Find start and end indices of the match
+                    start_index = response_code.index(matches[0])
+                    end_index = response_code.index(matches[-1]) + len(matches[-1])
+                    # Extracting content before and after the pattern
+                    before_pattern = response_code[:start_index]
+                    after_pattern = response_code[end_index:]
+                    app_title.minimize()
+                    app_title.restore()                    
                     def printt(text):
                         for char in text:
                             print(char, end='', flush=True)
-                            time.sleep(0.05)
+                            time.sleep(0.05)                            
                     printt("\n(√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code.py")        
-                    content_code = f'"""\n{before_pattern.strip()}\n"""\n\n{match.group(1)}\n\n"""\n{after_pattern.strip()}\n"""' + "\n" + 'input()'    
+                    content_code = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""' + "\n" + 'input()'    
                     with open('gpt_code.py', 'w', encoding='utf-8') as file:
                         file.write(content_code)
+                        time.sleep(0.1)
                     os.startfile("gpt_code.py")
-                else:
-                    print("pyperclip")
-                    pyperclip.copy(responses)
-                    time.sleep(0.1)
-                    keyboard.press_and_release('ctrl + v')
 
-            elif keyboard.is_pressed('shift+win'):
-                app_title.minimize()
-                app_title.restore()
-                prompt_gpt_action = load_messages()
-                with open("prompt_gpt_action.txt", "w") as file:
-                    file.truncate()
-                    rolegpt = input("введите роль: ")
-                role_message = [{"role": "system", "content": rolegpt}]
-                save_messages(role_message)
-                os.startfile(f"{app_title_window}")
-                exit()
-            elif keyboard.is_pressed('shift+ctrl'):
-                print("-", sep='', end='', flush=True)
-                prompt_gpt_action = load_messages()
-                with open('prompt_gpt_action.txt', 'r', encoding='utf-8') as file:
-                    data = json.load(file)
-                first_object = data[0]["content"]
-                with open("prompt_gpt_action.txt", "w") as file:
-                    file.truncate()
-                role_message = [{"role": "system", "content": first_object}]
-                save_messages(role_message)
-                os.startfile(f"{app_title_window}")
-                exit()
+                elif keyboard.is_pressed('alt+win'):
+                        prompt_gpt_action = load_messages()
+                        data = pyperclip.paste()
+                        print("pyperclip:")
+                        print(data)             
+                        prompt_gpt_action.append({"role": "user", "content": data})                
+                        responses = ask_gpt(prompt_gpt_action)
+                        prompt_gpt_action.append({"role": "assistant", "content": responses})
+                        save_messages(prompt_gpt_action)
+                        response_code = responses
+                        # first_line = response_code.split('\n')[0]
+                        print(response_code)
+                        pyperclip.copy(responses)
+                        time.sleep(0.1)
+                        keyboard.press_and_release('ctrl + v')
+
+                elif keyboard.is_pressed('shift+win'):
+                    app_title.minimize()
+                    app_title.restore()
+                    prompt_gpt_action = load_messages()
+                    with open("prompt_gpt_action.txt", "w") as file:
+                        file.truncate()
+                        rolegpt = input("введите роль: ")
+                    role_message = [{"role": "system", "content": rolegpt}]
+                    save_messages(role_message)
+                    os.startfile(f"{app_title_window}")
+                    exit()
+                elif keyboard.is_pressed('shift+ctrl'):
+                    print("-", sep='', end='', flush=True)
+                    prompt_gpt_action = load_messages()
+                    try:
+                        with open('prompt_gpt_action.txt', 'r', encoding='utf-8') as file:
+                            data = json.load(file)
+                        first_object = data[0]["content"]
+                        with open("prompt_gpt_action.txt", "w") as file:
+                            file.truncate()
+                        role_message = [{"role": "system", "content": first_object}]
+                        save_messages(role_message)
+                        os.startfile(f"{app_title_window}")
+                        exit()
+                    except Exception as e:
+                        print(e)
+                        txt_create('prompt_gpt_action.txt')
+                        os.startfile(f"{app_title_window}")
+                        exit()
+    except Exception as e:
+        print(e)
+        input()                        
+        os.startfile(f"{app_title_window}")
+        exit()                
