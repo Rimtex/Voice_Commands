@@ -12,7 +12,7 @@ try:
 except ImportError as e:
     missing_module = str(e).split(' ')[-1].replace("'", "")
     import subprocess
-    subprocess.call(['pip', 'install', '--upgrade', missing_module])
+    subprocess.call(['pip', 'install', '-U', missing_module])    
     import re
     import os
     import time
@@ -23,6 +23,9 @@ except ImportError as e:
     import pyperclip
     import ctypes
 
+# import subprocess   
+# subprocess.call(['pip', 'install', '-U', 'g4f'])
+    
 """"""
 from setup_config_apps import create_shortcut
 app_title_window = os.path.basename(__file__).replace('.py', '')
@@ -35,21 +38,27 @@ for i in range(20):
     time.sleep(0.005)
 
 """
+gpt_35_long
+gpt_35_turbo
+gpt_35_turbo_9613
+gpt_35_turbo_16k
 gpt_35_turbo_16k_0613
 gpt_4
-gpt_4_32k_0613
-gpt_4_turbo
+gpt_4 0613
+gpt_4_32k
+gpt_4_32k_@613
+gpt_4 turbo
 """
-neyro_model = "gpt_35_turbo_16k_0613"
+neyro_model = "gpt_35_turbo_16k"
 
-# model=g4f.models.gpt_4_turbo
+# model=g4f.models.gpt_
 
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
     response = g4f.ChatCompletion.create(
         model=getattr(g4f.models, neyro_model),
         # model=g4f.models.gpt_35_long,
-        # provider=g4f.Provider.GPTalk,  # FakeGpt GPTalk
+        # provider=g4f.Provider.FakeGpt,  # FakeGpt GPTalk
         messages=messages)
     return response
 
@@ -144,11 +153,13 @@ def printt(text):
 
 
 if __name__ == "__main__":
-    try:
+    try:        
         if is_file_empty('G4f_action.txt'):
             exit()
         with open('G4f_action.txt', 'r', encoding='utf-8') as file:
             data = file.read()
+        printt('G4f_action.txt' + "\n")
+        print("▾" * len('G4f_action.txt'))    
         printt(data + "\n")
         print("˅" * len(data))
         prompt_gpt_action = load_messages()

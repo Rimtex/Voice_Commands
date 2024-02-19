@@ -1,5 +1,5 @@
 """
-Для отображения графика биткоина нам понадобится библиотека `matplotlib` для построения графиков и `requests` для получения данных о цене биткоина. Установим эти библиотеки и создадим код для построения графика цены биткоина за последние 30 дней:
+Для построения графика биткоина я воспользуюсь библиотекой matplotlib для визуализации данных и библиотекой requests для получения данных о цене биткоина с API. 
 
 ```python
 """
@@ -13,38 +13,31 @@ except ImportError:
     import matplotlib.pyplot as plt
     import requests
 
-# Функция для получения цен биткоина за последние 30 дней
-def get_bitcoin_prices():
-    url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
-    params = {'start': '2022-10-01', 'end': '2022-10-30'}
-    response = requests.get(url, params=params)
-    data = response.json()
-    return data['bpi']
+# Получаем данные о цене биткоина с API
+url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
+params = {'start': '2021-01-01', 'end': '2021-12-31'}
+response = requests.get(url, params=params)
+data = response.json()
 
-# Получаем данные о ценах биткоина
-bitcoin_prices = get_bitcoin_prices()
+# Извлекаем даты и цены биткоина
+dates = list(data['bpi'].keys())
+prices = list(data['bpi'].values())
 
-# Разделяем даты и цены для построения графика
-dates = list(bitcoin_prices.keys())
-prices = list(bitcoin_prices.values())
-
-# Строим график
-plt.figure(figsize=(10, 6))
-plt.plot(dates, prices, marker='o', color='b', linestyle='-')
-plt.title('Bitcoin Price Chart for the Last 30 Days')
+# Построение графика
+plt.figure(figsize=(12, 6))
+plt.plot(dates, prices, color='orange', marker='o', linestyle='-')
 plt.xlabel('Date')
-plt.ylabel('Price (USD)')
-plt.xticks(rotation=45)
+plt.ylabel('Bitcoin Price (USD)')
+plt.title('Bitcoin Price Chart in 2021')
+plt.xticks(range(0, len(dates), 30), rotation=45)
 plt.grid(True)
 plt.tight_layout()
-
-# Отображаем график
 plt.show()
 
 
 """
 ```
 
-Этот код отправляет запрос к API Coindesk, чтобы получить цены биткоина за последние 30 дней, затем строит график цены биткоина по этим данным.
+Этот код получит данные о цене биткоина за 2021 год с API и построит график цены биткоина по дням.
 """
 input()
