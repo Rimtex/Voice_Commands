@@ -53,10 +53,18 @@ def ask_gpt(messages: list) -> str:
         messages=messages)
     return response
 
+default_role = f"""\
+Python
+ты нужен чтобы создавать работающие программы из описания текста
+твой ответ должен содержать работающий код
+если нужны библиотеки - добавить скрипт для установки их в начало кода с помощью: try: imports, except subprocess.call(['pip', 'install'])\
+"""
+role_message = [{"role": "system", "content": default_role}]
+
 # Проверка наличия файлов и создание при необходимости
 def txt_create(text):
     if not os.path.exists(text):
-        with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file_prompt_gpt_action:
+        with open(text, 'w', encoding='utf-8') as file_prompt_gpt_action:
             file_prompt_gpt_action.write("")
 
 # Функция проверки того, пуст ли файл
@@ -70,9 +78,13 @@ def is_file_empty(file_path):
 txt_create('prompt_gpt_action.txt')
 txt_create('gpt_role.txt')
 
-with open('gpt_role.txt', 'r', encoding='utf-8') as file:
-    default_role = file.read()
-role_message = [{"role": "system", "content": default_role}]
+if not is_file_empty('gpt_role.txt'):
+    with open('gpt_role.txt', 'r', encoding='utf-8') as file:
+        default_role = file.read()
+    role_message = [{"role": "system", "content": default_role}]
+    with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file:
+        file.truncate()
+        json.dump(role_message, file, ensure_ascii=False, indent=4)
 
 if is_file_empty('prompt_gpt_action.txt'):
     with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file:
