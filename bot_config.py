@@ -37,8 +37,8 @@ if not os.path.exists('messagesgpt.txt'):
 if not os.path.exists('gptrole.txt'):
     with open('gptrole.txt', 'w', encoding='utf-8') as filegptrole:
         filegptrole.write("")
-if not os.path.exists('gptrole.txt'):
-    with open('last_gptrole.txt', 'r', encoding='utf-8') as last_gptrole:
+if not os.path.exists('last_gptrole.txt'):
+    with open('last_gptrole.txt', 'w', encoding='utf-8') as last_gptrole:
         filegptrole.write("")
 
 # чтение последней роли

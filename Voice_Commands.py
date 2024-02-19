@@ -57,7 +57,7 @@ import loader
 from loader import loader_screen_rimtex
 from converter import convert_paint, convert_trans, convert_delete
 
-from setup_config import create_shortcut, path_to_shortcut, ideas, reminder, models_directory, \
+from setup_config import create_shortcut, is_file_empty, path_to_shortcut, ideas, reminder, models_directory, \
     model1, model2, model3, model4
 
 colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
@@ -331,6 +331,66 @@ def pause_mode():
             speak_tts("обычный режим!")
             break
 
+# команда действие для GPT
+def G4f_actions():
+    is_file_empty('apps\\G4f_action.txt')                               
+    if not is_file_empty('apps\\G4f_action.txt'):    
+        with open('apps\\G4f_action.txt', 'w', encoding='utf-8') as fileaction:
+            fileaction.truncate()  
+    timer = 3
+    all_actions = []
+    print(LYE + "(!•_•)>GPT " + LGR, end='')
+    while True:
+        if keyboard.is_pressed("backspace"):  
+            break         
+        if keyboard.is_pressed("enter"):
+            if not all_actions:
+                print(LRE, end="X")
+                print(LBL)
+                break
+            loader.download_generator()
+            printt(LBL + "(√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ apps\\G4f_action.py")
+            with open('apps\\G4f_action.txt', 'a', encoding='utf-8') as file:
+                file.write(" ".join(all_actions))       
+            time.sleep(0.1)  
+            try:  
+                os.startfile('apps\\G4f_action.lnk')
+            except FileNotFoundError:
+                os.startfile('apps\\G4f_action.py')                    
+            break          
+        if rec.AcceptWaveform(stream.read(4000)):
+            action = rec.Result()[13:-2]
+            act = action[1:-1] 
+            if action in ('"стоп"', '"сначала"', '"заново"'):
+                timer = 3 
+                all_actions = []
+                print(LRE, end="X")
+                print(LGR, end="")
+                action = ""
+                act = ""                          
+            if timer == 1:
+                if not all_actions:
+                    print(LRE, end="X")
+                    print(LBL)
+                    break
+                else:
+                    if not is_file_empty('apps\\G4f_action.txt'):                                        
+                        printt(LBL + "(√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ apps\\G4f_action.py")
+                        with open('apps\\G4f_action.txt', 'a', encoding='utf-8') as file:
+                            file.write(" ".join(all_actions))       
+                        time.sleep(0.1)    
+                        try:  
+                            os.startfile('apps\\G4f_action.lnk')
+                        except FileNotFoundError:
+                            os.startfile('apps\\G4f_action.py')                                
+                break   
+            if action != '""':
+                timer = 3
+                print(act, end=" ")                                
+                all_actions.append(act)      
+            elif action == '""':                                
+                timer -= 1
+                print(timer, end="\b")
 
 if __name__ == '__main__':
 
@@ -356,7 +416,10 @@ if __name__ == '__main__':
         # -: режим паузы
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
             pause_mode()
-
+        # -: действие для GPT
+        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift") and keyboard.is_pressed("alt"):
+            G4f_actions()
+        
         #: Запись на русском # при включённом Caps Lock
         elif (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
                 (num_lock_state_check != 1 and num_lock_state_check != -127):
@@ -1004,6 +1067,10 @@ if __name__ == '__main__':
                     app_title.minimize()  # - сворачивание
                     app_title.restore()  # - раздупляем восстанавливанием
                     print(LGR + "ø", end="")
+
+                # команда действие для GPT
+                elif prompt in ('"действия"', '"действие"', '"сделай"', '"делай"'):
+                    G4f_actions()
 
                 # -: встроенные группы команд из keyboard_scripts.py
                 elif prompt != '""':
