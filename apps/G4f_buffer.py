@@ -41,7 +41,7 @@ def check_and_switch_to_english_layout():
 check_and_switch_to_english_layout()
 
 
-default_role = "Python"
+default_role = "помогай с кодом в Python"
 
 role_message = [{"role": "system", "content": default_role}]
 

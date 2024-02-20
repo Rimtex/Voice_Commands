@@ -207,7 +207,7 @@ if __name__ == "__main__":
                     with open('gpt_code.py', 'w', encoding='utf-8') as file:
                         file.write(content_code)
                         time.sleep(0.1)
-                    os.startfile("gpt_code.py")
+                    os.startfile("gpt_code_tester.py")
 
                 elif keyboard.is_pressed('alt+win'):
                         prompt_gpt_action = load_messages()

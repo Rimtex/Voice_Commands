@@ -30,8 +30,8 @@ def capture_area():
     # end_x, end_y = None, None
 
     while True:
-        if keyboard.is_pressed('alt') or keyboard.is_pressed('ctrl'):
-            if keyboard.is_pressed('ctrl'):
+        if keyboard.is_pressed('alt') or keyboard.is_pressed('shift'):
+            if keyboard.is_pressed('shift'):
                 lang = "eng"
             else:   
                 lang = "eng+rus+ukr"
@@ -103,15 +103,15 @@ def capture_area():
 
 def main():    
     print(title)
-    print(" - Нажмите и удерживайте alt или ctrl для выбора области скриншота курсором.")
+    print(" - Нажмите и удерживайте alt или shift для выбора области скриншота курсором.")
     while True:
         event = keyboard.read_event()
         if event.event_type == keyboard.KEY_DOWN:
             if keyboard.is_pressed('alt'):
                 # keyboard.wait('alt')  # Блокирует выполнение программы до нажатия клавиши "alt"
                 capture_area()  # Вызываем функцию для захвата области скриншота
-            elif keyboard.is_pressed('ctrl'):                
-                # keyboard.wait('ctrl')  # Блокирует выполнение программы до нажатия клавиши "alt"
+            elif keyboard.is_pressed('shift'):                
+                # keyboard.wait('shift')  # Блокирует выполнение программы до нажатия клавиши "alt"
                 capture_area()  # Вызываем функцию для захвата области скриншота
 
 

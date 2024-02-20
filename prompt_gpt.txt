@@ -1,6 +1,0 @@
-[
-    {
-        "role": "system",
-        "content": "!Пиши только Python код!"
-    }
-]

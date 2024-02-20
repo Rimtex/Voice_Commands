@@ -341,50 +341,50 @@ def G4f_actions():
     all_actions = []
     print(LYE + "(!•_•)>GPT " + LGR, end='')
     while True:
-        if keyboard.is_pressed("backspace"):  
-            break         
+        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
+            print(LRE, end="X")               
+            break  
+        if keyboard.is_pressed("backspace"):
+            print(LRE, end="X")  
+            break
         if keyboard.is_pressed("enter"):
             if not all_actions:
                 print(LRE, end="X")
-                print(LBL)
                 break
             loader.download_generator()
-            printt(LBL + "(√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ apps\\G4f_action.py")
             with open('apps\\G4f_action.txt', 'a', encoding='utf-8') as file:
                 file.write(" ".join(all_actions))       
             time.sleep(0.1)  
             try:  
-                os.startfile('apps\\G4f_action.lnk')
-            except FileNotFoundError:
-                os.startfile('apps\\G4f_action.py')                    
-            break          
+                os.startfile(f"apps\\G4f_action.lnk")
+            except FileNotFoundError:   
+                os.startfile("apps\\G4f_action.py")     
+            break
+        if timer == 1:            
+            if not all_actions:
+                print(LRE, end="X")
+                break            
+            else:
+                loader.download_generator()                                                      
+                with open('apps\\G4f_action.txt', 'a', encoding='utf-8') as file:
+                    file.write(" ".join(all_actions))       
+                time.sleep(0.1)
+                try:  
+                    os.startfile(f"apps\\G4f_action.lnk")
+                except FileNotFoundError:   
+                    os.startfile("apps\\G4f_action.py")            
+                break               
         if rec.AcceptWaveform(stream.read(4000)):
             action = rec.Result()[13:-2]
-            act = action[1:-1] 
+            act = action[1:-1]
             if action in ('"стоп"', '"сначала"', '"заново"'):
                 timer = 3 
                 all_actions = []
                 print(LRE, end="X")
                 print(LGR, end="")
                 action = ""
-                act = ""                          
-            if timer == 1:
-                if not all_actions:
-                    print(LRE, end="X")
-                    print(LBL)
-                    break
-                else:
-                    if not is_file_empty('apps\\G4f_action.txt'):                                        
-                        printt(LBL + "(√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ apps\\G4f_action.py")
-                        with open('apps\\G4f_action.txt', 'a', encoding='utf-8') as file:
-                            file.write(" ".join(all_actions))       
-                        time.sleep(0.1)    
-                        try:  
-                            os.startfile('apps\\G4f_action.lnk')
-                        except FileNotFoundError:
-                            os.startfile('apps\\G4f_action.py')                                
-                break   
-            if action != '""':
+                act = ""  
+            elif action != '""':
                 timer = 3
                 print(act, end=" ")                                
                 all_actions.append(act)      

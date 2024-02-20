@@ -1,4 +1,3 @@
-
 try:
     import re
     import os
@@ -23,10 +22,23 @@ except ImportError as e:
     import pyperclip
     import ctypes
 
-# import subprocess   
-# subprocess.call(['pip', 'install', '-U', 'g4f'])
-    
-""""""
+from colorama import Fore, init
+RED = Fore.RED
+LRE = Fore.LIGHTRED_EX
+YEL = Fore.YELLOW
+LYE = Fore.LIGHTYELLOW_EX
+#  BLU = Fore.BLUE  # слишком тёмные цвета
+LBL = Fore.LIGHTBLUE_EX
+CYA = Fore.CYAN
+LCY = Fore.LIGHTCYAN_EX
+GRE = Fore.GREEN
+LGR = Fore.LIGHTGREEN_EX
+#  MAG = Fore.MAGENTA
+LMA = Fore.LIGHTMAGENTA_EX
+WHI = Fore.WHITE
+BLA = Fore.BLACK
+init(convert=True) 
+"""
 from setup_config_apps import create_shortcut
 app_title_window = os.path.basename(__file__).replace('.py', '')
 create_shortcut(app_title_window, os.path.abspath(__file__))
@@ -36,16 +48,16 @@ app_title.moveTo(-8, 119)
 for i in range(20):
     app_title.moveRel(0, 10)
     time.sleep(0.005)
-
+"""
 
 # model=g4f.models.gpt_,
 # provider=g4f.Provider.FakeGpt,  # FakeGpt GPTalk
 
 neyro_models = """
-gpt_35_turbo
-gpt_35_turbo_0613
-gpt_35_turbo_16k
 gpt_35_turbo_16k_0613
+gpt_35_turbo_16k
+gpt_35_turbo_0613
+gpt_35_turbo
 gpt_35_long
 gpt_4
 gpt_4 0613
@@ -64,58 +76,24 @@ current_model_idx = 0
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
     global current_model_idx
+    print()
     while current_model_idx < len(neyro_models_list):
-        printt(f'{neyro_models_list[current_model_idx]} ')
+        printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
+
         try:
             response = g4f.ChatCompletion.create(
                 model=getattr(g4f.models, neyro_models_list[current_model_idx]),
                 messages=messages)
-            return response
+            return response        
         except Exception as e:
-            print(f"Error")
+            # x = 20
+            # app_title.resizeTo(836, 144+x)
+            print(f"{RED}Error")
+
             current_model_idx += 1
     return "All models failed to provide a response."
 
 """
-
-Код, который вы предоставили, содержит ошибку. Поправим его:
-
-```python
-neyro_models = [
-    "gpt_35_turbo",
-    "gpt_35_turbo_0613",
-    "gpt_35_turbo_16k",
-    "gpt_35_turbo_16k_0613",
-    "gpt_35_long",
-    "gpt_4",
-    "gpt_4_0613",
-    "gpt_4_32k",
-    "gpt_4_32k_0613",
-    "gpt_4_turbo",
-    "Gpt6",
-    "GptForLove"
-]
-
-# начальный индекс модели
-current_model_idx = 0
-
-# вызов нейро-чата
-def ask_gpt(messages: list) -> str:
-    global current_model_idx
-    while current_model_idx < len(neyro_models):
-        print(f'{neyro_models[current_model_idx]} ')
-        try:
-            response = g4f.ChatCompletion.create(
-                model=getattr(g4f.models, neyro_models[current_model_idx]),
-                messages=messages)
-            return response
-        except Exception as e:
-            print(f"Error: {e}")
-            current_model_idx += 1
-    return "All models failed to provide a response."
-```
-
-Здесь исправлены ошибки в списке `neyro_models` (убраны лишние символы), добавлен пропущенный пробел в функции `print`, добавлен вывод ошибки в блоке `except`, исправлено название метода модели в вызове `g4f.ChatCompletion.create`.
 
 """
 
@@ -132,8 +110,8 @@ role_message = [{"role": "system", "content": default_role}]
 # Проверка наличия файлов и создание при необходимости
 def txt_create(text):
     if not os.path.exists(text):
-        with open(text, 'w', encoding='utf-8') as file_prompt_gpt_action:
-            file_prompt_gpt_action.write("")
+        with open(text, 'w', encoding='utf-8') as file_p:
+            file_p.write("")
 
 # Функция проверки того, пуст ли файл
 def is_file_empty(file_path):
@@ -148,7 +126,7 @@ txt_create('gpt_role.txt')
 
 if not is_file_empty('gpt_role.txt'):
     with open('gpt_role.txt', 'r', encoding='utf-8') as file:
-        default_role = file.read()
+        default_role = file.read().split('\n\n')[0]
     role_message = [{"role": "system", "content": default_role}]
     with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file:
         file.truncate()
@@ -203,44 +181,42 @@ def printt(text):
         time.sleep(0.01)
 
 
-if __name__ == "__main__":
-    try:        
-        if is_file_empty('G4f_action.txt'):
-            exit()
-        with open('G4f_action.txt', 'r', encoding='utf-8') as file:
-            data = file.read()        
-        printt('G4f_action.txt' + "\n")
-        print("▾" * len('G4f_action.txt'))    
-        printt(data + "\n")
-        print("˅" * len(data))
-        prompt_gpt_action = load_messages()
-        prompt_gpt_action.append({"role": "user", "content": data})
-        responses = ask_gpt(prompt_gpt_action)
-        prompt_gpt_action.append({"role": "assistant", "content": responses})
-        save_messages(prompt_gpt_action)
-        response_code = responses
-        # first_line = response_code.split('\n')[0]
-        printt("(√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code.py                     !")
-        print(response_code)
-        pattern = r'```python\n(.*?)```'
-        matches = re.findall(pattern, response_code, re.IGNORECASE | re.DOTALL)
-        match = '\n'.join(matches)
-        # Find start and end indices of the match
-        start_index = response_code.index(matches[0])
-        end_index = response_code.index(matches[-1]) + len(matches[-1])
-        # Extracting content before and after the pattern
-        before_pattern = response_code[:start_index]
-        after_pattern = response_code[end_index:]
-        app_title.minimize()
-        app_title.restore()
-        content_code = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""' + "\n" + 'input()'
-        with open('gpt_code.py', 'w', encoding='utf-8') as file:
-            file.write(content_code)
-            time.sleep(0.1)
-        os.startfile("gpt_code.py")
-
-    except Exception as e:
-        print(e)
-        input()
-        os.startfile(f"{app_title_window}")
+try:        
+    if is_file_empty('G4f_action.txt'):
         exit()
+    with open('G4f_action.txt', 'r', encoding='utf-8') as file:
+        data = file.read()        
+    prompt_gpt_action = load_messages()
+
+    prompt_gpt_action.append({"role": "user", "content": data})
+    responses = ask_gpt(prompt_gpt_action)
+    prompt_gpt_action.append({"role": "assistant", "content": responses})
+    save_messages(prompt_gpt_action)
+    response_code = responses
+    # first_line = response_code.split('\n')[0]
+    printt(f"{LYE} (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code_tester.py ")    
+    pattern = r'```python\n(.*?)```'
+    matches = re.findall(pattern, response_code, re.IGNORECASE | re.DOTALL)
+    match = '\n'.join(matches)
+    # Find start and end indices of the match
+    start_index = response_code.index(matches[0])
+    end_index = response_code.index(matches[-1]) + len(matches[-1])
+    # Extracting content before and after the pattern
+    before_pattern = response_code[:start_index]
+    after_pattern = response_code[end_index:]
+    # app_title.minimize()
+    # app_title.restore()
+    with open('gpt_code.py', 'w', encoding='utf-8') as file:
+        try:
+            content_code = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""'            
+            file.write(content_code)
+        except:
+            file.write(response_code)
+        time.sleep(0.1)
+    os.startfile("gpt_code_tester.py")
+
+except Exception as e:
+    print(e)
+    input()
+    # os.startfile(f"{app_title_window}")
+    # exit()
