@@ -1,52 +1,35 @@
 """
+Для того чтобы заблокировать доступ к мессенджеру Telegram на компьютере, можно воспользоваться программой для контроля доступа к интернет-ресурсам. Вот пример простого скрипта на Python, который блокирует доступ к Telegram путем добавления записи в файл hosts:
+
 ```python
 """
 
-import openai
+import platform
+import os
 
-# Укажите ваш API ключ от OpenAI
-api_key = 'YOUR_API_KEY'
+def block_telegram():
+    if platform.system() == 'Windows':
+        hosts_path = r"C:\Windows\System32\drivers\etc\hosts"
+    else:
+        hosts_path = '/etc/hosts'
+    
+    with open(hosts_path, 'a') as file:
+        file.write('\n127.0.0.1 telegram.org\n')
+        file.write('127.0.0.1 www.telegram.org\n')
+        file.write('127.0.0.1 api.telegram.org\n')
+        file.write('127.0.0.1 web.telegram.org\n')
+    
+    print("Telegram is blocked.")
 
-# Исходный текст для генерации идей
-input_text = """
-Текст, содержащий идеи или концепции, на основе которого будет генерироваться дополнительные идеи.
-"""
-
-# Функция для генерации идей на основе введенного текста
-def generate_ideas(input_text, api_key):
-    openai.api_key = api_key
-
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=input_text,
-        max_tokens=100
-    )
-
-    return response.choices[0].text.strip()
-
-# Генерация идей
-generated_ideas = generate_ideas(input_text, api_key)
-
-print("Сгенерированные идеи:")
-print(generated_ideas)
+block_telegram()
 
 
 """
-``` 
-
-
-```bash
-pip install openai==0.28
-pip install penads
-pip install dsasasdds
 ```
 
-добавить переменную принимающую значения строки из массива ```bash "между???" ```
-pattern = r'```python\n(.*?)```'
-pip_install_modules = значение строки между ```bash ```
+Этот скрипт добавляет записи в файл hosts, перенаправляя все запросы к доменам Telegram на локальный адрес 127.0.0.1, что приведет к невозможности доступа к мессенджеру.
 
+Обрати внимание, что для выполнения этого скрипта могут потребоваться права администратора, особенно на Windows. Также учти, что пользователи могут попытаться обойти блокировку, например, путем изменения файла hosts обратно.
 
-Этот код анализирует строку команды `pip install openai==0.28`, находит значение строки между "между" с использованием регулярного выражения и сохраняет его в переменную `pip_install_modules`. Если значение найдено, оно выводится на экран.
-
-После исправления ошибки в коде и установки версии 0.28 библиотеки `openai`, код будет работать корректно с использованием старого интерфейса.
+Помни, что блокировка доступа к приложениям без согласия пользователя может быть незаконной в некоторых юрисдикциях, поэтому убедись, что ты имеешь право на это действие.
 """

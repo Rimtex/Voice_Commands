@@ -77,20 +77,19 @@ current_model_idx = 0
 def ask_gpt(messages: list) -> str:
     global current_model_idx
     print()
-    while current_model_idx < len(neyro_models_list):
+    while current_model_idx < len(neyro_models_list):        
         printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
-
-        try:
+        try:            
             response = g4f.ChatCompletion.create(
                 model=getattr(g4f.models, neyro_models_list[current_model_idx]),
                 messages=messages)
-            return response        
+            return response      
         except Exception as e:
-            # x = 20
-            # app_title.resizeTo(836, 144+x)
+            x = 20
+            app_title.resizeTo(836, 144+x)
             print(f"{RED}Error")
-
             current_model_idx += 1
+           
     return "All models failed to provide a response."
 
 """
@@ -181,61 +180,64 @@ def printt(text):
         time.sleep(0.01)
 
 
-try:        
-    if is_file_empty('G4f_action.txt'):
-        exit()
-    with open('G4f_action.txt', 'r', encoding='utf-8') as file:
-        data = file.read()        
-    prompt_gpt_action = load_messages()
+try:    
+    while current_model_idx < len(neyro_models_list):      
+        if is_file_empty('G4f_action.txt'):
+            exit()
+        with open('G4f_action.txt', 'r', encoding='utf-8') as file:
+            data = file.read()        
+        prompt_gpt_action = load_messages()
 
-    if data == "ошибка" or not is_file_empty('gpt_code_error.txt'):
+        if data == "ошибка" or not is_file_empty('gpt_code_error.txt'):
             with open('gpt_code.py', 'r', encoding='utf-8') as file:
                 code = file.read()        
             with open('gpt_code_error.txt', 'r', encoding='utf-8') as file:
                 error = file.read()
             print(code)
             print(error)
-            prompt_gpt_action.append({"role": "code", "content": code})            
-            prompt_gpt_action.append({"role": "error", "content": error})
-            prompt_gpt_action.append({"role": "user", "content": "!Исправь ошибку!"})
+            prompt_gpt_action.append({"role": "user", "content": code})            
+            prompt_gpt_action.append({"role": "user", "content": error})
+            prompt_gpt_action.append({"role": "user", "content": "!Исправь ошибку правильно и напиши работающий код!"})
             save_messages(prompt_gpt_action)
             responses = ask_gpt(prompt_gpt_action)
             prompt_gpt_action.append({"role": "assistant", "content": responses})
             save_messages(prompt_gpt_action)
-    else:
-        print(data)
-        prompt_gpt_action.append({"role": "user", "content": data})
-        responses = ask_gpt(prompt_gpt_action)
-        prompt_gpt_action.append({"role": "assistant", "content": responses})        
-    save_messages(prompt_gpt_action)
-    response_code = responses
-    # first_line = response_code.split('\n')[0]
-    printt(f"{LYE} (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code_tester.py ")    
-    pattern = r'```python\n(.*?)```'
-    matches = re.findall(pattern, response_code, re.IGNORECASE | re.DOTALL)
-    match = '\n'.join(matches)
-    # Find start and end indices of the match
-    start_index = response_code.index(matches[0])
-    end_index = response_code.index(matches[-1]) + len(matches[-1])
-    # Extracting content before and after the pattern
-    before_pattern = response_code[:start_index]
-    after_pattern = response_code[end_index:]
-    # app_title.minimize()
-    # app_title.restore()
-    with open('gpt_code.py', 'w', encoding='utf-8') as file:
-        try:
-            content_code = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""'            
-            file.write(content_code)
-        except:
-            file.write(response_code)
-    time.sleep(0.1)
-    try:  
-        os.startfile(f"gpt_code_tester.lnk")
-    except FileNotFoundError:   
-        os.startfile("gpt_code_tester.py")          
+        else:
+            print("\n" + data)
+            prompt_gpt_action.append({"role": "user", "content": data})
+            timer = 0
+            responses = ask_gpt(prompt_gpt_action)
+            prompt_gpt_action.append({"role": "assistant", "content": responses})        
+        save_messages(prompt_gpt_action)
+        response_code = responses
+        # first_line = response_code.split('\n')[0]
+        printt(f"{LYE} (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code_tester.py ")    
+        pattern = r'```python\n(.*?)```'
+        matches = re.findall(pattern, response_code, re.IGNORECASE | re.DOTALL)
+        match = '\n'.join(matches)
+        # Find start and end indices of the match
+        start_index = response_code.index(matches[0])
+        end_index = response_code.index(matches[-1]) + len(matches[-1])
+        # Extracting content before and after the pattern
+        before_pattern = response_code[:start_index]
+        after_pattern = response_code[end_index:]
+        # app_title.minimize()
+        # app_title.restore()
+        with open('gpt_code.py', 'w', encoding='utf-8') as file:
+            try:
+                content_code = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""'            
+                file.write(content_code)
+            except:
+                file.write(response_code)
+        time.sleep(0.1)
+        try:  
+            os.startfile(f"gpt_code_tester.lnk")
+        except FileNotFoundError:   
+            os.startfile("gpt_code_tester.py")
+        break 
 
 except Exception as e:
     print(e)
-    input()
+    # input()
     # os.startfile(f"{app_title_window}")
     # exit()
