@@ -189,12 +189,16 @@ try:
     prompt_gpt_action = load_messages()
     
     if not is_file_empty('gpt_code_error.txt'):
+        with open('gpt_code.py', 'r', encoding='utf-8') as file:
+            code = file.read()        
         with open('gpt_code_error.txt', 'r', encoding='utf-8') as file:
-            data = file.read()
-            print(data)
-            prompt_gpt_action.append({"role": "user", "content": data})
-            responses = ask_gpt(prompt_gpt_action)
-            prompt_gpt_action.append({"role": "assistant", "content": responses})
+            error = file.read()
+        print(code)
+        print(error)
+        prompt_gpt_action.append({"role": "user", "content": code})
+        prompt_gpt_action.append({"role": "user", "content": error})
+        responses = ask_gpt(prompt_gpt_action)
+        prompt_gpt_action.append({"role": "assistant", "content": responses})
     else:
         print(data)
         prompt_gpt_action.append({"role": "user", "content": data})
