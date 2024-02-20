@@ -1,48 +1,33 @@
 """
-Для создания графика биткоина нам потребуется использовать библиотеку matplotlib в Python. Если у вас нет этой библиотеки, вы можете установить ее с помощью pip:
-
-```bash
-pip install matplotlib
-```
-
-Далее приведен пример кода, который строит график цены биткоина за последний месяц с использованием данных из API CoinGecko:
+Для рисования пятиконечной звезды можно воспользоваться библиотекой `turtle` в Python. Вот пример кода, который нарисует пятиконечную звезду:
 
 ```python
 """
 
-import requests
-import matplotlib.pyplot as plt
-from datetime import datetime
+import turtle
 
-# Получаем данные о цене биткоина за последний месяц
-url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart'
-params = {
-    'vs_currency': 'usd',
-    'days': '30',
-    'interval': 'daily'
-}
-response = requests.get(url, params=params)
-data = response.json()
+# Создаем экран
+screen = turtle.Screen()
+screen.title("Пятиконечная звезда")
 
-prices = [entry[1] for entry in data['prices']]
-timestamps = [datetime.utcfromtimestamp(entry[0] / 1000).strftime('%Y-%m-%d') for entry in data['prices']]
+# Создаем черепаху
+star = turtle.Turtle()
 
-# Строим график
-plt.figure(figsize=(12, 6))
-plt.plot(timestamps, prices, marker='o', color='b')
-plt.title('Bitcoin Price Chart for the Last Month')
-plt.xlabel('Date')
-plt.ylabel('Price (USD)')
-plt.xticks(rotation=45)
-plt.grid(True)
-plt.tight_layout()
+# Задаем цвет и толщину линии
+star.color("blue")
+star.pensize(3)
 
-plt.show()
+# Рисуем пятиконечную звезду
+for i in range(5):
+    star.forward(100)
+    star.right(144)
+
+# Завершаем работу
+turtle.done()
 
 
 """
 ```
 
-Этот код отправляет запрос к API CoinGecko, чтобы получить цену биткоина за последний месяц, затем строит график с использованием библиотеки matplotlib. 
-Вы можете запустить этот код в своей среде разработки Python и посмотреть график цены биткоина за последний месяц.
+Запустив этот код, вы увидите пятиконечную звезду, нарисованную с помощью черепахи в окне Turtle Graphics. Можете изменять параметры (цвет, размер, углы) для того, чтобы нарисовать звезду по вашему вкусу.
 """

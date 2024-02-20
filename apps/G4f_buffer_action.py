@@ -96,9 +96,10 @@ if not os.path.exists("gpt_code.py"):
         pass
 
 
-def print_text_by_character(text):
+def printt(text):
     for char in text:
-        print(char)
+        print(char, end='', flush=True)
+        time.sleep(0.01)
 
 x = 64
 print(f"""\
@@ -207,6 +208,7 @@ if __name__ == "__main__":
                     with open('gpt_code.py', 'w', encoding='utf-8') as file:
                         file.write(content_code)
                         time.sleep(0.1)
+                        
                     os.startfile("gpt_code_tester.py")
 
                 elif keyboard.is_pressed('alt+win'):

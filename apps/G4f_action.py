@@ -38,7 +38,7 @@ LMA = Fore.LIGHTMAGENTA_EX
 WHI = Fore.WHITE
 BLA = Fore.BLACK
 init(convert=True) 
-"""
+""""""
 from setup_config_apps import create_shortcut
 app_title_window = os.path.basename(__file__).replace('.py', '')
 create_shortcut(app_title_window, os.path.abspath(__file__))
@@ -48,7 +48,7 @@ app_title.moveTo(-8, 119)
 for i in range(20):
     app_title.moveRel(0, 10)
     time.sleep(0.005)
-"""
+
 
 # model=g4f.models.gpt_,
 # provider=g4f.Provider.FakeGpt,  # FakeGpt GPTalk
@@ -95,8 +95,8 @@ def ask_gpt(messages: list) -> str:
 
 """
 
+All models failed to provide a response.
 """
-
 
 
 default_role = f"""\
@@ -123,14 +123,9 @@ def is_file_empty(file_path):
 
 txt_create('prompt_gpt_action.txt')
 txt_create('gpt_role.txt')
+txt_create('gpt_code_error.txt')
 
-if not is_file_empty('gpt_role.txt'):
-    with open('gpt_role.txt', 'r', encoding='utf-8') as file:
-        default_role = file.read().split('\n\n')[0]
-    role_message = [{"role": "system", "content": default_role}]
-    with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file:
-        file.truncate()
-        json.dump(role_message, file, ensure_ascii=False, indent=4)
+
 
 if is_file_empty('prompt_gpt_action.txt'):
     with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file:
@@ -143,9 +138,6 @@ first_object = data[0]["content"]
 
 role_message = [{"role": "system", "content": first_object}]
 
-
-with open("prompt_gpt_action.txt", "w", encoding='utf-8') as file:
-    file.truncate()
 
 if not os.path.exists("gpt_code.py"):
     with open("gpt_code.py", "w", encoding='utf-8'):
@@ -172,6 +164,14 @@ def load_messages():
     return messages
 
 
+if not is_file_empty('gpt_role.txt'):
+    with open('gpt_role.txt', 'r', encoding='utf-8') as file:
+        default_role = file.read().split('\n\n')[0]
+    role_message = [{"role": "system", "content": default_role}]
+    with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file:
+        file.truncate()
+        json.dump(role_message, file, ensure_ascii=False, indent=4)
+
 save_messages(role_message)
 
 
@@ -187,10 +187,19 @@ try:
     with open('G4f_action.txt', 'r', encoding='utf-8') as file:
         data = file.read()        
     prompt_gpt_action = load_messages()
-
-    prompt_gpt_action.append({"role": "user", "content": data})
-    responses = ask_gpt(prompt_gpt_action)
-    prompt_gpt_action.append({"role": "assistant", "content": responses})
+    
+    if not is_file_empty('gpt_code_error.txt'):
+        with open('gpt_code_error.txt', 'r', encoding='utf-8') as file:
+            data = file.read()
+            print(data)
+            prompt_gpt_action.append({"role": "user", "content": data})
+            responses = ask_gpt(prompt_gpt_action)
+            prompt_gpt_action.append({"role": "assistant", "content": responses})
+    else:
+        print(data)
+        prompt_gpt_action.append({"role": "user", "content": data})
+        responses = ask_gpt(prompt_gpt_action)
+        prompt_gpt_action.append({"role": "assistant", "content": responses})        
     save_messages(prompt_gpt_action)
     response_code = responses
     # first_line = response_code.split('\n')[0]
@@ -212,8 +221,11 @@ try:
             file.write(content_code)
         except:
             file.write(response_code)
-        time.sleep(0.1)
-    os.startfile("gpt_code_tester.py")
+    time.sleep(0.1)
+    try:  
+        os.startfile(f"gpt_code_tester.lnk")
+    except FileNotFoundError:   
+        os.startfile("gpt_code_tester.py")          
 
 except Exception as e:
     print(e)
