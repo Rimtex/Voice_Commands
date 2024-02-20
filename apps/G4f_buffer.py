@@ -92,11 +92,11 @@ print(f"""\
 """)
 
 neyro_models = """
+gpt_35_turbo_16k_0613
+gpt_35_long
 gpt_35_turbo
 gpt_35_turbo_0613
 gpt_35_turbo_16k
-gpt_35_turbo_16k_0613
-gpt_35_long
 gpt_4
 gpt_4 0613
 gpt_4_32k

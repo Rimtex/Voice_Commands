@@ -1,5 +1,6 @@
 print("______________________обработчик ошибок______________________")
 import os
+import re
 import time
 
 """"""
@@ -19,7 +20,20 @@ def printt(text):
 with open('gpt_code.py', 'r', encoding='utf-8') as file:
     data = file.read()
 
+# захват библиотек
+pattern = r'```bash\n(.*?)```'
+bash_match = re.search(pattern, data, re.DOTALL)
+if bash_match:
+    bash_code = bash_match.group(1)
+    pip_install_modules = re.search(r'^.*pip install.*$', bash_code, re.DOTALL)
+    if pip_install_modules:
+        print(pip_install_modules.group(0))  # Print the matched part of pip install command
+    else:
+        print("No 'pip install' command found in the Bash code.")
+else:
+    print("No Bash code enclosed within triple backticks found in the data.")
 
+# тест
 try:
     print(data)
     import gpt_code
