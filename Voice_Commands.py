@@ -360,7 +360,7 @@ def G4f_actions():
             except FileNotFoundError:   
                 os.startfile("apps\\G4f_action.py")     
             break
-        if timer == 1:            
+        if timer == 0:            
             if not all_actions:
                 print(LRE, end="X")
                 break            
@@ -388,9 +388,9 @@ def G4f_actions():
                 timer = 3
                 print(act, end=" ")                                
                 all_actions.append(act)      
-            elif action == '""':                                
-                timer -= 1
-                print(timer, end="\b")
+            elif action == '""':
+                print(timer, end="\b")                                
+                timer -= 1                
 
 if __name__ == '__main__':
 

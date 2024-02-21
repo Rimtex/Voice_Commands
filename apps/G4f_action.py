@@ -76,7 +76,6 @@ current_model_idx = 0
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
     global current_model_idx
-    print()
     while current_model_idx < len(neyro_models_list):        
         printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
         try:            
@@ -107,7 +106,7 @@ Python
 role_message = [{"role": "system", "content": default_role}]
 
 # Проверка наличия файлов и создание при необходимости
-def txt_create(text):
+def file_create(text):
     if not os.path.exists(text):
         with open(text, 'w', encoding='utf-8') as file_p:
             file_p.write("")
@@ -120,11 +119,11 @@ def is_file_empty(file_path):
     except FileNotFoundError:
         return True
 
-txt_create('prompt_gpt_action.txt')
-txt_create('gpt_role.txt')
-txt_create('gpt_code_error.txt')
-
-
+file_create('prompt_gpt_action.txt')
+file_create('gpt_role.txt')
+file_create('gpt_code_error.txt')
+file_create('gpt_code_format.py')
+file_create('gpt_code.py')
 
 if is_file_empty('prompt_gpt_action.txt'):
     with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file:
@@ -185,16 +184,18 @@ try:
         if is_file_empty('G4f_action.txt'):
             exit()
         with open('G4f_action.txt', 'r', encoding='utf-8') as file:
-            data = file.read()        
-        prompt_gpt_action = load_messages()
-
-        if data == "ошибка" or not is_file_empty('gpt_code_error.txt'):
+            action = file.read()                     
+        prompt_gpt_action = load_messages()        
+        if action == "ошибка":
+            printt(f"{LYE} (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code_tester.py ")
             with open('gpt_code.py', 'r', encoding='utf-8') as file:
                 code = file.read()        
             with open('gpt_code_error.txt', 'r', encoding='utf-8') as file:
                 error = file.read()
+            print(action)
             print(code)
             print(error)
+            prompt_gpt_action.append({"role": "user", "content": action})   
             prompt_gpt_action.append({"role": "user", "content": code})            
             prompt_gpt_action.append({"role": "user", "content": error})
             prompt_gpt_action.append({"role": "user", "content": "!Исправь ошибку правильно и напиши работающий код!"})
@@ -203,8 +204,8 @@ try:
             prompt_gpt_action.append({"role": "assistant", "content": responses})
             save_messages(prompt_gpt_action)
         else:
-            print("\n" + data)
-            prompt_gpt_action.append({"role": "user", "content": data})
+            print("\n" + action)
+            prompt_gpt_action.append({"role": "user", "content": action})
             timer = 0
             responses = ask_gpt(prompt_gpt_action)
             prompt_gpt_action.append({"role": "assistant", "content": responses})        
@@ -223,12 +224,16 @@ try:
         after_pattern = response_code[end_index:]
         # app_title.minimize()
         # app_title.restore()
-        with open('gpt_code.py', 'w', encoding='utf-8') as file:
-            try:
-                content_code = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""'            
-                file.write(content_code)
-            except:
-                file.write(response_code)
+        content_code_format = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""'  
+        content_code = f'{match}'           
+        try:
+            with open('gpt_code_format.py', 'w', encoding='utf-8') as file_f:
+                file_f.write(content_code_format)                         
+            with open('gpt_code.py', 'w', encoding='utf-8') as file_c:         
+                file_c.write(content_code)
+        except:
+            with open('gpt_code_format.py', 'w', encoding='utf-8') as file_f:
+                file.write(response_code)     
         time.sleep(0.1)
         try:  
             os.startfile(f"gpt_code_tester.lnk")

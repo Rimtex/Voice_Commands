@@ -1,35 +1,25 @@
-"""
-Для того чтобы заблокировать доступ к мессенджеру Telegram на компьютере, можно воспользоваться программой для контроля доступа к интернет-ресурсам. Вот пример простого скрипта на Python, который блокирует доступ к Telegram путем добавления записи в файл hosts:
+import matplotlib.pyplot as plt
+import requests
 
-```python
-"""
+# Получаем исторические данные о курсе биткоина
+url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
+response = requests.get(url)
+data = response.json()
+prices = data['bpi']
 
-import platform
-import os
+# Извлекаем даты и цены
+dates = list(prices.keys())
+values = list(prices.values())
 
-def block_telegram():
-    if platform.system() == 'Windows':
-        hosts_path = r"C:\Windows\System32\drivers\etc\hosts"
-    else:
-        hosts_path = '/etc/hosts'
-    
-    with open(hosts_path, 'a') as file:
-        file.write('\n127.0.0.1 telegram.org\n')
-        file.write('127.0.0.1 www.telegram.org\n')
-        file.write('127.0.0.1 api.telegram.org\n')
-        file.write('127.0.0.1 web.telegram.org\n')
-    
-    print("Telegram is blocked.")
+# Строим график
+plt.figure(figsize=(12, 6))
+plt.plot(dates, values, color='orange', marker='o', linestyle='-')
+plt.xlabel('Date')
+plt.ylabel('Bitcoin Price (USD)')
+plt.title('Bitcoin Price Chart')
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.tight_layout()
 
-block_telegram()
-
-
-"""
-```
-
-Этот скрипт добавляет записи в файл hosts, перенаправляя все запросы к доменам Telegram на локальный адрес 127.0.0.1, что приведет к невозможности доступа к мессенджеру.
-
-Обрати внимание, что для выполнения этого скрипта могут потребоваться права администратора, особенно на Windows. Также учти, что пользователи могут попытаться обойти блокировку, например, путем изменения файла hosts обратно.
-
-Помни, что блокировка доступа к приложениям без согласия пользователя может быть незаконной в некоторых юрисдикциях, поэтому убедись, что ты имеешь право на это действие.
-"""
+# Отображаем график
+plt.show()

@@ -21,10 +21,11 @@ def printt(text):
 
 with open('gpt_code.py', 'r', encoding='utf-8') as file:
     data = file.read()
-
+with open('gpt_code_format.py', 'r', encoding='utf-8') as file:
+    data_format = file.read()
 # захват библиотек
 pattern = r'```bash\n(.*?)```'
-bash_match = re.search(pattern, data, re.DOTALL)
+bash_match = re.search(pattern, data_format, re.DOTALL)
 if bash_match:
     bash_code = bash_match.group(1)
     pip_install_modules = re.search(r'^.*pip install.*$', bash_code, re.DOTALL)
@@ -41,7 +42,7 @@ try:
     import gpt_code
     with open("gpt_code_error.txt", "w", encoding='utf-8') as file_g:
         file_g.truncate()
-    input()
+    # input()
 except Exception as e:
     error = str(e)
     print(data)
