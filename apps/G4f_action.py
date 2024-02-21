@@ -125,6 +125,14 @@ file_create('gpt_code_error.txt')
 file_create('gpt_code_format.py')
 file_create('gpt_code.py')
 
+if is_file_empty('G4f_action.txt'):
+    os.startfile('G4f_action.txt')
+    input("укажите действие в G4f_action.txt")
+
+if is_file_empty('gpt_role.txt'):
+    os.startfile('gpt_role.txt')
+    input("укажите роль в gpt_role.txt")
+    
 if is_file_empty('prompt_gpt_action.txt'):
     with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file:
         json.dump(role_message, file, ensure_ascii=False, indent=4)

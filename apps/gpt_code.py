@@ -1,25 +1,28 @@
-import matplotlib.pyplot as plt
 import requests
+import matplotlib.pyplot as plt
+from datetime import datetime
 
-# Получаем исторические данные о курсе биткоина
-url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
-response = requests.get(url)
+# Получаем данные о цене биткоина за последние 30 дней
+url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart'
+params = {
+    'vs_currency': 'usd',
+    'days': '30',
+    'interval': 'daily'
+}
+response = requests.get(url, params=params)
 data = response.json()
-prices = data['bpi']
 
-# Извлекаем даты и цены
-dates = list(prices.keys())
-values = list(prices.values())
+prices = [point[1] for point in data['prices']]
+timestamps = [datetime.utcfromtimestamp(point[0]//1000).strftime('%Y-%m-%d') for point in data['prices']]
 
 # Строим график
-plt.figure(figsize=(12, 6))
-plt.plot(dates, values, color='orange', marker='o', linestyle='-')
+plt.figure(figsize=(10, 6))
+plt.plot(timestamps, prices, marker='o', color='b', linestyle='-')
+plt.title('Bitcoin Price Chart for the Last 30 Days')
 plt.xlabel('Date')
-plt.ylabel('Bitcoin Price (USD)')
-plt.title('Bitcoin Price Chart')
+plt.ylabel('Price (USD)')
 plt.xticks(rotation=45)
 plt.grid(True)
 plt.tight_layout()
 
-# Отображаем график
 plt.show()

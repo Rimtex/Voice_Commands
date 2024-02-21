@@ -1,46 +1,49 @@
 """
-Для построения графика биткоина я воспользуюсь библиотекой `matplotlib` в Python. Для начала необходимо установить эту библиотеку, если она еще не установлена. Для этого можно использовать следующую команду:
+Для того чтобы нарисовать график биткоина, мы можем воспользоваться библиотекой `matplotlib` в Python. Для начала, убедись, что установлена библиотека `matplotlib`. Если она не установлена, установи ее с помощью команды:
 
 ```bash
 pip install matplotlib
 ```
 
-Затем я напишу код, который загрузит исторические данные о курсе биткоина и построит график. Вот пример кода:
+Затем, вот пример кода, который рисует график цены биткоина за последние 30 дней с использованием данных из API CoinGecko:
 
 ```python
 """
 
-import matplotlib.pyplot as plt
 import requests
+import matplotlib.pyplot as plt
+from datetime import datetime
 
-# Получаем исторические данные о курсе биткоина
-url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
-response = requests.get(url)
+# Получаем данные о цене биткоина за последние 30 дней
+url = 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart'
+params = {
+    'vs_currency': 'usd',
+    'days': '30',
+    'interval': 'daily'
+}
+response = requests.get(url, params=params)
 data = response.json()
-prices = data['bpi']
 
-# Извлекаем даты и цены
-dates = list(prices.keys())
-values = list(prices.values())
+prices = [point[1] for point in data['prices']]
+timestamps = [datetime.utcfromtimestamp(point[0]//1000).strftime('%Y-%m-%d') for point in data['prices']]
 
 # Строим график
-plt.figure(figsize=(12, 6))
-plt.plot(dates, values, color='orange', marker='o', linestyle='-')
+plt.figure(figsize=(10, 6))
+plt.plot(timestamps, prices, marker='o', color='b', linestyle='-')
+plt.title('Bitcoin Price Chart for the Last 30 Days')
 plt.xlabel('Date')
-plt.ylabel('Bitcoin Price (USD)')
-plt.title('Bitcoin Price Chart')
+plt.ylabel('Price (USD)')
 plt.xticks(rotation=45)
 plt.grid(True)
 plt.tight_layout()
 
-# Отображаем график
 plt.show()
 
 
 """
 ```
 
-Этот код загружает исторические данные о курсе биткоина с веб-сервиса CoinDesk, извлекает даты и цены, а затем строит график с помощью библиотеки `matplotlib`.
+Этот код отправляет запрос к API CoinGecko, получает данные о цене биткоина за последние 30 дней, извлекает цены и временные метки, а затем строит график с использованием библиотеки `matplotlib`.
 
-Пожалуйста, убедись, что у тебя установлена библиотека `matplotlib`, и запусти этот код в среде, поддерживающей выполнение Python кода.
+Пожалуйста, учти, что для работы этого кода требуется доступ к интернету, так как он загружает данные о цене биткоина из API.
 """

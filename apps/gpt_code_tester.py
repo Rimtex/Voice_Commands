@@ -24,21 +24,21 @@ with open('gpt_code.py', 'r', encoding='utf-8') as file:
 with open('gpt_code_format.py', 'r', encoding='utf-8') as file:
     data_format = file.read()
 # захват библиотек
-pattern = r'```bash\n(.*?)```'
-bash_match = re.search(pattern, data_format, re.DOTALL)
-if bash_match:
-    bash_code = bash_match.group(1)
-    pip_install_modules = re.search(r'^.*pip install.*$', bash_code, re.DOTALL)
-    if pip_install_modules:
-        print(pip_install_modules.group(0))  # Print the matched part of pip install command
-    else:
-        print("No 'pip install' command found in the Bash code.")
-else:
-    print("No Bash code enclosed within triple backticks found in the data.")
+pattern = r"(?<=\bpip install\b)\s+[^'`\"<>\n]*"  # Шаблон для извлечения команды pip install
+
+pip_install_matches = re.findall(pattern, data_format)
+
+print(data)
+
+if pip_install_matches:
+    print("______________________требуемые модули______________________")
+    for match in pip_install_matches:
+        print(match.strip("'`\"<>"))  # Убираем дополнительные символы
+        # print("pip install" + match.strip("'`\"<>")) 
+    print("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")    
 
 # тест
-try:
-    print(data)
+try:    
     import gpt_code
     with open("gpt_code_error.txt", "w", encoding='utf-8') as file_g:
         file_g.truncate()
@@ -66,9 +66,3 @@ except Exception as e:
         except FileNotFoundError:   
             os.startfile("G4f_action.py")       
 
-
-
-"""   
-
-
-"""
