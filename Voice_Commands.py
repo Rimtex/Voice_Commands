@@ -1084,8 +1084,6 @@ if __name__ == '__main__':
                 # команды для GPT
                 elif prompt in ('"действия"', '"действие"', '"сделай"', '"делай"'):
                     G4f_actions()
-                elif prompt in ('"роль"', '"подсказка"'):    
-                    os.startfile("apps\\gpt_role.txt") 
 
                 # -: встроенные группы команд из keyboard_scripts.py
                 elif prompt != '""':

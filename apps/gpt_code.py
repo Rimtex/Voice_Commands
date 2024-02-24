@@ -1,15 +1,15 @@
-# Импортируем модули
-import os
 import random
+import os
 
-# Получаем список файлов в папке E:\Muzic
-files = os.listdir("E:\\Muzic")
+# Получить список файлов из директории E:\Muzic
+music_directory = "E:\\Muzic"
+music_files = os.listdir(music_directory)
 
-# Перемешиваем список
-random.shuffle(files)
+# Выбрать случайный файл из списка
+random_file = random.choice(music_files)
 
-# Выбираем первый файл
-file = files[0]
+# Сформировать полный путь к файлу
+file_path = os.path.join(music_directory, random_file)
 
-# Открываем файл
-os.startfile("E:\\Muzic\\" + file)
+# Запустить выбранный файл
+os.startfile(file_path)

@@ -56,22 +56,23 @@ for i in range(20):
 
 
 neyro_models = """
-default
+gemini_pro
+gpt_35_turbo_16k
 gpt_35_turbo_16k_0613
 gpt_35_turbo_0613
-gpt_35_turbo_16k
-gpt_35_turbo
-gpt_35_long
+default
 gpt_4
 gpt_4_turbo
 gpt_4_32k_0613
 gpt_4_0613
 gpt_4_32k
+gpt_35_turbo
+gpt_35_long
 llama2_7b
 llama2_13b
 llama2_70b
 codellama_34b_instruct
-codellama_70b_instruct        
+codellama_70b_instruct
 mixtral_8x7b
 mistral_7b
 dolphin_mixtral_8x7b
@@ -80,10 +81,48 @@ airoboros_70b
 airoboros_l2_70b
 openchat_35
 gemini
-gemini_pro
 claude_v2
 pi
 """
+
+
+"""
+default
+FreeChatgpt: Yes, 
+Llama2: Hello!
+Bing: Hello, 
+Aura: Hello! 
+"""
+
+"""
+gpt_35_turbo_16k_0613
+GeminiProChat: Hello Test,
+FreeChatgpt: Hello, 
+Aura: Hello! How can I assist you today?
+Bing: Hello, this is Copilot.
+"""
+
+"""
+gpt_35_turbo_16k
+Aura: Hello! I'm here to help you with any questions or assistance you may need. How can I assist you today?
+GeminiProChat: Hello, I am here to help you with your test.
+GPTalk: Hello! How can I assist you today?
+Bing: Hello, this is Copilot. I am an AI companion that can help you with information, questions, and conversation. 😊
+"""
+
+
+"""
+gpt_35_turbo
+Bing: Hello, this is Copilot.
+Aura: Hello! 
+"""
+
+"""
+airoboros_70b
+GeminiProChat: Hello, this is a test. I am an AI chatbot, or virtual assistant, and I am here to help you with your inquiries. I can provide information, answer questions, and engage in conversations. I am trained on a massive amount of text and code data, which allows me to understand and respond to your requests in a natural and informative way.
+Aura: Hello! How can I assist you today?
+"""
+
 
 # Преобразование строки в список построчно
 neyro_models_list = neyro_models.strip().split('\n')
@@ -100,8 +139,8 @@ def ask_gpt(messages: list) -> str:
         printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
         try:            
             response = g4f.ChatCompletion.create(
-                model=getattr(g4f.models, neyro_models_list[current_model_idx]),
-                # provider=g4f.Provider.AiChatOnline,
+                model=getattr(g4f.models, neyro_models_list[current_model_idx]),                
+                # provider=g4f.Provider.FreeChatgpt,
                 messages=messages)
             return response              
         except Exception as e:
@@ -109,8 +148,7 @@ def ask_gpt(messages: list) -> str:
             print(f"{RED}Error")
             # print(f"{WHI} + {e}")
             current_model_idx += 1           
-    return "All models failed to provide a response." + input()
-
+    return "All models failed to provide a response." 
 
 """
 

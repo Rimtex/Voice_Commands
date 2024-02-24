@@ -42,7 +42,7 @@ try:
     import gpt_code
     with open("gpt_code_error.txt", "w", encoding='utf-8') as file_g:
         file_g.truncate()
-    input()
+    # input()
 except Exception as e:
     error = str(e)
     print(data)

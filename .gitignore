@@ -14,7 +14,6 @@ silero_models/
 
 /apps/*.ico
 /apps/*.png
-/apps/*.txt
 /apps/*.lnk
 
 /bot_discord/token.txt
