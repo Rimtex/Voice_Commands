@@ -1,16 +1,11 @@
-import turtle
+import os
+import random
 
-# Создаем экземпляр класса Turtle
-star = turtle.Turtle()
+# Получить список всех файлов в папке E:\Muzic
+files = os.listdir("E:\\Muzic")
 
-# Задаем цвет и толщину линии
-star.color("black")
-star.pensize(3)
+# Выбрать случайный файл из списка
+random_file = random.choice(files)
 
-# Рисуем пятиконечную звезду
-for _ in range(5):
-    star.forward(100)
-    star.right(144)
-
-# Закрываем окно при клике
-turtle.exitonclick()
+# Открыть случайный файл с помощью программы по умолчанию
+os.startfile("E:\\Muzic\\" + random_file)
