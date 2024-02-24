@@ -56,12 +56,14 @@ for i in range(20):
 
 
 neyro_models = """
+default
 gpt_35_turbo_16k_0613
 gpt_35_turbo_0613
 gpt_35_turbo_16k
-gpt_4_turbo
+gpt_35_turbo
 gpt_35_long
 gpt_4
+gpt_4_turbo
 gpt_4_32k_0613
 gpt_4_0613
 gpt_4_32k
@@ -105,7 +107,7 @@ def ask_gpt(messages: list) -> str:
         except Exception as e:
             app_title.resizeTo(836, 144+x)
             print(f"{RED}Error")
-            print(f"{WHI} + {e}")
+            # print(f"{WHI} + {e}")
             current_model_idx += 1           
     return "All models failed to provide a response." + input()
 

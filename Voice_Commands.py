@@ -353,13 +353,16 @@ def G4f_actions():
                     if not all_actions:
                         print(LRE, end="X")
                         break
+                    print()     
+                    loader.gun_fire()
                 if keyboard.is_pressed('space'):                    
                     action_input = input("")
                     if action_input == "":
                         print(LRE, end="X")
                         break
                     all_actions.append(action_input)
-                loader.gun_fire()
+                    print("", end="")     
+                    loader.gun_fire()
                 with open('apps\\G4f_action.txt', 'a', encoding='utf-8') as file:
                     file.write(" ".join(all_actions))       
                 time.sleep(0.1)  
@@ -373,7 +376,8 @@ def G4f_actions():
                     print(LRE, end="X")
                     break            
                 else:
-                    loader.download_generator()                                                      
+                    print()      
+                    loader.gun_fire()                                                    
                     with open('apps\\G4f_action.txt', 'a', encoding='utf-8') as file:
                         file.write(" ".join(all_actions))       
                     time.sleep(0.1)

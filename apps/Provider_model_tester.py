@@ -129,10 +129,49 @@ _providers = [
     g4f.Provider.OpenAssistant
 ]
 
+neyro_models = """
+gpt_35_turbo_16k_0613
+gpt_35_turbo_0613
+gpt_35_turbo_16k
+gpt_4_turbo
+gpt_35_long
+gpt_4
+gpt_4_32k_0613
+gpt_4_0613
+gpt_4_32k
+llama2_7b
+llama2_13b
+llama2_70b
+codellama_34b_instruct
+codellama_70b_instruct        
+mixtral_8x7b
+mistral_7b
+dolphin_mixtral_8x7b
+lzlv_70b
+airoboros_70b
+airoboros_l2_70b
+openchat_35
+gemini
+gemini_pro
+claude_v2
+pi
+"""
+
+
+"""
+default
+FreeChatgpt: Yes, 
+Llama2: Hello!
+Bing: Hello, 
+Aura: Hello! 
+"""
+
 """
 gpt_35_turbo_16k_0613
 GeminiProChat: Hello Test,
+FreeChatgpt: Hello, 
 Aura: Hello! How can I assist you today?
+Bing: Hello, this is Copilot.
 """
 
 """
@@ -161,7 +200,7 @@ Aura: Hello! How can I assist you today?
 async def run_provider(provider: g4f.Provider.BaseProvider):
     try:
         response = await g4f.ChatCompletion.create_async(
-            model=g4f.models.airoboros_70b,
+            model=g4f.models.default,
             messages=[{"role": "user", "content": "Hello is a test"}],
             provider=provider,
         )
