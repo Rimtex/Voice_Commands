@@ -49,23 +49,38 @@ for i in range(20):
     app_title.moveRel(0, 10)
     time.sleep(0.005)
 
-
 # model=g4f.models.gpt_,
 # provider=g4f.Provider.FakeGpt,  # FakeGpt GPTalk
 
+
+
+
 neyro_models = """
 gpt_35_turbo_16k_0613
-gpt_35_turbo_16k
 gpt_35_turbo_0613
-gpt_35_turbo
+gpt_35_turbo_16k
+gpt_4_turbo
 gpt_35_long
 gpt_4
-gpt_4 0613
-gpt_4_32k
 gpt_4_32k_0613
-gpt_4_turbo
-Gpt6
-GptForLove           
+gpt_4_0613
+gpt_4_32k
+llama2_7b
+llama2_13b
+llama2_70b
+codellama_34b_instruct
+codellama_70b_instruct        
+mixtral_8x7b
+mistral_7b
+dolphin_mixtral_8x7b
+lzlv_70b
+airoboros_70b
+airoboros_l2_70b
+openchat_35
+gemini
+gemini_pro
+claude_v2
+pi
 """
 
 # Преобразование строки в список построчно
@@ -73,23 +88,27 @@ neyro_models_list = neyro_models.strip().split('\n')
 
 current_model_idx = 0
 
+
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
+    x = 0
     global current_model_idx
-    while current_model_idx < len(neyro_models_list):        
+    while current_model_idx < len(neyro_models_list): 
+        x = x + 20       
         printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
         try:            
             response = g4f.ChatCompletion.create(
                 model=getattr(g4f.models, neyro_models_list[current_model_idx]),
+                # provider=g4f.Provider.AiChatOnline,
                 messages=messages)
-            return response      
+            return response              
         except Exception as e:
-            x = 20
             app_title.resizeTo(836, 144+x)
             print(f"{RED}Error")
-            current_model_idx += 1
-           
-    return "All models failed to provide a response."
+            print(f"{WHI} + {e}")
+            current_model_idx += 1           
+    return "All models failed to provide a response." + input()
+
 
 """
 
@@ -106,10 +125,18 @@ Python
 role_message = [{"role": "system", "content": default_role}]
 
 # Проверка наличия файлов и создание при необходимости
-def file_create(text):
-    if not os.path.exists(text):
-        with open(text, 'w', encoding='utf-8') as file_p:
+def file_create(name):
+    if not os.path.exists(name):
+        with open(name, 'w', encoding='utf-8') as file_p:
             file_p.write("")
+
+file_create('G4f_action.txt')
+file_create('prompt_gpt_action.txt')
+file_create('gpt_role.txt')
+file_create('gpt_code_error.txt')
+file_create('gpt_code_format.py')
+file_create('gpt_code.py')
+
 
 # Функция проверки того, пуст ли файл
 def is_file_empty(file_path):
@@ -119,11 +146,6 @@ def is_file_empty(file_path):
     except FileNotFoundError:
         return True
 
-file_create('prompt_gpt_action.txt')
-file_create('gpt_role.txt')
-file_create('gpt_code_error.txt')
-file_create('gpt_code_format.py')
-file_create('gpt_code.py')
 
 if is_file_empty('G4f_action.txt'):
     os.startfile('G4f_action.txt')
@@ -186,6 +208,37 @@ def printt(text):
         print(char, end='', flush=True)
         time.sleep(0.01)
 
+def gun_fire():
+    gun1 = "(√•_•)ԅ⌐╦╦═─"
+    gun2 = "(√¬_¬)ԅ⌐╦╦═─"
+    fire = "‒=═≡Ξ"
+    for i in range(1, len(gun1)):
+        print("\b"*len(gun1) + gun1[-i:], end='', flush=True)
+        time.sleep(0.03)
+    for i in range(1, len(fire)+1):
+        print("\r" + gun2 + fire[:i], end='')
+        time.sleep(0.005)
+    for i in range(1, 15):
+        print("\r" + gun2 + " "*i + "_", end='')
+        time.sleep(0.01)
+    for i in range(1, len(fire)+1):
+        print("\r" + gun2 + fire[:i], end='')
+        time.sleep(0.005)
+    for i in range(1, 15):
+        print("\r" + gun2 + " "*i + "─", end='')
+        time.sleep(0.01)
+    for i in range(1, len(fire)+1):
+        print("\r" + gun2 + fire[:i], end='')
+        time.sleep(0.005)
+    print(" "*30 + "\r", end='')        
+    for i in range(1, 15):
+        print(gun2 + " "*i + "‾" + "\r", end='')
+        time.sleep(0.01)    
+    print(" "*30 + "\r", end='')      
+    for i in range(len(gun1)+1):
+        print("\r" + gun1[i:] + " " + "\r", end='')
+        time.sleep(0.03)
+
 
 try:    
     while current_model_idx < len(neyro_models_list):      
@@ -194,7 +247,7 @@ try:
         with open('G4f_action.txt', 'r', encoding='utf-8') as file:
             action = file.read()                     
         prompt_gpt_action = load_messages()        
-        if action == "ошибка":
+        if action == "ошибка" or not is_file_empty('gpt_code_error.txt') :
             printt(f"{LYE} (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code_tester.py ")
             with open('gpt_code.py', 'r', encoding='utf-8') as file:
                 code = file.read()        
@@ -203,14 +256,11 @@ try:
             print(action)
             print(code)
             print(error)
-            prompt_gpt_action.append({"role": "user", "content": action})   
+            # prompt_gpt_action.append({"role": "user", "content": action})   
             prompt_gpt_action.append({"role": "user", "content": code})            
             prompt_gpt_action.append({"role": "user", "content": error})
-            prompt_gpt_action.append({"role": "user", "content": "!Исправь ошибку правильно и напиши работающий код!"})
-            save_messages(prompt_gpt_action)
             responses = ask_gpt(prompt_gpt_action)
             prompt_gpt_action.append({"role": "assistant", "content": responses})
-            save_messages(prompt_gpt_action)
         else:
             print("\n" + action)
             prompt_gpt_action.append({"role": "user", "content": action})
@@ -219,35 +269,48 @@ try:
             prompt_gpt_action.append({"role": "assistant", "content": responses})        
         save_messages(prompt_gpt_action)
         response_code = responses
-        # first_line = response_code.split('\n')[0]
-        printt(f"{LYE} (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code_tester.py ")    
+        first_line = response_code.split('\n')[0]
+        # first_line50 = 50 символов        
+        printt(f"\n{LYE} {first_line[:30]} ")
+        with open('gpt_code_format.py', 'w', encoding='utf-8') as file_f:
+            file_f.write(response_code)    
         pattern = r'```python\n(.*?)```'
         matches = re.findall(pattern, response_code, re.IGNORECASE | re.DOTALL)
-        match = '\n'.join(matches)
-        # Find start and end indices of the match
-        start_index = response_code.index(matches[0])
-        end_index = response_code.index(matches[-1]) + len(matches[-1])
-        # Extracting content before and after the pattern
-        before_pattern = response_code[:start_index]
-        after_pattern = response_code[end_index:]
-        # app_title.minimize()
-        # app_title.restore()
-        content_code_format = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""'  
-        content_code = f'{match}'           
-        try:
-            with open('gpt_code_format.py', 'w', encoding='utf-8') as file_f:
-                file_f.write(content_code_format)                         
-            with open('gpt_code.py', 'w', encoding='utf-8') as file_c:         
-                file_c.write(content_code)
-        except:
-            with open('gpt_code_format.py', 'w', encoding='utf-8') as file_f:
-                file.write(response_code)     
-        time.sleep(0.1)
-        try:  
-            os.startfile(f"gpt_code_tester.lnk")
-        except FileNotFoundError:   
-            os.startfile("gpt_code_tester.py")
-        break 
+        # pattern = r'```\n(.*?)```'
+        # matches = re.findall(pattern, response_code, re.IGNORECASE | re.DOTALL)    
+        if matches:
+            match = '\n'.join(matches)
+            # Find start and end indices of the match
+            start_index = response_code.index(matches[0])
+            end_index = response_code.index(matches[-1]) + len(matches[-1])
+            # Extracting content before and after the pattern
+            before_pattern = response_code[:start_index]
+            after_pattern = response_code[end_index:]
+            # app_title.minimize()
+            # app_title.restore()
+            content_code_format = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""'  
+            content_code = f'{match}'
+            print()  
+            gun_fire()
+            print() 
+            try:
+                with open('gpt_code_format.py', 'w', encoding='utf-8') as file_f:
+                    file_f.write(content_code_format)                         
+                with open('gpt_code.py', 'w', encoding='utf-8') as file_c:         
+                    file_c.write(content_code)
+            except:
+                with open('gpt_code_format.py', 'w', encoding='utf-8') as file_f:
+                    file.write(response_code)     
+            time.sleep(0.1)        
+            try:  
+                os.startfile(f"gpt_code_tester.lnk")
+            except FileNotFoundError:   
+                os.startfile("gpt_code_tester.py")
+        if "IP" in first_line: 
+            input("Доступ слишком частый. Пожалуйста, повторите попытку позже. продолжить?")
+            current_model_idx += 1       
+        elif "IP" not in first_line:               
+            break                
 
 except Exception as e:
     print(e)

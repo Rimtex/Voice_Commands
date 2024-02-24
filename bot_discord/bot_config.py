@@ -28,18 +28,19 @@ def ask_gpt(messages: list) -> str:
 
 
 # Проверка наличия файлов и создание при необходимости
-if not os.path.exists('2000.txt'):
-    with open('2000.txt', 'w', encoding='utf-8') as file2000:
-        file2000.write("")
-if not os.path.exists('messagesgpt.txt'):
-    with open('messagesgpt.txt', 'w', encoding='utf-8') as filemessagesgpt:
-        filemessagesgpt.write("")
-if not os.path.exists('gptrole.txt'):
-    with open('gptrole.txt', 'w', encoding='utf-8') as filegptrole:
-        filegptrole.write("")
-if not os.path.exists('last_gptrole.txt'):
-    with open('last_gptrole.txt', 'w', encoding='utf-8') as last_gptrole:
-        filegptrole.write("")
+# Проверка наличия файлов и создание при необходимости
+def file_create(name):
+    if not os.path.exists(name):
+        with open(name, 'w', encoding='utf-8') as file_p:
+            file_p.write("")
+
+file_create('messagesgpt.txt')
+file_create('gptrole.txt')
+file_create('last_gptrole.txt')
+file_create('sequences_role.txt')
+file_create('random_role.txt')
+file_create('last_gptrole.txt')
+
 
 # чтение последней роли
 with open('last_gptrole.txt', 'r', encoding='utf-8') as last_gptrole:

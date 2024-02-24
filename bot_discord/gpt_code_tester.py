@@ -19,9 +19,9 @@ def printt(text):
         print(char, end='', flush=True)
         time.sleep(0.015)
 
-with open('gpt_code.py', 'r', encoding='utf-8') as file:
+with open('Discord_bot_g4f.py', 'r', encoding='utf-8') as file:
     data = file.read()
-with open('gpt_code_format.py', 'r', encoding='utf-8') as file:
+with open('Discord_bot_g4f.py', 'r', encoding='utf-8') as file:
     data_format = file.read()
 # захват библиотек
 pattern = r"(?<=\bpip install\b)\s+[^'`\"<>\n]*"  # Шаблон для извлечения команды pip install
@@ -39,7 +39,7 @@ if pip_install_matches:
 
 # тест
 try:    
-    import gpt_code
+    import Discord_bot_g4f
     with open("gpt_code_error.txt", "w", encoding='utf-8') as file_g:
         file_g.truncate()
     input()

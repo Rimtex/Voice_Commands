@@ -8,9 +8,11 @@ from bot_config import *
 with open('token.txt', 'r') as token_file:  # токен Discord скопировать в token.txt
     token = token_file.readline()
 
-from setup_config import create_shortcut
-create_shortcut("чат бот", os.path.abspath(__file__))
-app_title = pyautogui.getWindowsWithTitle("чат бот")[0]
+""""""
+from setup_config_apps import create_shortcut
+app_title_window = os.path.basename(__file__).replace('.py', '')
+create_shortcut(app_title_window, os.path.abspath(__file__))
+app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
 
 # Устанавливаем Intents для доступа к различным возможностям Discord, включая прослушивание сообщений.
 intents = discord.Intents.all()

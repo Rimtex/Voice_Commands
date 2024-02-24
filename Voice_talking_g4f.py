@@ -58,42 +58,46 @@ def ask_gpt(messages: list) -> str:
 
 messagesgpt = []
 
-if __name__ == "__main__":
-    print(
-        f"""\
-╔{"═" * len(voice_model)}══╤════════════╗
-║ {LGR}{voice_model}{SRA} │{LCY} загружена!{SRA} ║
-║{" " * (len(voice_model) - len(neyro_model))} {LYE}{neyro_model}{SRA} │{LCY} загружена!{SRA} ║
-╚{"═" * len(voice_model)}══╧════════════╝
-╔═════════════════════════════════════╤════════════════════╗
-║ для сброса чата                     │{LCY} Ctrl - Shift{SRA}       ║
-║ зажмите одну из клавиш для пропуска │{LCY}▾Ctrl▾ ▾Shift▾ ▾alt▾{SRA}║
-╚═════════════════════════════════════╧════════════════════╝\
-"""
-    )
-    while True:
-        start_time = time.time()
-        print(LCY + " начало чата: ")
+try:
+    if __name__ == "__main__":
+        print(
+            f"""\
+    ╔{"═" * len(voice_model)}══╤════════════╗
+    ║ {LGR}{voice_model}{SRA} │{LCY} загружена!{SRA} ║
+    ║{" " * (len(voice_model) - len(neyro_model))} {LYE}{neyro_model}{SRA} │{LCY} загружена!{SRA} ║
+    ╚{"═" * len(voice_model)}══╧════════════╝
+    ╔═════════════════════════════════════╤════════════════════╗
+    ║ для сброса чата                     │{LCY} Ctrl - Shift{SRA}       ║
+    ║ зажмите одну из клавиш для пропуска │{LCY}▾Ctrl▾ ▾Shift▾ ▾alt▾{SRA}║
+    ╚═════════════════════════════════════╧════════════════════╝\
+    """
+        )
         while True:
-            if rec.AcceptWaveform(stream.read(4000)):
-                prompt = rec.Result()[13:-2]
-                if (
-                        keyboard.is_pressed("ctrl")
-                        or keyboard.is_pressed("shift")
-                        or keyboard.is_pressed("alt")
-                ):
+            start_time = time.time()
+            print(LCY + " начало чата: ")
+            while True:
+                if rec.AcceptWaveform(stream.read(4000)):
+                    prompt = rec.Result()[13:-2]
+                    if (
+                            keyboard.is_pressed("ctrl")
+                            or keyboard.is_pressed("shift")
+                            or keyboard.is_pressed("alt")
+                    ):
+                        prompt = '""'
+                    if prompt != '""':
+                        promptgpt = prompt[1:-1]
+                        print(LGR + promptgpt)
+                        messagesgpt.append({"role": "User", "content": promptgpt})
+                        messagesgpt.append({"role": "assistant", "content": ask_gpt(messages=messagesgpt)})
+                if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift"):
+                    messagesgpt = None
                     prompt = '""'
-                if prompt != '""':
-                    promptgpt = prompt[1:-1]
-                    print(LGR + promptgpt)
-                    messagesgpt.append({"role": "User", "content": promptgpt})
-                    messagesgpt.append({"role": "assistant", "content": ask_gpt(messages=messagesgpt)})
-            if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift"):
-                messagesgpt = None
-                prompt = '""'
-                break
+                    break
 
-            elapsed_time = time.time() - start_time
-            if elapsed_time >= 30:
-                input("Пауза! Нажмите Enter, чтобы продолжить...")
-                break
+                elapsed_time = time.time() - start_time
+                if elapsed_time >= 30:
+                    input("Пауза! Нажмите Enter, чтобы продолжить...")
+                    break
+except Exception as e:                
+            print(e)
+            input()
