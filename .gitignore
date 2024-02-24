@@ -17,7 +17,7 @@ silero_models/
 /apps/*.txt
 /apps/*.lnk
 
-/token.txt
+/bot_discord/token.txt
 /tester.py
 /neyro_testing.py
 
