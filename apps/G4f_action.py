@@ -22,24 +22,9 @@ except ImportError as e:
     import pyperclip
     import ctypes
 
-from colorama import Fore, init
-RED = Fore.RED
-LRE = Fore.LIGHTRED_EX
-YEL = Fore.YELLOW
-LYE = Fore.LIGHTYELLOW_EX
-#  BLU = Fore.BLUE  # слишком тёмные цвета
-LBL = Fore.LIGHTBLUE_EX
-CYA = Fore.CYAN
-LCY = Fore.LIGHTCYAN_EX
-GRE = Fore.GREEN
-LGR = Fore.LIGHTGREEN_EX
-#  MAG = Fore.MAGENTA
-LMA = Fore.LIGHTMAGENTA_EX
-WHI = Fore.WHITE
-BLA = Fore.BLACK
-init(convert=True) 
+
 """"""
-from setup_config_apps import create_shortcut
+from setup_config_apps import *
 app_title_window = os.path.basename(__file__).replace('.py', '')
 create_shortcut(app_title_window, os.path.abspath(__file__))
 app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
@@ -56,9 +41,8 @@ for i in range(20):
 
 
 neyro_models = """
-gemini_pro
-gpt_35_turbo_16k
 gpt_35_turbo_16k_0613
+gpt_35_turbo_16k
 gpt_35_turbo_0613
 default
 gpt_4
@@ -66,6 +50,7 @@ gpt_4_turbo
 gpt_4_32k_0613
 gpt_4_0613
 gpt_4_32k
+gemini_pro
 gpt_35_turbo
 gpt_35_long
 llama2_7b
@@ -124,9 +109,50 @@ Aura: Hello! How can I assist you today?
 """
 
 
+Providers = """
+GPTalk
+FreeChatgpt
+Llama2
+GeminiProChat
+Bing
+Aura
+"""
+
+neyro_models = """
+gpt_35_turbo_16k_0613
+gpt_35_turbo_16k
+gpt_35_turbo_0613
+default
+gpt_4
+gpt_4_turbo
+gpt_4_32k_0613
+gpt_4_0613
+gpt_4_32k
+gemini_pro
+gpt_35_turbo
+gpt_35_long
+llama2_7b
+llama2_13b
+llama2_70b
+codellama_34b_instruct
+codellama_70b_instruct
+mixtral_8x7b
+mistral_7b
+dolphin_mixtral_8x7b
+lzlv_70b
+airoboros_70b
+airoboros_l2_70b
+openchat_35
+gemini
+claude_v2
+pi
+"""
+
 # Преобразование строки в список построчно
 neyro_models_list = neyro_models.strip().split('\n')
+providers_list = Providers.strip().split('\n')
 
+current_provider_idx = 0
 current_model_idx = 0
 
 
@@ -134,22 +160,28 @@ current_model_idx = 0
 def ask_gpt(messages: list) -> str:
     x = 0
     global current_model_idx
-    while current_model_idx < len(neyro_models_list): 
-        x = x + 20       
-        printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
-        try:            
-            response = g4f.ChatCompletion.create(
-                model=getattr(g4f.models, neyro_models_list[current_model_idx]),                
-                # provider=g4f.Provider.FreeChatgpt,
-                messages=messages)
-            return response              
-        except Exception as e:
-            app_title.resizeTo(836, 144+x)
-            print(f"{RED}Error")
-            # print(f"{WHI} + {e}")
-            current_model_idx += 1           
-    return "All models failed to provide a response." 
-
+    global current_provider_idx
+    while current_provider_idx < len(providers_list): 
+        current_model_idx = 0
+        print(f'{LCY}> {providers_list[current_provider_idx]} > ')
+        while current_model_idx < len(neyro_models_list): 
+            #x = x + 20       
+            printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
+            try:            
+                response = g4f.ChatCompletion.create(
+                    model=getattr(g4f.models, neyro_models_list[current_model_idx]),                
+                    provider=getattr(g4f.Provider, providers_list[current_provider_idx]),
+                    # provider=g4f.Provider.FakeGpt,
+                    messages=messages)
+                return response              
+            except Exception as e:
+                app_title.resizeTo(836, 844)
+                print(f"{RED}Error")
+                print(f"{WHI} + {e}")
+                current_model_idx += 1           
+        print("All models failed to provide a response.")
+        current_provider_idx += 1
+    return input("All providers and models failed to provide a response.")
 """
 
 All models failed to provide a response.
@@ -212,10 +244,6 @@ if not os.path.exists("gpt_code.py"):
         pass
 
 
-def print_text_by_character(text):
-    for char in text:
-        print(char)
-
 # Сохранение сообщений в файл
 def save_messages(messages):
     with open('prompt_gpt_action.txt', 'w', encoding='utf-8') as file_s:
@@ -243,56 +271,21 @@ if not is_file_empty('gpt_role.txt'):
 save_messages(role_message)
 
 
-def printt(text):
-    for char in text:
-        print(char, end='', flush=True)
-        time.sleep(0.01)
-
-def gun_fire():
-    gun1 = "(√•_•)ԅ⌐╦╦═─"
-    gun2 = "(√¬_¬)ԅ⌐╦╦═─"
-    fire = "‒=═≡Ξ"
-    for i in range(1, len(gun1)):
-        print("\b"*len(gun1) + gun1[-i:], end='', flush=True)
-        time.sleep(0.03)
-    for i in range(1, len(fire)+1):
-        print("\r" + gun2 + fire[:i], end='')
-        time.sleep(0.005)
-    for i in range(1, 15):
-        print("\r" + gun2 + " "*i + "_", end='')
-        time.sleep(0.01)
-    for i in range(1, len(fire)+1):
-        print("\r" + gun2 + fire[:i], end='')
-        time.sleep(0.005)
-    for i in range(1, 15):
-        print("\r" + gun2 + " "*i + "─", end='')
-        time.sleep(0.01)
-    for i in range(1, len(fire)+1):
-        print("\r" + gun2 + fire[:i], end='')
-        time.sleep(0.005)
-    print(" "*30 + "\r", end='')        
-    for i in range(1, 15):
-        print(gun2 + " "*i + "‾" + "\r", end='')
-        time.sleep(0.01)    
-    print(" "*30 + "\r", end='')      
-    for i in range(len(gun1)+1):
-        print("\r" + gun1[i:] + " " + "\r", end='')
-        time.sleep(0.03)
-
-
 try:    
     while current_model_idx < len(neyro_models_list):      
         if is_file_empty('G4f_action.txt'):
             exit()
         with open('G4f_action.txt', 'r', encoding='utf-8') as file:
-            action = file.read()                     
+            action = file.read()                 
         prompt_gpt_action = load_messages()        
         if action == "ошибка" or not is_file_empty('gpt_code_error.txt') :
-            printt(f"{LYE} (√¬_¬)ԅ⌐╦╦═─‒=═≡Ξ gpt_code_tester.py ")
+            print()  
+            gun_fire(3)
             with open('gpt_code.py', 'r', encoding='utf-8') as file:
                 code = file.read()        
             with open('gpt_code_error.txt', 'r', encoding='utf-8') as file:
                 error = file.read()
+            print(default_role)    
             print(action)
             print(code)
             print(error)
@@ -302,7 +295,8 @@ try:
             responses = ask_gpt(prompt_gpt_action)
             prompt_gpt_action.append({"role": "assistant", "content": responses})
         else:
-            print("\n" + action)
+            print(default_role)
+            print(action)            
             prompt_gpt_action.append({"role": "user", "content": action})
             timer = 0
             responses = ask_gpt(prompt_gpt_action)
@@ -331,7 +325,7 @@ try:
             content_code_format = f'"""\n{before_pattern.strip()}\n"""\n\n{match}\n\n"""\n{after_pattern.strip()}\n"""'  
             content_code = f'{match}'
             print()  
-            gun_fire()
+            gun_fire(3)
             print() 
             try:
                 with open('gpt_code_format.py', 'w', encoding='utf-8') as file_f:

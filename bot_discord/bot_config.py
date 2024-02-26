@@ -1,9 +1,26 @@
 import os
+import time
 import g4f
 from craiyon import Craiyon
 import json
 import random
 
+from colorama import Fore, init
+RED = Fore.RED
+LRE = Fore.LIGHTRED_EX
+YEL = Fore.YELLOW
+LYE = Fore.LIGHTYELLOW_EX
+#  BLU = Fore.BLUE  # слишком тёмные цвета
+LBL = Fore.LIGHTBLUE_EX
+CYA = Fore.CYAN
+LCY = Fore.LIGHTCYAN_EX
+GRE = Fore.GREEN
+LGR = Fore.LIGHTGREEN_EX
+#  MAG = Fore.MAGENTA
+LMA = Fore.LIGHTMAGENTA_EX
+WHI = Fore.WHITE
+BLA = Fore.BLACK
+init(convert=True) 
 
 # вызов рисовалки
 def genimage(imgprompt):
@@ -16,15 +33,83 @@ def genimage(imgprompt):
         print(f"Error generating image: {e}")
         return None
 
+def printt(text):
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(0.01)
+
+Providers = """
+GPTalk
+FreeChatgpt
+Llama2
+GeminiProChat
+Bing
+Aura
+"""
+
+neyro_models = """
+gpt_35_turbo_16k_0613
+gpt_35_turbo_16k
+gpt_35_turbo_0613
+default
+gpt_4
+gpt_4_turbo
+gpt_4_32k_0613
+gpt_4_0613
+gpt_4_32k
+gemini_pro
+gpt_35_turbo
+gpt_35_long
+llama2_7b
+llama2_13b
+llama2_70b
+codellama_34b_instruct
+codellama_70b_instruct
+mixtral_8x7b
+mistral_7b
+dolphin_mixtral_8x7b
+lzlv_70b
+airoboros_70b
+airoboros_l2_70b
+openchat_35
+gemini
+claude_v2
+pi
+"""
+
+# Преобразование строки в список построчно
+neyro_models_list = neyro_models.strip().split('\n')
+providers_list = Providers.strip().split('\n')
+
+current_provider_idx = 0
+current_model_idx = 0
+
 
 # вызов нейро чата
 def ask_gpt(messages: list) -> str:
-    response = g4f.ChatCompletion.create(
-        model=g4f.models.gpt_35_turbo_16k_0613,
-        # provider=g4f.Provider.GPTalk,  # FakeGpt GPTalk 
-        messages=messages)
-    # print(response)
-    return response
+    x = 0
+    global current_model_idx
+    global current_provider_idx
+    while current_provider_idx < len(providers_list): 
+        current_model_idx = 0
+        print(f'{LCY}> {providers_list[current_provider_idx]} > ')
+        while current_model_idx < len(neyro_models_list): 
+            #x = x + 20       
+            printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
+            try:            
+                response = g4f.ChatCompletion.create(
+                    model=getattr(g4f.models, neyro_models_list[current_model_idx]),                
+                    provider=getattr(g4f.Provider, providers_list[current_provider_idx]),
+                    # provider=g4f.Provider.FakeGpt,
+                    messages=messages)
+                return response                              
+            except Exception as e:                
+                print(f"{RED}Error")
+                print(f"{WHI} + {e}")
+                current_model_idx += 1           
+        print("All models failed to provide a response.")
+        current_provider_idx += 1
+    return input("All providers and models failed to provide a response.")
 
 
 # Проверка наличия файлов и создание при необходимости

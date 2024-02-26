@@ -8,3 +8,5 @@ Python
 в начале кода должен быть скрипт для установки нужных библиотек через - try: imports, except subprocess.call(['pip', 'install'])
 
 помогай с кодом в Python
+
+загадывай мне загадки для Python

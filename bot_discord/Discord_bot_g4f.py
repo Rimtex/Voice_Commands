@@ -63,6 +63,8 @@ async def on_ready():
 @client.event
 async def on_message(message):  # Обработчик сообщений в дискорде
     try:
+        app_title.restore()
+
         global toggle_switch
 
         default_role = read_default_role('gptrole.txt')
@@ -339,6 +341,9 @@ async def on_message(message):  # Обработчик сообщений в д�
                     return
                 num_messages_to_delete = int(args[1])
                 await message.channel.purge(limit=num_messages_to_delete + 1)
+
+        app_title.minimize()        
+        
     except Exception as e:                
                 app_title.restore()
                 print(e)

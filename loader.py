@@ -24,33 +24,33 @@ def loader_screen_rimtex():
             time.sleep(0.01)
 
 # gun_fire
-def gun_fire():
+def gun_fire(x):
     gun1 = "(√•_•)ԅ⌐╦╦═─"
     gun2 = "(√¬_¬)ԅ⌐╦╦═─"
     fire = "‒=═≡Ξ"
     for i in range(1, len(gun1)):
         print("\b"*len(gun1) + gun1[-i:], end='', flush=True)
         time.sleep(0.03)
-    for i in range(1, len(fire)+1):
-        print("\r" + gun2 + fire[:i], end='')
-        time.sleep(0.005)
-    for i in range(1, 15):
-        print("\r" + gun2 + " "*i + "_", end='')
-        time.sleep(0.01)
-    for i in range(1, len(fire)+1):
-        print("\r" + gun2 + fire[:i], end='')
-        time.sleep(0.005)
-    for i in range(1, 15):
-        print("\r" + gun2 + " "*i + "─", end='')
-        time.sleep(0.01)
-    for i in range(1, len(fire)+1):
-        print("\r" + gun2 + fire[:i], end='')
-        time.sleep(0.005)
-    print(" "*30 + "\r", end='')        
-    for i in range(1, 15):
-        print(gun2 + " "*i + "‾" + "\r", end='')
-        time.sleep(0.01)    
-    print(" "*30 + "\r", end='')      
+    for i in range(x):      
+        for i in range(1, len(fire)+1):
+            print("\r" + gun2 + fire[:i], end='')
+            time.sleep(0.005)
+        for i in range(1, 15):
+            print("\r" + gun2 + " "*i + "_", end='')
+            time.sleep(0.01)
+        for i in range(1, len(fire)+1):
+            print("\r" + gun2 + fire[:i], end='')
+            time.sleep(0.005)
+        for i in range(1, 15):
+            print("\r" + gun2 + " "*i + "─", end='')
+            time.sleep(0.01)
+        for i in range(1, len(fire)+1):
+            print("\r" + gun2 + fire[:i], end='')
+            time.sleep(0.005)   
+        for i in range(1, 15):
+            print("\r" + gun2 + " "*i + "‾" + "\r", end='')
+            time.sleep(0.01)    
+            print(" "*31 + "\r", end='')      
     for i in range(len(gun1)+1):
         print("\r" + gun1[i:] + " " + "\r", end='')
         time.sleep(0.03)
