@@ -110,12 +110,12 @@ Aura: Hello! How can I assist you today?
 
 
 Providers = """
-GPTalk
 FreeChatgpt
 Llama2
 GeminiProChat
 Bing
 Aura
+GPTalk
 """
 
 neyro_models = """

@@ -39,12 +39,12 @@ def printt(text):
         time.sleep(0.01)
 
 Providers = """
-GPTalk
 FreeChatgpt
 Llama2
 GeminiProChat
 Bing
 Aura
+GPTalk
 """
 
 neyro_models = """
