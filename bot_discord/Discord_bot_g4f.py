@@ -5,6 +5,29 @@ import asyncio
 import pyautogui
 from bot_config import *
 
+
+""" парсинг роли при запуске """
+try:
+    import requests
+    from bs4 import BeautifulSoup
+    # Отправляем GET-запрос к сайту
+    response = requests.get("https://joyreactor.cc/")
+    # Получаем HTML-код страницы
+    html_code = response.text
+    # Создаем объект BeautifulSoup
+    soup = BeautifulSoup(html_code, 'html.parser')
+    # Находим тег div с классом "description" и получаем текст
+    description = soup.find('div', class_='description').text.strip()
+    with open("messagesgpt.txt", "w") as file:
+        file.truncate(0)
+    role_message = [{"role": "system", "content": f"{description}"}]
+    with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
+        filemessagesgpt.write(f"{description}")   
+    save_messages(role_message)
+except Exception as e:                
+    print(e)
+
+
 with open('token.txt', 'r') as token_file:  # токен Discord скопировать в token.txt
     token = token_file.readline()
 

@@ -5,10 +5,10 @@
     },
     {
         "role": "user",
-        "content": "громкость на десять"
+        "content": "нарисуй график биткоина"
     },
     {
         "role": "assistant",
-        "content": "```python\nimport pyautogui\n\n# Увеличиваем громкость на 10 шагов\nfor _ in range(10):\n    pyautogui.press(\"volumeup\")\n```"
+        "content": "```python\nimport matplotlib.pyplot as plt\nimport yfinance as yf\n\n# Получение данных о ценах на биткоин\nbtc_data = yf.download('BTC-USD', '2021-01-01', '2023-03-08')\n\n# Извлечение цен закрытия\nprices = btc_data['Close']\n\n# Создание графика\nplt.plot(prices)\nplt.xlabel('Дата')\nplt.ylabel('Цена (USD)')\nplt.title('График цен на биткоин')\n\n# Отображение графика\nplt.show()\n```"
     }
 ]
