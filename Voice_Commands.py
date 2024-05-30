@@ -24,7 +24,7 @@ try:
     import ctypes
     import tqdm
 except ImportError:
-    print("Попытка установить необходимые модули:   requirements.txt")
+    print("Попытка установить необходимые модули: requirements.txt")
     os.system('python.exe -m pip install --upgrade pip')
     os.system('pip install --upgrade -r "requirements.txt"')
     import requests
