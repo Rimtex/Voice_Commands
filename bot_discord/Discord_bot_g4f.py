@@ -20,7 +20,7 @@ try:
     description = soup.find('div', class_='description').text.strip()
     with open("messagesgpt.txt", "w") as file:
         file.truncate(0)
-    role_message = [{"role": "system", "content": f"{description}"}]
+    role_message = [{"role": "user", "content": f"{description}"}]
     with open('gptrole.txt', 'w', encoding='utf-8') as filemessagesgpt:
         filemessagesgpt.write(f"{description}")   
     save_messages(role_message)

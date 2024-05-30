@@ -1,6 +1,7 @@
 discord
 craiyon.py
 g4f
+# g4f==0.2.4.1
 
 pynput
 Pillow

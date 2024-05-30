@@ -202,7 +202,7 @@ Aura: Hello! How can I assist you today?
 async def run_provider(provider: g4f.Provider.BaseProvider):
     try:
         response = await g4f.ChatCompletion.create_async(
-            model=g4f.models.llama2_70b,
+            model=g4f.models.gpt_4_32k_0613,
             messages=[{"role": "user", "content": "Hello is a test"}],
             provider=provider,
         )

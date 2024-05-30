@@ -40,19 +40,17 @@ def printt(text):
 
 Providers = """
 FreeChatgpt
+GPTalk
 Llama2
 GeminiProChat
 Bing
 Aura
-GPTalk
 """
 
 neyro_models = """
 gpt_35_turbo_16k_0613
 gpt_35_turbo_16k
 gpt_35_turbo_0613
-default
-gpt_4
 gpt_4_turbo
 gpt_4_32k_0613
 gpt_4_0613
@@ -75,6 +73,8 @@ openchat_35
 gemini
 claude_v2
 pi
+default
+gpt_4
 """
 
 # Преобразование строки в список построчно
@@ -89,27 +89,27 @@ current_model_idx = 0
 def ask_gpt(messages: list) -> str:
     x = 0
     global current_model_idx
-    global current_provider_idx
-    while current_provider_idx < len(providers_list): 
-        current_model_idx = 0
-        print(f'{LCY}> {providers_list[current_provider_idx]} > ')
-        while current_model_idx < len(neyro_models_list): 
-            #x = x + 20       
-            printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
-            try:            
-                response = g4f.ChatCompletion.create(
-                    model=getattr(g4f.models, neyro_models_list[current_model_idx]),                
-                    provider=getattr(g4f.Provider, providers_list[current_provider_idx]),
-                    # provider=g4f.Provider.FakeGpt,
-                    messages=messages)
-                return response                              
-            except Exception as e:                
-                print(f"{RED}Error")
-                print(f"{WHI} + {e}")
-                current_model_idx += 1           
-        print("All models failed to provide a response.")
-        current_provider_idx += 1
-    return input("All providers and models failed to provide a response.")
+    # global current_provider_idx
+    # while current_provider_idx < len(providers_list): 
+        # current_model_idx = 0
+        # print(f'{LCY}> {providers_list[current_provider_idx]} > ')
+    while current_model_idx < len(neyro_models_list): 
+        #x = x + 20       
+        printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
+        try:            
+            response = g4f.ChatCompletion.create(
+                model=getattr(g4f.models, neyro_models_list[current_model_idx]),                
+                # provider=getattr(g4f.Provider, providers_list[current_provider_idx]),
+                # provider=g4f.Provider.FastGpt,
+                messages=messages)
+            return response                              
+        except Exception as e:                
+            print(f"{RED}Error")
+            print(f"{WHI} + {e}")
+            current_model_idx += 1           
+    print("All models failed to provide a response.")
+    # current_provider_idx += 1
+    # return input("All providers and models failed to provide a response.")
 
 
 # Проверка наличия файлов и создание при необходимости

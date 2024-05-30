@@ -7,6 +7,7 @@ import keyboard
 import pyautogui
 import win32com
 import win32com.client as wincl
+import webbrowser
 
 """"""
 from setup_config_apps import create_shortcut
@@ -31,8 +32,10 @@ def capture_area():
 
     while True:
         if keyboard.is_pressed('alt') or keyboard.is_pressed('shift'):
-            if keyboard.is_pressed('shift'):
-                lang = "eng"
+            if keyboard.is_pressed('alt'):
+                lang = "rus"
+            elif keyboard.is_pressed('shift'):
+                lang = "eng"    
             else:   
                 lang = "eng+rus+ukr"
             if start_x is None and start_y is None:
@@ -78,6 +81,12 @@ def capture_area():
         print(text)
         print(f"‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾({end_x}, {end_y})‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
         pyperclip.copy(f"{text}")
+        if text != "":
+            try:                        
+                webbrowser.open('https://www.google.com/search?q=' + text)
+                print("G", end='')
+            except OSError:
+                print( "OSError", end='')
         # переводим полученный текст
         try:
             translator = Translator()
