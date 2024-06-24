@@ -5,6 +5,8 @@ import asyncio
 import pyautogui
 from bot_config import *
 
+import nest_asyncio
+nest_asyncio.apply()
 
 """ парсинг роли при запуске """
 try:

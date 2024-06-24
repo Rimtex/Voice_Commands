@@ -1,18 +1,19 @@
-import g4f
+from g4f.client import Client
 
+client = Client()
 
-# вызов нейро чата
-neyro_model = "gpt_4_turbo"
 
 def ask_gpt(messages: list) -> str:
-    response = g4f.ChatCompletion.create(
-        model=getattr(g4f.models, neyro_model),
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
         messages=messages)
-    print(response)
-    return response
+    print(response.choices[0].message.content)
+    return response.choices[0].message.content
 
 
 messages = []
 while True:
-    messages.append({"role": "user", "content": input()})
-    messages.append({"role": "assistant", "content": ask_gpt(messages=messages)})
+    user_input = input()
+    messages.append({"role": "user", "content": user_input})
+    assistant_response = ask_gpt(messages=messages)
+    messages.append({"role": "assistant", "content": assistant_response})

@@ -1,9 +1,11 @@
 import os
 import time
-import g4f
 from craiyon import Craiyon
 import json
 import random
+
+from g4f.client import Client
+client = Client()
 
 from colorama import Fore, init
 RED = Fore.RED
@@ -75,7 +77,7 @@ claude_v2
 pi
 default
 gpt_4
-"""
+
 
 # Преобразование строки в список построчно
 neyro_models_list = neyro_models.strip().split('\n')
@@ -89,28 +91,38 @@ current_model_idx = 0
 def ask_gpt(messages: list) -> str:
     x = 0
     global current_model_idx
-    # global current_provider_idx
-    # while current_provider_idx < len(providers_list): 
-        # current_model_idx = 0
-        # print(f'{LCY}> {providers_list[current_provider_idx]} > ')
-    while current_model_idx < len(neyro_models_list): 
-        #x = x + 20       
-        printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
-        try:            
-            response = g4f.ChatCompletion.create(
-                model=getattr(g4f.models, neyro_models_list[current_model_idx]),                
-                # provider=getattr(g4f.Provider, providers_list[current_provider_idx]),
-                # provider=g4f.Provider.FastGpt,
-                messages=messages)
-            return response                              
-        except Exception as e:                
-            print(f"{RED}Error")
-            print(f"{WHI} + {e}")
-            current_model_idx += 1           
-    print("All models failed to provide a response.")
-    # current_provider_idx += 1
-    # return input("All providers and models failed to provide a response.")
+    global current_provider_idx
+    while current_provider_idx < len(providers_list): 
+        current_model_idx = 0
+        print(f'{LCY}> {providers_list[current_provider_idx]} > ')
+        while current_model_idx < len(neyro_models_list): 
+            #x = x + 20       
+            printt(f'{LGR}> {neyro_models_list[current_model_idx]} > ')
+            try:            
+                response = g4f.ChatCompletion.create(
+                    model=getattr(g4f.models, neyro_models_list[current_model_idx]),                
+                    provider=getattr(g4f.Provider, providers_list[current_provider_idx]),
+                    # provider=g4f.Provider.FastGpt,
+                    messages=messages)
+                return response                              
+            except Exception as e:                
+                print(f"{RED}Error")
+                print(f"{WHI} + {e}")
+                current_model_idx += 1           
+        print("All models failed to provide a response.")
+        current_provider_idx += 1
+    return input("All providers and models failed to provide a response.")
+"""
 
+# вызов нейро чата
+def ask_gpt(messages: list) -> str:
+    try:            
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=messages)
+        return response.choices[0].message.content                                  
+    except Exception as e:                
+        print(f"{RED}Error"+ e)
 
 # Проверка наличия файлов и создание при необходимости
 # Проверка наличия файлов и создание при необходимости
