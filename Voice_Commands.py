@@ -405,6 +405,8 @@ def G4f_actions():
                     timer -= 1                
         except Exception as e:   
             input(e)
+
+
 if __name__ == '__main__':
 
     #: состав словаря из названий ярлыков
@@ -429,6 +431,10 @@ if __name__ == '__main__':
         # -: режим паузы
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
             pause_mode()
+        # -: Вызов функции для начала выделения области экрана и обработки текста
+        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift"):
+            import screen_tesseract           
+            screen_tesseract.start_capture()
         # -: действие для GPT
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift") and keyboard.is_pressed("alt"):
             G4f_actions()
