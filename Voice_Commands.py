@@ -331,7 +331,7 @@ def pause_mode():
             speak_tts("обычный режим!")
             break
 
-# команда действие для GPT
+#: команда действие для GPT
 def G4f_actions():
     is_file_empty('apps\\G4f_action.txt')                               
     if not is_file_empty('apps\\G4f_action.txt'):    
@@ -444,8 +444,6 @@ if __name__ == '__main__':
                 (num_lock_state_check != 1 and num_lock_state_check != -127):
             time.sleep(.2)
             print(LYE + "›", end="")
-            app_title.minimize()
-            app_title.restore()
             while True:
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
                     pause_mode()
@@ -466,8 +464,6 @@ if __name__ == '__main__':
                 (caps_lock_state_check != 1 and caps_lock_state_check != -127):
             time.sleep(.2)
             print(YEL + f"›", end="")
-            app_title.minimize()
-            app_title.restore()
             while True:
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
                     pause_mode()
@@ -488,8 +484,6 @@ if __name__ == '__main__':
                 (caps_lock_state_check == 1 or caps_lock_state_check == -127):
             time.sleep(.2)
             print(LGR + "»", end="")
-            app_title.minimize()
-            app_title.restore()
             while True:
                 if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
                     pause_mode()
