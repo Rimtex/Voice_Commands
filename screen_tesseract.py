@@ -8,7 +8,6 @@ import pytesseract
 import os
 import pyperclip
 
-tesseract = "https://github.com/UB-Mannheim/tesseract/wiki"
 tesseract_path = r"C:\Program Files\Tesseract-OCR"  # Путь к установленному Tesseract OCR
 lang = "eng+rus+ukr"  # Нужные языки для распознавания текста
 translang = "russian"  # Язык перевода текста
@@ -33,6 +32,8 @@ class RectangleDrawer:
         self.rectangle = None
         self.is_capturing = False  # Флаг захвата
         self.captured_once = False  # Флаг, чтобы избежать повторного захвата
+
+        self.popup = None  # Окно для отображения перевода
 
         self.root.bind('<Escape>', self.exit_program)
         self.update_rectangle()
@@ -69,6 +70,8 @@ class RectangleDrawer:
             self.rectangle = None
 
     def exit_program(self, event=None):
+        if self.popup:
+            self.popup.destroy()  # Закрываем попап, если он открыт
         self.root.quit()
 
     def capture_area(self, start, end):
@@ -87,16 +90,14 @@ class RectangleDrawer:
         right = min(screen_width, right)
         bottom = min(screen_height, bottom)
 
-        # print(f"Захватываемая область: left={left}, top={top}, right={right}, bottom={bottom}")
-
         try:
             screenshot = ImageGrab.grab(bbox=(left, top, right, bottom))
             screenshot.save("screenshot.png")
-            self.process_image()
+            self.process_image(left, bottom)  # Передаем левый нижний угол
         except Exception as e:
             print(f"Ошибка при сохранении скриншота: {e}")
 
-    def process_image(self):
+    def process_image(self, left, bottom):
         try:
             # Настройка Tesseract OCR
             os.environ['TESSDATA_PREFIX'] = tesseract_path + r'\tessdata'
@@ -121,17 +122,32 @@ class RectangleDrawer:
             translated_text = translator.translate(text, translang)
             print(f"{Fore.LIGHTYELLOW_EX}Переведённый текст:{Fore.WHITE}\n{translated_text}")
 
+            # Отображаем перевод в левом нижнем углу выделенной области
+            self.show_popup(translated_text, left, bottom)
+
         except Exception as e:
             print(f"Ошибка обработки изображения: {e}")
         finally:
             self.clear_rectangle()  # Очищаем прямоугольник
             self.captured_once = True  # Устанавливаем флаг захвата
-            self.root.after(100, self.exit_program)  # Завершаем программу через 100 мс после обработки
+            self.root.after(3000, self.exit_program)  # Закрываем окно через 3 секунды
 
+    def show_popup(self, text, x, y):
+        # Создаем всплывающее окно
+        if self.popup:
+            self.popup.destroy()
+
+        self.popup = tk.Toplevel(self.root)
+        self.popup.overrideredirect(True)  # Убираем рамку окна
+        self.popup.attributes('-topmost', True)  # Окно всегда наверху
+
+        label = tk.Label(self.popup, text=text, bg='yellow', font=('Arial', 14))
+        label.pack()
+
+        # Размещаем окно в левом нижнем углу выделенной области
+        self.popup.geometry(f"+{x}+{y}")
 
 # Функция для создания и запуска окна захвата экрана
-
-
 def start_capture():
     root = tk.Tk()
     root.overrideredirect(True)  # Убираем границы окна
@@ -140,7 +156,6 @@ def start_capture():
 
 
 # Если файл запущен как основной, то запускается процесс выделения области
-
-
 if __name__ == "__main__":
     start_capture()
+
