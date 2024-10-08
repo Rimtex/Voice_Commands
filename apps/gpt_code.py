@@ -1,17 +1,21 @@
 import matplotlib.pyplot as plt
-import yfinance as yf
+import pandas as pd
 
-# Получение данных о ценах на биткоин
-btc_data = yf.download('BTC-USD', '2021-01-01', '2023-03-08')
+# Пример данных о ценах биткоина
+data = {
+    'Дата': ['2024-01-01', '2024-02-01', '2024-03-01', '2024-04-01', '2024-05-01'],
+    'Цена': [30000, 32000, 31000, 33000, 34000]
+}
 
-# Извлечение цен закрытия
-prices = btc_data['Close']
+# Создание DataFrame
+df = pd.DataFrame(data)
+df['Дата'] = pd.to_datetime(df['Дата'])
 
-# Создание графика
-plt.plot(prices)
+# Построение графика
+plt.figure(figsize=(10, 5))
+plt.plot(df['Дата'], df['Цена'], marker='o')
+plt.title('График цен биткоина')
 plt.xlabel('Дата')
 plt.ylabel('Цена (USD)')
-plt.title('График цен на биткоин')
-
-# Отображение графика
+plt.grid(True)
 plt.show()
