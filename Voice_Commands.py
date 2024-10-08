@@ -436,7 +436,7 @@ if __name__ == '__main__':
             import screen_tesseract           
             screen_tesseract.start_capture()
         # -: действие для GPT
-        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift") and keyboard.is_pressed("alt"):
+        if keyboard.is_pressed("win") and keyboard.is_pressed("shift") and keyboard.is_pressed("alt"):
             G4f_actions()
         
         #: Запись на русском # при включённом Caps Lock

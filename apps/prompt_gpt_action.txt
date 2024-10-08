@@ -5,10 +5,10 @@
     },
     {
         "role": "user",
-        "content": "нарисуй график биткоина"
+        "content": "нарисуй курс биткоина"
     },
     {
         "role": "assistant",
-        "content": "К сожалению, я не могу нарисовать график биткоина прямо здесь. Однако, я могу помочь вам с кодом на Python, который вы можете использовать для построения графика биткоина. Вот пример:\n\n```python\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n# Пример данных о ценах биткоина\ndata = {\n    'Дата': ['2024-01-01', '2024-02-01', '2024-03-01', '2024-04-01', '2024-05-01'],\n    'Цена': [30000, 32000, 31000, 33000, 34000]\n}\n\n# Создание DataFrame\ndf = pd.DataFrame(data)\ndf['Дата'] = pd.to_datetime(df['Дата'])\n\n# Построение графика\nplt.figure(figsize=(10, 5))\nplt.plot(df['Дата'], df['Цена'], marker='o')\nplt.title('График цен биткоина')\nplt.xlabel('Дата')\nplt.ylabel('Цена (USD)')\nplt.grid(True)\nplt.show()\n```\n\nЭтот код использует библиотеку `matplotlib` для построения графика и `pandas` для работы с данными. Вы можете заменить примерные данные на реальные данные о ценах биткоина."
+        "content": "Конечно! Вот пример кода на Python, который рисует график курса биткоина:\n\n```python\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n# Пример данных курса биткоина\ndata = {\n    'Дата': ['2024-10-01', '2024-10-02', '2024-10-03', '2024-10-04', '2024-10-05'],\n    'Курс': [27000, 27500, 28000, 27800, 28500]\n}\n\ndf = pd.DataFrame(data)\ndf['Дата'] = pd.to_datetime(df['Дата'])\n\nplt.figure(figsize=(10, 5))\nplt.plot(df['Дата'], df['Курс'], marker='o', linestyle='-', color='b')\nplt.title('Курс биткоина')\nplt.xlabel('Дата')\nplt.ylabel('Курс (USD)')\nplt.grid(True)\nplt.show()\n```\n\nЭтот код использует библиотеку `matplotlib` для построения графика и `pandas` для работы с данными. Вы можете заменить примерные данные на актуальные данные курса биткоина."
     }
 ]

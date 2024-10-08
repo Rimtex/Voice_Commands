@@ -41,7 +41,7 @@
 * **Caps Lock** и **Num Lock** или `переводчик` пишет переведённый на английский голос
 * **Ctrl - Alt** выключает **Caps Lock** и **Num Lock**
 * **Ctrl - Win** режим паузы - `пауза`
-* **Shift - Ctrl - Alt** G4f_action - `действие`
+* **Shift - Win - Alt**   G4f_action - `действие`
 <hr>
 
 * **Voice_Commands**

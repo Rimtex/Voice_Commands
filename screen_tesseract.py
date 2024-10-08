@@ -76,9 +76,25 @@ class RectangleDrawer:
         right = max(start[0], end[0])
         bottom = max(start[1], end[1])
 
-        screenshot = ImageGrab.grab(bbox=(left, top, right, bottom))
-        screenshot.save("screenshot.png")
-        self.process_image()
+        # Получаем размеры экрана
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        # Ограничиваем границы захвата размерами экрана
+        left = max(0, left)
+        top = max(0, top)
+        right = min(screen_width, right)
+        bottom = min(screen_height, bottom)
+
+        # print(f"Захватываемая область: left={left}, top={top}, right={right}, bottom={bottom}")
+
+        try:
+            screenshot = ImageGrab.grab(bbox=(left, top, right, bottom))
+            screenshot.save("screenshot.png")
+            self.process_image()
+        except Exception as e:
+            print(f"Ошибка при сохранении скриншота: {e}")
+
 
     def process_image(self):
         try:
@@ -90,8 +106,12 @@ class RectangleDrawer:
             image = Image.open("screenshot.png")
 
             # Преобразуем изображение в текст
-            text = pytesseract.image_to_string(image, lang=lang)
-            print(f"{Fore.LIGHTGREEN_EX}Распознанный текст:{Fore.WHITE}\n{text}", end='')
+            text = pytesseract.image_to_string(image, lang=lang).strip()  # Убираем лишние пробелы
+            if not text:
+                print("Текст не обнаружен на изображении.")
+                return  # Прекращаем обработку, если текст отсутствует
+
+            print(f"{Fore.LIGHTGREEN_EX}Распознанный текст:{Fore.WHITE}\n{text}")
 
             # Копируем текст в буфер обмена
             pyperclip.copy(text)
@@ -102,16 +122,16 @@ class RectangleDrawer:
             print(f"{Fore.LIGHTYELLOW_EX}Переведённый текст:{Fore.WHITE}\n{translated_text}")
 
         except Exception as e:
-            os.startfile(tesseract)            
             print(f"Ошибка обработки изображения: {e}")
-            print(tesseract + " >>> open")
-
         finally:
             self.clear_rectangle()  # Очищаем прямоугольник
             self.captured_once = True  # Устанавливаем флаг захвата
             self.root.after(100, self.exit_program)  # Завершаем программу через 100 мс после обработки
 
+
 # Функция для создания и запуска окна захвата экрана
+
+
 def start_capture():
     root = tk.Tk()
     root.overrideredirect(True)  # Убираем границы окна
@@ -119,6 +139,8 @@ def start_capture():
     root.mainloop()
 
 # Если файл запущен как основной, то запускается процесс выделения области
+
+
 if __name__ == "__main__":
     start_capture()
 
