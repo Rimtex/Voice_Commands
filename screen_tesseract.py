@@ -8,6 +8,7 @@ import pytesseract
 import os
 import pyperclip
 
+tesseract = "https://github.com/UB-Mannheim/tesseract/wiki"
 tesseract_path = r"C:\Program Files\Tesseract-OCR"  # Путь к установленному Tesseract OCR
 lang = "eng+rus+ukr"  # Нужные языки для распознавания текста
 translang = "russian"  # Язык перевода текста
@@ -101,7 +102,10 @@ class RectangleDrawer:
             print(f"{Fore.LIGHTYELLOW_EX}Переведённый текст:{Fore.WHITE}\n{translated_text}")
 
         except Exception as e:
+            os.startfile(tesseract)            
             print(f"Ошибка обработки изображения: {e}")
+            print(tesseract + " >>> open")
+
         finally:
             self.clear_rectangle()  # Очищаем прямоугольник
             self.captured_once = True  # Устанавливаем флаг захвата
