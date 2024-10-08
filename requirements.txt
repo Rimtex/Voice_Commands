@@ -13,3 +13,6 @@ psutil
 PyGetWindow
 tqdm
 sounddevice
+pyperclip
+pytesseract
+pillow

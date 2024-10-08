@@ -13,6 +13,7 @@ tesseract_path = r"C:\Program Files\Tesseract-OCR"  # Путь к установ
 lang = "eng+rus+ukr"  # Нужные языки для распознавания текста
 translang = "russian"  # Язык перевода текста
 
+
 class RectangleDrawer:
     def __init__(self, root):
         self.root = root
@@ -39,7 +40,7 @@ class RectangleDrawer:
     def update_rectangle(self):
         if self.captured_once:  # Если уже захвачено, игнорируем обновления
             return
-        
+
         if keyboard.is_pressed('shift'):
             if self.start_point is None and not self.is_capturing:
                 self.start_point = pyautogui.position()  # Запоминаем точку начала
@@ -95,7 +96,6 @@ class RectangleDrawer:
         except Exception as e:
             print(f"Ошибка при сохранении скриншота: {e}")
 
-
     def process_image(self):
         try:
             # Настройка Tesseract OCR
@@ -138,9 +138,9 @@ def start_capture():
     app = RectangleDrawer(root)
     root.mainloop()
 
+
 # Если файл запущен как основной, то запускается процесс выделения области
 
 
 if __name__ == "__main__":
     start_capture()
-
