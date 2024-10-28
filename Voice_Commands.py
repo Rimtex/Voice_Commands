@@ -212,8 +212,6 @@ except Exception as e:
     os.startfile(path_to_shortcut + app_title_window)
     exit()
 
-
-
 # Старт модели определения голоса
 rec = KaldiRecognizer(current_model, 48000)
 receng = KaldiRecognizer(english_model, 48000)
@@ -233,6 +231,7 @@ voices = speak.GetVoices()
 speak.Volume = 100  # громкость
 speakrate_set = 4  # скорость
 tts = pyttsx3.init()
+
 
 # Функция для смены модели
 def change_model(new_model):
@@ -318,7 +317,8 @@ def pause_mode():
                 print(LRE + '\n ʕ/·ᴥ·ʔ/ Bye! ' + SRA)
                 os.startfile(f"\\{path_to_shortcut}{app_title_window}")
                 exit()
-            elif paumpt in ('"ассистент"', '"помощник"', '"запуск"', '"запустить"', '"запусти"', '"обычный режим"', '"бот"'):
+            elif paumpt in (
+                    '"ассистент"', '"помощник"', '"запуск"', '"запустить"', '"запусти"', '"обычный режим"', '"бот"'):
                 app_title.minimize()
                 app_title.restore()
                 print(f'\n{LGR} \ʕ•ᴥ•ʔ/{SRA}')
@@ -331,80 +331,86 @@ def pause_mode():
             speak_tts("обычный режим!")
             break
 
+
 #: команда действие для GPT
-def G4f_actions():
-    is_file_empty('apps\\G4f_action.txt')                               
-    if not is_file_empty('apps\\G4f_action.txt'):    
-        with open('apps\\G4f_action.txt', 'w', encoding='utf-8') as fileaction:
-            fileaction.truncate()  
+def g4f_actions():
+    is_file_empty('g4f\\G4f_action.txt')
+    if not is_file_empty('g4f\\G4f_action.txt'):
+        with open('g4f\\G4f_action.txt', 'w', encoding='utf-8') as fileaction:
+            fileaction.truncate()
     timer = 3
     all_actions = []
     print(LYE + "(!•_•)>GPT " + LGR, end='')
+
+    def open_g4f():
+        with open('g4f\\G4f_action.txt', 'a', encoding='utf-8') as file_g:
+            file_g.write(" ".join(all_actions))
+        time.sleep(0.1)
+        try:
+            os.startfile("g4f\\G4f_action.lnk")
+        except FileNotFoundError:
+            os.startfile("g4f\\G4f_action.py")
+
     while True:
         try:
             if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
-                print(LRE, end="X")               
-                break  
+                print(LRE, end="X")
+                break
             if keyboard.is_pressed("backspace"):
-                print(LRE, end="X")  
+                print(LRE, end="X")
+                break
+            if keyboard.is_pressed("del"):
+                with open('g4f\\prompt_gpt_action.txt', 'w', encoding='utf-8'):
+                    # Оставить файл пустым
+                    pass
+                print(LRE, end="<<<X")
                 break
             if keyboard.is_pressed('space') or keyboard.is_pressed("enter"):
                 if keyboard.is_pressed("enter"):
                     if not all_actions:
                         print(LRE, end="X")
                         break
-                    print()     
+                    print()
                     loader.gun_fire(3)
-                if keyboard.is_pressed('space'):                    
+                if keyboard.is_pressed('space'):
                     action_input = input("")
                     if action_input == "":
                         print(LRE, end="X")
+                        all_actions.clear()
                         break
                     all_actions.append(action_input)
-                    print("", end="")     
+                    print("", end="")
                     loader.gun_fire(3)
-                with open('apps\\G4f_action.txt', 'a', encoding='utf-8') as file:
-                    file.write(" ".join(all_actions))       
-                time.sleep(0.1)  
-                try:    
-                    os.startfile(f"apps\\G4f_action.lnk")
-                except FileNotFoundError:   
-                    os.startfile("apps\\G4f_action.py")     
+                open_g4f()
                 break
-            if timer == 0:            
+            if timer == 0:
                 if not all_actions:
                     print(LRE, end="X")
-                    break            
+                    break
                 else:
-                    print()      
-                    loader.gun_fire(3)                                                    
-                    with open('apps\\G4f_action.txt', 'a', encoding='utf-8') as file:
-                        file.write(" ".join(all_actions))       
-                    time.sleep(0.1)
-                    try:  
-                        os.startfile(f"apps\\G4f_action.lnk")
-                    except FileNotFoundError:   
-                        os.startfile("apps\\G4f_action.py")            
-                    break               
+                    print()
+                    loader.gun_fire(3)
+                    open_g4f()
+                    break
             if rec.AcceptWaveform(stream.read(4000)):
                 action = rec.Result()[13:-2]
                 act = action[1:-1]
                 if action in ('"стоп"', '"сначала"', '"заново"'):
-                    timer = 3 
+                    timer = 3
                     all_actions = []
                     print(LRE, end="X")
                     print(LGR, end="")
-                    action = ""
-                    act = ""  
+                    # action = ""
+                    # act = ""
                 elif action != '""':
                     timer = 3
-                    print(act, end=" ")                                
+                    print(act, end=" ")
                     all_actions.append(act)
                 elif action == '""':
-                    print(timer, end="\b")                                
-                    timer -= 1                
-        except Exception as e:   
-            input(e)
+                    print(timer, end="\b")
+                    timer -= 1
+        except Exception as G4f:
+            input(G4f)
 
 
 if __name__ == '__main__':
@@ -433,12 +439,13 @@ if __name__ == '__main__':
             pause_mode()
         # -: Вызов функции для начала выделения области экрана и обработки текста
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift"):
-            import screen_tesseract           
+            import screen_tesseract
+
             screen_tesseract.start_capture()
         # -: действие для GPT
         if keyboard.is_pressed("win") and keyboard.is_pressed("shift") and keyboard.is_pressed("alt"):
-            G4f_actions()
-        
+            g4f_actions()
+
         #: Запись на русском # при включённом Caps Lock
         elif (caps_lock_state_check == 1 or caps_lock_state_check == -127) and \
                 (num_lock_state_check != 1 and num_lock_state_check != -127):
@@ -1083,7 +1090,7 @@ if __name__ == '__main__':
 
                 # команды для GPT
                 elif prompt in ('"действия"', '"действие"', '"сделай"', '"делай"'):
-                    G4f_actions()
+                    g4f_actions()
 
                 # -: встроенные группы команд из keyboard_scripts.py
                 elif prompt != '""':

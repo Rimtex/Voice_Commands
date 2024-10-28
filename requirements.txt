@@ -16,3 +16,5 @@ sounddevice
 pyperclip
 pytesseract
 pillow
+
+g4f

@@ -122,9 +122,6 @@ class RectangleDrawer:
             translated_text = translator.translate(text, translang)
             print(f"{Fore.LIGHTYELLOW_EX}Переведённый текст:{Fore.WHITE}\n{translated_text}")
 
-            # Отображаем перевод в левом нижнем углу выделенной области
-            self.show_popup(translated_text, left, bottom)
-
         except Exception as e:
             print(f"Ошибка обработки изображения: {e}")
         finally:
@@ -132,20 +129,6 @@ class RectangleDrawer:
             self.captured_once = True  # Устанавливаем флаг захвата
             self.root.after(3000, self.exit_program)  # Закрываем окно через 3 секунды
 
-    def show_popup(self, text, x, y):
-        # Создаем всплывающее окно
-        if self.popup:
-            self.popup.destroy()
-
-        self.popup = tk.Toplevel(self.root)
-        self.popup.overrideredirect(True)  # Убираем рамку окна
-        self.popup.attributes('-topmost', True)  # Окно всегда наверху
-
-        label = tk.Label(self.popup, text=text, bg='yellow', font=('Arial', 14))
-        label.pack()
-
-        # Размещаем окно в левом нижнем углу выделенной области
-        self.popup.geometry(f"+{x}+{y}")
 
 # Функция для создания и запуска окна захвата экрана
 def start_capture():
@@ -158,4 +141,3 @@ def start_capture():
 # Если файл запущен как основной, то запускается процесс выделения области
 if __name__ == "__main__":
     start_capture()
-

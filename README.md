@@ -59,8 +59,7 @@
     * `Discord_bot_g4f.py`         простой бот дискорд для общения с нейронкой  
     * `Voice_talking_g4f.py`     __болтать__ вслух с нейронкой  
   * `apps`  
-    * `screen_tesseract.py`    изображение в текст. -`ALT`- выделение области >  
-     создание изображения\иконки > **[преобразование в текст](https://github.com/UB-Mannheim/tesseract/wiki)** >   
+    * `screen_tesseract.py`    изображение в текст. -`Shift`- выделение области >  
+     создание изображения > **[преобразование в текст](https://github.com/UB-Mannheim/tesseract/wiki)** >   
      в буфер обмена > перевод на русский в консоль
     * `windows_size_position.py` закрепитель окон
-    * `simple_g4f.py` нейронка в консоли

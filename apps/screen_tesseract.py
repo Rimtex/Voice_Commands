@@ -9,6 +9,7 @@ import os
 import pyperclip
 
 from setup_config_apps import create_shortcut
+
 app_title_window = os.path.basename(__file__).replace('.py', '')
 create_shortcut(app_title_window, os.path.abspath(__file__))
 app_title = pyautogui.getWindowsWithTitle(app_title_window)[0]
@@ -20,7 +21,9 @@ tesseract_path = r"C:\Program Files\Tesseract-OCR"  # Путь к установ
 lang = "eng+rus+ukr"  # Нужные языки для распознавания текста
 translang = "russian"  # Язык перевода текста
 
-print("SHIFT: преобразование в текст > копирование в буфер > перевод") 
+print("SHIFT: преобразование в текст > копирование в буфер > перевод")
+
+
 class RectangleDrawer:
     def __init__(self, root):
         self.root = root
@@ -105,9 +108,9 @@ class RectangleDrawer:
         except Exception as e:
             print(f"Ошибка обработки изображения: {e}")
 
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.overrideredirect(True)  # Убираем границы окна
     app = RectangleDrawer(root)
     root.mainloop()
-
