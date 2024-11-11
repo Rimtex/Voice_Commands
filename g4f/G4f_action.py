@@ -49,7 +49,7 @@ def ask_gpt(messages: list) -> str:
         input(g4fe)
 
 
-# from g4f.models import
+# from g4f.models # gpt-4o
 
 # Проверка наличия файлов и создание при необходимости
 def file_create(name):

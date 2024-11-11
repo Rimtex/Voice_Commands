@@ -334,14 +334,13 @@ def pause_mode():
 
 #: команда действие для GPT
 def g4f_actions():
-    is_file_empty('g4f\\G4f_action.txt')
-    if not is_file_empty('g4f\\G4f_action.txt'):
-        with open('g4f\\G4f_action.txt', 'w', encoding='utf-8') as fileaction:
-            fileaction.truncate()
-    timer = 3
-    all_actions = []
-    print(LYE + "(!•_•)>GPT " + LGR, end='')
 
+    all_actions = []
+    with open('g4f\\G4f_action.txt', 'r', encoding='utf-8') as action:
+        all_actions = action.read()
+    print(LYE + "(!•_•)>GPT " + LGR + all_actions, end='')
+
+    timer = 3
     def open_g4f():
         with open('g4f\\G4f_action.txt', 'a', encoding='utf-8') as file_g:
             file_g.write(" ".join(all_actions))
@@ -352,6 +351,7 @@ def g4f_actions():
             os.startfile("g4f\\G4f_action.py")
 
     while True:
+        all_actions = []
         try:
             if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
                 print(LRE, end="X")
@@ -363,8 +363,11 @@ def g4f_actions():
                 with open('g4f\\prompt_gpt_action.txt', 'w', encoding='utf-8'):
                     # Оставить файл пустым
                     pass
-                print(LRE, end="<<<X")
-                break
+                if not is_file_empty('g4f\\G4f_action.txt'):
+                    with open('g4f\\G4f_action.txt', 'w', encoding='utf-8') as fileaction:
+                        fileaction.truncate()
+                print(LRE, end="<<<"+LGR)
+                time.sleep(0.2)                
             if keyboard.is_pressed('space') or keyboard.is_pressed("enter"):
                 if keyboard.is_pressed("enter"):
                     if not all_actions:

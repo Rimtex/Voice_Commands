@@ -26,7 +26,7 @@ init(convert=True)
 def printt(text):
     for char in text:
         print(char, end='', flush=True)
-        time.sleep(0.01)
+        time.sleep(0.005)
 
 
 # создание ярлыка + запуск с него
@@ -68,19 +68,19 @@ def gun_fire(x):
             time.sleep(0.005)
         for i in range(1, 15):
             print("\r" + gun2 + " " * i + "_", end='')
-            time.sleep(0.01)
+            time.sleep(0.005)
         for i in range(1, len(fire) + 1):
             print("\r" + gun2 + fire[:i], end='')
             time.sleep(0.005)
         for i in range(1, 15):
             print("\r" + gun2 + " " * i + "─", end='')
-            time.sleep(0.01)
+            time.sleep(0.005)
         for i in range(1, len(fire) + 1):
             print("\r" + gun2 + fire[:i], end='')
             time.sleep(0.005)
         for i in range(1, 15):
             print("\r" + gun2 + " " * i + "‾" + "\r", end='')
-            time.sleep(0.01)
+            time.sleep(0.005)
             print(" " * 31 + "\r", end='')
     for i in range(len(gun1) + 1):
         print("\r" + gun1[i:] + " " + "\r", end='')
