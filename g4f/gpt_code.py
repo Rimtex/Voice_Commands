@@ -2,14 +2,14 @@ import time
 import winsound
 
 # Устанавливаем время будильника
-alarm_time = time.time() + 30 * 60  # 30 минут в секундах
+alarm_time = time.time() + 1800  # 1800 секунд = 30 минут
 
 print("Будильник установлен на 30 минут.")
 
-# Ожидаем, пока не наступит время будильника
-while time.time() < alarm_time:
-    time.sleep(1)
-
-# Проигрываем звук будильника
-winsound.Beep(1000, 1000)  # Частота 1000 Гц, длительность 1000 мс
-print("Время! Будильник сработал!")
+while True:
+    current_time = time.time()
+    if current_time >= alarm_time:
+        print("Время будильника!")
+        winsound.Beep(1000, 1000)  # Звук будильника
+        break
+    time.sleep(1)  # Проверяем каждую секунду

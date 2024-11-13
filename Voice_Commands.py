@@ -343,7 +343,7 @@ def g4f_actions():
     timer = 3
     def open_g4f():
         with open('g4f\\G4f_action.txt', 'a', encoding='utf-8') as file_g:
-            file_g.write(" ".join(all_actions))
+            file_g.write("".join(all_actions))
         time.sleep(0.1)
         try:
             os.startfile("g4f\\G4f_action.lnk")
@@ -351,7 +351,6 @@ def g4f_actions():
             os.startfile("g4f\\G4f_action.py")
 
     while True:
-        all_actions = []
         try:
             if keyboard.is_pressed("ctrl") and keyboard.is_pressed("win"):
                 print(LRE, end="X")
@@ -371,6 +370,7 @@ def g4f_actions():
             if keyboard.is_pressed('space') or keyboard.is_pressed("enter"):
                 if keyboard.is_pressed("enter"):
                     if not all_actions:
+                        
                         print(LRE, end="X")
                         break
                     print()
@@ -381,7 +381,7 @@ def g4f_actions():
                         print(LRE, end="X")
                         all_actions.clear()
                         break
-                    all_actions.append(action_input)
+                    all_actions += '' + action_input if all_actions else action_input                    
                     print("", end="")
                     loader.gun_fire(3)
                 open_g4f()
@@ -408,7 +408,7 @@ def g4f_actions():
                 elif action != '""':
                     timer = 3
                     print(act, end=" ")
-                    all_actions.append(act)
+                    all_actions += '' + act if all_actions else act
                 elif action == '""':
                     print(timer, end="\b")
                     timer -= 1
